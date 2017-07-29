@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="1.8">
+      <module name="Modelo_main" target="1.8" />
+      <module name="Modelo_test" target="1.8" />
+      <module name="Web-app_main" target="1.8" />
+      <module name="Web-app_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
