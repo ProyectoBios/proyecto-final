@@ -8,7 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Web-app.iml" filepath="$PROJECT_DIR$/.idea/modules/Web-app.iml" group="Web-app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Web-app/Web-app_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Web-app/Web-app_main.iml" group="Web-app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Web-app/Web-app_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Web-app/Web-app_test.iml" group="Web-app" />
-      <module fileurl="file://$PROJECT_DIR$/proyecto-final.iml" filepath="$PROJECT_DIR$/proyecto-final.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/proyecto_final.iml" filepath="$PROJECT_DIR$/.idea/modules/proyecto_final.iml" />
     </modules>
   </component>
 </project>
