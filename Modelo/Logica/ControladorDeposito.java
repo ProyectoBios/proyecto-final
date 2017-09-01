@@ -1,3 +1,6 @@
+package logica;
+import datatypes.*;
+
 class ControladorDeposito implements  IDeposito {
     private static ControladorDeposito instancia = null;
 

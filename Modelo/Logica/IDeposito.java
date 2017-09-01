@@ -1,3 +1,6 @@
+package logica;
+import datatypes.*;
+
 public interface IDeposito {
     public boolean altaDeProducto(DTEspecificacionProducto ep);
     public boolean bajaProducto(DTEspecificacionProducto ep);

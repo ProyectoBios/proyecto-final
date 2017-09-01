@@ -1,3 +1,5 @@
+package logica;
+
 class EspecificacionArticulo {
     private int codigo;
     private String nombre;

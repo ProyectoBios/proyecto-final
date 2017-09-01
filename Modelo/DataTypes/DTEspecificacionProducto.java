@@ -1,9 +1,12 @@
+package datatypes;
+
 public class DTEspecificacionProducto {
     private int codigo;
     private String nombre;
     private int minStock;
     private int stockCritico;
     private int maxStock;
+
 
     public int getCodigo() {
         return codigo;
