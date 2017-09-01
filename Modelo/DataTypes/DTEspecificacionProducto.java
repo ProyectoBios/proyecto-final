@@ -1,4 +1,4 @@
-package datatypes; //Cambio111111
+package datatypes; //Cambio1111111
 
 public class DTEspecificacionProducto {
     private int codigo;
