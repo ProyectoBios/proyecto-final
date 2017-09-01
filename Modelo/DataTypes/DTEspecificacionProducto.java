@@ -1,4 +1,4 @@
-package datatypes;
+package datatypes; //Cambio1
 
 public class DTEspecificacionProducto {
     private int codigo;
