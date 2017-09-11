@@ -31,12 +31,18 @@ public class PControladorDeposito implements IPDeposito{
 
             int filasAfectadas = consulta.executeUpdate();
 
-            if (filasAfectadas != 1){
-                throw new Exception("Ocurrio un error al dar de alta el Cliente");
+            if (filasAfectadas != 1) {
+                throw new Exception("Ocurrio un error al agregar el Producto");
             }
-        } catch (Exception ex){
+
+        }catch (SQLException ex) {
+                throw ex;
+
+            }
+        catch (Exception ex){
             throw ex;
         }
+
     }
 
     @Override
@@ -47,7 +53,11 @@ public class PControladorDeposito implements IPDeposito{
 
             consulta.setInt(1, ep.getCodigo());
 
-            consulta.executeUpdate();
+            int filasAfectadas = consulta.executeUpdate();
+
+            if (filasAfectadas < 1) {
+                throw new Exception("No se pudo eliminar el Producto");
+            }
 
         } catch (SQLException ex) {
             throw ex;
