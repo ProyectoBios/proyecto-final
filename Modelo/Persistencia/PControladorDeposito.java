@@ -22,7 +22,7 @@ public class PControladorDeposito implements IPDeposito{
     public void altaDeProducto(DTEspecificacionProducto ep) throws Exception{
 
         try(Connection con = Conexion.AbrirConexion();
-            CallableStatement consulta = con.prepareCall("{ CALL AltaProducto(?,?,?,?,?) }")) {
+            CallableStatement consulta = con.prepareCall("{ CALL AltaEspProducto(?,?,?,?,?) }")) {
             consulta.setInt(1, ep.getCodigo());
             consulta.setString(2, ep.getNombre());
             consulta.setInt(3, ep.getMinStock());
@@ -43,7 +43,7 @@ public class PControladorDeposito implements IPDeposito{
     public void bajaProducto(DTEspecificacionProducto ep) throws Exception{
 
         try (Connection con = Conexion.AbrirConexion();
-             CallableStatement consulta = con.prepareCall("{ CALL EliminarProducto(?) }")){
+             CallableStatement consulta = con.prepareCall("{ CALL BajaEspProducto(?) }")){
 
             consulta.setInt(1, ep.getCodigo());
 
@@ -87,14 +87,14 @@ public class PControladorDeposito implements IPDeposito{
         DTEspecificacionProducto productoEncontrado = null;
 
         try (Connection con = Conexion.AbrirConexion();
-             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Producto WHERE Codigo = ? AND Eliminado = 0;");){
+             PreparedStatement consulta = con.prepareStatement("SELECT * FROM EspecificacionProducto WHERE ID = ? AND Eliminado = 0;");){
 
             consulta.setInt(1, codigo);
 
             ResultSet resultadoConsulta = consulta.executeQuery();
 
             if (resultadoConsulta.next()) {
-                productoEncontrado = new DTEspecificacionProducto(resultadoConsulta.getInt("Codigo"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"));
+                productoEncontrado = new DTEspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"));
             }
 
         } catch (SQLException ex) {
