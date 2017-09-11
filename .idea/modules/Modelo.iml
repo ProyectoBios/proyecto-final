@@ -5,6 +5,7 @@
     <content url="file://$MODULE_DIR$/../../Modelo">
       <sourceFolder url="file://$MODULE_DIR$/../../Modelo/Logica" isTestSource="false" packagePrefix="logica" />
       <sourceFolder url="file://$MODULE_DIR$/../../Modelo/DataTypes" isTestSource="false" packagePrefix="datatypes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Modelo/Persistencia" isTestSource="false" packagePrefix="persistencia" />
       <excludeFolder url="file://$MODULE_DIR$/../../Modelo/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../Modelo/build" />
       <excludeFolder url="file://$MODULE_DIR$/../../Modelo/out" />

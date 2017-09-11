@@ -1,6 +1,6 @@
-package logica;
+package persistencia;
 
-class EspecificacionArticulo {
+class PEspecificacionProducto {
     private int codigo;
     private String nombre;
     private int minStock;
@@ -47,7 +47,7 @@ class EspecificacionArticulo {
         this.maxStock = maxStock;
     }
 
-    public EspecificacionArticulo(int codigo, String nombre, int minStock, int stockCritico, int maxStock) {
+    public PEspecificacionProducto(int codigo, String nombre, int minStock, int stockCritico, int maxStock) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.minStock = minStock;
@@ -55,7 +55,8 @@ class EspecificacionArticulo {
         this.maxStock = maxStock;
     }
 
-    public EspecificacionArticulo() {
+    public PEspecificacionProducto() {
         this(0, "N/D", 0, 0, 0);
     }
 }
+

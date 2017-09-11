@@ -2,9 +2,9 @@ package logica;
 import datatypes.*;
 
 public interface IDeposito {
-    public boolean altaDeProducto(DTEspecificacionProducto ep);
-    public boolean bajaProducto(DTEspecificacionProducto ep);
-    public boolean modificarProducto(DTEspecificacionProducto ep);
-    public DTEspecificacionProducto buscarProducto(int codigo);
+    public void altaDeProducto(DTEspecificacionProducto ep) throws Exception;
+    public void bajaProducto(DTEspecificacionProducto ep) throws Exception;
+    public void modificarProducto(DTEspecificacionProducto ep) throws Exception;
+    public DTEspecificacionProducto buscarProducto(int codigo) throws Exception;
 
 }

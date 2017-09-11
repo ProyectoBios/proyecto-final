@@ -15,22 +15,21 @@ class ControladorDeposito implements  IDeposito {
     private ControladorDeposito(){}
 
     @Override
-    public boolean altaDeProducto(DTEspecificacionProducto ep) {
-        return false;
+    public void altaDeProducto(DTEspecificacionProducto ep) throws Exception{
     }
 
     @Override
-    public boolean bajaProducto(DTEspecificacionProducto ep) {
-        return false;
+    public void bajaProducto(DTEspecificacionProducto ep) throws Exception{
+
     }
 
     @Override
-    public boolean modificarProducto(DTEspecificacionProducto ep) {
-        return false;
+    public void modificarProducto(DTEspecificacionProducto ep) throws Exception{
+
     }
 
     @Override
-    public DTEspecificacionProducto buscarProducto(int codigo) {
+    public DTEspecificacionProducto buscarProducto(int codigo) throws Exception{
         return null;
     }
 }
