@@ -32,7 +32,7 @@ public class PControladorDeposito implements IPDeposito{
             int filasAfectadas = consulta.executeUpdate();
 
             if (filasAfectadas != 1) {
-                throw new Exception("Ocurrio un error al agregar el Producto");
+                throw new Exception("Ocurrió un error al agregar el Producto");
             }
 
         }catch (SQLException ex) {
