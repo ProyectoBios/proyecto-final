@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Modelo.iml" filepath="$PROJECT_DIR$/.idea/modules/Modelo.iml" group="Modelo" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Modelo/Modelo_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Modelo/Modelo_main.iml" group="Modelo" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Modelo/Modelo_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Modelo/Modelo_test.iml" group="Modelo" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Web-app.iml" filepath="$PROJECT_DIR$/.idea/modules/Web-app.iml" group="Web-app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Web-app/Web-app_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Web-app/Web-app_main.iml" group="Web-app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Web-app/Web-app_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Web-app/Web-app_test.iml" group="Web-app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/proyecto_final.iml" filepath="$PROJECT_DIR$/.idea/modules/proyecto_final.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/proyecto_final_main.iml" filepath="$PROJECT_DIR$/.idea/modules/proyecto_final_main.iml" group="proyecto_final" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/proyecto_final_test.iml" filepath="$PROJECT_DIR$/.idea/modules/proyecto_final_test.iml" group="proyecto_final" />
     </modules>
   </component>
 </project>
