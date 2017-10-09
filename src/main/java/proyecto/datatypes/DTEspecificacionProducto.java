@@ -1,4 +1,4 @@
-package datatypes;
+package proyecto.datatypes;
 
 public class DTEspecificacionProducto {
     private int codigo;

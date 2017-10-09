@@ -1,5 +1,5 @@
-package logica;
-import datatypes.*;
+package proyecto.logica;
+import proyecto.datatypes.*;
 
 public interface IDeposito {
     public void altaDeProducto(DTEspecificacionProducto ep) throws Exception; //

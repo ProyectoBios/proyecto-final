@@ -1,5 +1,5 @@
-package logica;
-import datatypes.*;
+package proyecto.logica;
+import proyecto.datatypes.*;
 
 class ControladorDeposito implements  IDeposito {
     private static ControladorDeposito instancia = null;

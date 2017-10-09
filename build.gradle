@@ -1,4 +1,4 @@
-group 'proyecto_final'
+group 'proyectofinal'
 version '1.0-SNAPSHOT'
 
 buildscript{
@@ -18,7 +18,7 @@ repositories {
     mavenCentral()
 }
 
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-thymeleaf'

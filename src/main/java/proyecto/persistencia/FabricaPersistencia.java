@@ -1,7 +1,4 @@
-package persistencia;
-
-import datatypes.*;
-import logica.IDeposito;
+package proyecto.persistencia;
 
 public class FabricaPersistencia {
     public static IPDeposito getControladorDeposito(){

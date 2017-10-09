@@ -1,4 +1,4 @@
-package logica;
+package proyecto.logica;
 
 class EspecificacionProducto {
     private int codigo;

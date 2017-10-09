@@ -26,7 +26,7 @@ BEGIN
 	END IF;  
  END//
  
- Create procedure BajaEspProducto(pID int) -- Cambiar por baja logica en futuras iteraciones
+ Create procedure BajaEspProducto(pID int) -- Cambiar por baja proyecto.logica en futuras iteraciones
  BEGIN
 	DELETE 
     FROM EspecificacionProducto
