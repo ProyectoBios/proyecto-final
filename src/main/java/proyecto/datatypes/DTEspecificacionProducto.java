@@ -1,4 +1,6 @@
-package datatypes;
+package proyecto.datatypes;
+
+import java.util.List;
 
 public class DTEspecificacionProducto {
     private int codigo;
@@ -7,6 +9,7 @@ public class DTEspecificacionProducto {
     private int stockCritico;
     private int maxStock;
 
+    private List<DTPrecio> historicoPrecios;
 
     public int getCodigo() {
         return codigo;
@@ -46,6 +49,14 @@ public class DTEspecificacionProducto {
 
     public void setMaxStock(int maxStock) {
         this.maxStock = maxStock;
+    }
+
+    public List<DTPrecio> getHistoricoPrecios() {
+        return historicoPrecios;
+    }
+
+    public void setHistoricoPrecios(List<DTPrecio> historicoPrecios) {
+        this.historicoPrecios = historicoPrecios;
     }
 
     public DTEspecificacionProducto(int codigo, String nombre, int minStock, int stockCritico, int maxStock) {

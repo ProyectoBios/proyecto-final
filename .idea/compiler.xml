@@ -2,8 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
+      <module name="_main" target="1.8" />
+      <module name="_test" target="1.8" />
       <module name="Modelo_main" target="1.8" />
       <module name="Modelo_test" target="1.8" />
+      <module name="proyecto_fi_main" target="1.8" />
+      <module name="proyecto_fi_test" target="1.8" />
       <module name="proyecto_final_main" target="1.8" />
       <module name="proyecto_final_test" target="1.8" />
       <module name="Web-app_main" target="1.8" />

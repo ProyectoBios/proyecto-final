@@ -1,6 +1,6 @@
-package persistencia;
+package proyecto.persistencia;
 
-import datatypes.*;
+import proyecto.datatypes.*;
 
 public interface IPDeposito {
     public void altaDeProducto(DTEspecificacionProducto ep)throws Exception;

@@ -1,8 +1,7 @@
-package persistencia;
-import datatypes.*;
+package proyecto.persistencia;
+import proyecto.datatypes.*;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class PControladorDeposito implements IPDeposito{
 
