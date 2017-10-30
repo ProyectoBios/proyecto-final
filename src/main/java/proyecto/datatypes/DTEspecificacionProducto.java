@@ -1,6 +1,6 @@
 package proyecto.datatypes;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class DTEspecificacionProducto {
     private int codigo;
@@ -9,7 +9,8 @@ public class DTEspecificacionProducto {
     private int stockCritico;
     private int maxStock;
 
-    private List<DTPrecio> historicoPrecios;
+    private ArrayList<DTPrecio> historicoPrecios;
+
 
     public int getCodigo() {
         return codigo;
@@ -51,23 +52,24 @@ public class DTEspecificacionProducto {
         this.maxStock = maxStock;
     }
 
-    public List<DTPrecio> getHistoricoPrecios() {
+    public ArrayList<DTPrecio> getHistoricoPrecios() {
         return historicoPrecios;
     }
 
-    public void setHistoricoPrecios(List<DTPrecio> historicoPrecios) {
+    public void setHistoricoPrecios(ArrayList<DTPrecio> historicoPrecios) {
         this.historicoPrecios = historicoPrecios;
     }
 
-    public DTEspecificacionProducto(int codigo, String nombre, int minStock, int stockCritico, int maxStock) {
+    public DTEspecificacionProducto(int codigo, String nombre, int minStock, int stockCritico, int maxStock, ArrayList<DTPrecio> historico) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.minStock = minStock;
         this.stockCritico = stockCritico;
         this.maxStock = maxStock;
+        this.historicoPrecios = historico;
     }
 
     public DTEspecificacionProducto() {
-        this(0, "N/D", 0, 0, 0);
+        this(0, "N/D", 0, 0, 0, new ArrayList<DTPrecio>());
     }
 }

@@ -2,6 +2,7 @@ package proyecto.persistencia;
 import proyecto.datatypes.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class PControladorDeposito implements IPDeposito{
 
@@ -103,7 +104,7 @@ public class PControladorDeposito implements IPDeposito{
             ResultSet resultadoConsulta = consulta.executeQuery();
 
             if (resultadoConsulta.next()) {
-                productoEncontrado = new DTEspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"));
+                productoEncontrado = new DTEspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), new ArrayList<DTPrecio>());
             }
 
         } catch (SQLException ex) {
