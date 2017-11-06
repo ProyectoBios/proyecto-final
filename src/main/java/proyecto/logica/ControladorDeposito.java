@@ -15,7 +15,8 @@ class ControladorDeposito implements  IDeposito {
     private ControladorDeposito(){}
 
     @Override
-    public void altaDeProducto(DTEspecificacionProducto ep) throws Exception{
+    public int altaDeProducto(DTEspecificacionProducto ep) throws Exception{
+        return 1;
     }
 
     @Override

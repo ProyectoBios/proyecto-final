@@ -19,21 +19,24 @@ public class PControladorDeposito implements IPDeposito{
     private PControladorDeposito(){}
 
     @Override
-    public void altaDeProducto(DTEspecificacionProducto ep) throws Exception{
+    public int altaDeProducto(DTEspecificacionProducto ep) throws Exception{
 
         try(Connection con = Conexion.AbrirConexion();
-            CallableStatement consulta = con.prepareCall("{ CALL AltaEspProducto(?,?,?,?,?) }")) {
-            consulta.setInt(1, ep.getCodigo());
-            consulta.setString(2, ep.getNombre());
-            consulta.setInt(3, ep.getMinStock());
-            consulta.setInt(4, ep.getStockCritico());
-            consulta.setInt(5, ep.getMaxStock());
+            CallableStatement consulta = con.prepareCall("{ CALL AltaEspProducto(?,?,?,?,?,?) }")) {
+            consulta.setString(1, ep.getNombre());
+            consulta.setInt(2, ep.getMinStock());
+            consulta.setInt(3, ep.getStockCritico());
+            consulta.setInt(4, ep.getMaxStock());
+            consulta.setDouble(5, ep.getHistoricoPrecios().get(0).getPrecio());
+            consulta.registerOutParameter(6, Types.INTEGER);
 
             int filasAfectadas = consulta.executeUpdate();
 
             if (filasAfectadas != 1) {
                 throw new Exception("Ocurrió un error al agregar el Producto");
             }
+
+            return consulta.getInt(6);
 
         }catch (SQLException ex) {
                 throw ex;
@@ -70,13 +73,14 @@ public class PControladorDeposito implements IPDeposito{
     @Override
     public void modificarProducto(DTEspecificacionProducto ep) throws Exception{
         try (Connection con = Conexion.AbrirConexion();
-             CallableStatement consulta = con.prepareCall("{ CALL ModificarProducto(?,?,?,?,?) }")){
+             CallableStatement consulta = con.prepareCall("{ CALL ModificarProducto(?,?,?,?,?,?) }")){
 
             consulta.setInt(1, ep.getCodigo());
             consulta.setString(2, ep.getNombre());
             consulta.setInt(3, ep.getMinStock());
             consulta.setInt(4, ep.getStockCritico());
             consulta.setInt(5, ep.getMaxStock());
+            consulta.setDouble(6, ep.getHistoricoPrecios().get(0).getPrecio());
 
             int filasAfectadas = consulta.executeUpdate();
 
