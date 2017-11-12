@@ -3,8 +3,9 @@ import proyecto.datatypes.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class PControladorDeposito implements IPDeposito{
+class PControladorDeposito implements IPDeposito{
 
     private static PControladorDeposito instancia = null;
 
@@ -108,7 +109,7 @@ public class PControladorDeposito implements IPDeposito{
             ResultSet resultadoConsulta = consulta.executeQuery();
 
             if (resultadoConsulta.next()) {
-                productoEncontrado = new DTEspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), new ArrayList<DTPrecio>());
+                productoEncontrado = new DTEspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), buscarHistorico(codigo));
             }
 
         } catch (SQLException ex) {
@@ -118,5 +119,32 @@ public class PControladorDeposito implements IPDeposito{
             throw ex;
         }
         return productoEncontrado;
+    }
+
+    //devuelve el histórico de precio del producto especificado
+    //ordenados por fecha inicial decreciente, el precio actual siempre está en la primera posicion.
+    public ArrayList<DTPrecio> buscarHistorico(int codigoProducto) throws Exception{
+        ArrayList<DTPrecio> historico = new ArrayList<DTPrecio>();
+
+        try (Connection con = Conexion.AbrirConexion();
+             PreparedStatement consulta = con.prepareStatement("SELECT * FROM PrecioProducto WHERE IDproducto = ? ORDER BY fechaIni DESC;");){
+
+            consulta.setInt(1, codigoProducto);
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+            DTPrecio precio = null;
+            while (resultadoConsulta.next()) {
+                precio = new DTPrecio(resultadoConsulta.getDouble("precio"), resultadoConsulta.getTimestamp("fechaIni"), resultadoConsulta.getTimestamp("fechaFin"));
+                historico.add(precio);
+            }
+
+            return historico;
+
+        } catch (SQLException ex) {
+            throw ex;
+
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 }
