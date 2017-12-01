@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Untitled</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<h1 id="logo"><a href="#">Centenario</a></h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="index.html">Inicio</a></li>
+						<li>
+							<a href="#" class="submenu">Menú</a>
+							<ul>
+								<li><a href="#">Menú 1</a></li>
+								<li><a href="#">Menú 2</a></li>
+								<li><a href="#">Menú 3</a></li>
+								<li>
+									<a href="#">Submenu</a>
+									<ul>
+										<li><a href="#">Opción uno</a></li>
+										<li><a href="#">Opción dos</a></li>
+										<li><a href="#">Opción tres</a></li>
+										<li><a href="#">Opción cuatro</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><a href="#">Salir</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="inner">
+					<header class="major">
+						<h2>Sección Usuarios</h2>
+					</header>
+
+					<!-- Content -->
+						<div class="content">
+							<!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
+							<h3>Mantenimiento de Productos</h3>
+                            
+                            <!-- Formulario con la Tabla -->
+                            <form action="ControladorProducto" name="AbmEspProducto" method="post">
+                            	<table width="100%">
+  <tbody>
+    <tr>
+      <td width="5%">ID:</td>
+      <td width="15%"><input type="text" id="id"/></td>    
+	</tr>
+    <tr>
+      <td>Nombre:</td>
+      <td><input type="text" id="nombre"/></td>
+    </tr>
+    <tr>
+      <td>Stock mínimo</td>
+      <td><input type="text" id="stockMinimo"/></td>
+    </tr>
+    <tr>
+      <td>Stock Crítico</td>
+      <td><input type="text" id="stockCritico"/></td>
+    </tr>
+    <tr>
+      <td>Stock Máximo</td>
+      <td><input type="text" id="stockMaximo"/></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+		  <input type="button" value="Agregar" /> 
+		  <input type="button" value="Eliminar" />
+		  <input type="button" value="Modificar" />
+		  <input type="button" value="buscar" />
+		  <input type="reset" value="Limpiar" />
+		</td>
+    </tr>
+  </tbody>
+</table>
+
+                            	
+                            </form>
+                            
+						</div>
+
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				
+				<p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
+				<a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
