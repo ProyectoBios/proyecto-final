@@ -64,7 +64,10 @@
 	</tr>
     <tr>
       <td>Nombre:</td>
-      <td><input type="text" th:field ="*{Nombre}" id="nombre"/></td>
+		<td>
+		  <input th:if="*{Nombre != ''}" type="text" th:field ="*{Nombre}" />
+		  <input th:if="*{Nombre == ''}" type="text" name="nombre" placeholder="" />
+	  	</td>
     </tr>
 	<tr>
 		<td>Precio:</td>
@@ -72,15 +75,24 @@
 	</tr>
     <tr>
       <td>Stock mínimo</td>
-      <td><input type="text" th:field ="*{MinStock}" id="stockMinimo"/></td>
+      <td>
+		  <input th:if="*{MinStock != 0}"  type="text" th:field ="*{MinStock}" />
+		  <input th:if="*{MinStock == 0}"  type="text" name="minStock" placeholder="" />
+	  </td>
     </tr>
     <tr>
       <td>Stock Crítico</td>
-      <td><input type="text" th:field ="*{StockCritico}" id="stockCritico"/></td>
+      <td>
+		  <input th:if="*{StockCritico != 0}" type="text" th:field ="*{StockCritico}"/>
+		  <input th:if="*{StockCritico == 0}" type="text" name="stockCritico" placeholder=""/>
+	  </td>
     </tr>
     <tr>
       <td>Stock Máximo</td>
-      <td><input type="text" th:field ="*{MaxStock}" id="stockMaximo"/></td>
+      <td>
+		  <input th:if="*{MaxStock != 0}" type="text" th:field ="*{MaxStock}"/>
+		  <input th:if="*{MaxStock == 0}" type="text" name="maxStock" placeholder="" />
+	  </td>
     </tr>
     <tr>
       <td colspan="2" align="center">
