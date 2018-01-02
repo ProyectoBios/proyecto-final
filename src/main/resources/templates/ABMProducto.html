@@ -65,13 +65,16 @@
     <tr>
       <td>Nombre:</td>
 		<td>
-		  <input th:if="*{Nombre != ''}" type="text" th:field ="*{Nombre}" />
-		  <input th:if="*{Nombre == ''}" type="text" name="nombre" placeholder="" />
+		  <input th:if="*{Nombre != 'N/D'}" type="text" th:field ="*{Nombre}" />
+		  <input th:if="*{Nombre == 'N/D'}" type="text" name="nombre" placeholder="" />
 	  	</td>
     </tr>
 	<tr>
 		<td>Precio:</td>
-		<td><input type="text" id="precio"/></td>
+		<td>
+		  <input th:if="*{PrecioActual != 0}" type="text" th:field="*{PrecioActual}"/>
+		  <input th:if="*{PrecioActual == 0}" type = "text" name="precio" placeholder="" />
+		</td>
 	</tr>
     <tr>
       <td>Stock mínimo</td>
