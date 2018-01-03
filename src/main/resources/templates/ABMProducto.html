@@ -58,8 +58,10 @@
     <tr>
       <td width="5%">ID:</td>
       <td width="15%">
-		  <input th:if="*{Codigo != 0}"  type="text" th:field ="*{Codigo}"/>
-		  <input th:if="*{Codigo == 0}"  type="text" id="codigo" name="codigo" placeholder="" />
+		  <input th:if="${producto.Codigo != 0 and codigoBloqueado}"  type="text" th:field ="*{Codigo}" readonly="readonly"/>
+		  <input th:if="${producto.Codigo != 0 and !codigoBloqueado}"  type="text" th:field ="*{Codigo}"/>
+		  <input th:if="${producto.Codigo == 0 and codigoBloqueado}"  type="text" name="Codigo" placeholder="" readonly="readonly"/>
+		  <input th:if="${producto.Codigo == 0 and !codigoBloqueado}"  type="text" name="Codigo" placeholder="" />
 	  </td>
 	</tr>
     <tr>
@@ -99,11 +101,20 @@
     </tr>
     <tr>
       <td colspan="2" align="center">
-		  <input type="submit" name="action" value="Agregar" />
-		  <input type="submit" name="action" value="Eliminar" />
-		  <input type="submit" name="action" value="Modificar" />
-		  <input type="submit" name="action" value="buscar" />
-		  <input type="reset" value="Limpiar" />
+		  <input th:if="${agregarHabilitado}" type="submit" name="action" value="Agregar" />
+		  <input th:if="${!agregarHabilitado}" type="submit" name="action" value="Agregar" disabled="disabled"/>
+
+		  <input th:if="${eliminarHabilitado}" type="submit" name="action" value="Eliminar" />
+		  <input th:if="${!eliminarHabilitado}" type="submit" name="action" value="Eliminar" disabled="disabled"/>
+
+		  <input th:if="${modificarHabilitado}" type="submit" name="action" value="Modificar" />
+		  <input th:if="${!modificarHabilitado}" type="submit" name="action" value="Modificar" disabled="disabled"/>
+
+		  <input th:if="${buscarHabilitado}" type="submit" name="action" value="Buscar" />
+		  <input th:if="${!buscarHabilitado}" type="submit" name="action" value="Buscar" disabled="disabled"/>
+
+
+		  <input type="submit" name="action" value="Limpiar" />
 		</td>
     </tr>
   </tbody>

@@ -28,7 +28,6 @@ INSERT INTO EspecificacionProducto VALUES(NULL, 'A', 20, 10, 100, 0);
 INSERT INTO PrecioProducto VALUES(1, 30.0, '20170527', '20171105');
 INSERT INTO PrecioProducto VALUES(1, 35.5, '20171105', NULL);
 
-
 DELIMITER //
 
 Create Procedure AltaEspProducto(pNombre varchar(40), pMinStock int, pStockCritico int, pMaxStock int, precio double, out id int) 
