@@ -75,7 +75,7 @@
 		<td>Precio:</td>
 		<td>
 		  <input th:if="*{PrecioActual != 0}" type="text" th:field="*{PrecioActual}"/>
-		  <input th:if="*{PrecioActual == 0}" type = "text" name="precio" placeholder="" />
+		  <input th:if="*{PrecioActual == 0}" type = "text" name="precioActual" placeholder="" />
 		</td>
 	</tr>
     <tr>
@@ -122,7 +122,7 @@
 
                             	
                             </form>
-                            
+                      <label th:text="${mensaje}"></label>
 						</div>
 
 				</div>

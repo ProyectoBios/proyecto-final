@@ -64,12 +64,13 @@ class ControladorDeposito implements  IDeposito {
 
     @Override
     public void bajaProducto(DTEspecificacionProducto ep) throws Exception{
-
+        FabricaPersistencia.getControladorDeposito().bajaProducto(ep);
     }
 
     @Override
     public void modificarProducto(DTEspecificacionProducto ep) throws Exception{
-
+        ValidarEspecificacionProducto(ep);
+        FabricaPersistencia.getControladorDeposito().modificarProducto(ep);
     }
 
     @Override

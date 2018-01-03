@@ -34,7 +34,7 @@ class PControladorDeposito implements IPDeposito{
             int filasAfectadas = consulta.executeUpdate();
 
             if (filasAfectadas != 1) {
-                throw new Exception("Ocurrió un error al agregar el Producto");
+                throw new ExcepcionFrigorifico("Ocurrió un error al agregar el Producto");
             }
 
             return consulta.getInt(6);
@@ -85,9 +85,9 @@ class PControladorDeposito implements IPDeposito{
 
             int filasAfectadas = consulta.executeUpdate();
 
-            if (filasAfectadas < 1) {
+            /*if (filasAfectadas < 1) {
                 throw new Exception("No se pudo modificar el Producto");
-            }
+            }*/
 
         } catch (SQLException ex) {
             throw ex;

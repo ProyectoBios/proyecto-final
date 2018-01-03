@@ -58,10 +58,71 @@ public class ControladorDeposito {
         }
     }
 
-    /*@RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Agregar")
+    @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Agregar")
     public String agregarABMProducto(@ModelAttribute DTEspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
+        try {
+            int codigo = FabricaLogica.getControladorDeposito().altaDeProducto(producto);
 
-    }*/
+            modelMap.addAttribute("producto", new DTEspecificacionProducto());
+            botonesPorDefecto(modelMap);
+            modelMap.addAttribute("mensaje", "Alta exitosa. ID:  " + codigo + ".");
+            return "ABMProducto";
+        }catch(ExcepcionFrigorifico ex){
+            modelMap.addAttribute("producto", producto);
+            botonesAlta(modelMap);
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "ABMProducto";
+        }catch(Exception ex){
+            modelMap.addAttribute("producto", producto);
+            botonesAlta(modelMap);
+            modelMap.addAttribute("mensaje", "¡ERROR!");
+            return "ABMProducto";
+        }
+    }
+
+    @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Eliminar")
+    public String eliminarABMProducto(@ModelAttribute DTEspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
+        try {
+            FabricaLogica.getControladorDeposito().bajaProducto(producto);
+
+            modelMap.addAttribute("producto", new DTEspecificacionProducto());
+            botonesPorDefecto(modelMap);
+            modelMap.addAttribute("mensaje", "Baja exitosa!");
+            return "ABMProducto";
+        }catch(ExcepcionFrigorifico ex){
+            modelMap.addAttribute("producto", producto);
+            botonesBM(modelMap);
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "ABMProducto";
+        }catch(Exception ex){
+            modelMap.addAttribute("producto", producto);
+            botonesBM(modelMap);
+            modelMap.addAttribute("mensaje", "¡ERROR!");
+            return "ABMProducto";
+        }
+    }
+
+    @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Modificar")
+    public String modificarABMProducto(@ModelAttribute DTEspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
+        try {
+            FabricaLogica.getControladorDeposito().modificarProducto(producto);
+
+            modelMap.addAttribute("producto", new DTEspecificacionProducto());
+            botonesPorDefecto(modelMap);
+            modelMap.addAttribute("mensaje", "Modificacion exitosa!");
+            return "ABMProducto";
+        }catch(ExcepcionFrigorifico ex){
+            modelMap.addAttribute("producto", producto);
+            botonesBM(modelMap);
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "ABMProducto";
+        }catch(Exception ex){
+            modelMap.addAttribute("producto", producto);
+            botonesBM(modelMap);
+            modelMap.addAttribute("mensaje", "¡ERROR!");
+            return "ABMProducto";
+        }
+    }
 
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Limpiar")
     public String limpiarABMProducto(ModelMap modelMap){
