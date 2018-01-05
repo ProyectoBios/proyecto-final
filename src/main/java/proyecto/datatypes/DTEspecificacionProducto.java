@@ -1,6 +1,7 @@
 package proyecto.datatypes;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DTEspecificacionProducto {
     private int codigo;
@@ -58,6 +59,23 @@ public class DTEspecificacionProducto {
 
     public void setHistoricoPrecios(ArrayList<DTPrecio> historicoPrecios) {
         this.historicoPrecios = historicoPrecios;
+    }
+
+    public double getPrecioActual(){
+        if(historicoPrecios.size() > 0){
+            return historicoPrecios.get(0).getPrecio();
+        }else{
+            return 0;
+        }
+    }
+
+    public void setPrecioActual(double precio){
+        DTPrecio p = new DTPrecio(precio, new Date());
+        if (historicoPrecios.size() > 0){
+            historicoPrecios.get(0).setFechaFin(new Date());
+        }
+
+        historicoPrecios.add(p);
     }
 
     public DTEspecificacionProducto(int codigo, String nombre, int minStock, int stockCritico, int maxStock, ArrayList<DTPrecio> historico) {
