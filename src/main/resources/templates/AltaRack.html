@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Rack</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
+    <link rel="stylesheet" th:href="@{assets/css/main.css}" />
+    <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+    <h1 id="logo"><a href="#">Centenario</a></h1>
+    <nav id="nav">
+        <ul>
+            <li><a th:href="@{/}">Inicio</a></li>
+            <li>
+                <a href="#" class="submenu">Menú</a>
+                <ul>
+                    <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
+                    <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
+                    <li><a href="#">Menú 3</a></li>
+                    <li>
+                        <a href="#">Submenu</a>
+                        <ul>
+                            <li><a href="#">Opción uno</a></li>
+                            <li><a href="#">Opción dos</a></li>
+                            <li><a href="#">Opción tres</a></li>
+                            <li><a href="#">Opción cuatro</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main -->
+<section id="main" class="wrapper">
+    <div class="inner">
+        <header class="major">
+            <h2>Sección Usuarios</h2>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
+            <h3>Mantenimiento de Racks</h3>
+
+            <!-- Formulario con la Tabla -->
+            <form action="#" th:action="@{/AltaRack}" th:object="${rack}" method="post">
+                <table width="100%">
+                    <tbody>
+                    <tr>
+                        <td width="5%">Letra:</td>
+                        <td width="15%">
+                            <input th:if="${rack.Letra != '-' and letraBloqueado}"  type="text" th:field ="*{Letra}" readonly="readonly"/>
+                            <input th:if="${rack.Letra != '-' and !letraBloqueado}"  type="text" th:field ="*{Letra}"/>
+                            <input th:if="${rack.Letra == '-' and letraBloqueado}"  type="text" name="Letra" placeholder="" readonly="readonly"/>
+                            <input th:if="${rack.Letra == '-' and !letraBloqueado}"  type="text" name="Letra" placeholder="" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Dimension Alto:</td>
+                        <td>
+                            <input th:if="*{DimAlto != 0}" type="text" th:field ="*{DimAlto}" />
+                            <input th:if="*{DimAlto == 0}" type="text" name="dimAlto" placeholder="" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Dimension Ancho:</td>
+                        <td>
+                            <input th:if="*{dimAncho != 0}" type="text" th:field="*{DimAncho}"/>
+                            <input th:if="*{dimAncho == 0}" type = "text" name="DimAncho" placeholder="" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input th:if="${agregarHabilitado}" type="submit" name="action" value="Agregar" />
+                            <input th:if="${!agregarHabilitado}" type="submit" name="action" value="Agregar" disabled="disabled"/>
+
+                            <input th:if="${buscarHabilitado}" type="submit" name="action" value="Buscar" />
+                            <input th:if="${!buscarHabilitado}" type="submit" name="action" value="Buscar" disabled="disabled"/>
+
+
+                            <input type="submit" name="action" value="Limpiar" />
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </form>
+            <label th:text="${mensaje}"></label>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+
+    <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
+        <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+</footer>
+
+<!-- Scripts -->
+<script th:src="@{assets/js/jquery.min.js}"> </script>
+<script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
+<script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{assets/js/skel.min.js}"></script>
+<script th:src="@{assets/js/util.js}"></script>
+<!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
+<script th:src="@{assets/js/main.js}"></script>
+
+</body>
+</html>

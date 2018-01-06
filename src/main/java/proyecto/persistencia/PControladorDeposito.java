@@ -19,6 +19,7 @@ class PControladorDeposito implements IPDeposito{
 
     private PControladorDeposito(){}
 
+    //Productos
     @Override
     public int altaDeProducto(DTEspecificacionProducto ep) throws Exception{
 
@@ -147,4 +148,47 @@ class PControladorDeposito implements IPDeposito{
             throw ex;
         }
     }
+
+    //Fin Productos
+    //Rack
+
+    @Override
+    public DTRack buscarRack(String letra) throws Exception {
+        DTRack rackEncontrado = null;
+
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Rack WHERE letra = ?;");){
+
+            consulta.setString(1, letra);
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+
+            if (resultadoConsulta.next()){
+                rackEncontrado = new DTRack(resultadoConsulta.getString("letra"), resultadoConsulta.getInt("dimAlto"), resultadoConsulta.getInt("dimAncho"));
+            }
+        }catch(Exception ex){
+            throw ex;
+        }
+        return rackEncontrado;
+    }
+
+    @Override
+    public void altaRack(DTRack rack) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            CallableStatement consulta = con.prepareCall("{ CALL AltaRack(?,?,?) }");){
+            consulta.setString(1, rack.getLetra());
+            consulta.setInt(2, rack.getDimAlto());
+            consulta.setInt(3, rack.getDimAncho());
+
+            int filasAfectadas = consulta.executeUpdate();
+
+            if(filasAfectadas != 1){
+                throw new ExcepcionFrigorifico("¡ERROR! Ocurrió un error al dar de alta el rack");
+            }
+        }catch(Exception ex){
+            throw ex;
+        }
+
+    }
+    //Fin Rack
 }

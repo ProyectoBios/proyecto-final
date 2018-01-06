@@ -23,11 +23,18 @@ Create Table PrecioProducto(
     primary key (IDproducto, fechaIni)
 );
 
+Create Table Rack(
+	letra varchar(1) primary key,
+    dimAlto int not null,
+    dimAncho int not null
+);
+
 INSERT INTO EspecificacionProducto VALUES(NULL, 'A', 20, 10, 100, 0);
 
 INSERT INTO PrecioProducto VALUES(1, 30.0, '20170527', '20171105');
 INSERT INTO PrecioProducto VALUES(1, 35.5, '20171105', NULL);
 
+INSERT INTO Rack VALUES('A', 10, 20);
 
 DELIMITER //
 
@@ -83,5 +90,9 @@ BEGIN
     COMMIT;
  END//
  
+ Create Procedure AltaRack(pLetra varchar(1), pDimAlto int, pDimAncho int)
+ BEGIN
+	INSERT INTO Rack VALUES(pLetra, pDimAlto, pDimAncho);
+ END
  
  

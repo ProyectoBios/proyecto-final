@@ -16,6 +16,8 @@ class ControladorDeposito implements  IDeposito {
 
     private ControladorDeposito(){}
 
+    //Productos
+
     private void ValidarEspecificacionProducto(DTEspecificacionProducto ep) throws ExcepcionFrigorifico{
         if(ep == null){
             throw new ExcepcionFrigorifico("¡ERROR! Producto nulo");
@@ -77,4 +79,41 @@ class ControladorDeposito implements  IDeposito {
     public DTEspecificacionProducto buscarProducto(int codigo) throws Exception{
         return FabricaPersistencia.getControladorDeposito().buscarProducto(codigo);
     }
+
+    //Fin Productos
+
+    //Rack
+
+    private void ValidarRack(DTRack rack) throws ExcepcionFrigorifico{
+        if(rack == null){
+            throw new ExcepcionFrigorifico("¡ERROR! El rack no puede ser nulo.");
+        }
+
+        if(rack.getLetra().isEmpty() || rack.getLetra().length() > 1){
+            throw new ExcepcionFrigorifico("¡ERROR! La letra del rack no es valida.");
+        }
+
+        if(rack.getDimAlto() < 0){
+            throw new ExcepcionFrigorifico("¡ERROR! La dimension alto del rack no es valida.");
+        }
+
+        if(rack.getDimAncho() < 0){
+            throw new ExcepcionFrigorifico("¡ERROR! La dimension ancho del rack no es valida.");
+        }
+    }
+
+    @Override
+    public DTRack buscarRack(String letra) throws Exception {
+        return FabricaPersistencia.getControladorDeposito().buscarRack(letra);
+    }
+
+    @Override
+    public void altaRack(DTRack rack) throws Exception {
+        ValidarRack(rack);
+        FabricaPersistencia.getControladorDeposito().altaRack(rack);
+    }
+
+
+    //Fin Rack
+
 }
