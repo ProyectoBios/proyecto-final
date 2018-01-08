@@ -93,6 +93,10 @@ class ControladorDeposito implements  IDeposito {
             throw new ExcepcionFrigorifico("¡ERROR! La letra del rack no es valida.");
         }
 
+        if(!Character.isLetter(rack.getLetra().charAt(0))){
+            throw new ExcepcionFrigorifico("¡ERROR! La letra del Rack no es válida");
+        }
+
         if(rack.getDimAlto() < 0){
             throw new ExcepcionFrigorifico("¡ERROR! La dimension alto del rack no es valida.");
         }
