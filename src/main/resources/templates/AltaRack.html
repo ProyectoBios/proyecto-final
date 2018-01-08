@@ -83,6 +83,9 @@
                             <input th:if="${agregarHabilitado}" type="submit" name="action" value="Agregar" />
                             <input th:if="${!agregarHabilitado}" type="submit" name="action" value="Agregar" disabled="disabled"/>
 
+                            <input th:if="${eliminarHabilitado}" type="submit" name="action" value="Eliminar" />
+                            <input th:if="${!eliminarHabilitado}" type="submit" name="action" value="Eliminar" disabled="disabled"/>
+
                             <input th:if="${buscarHabilitado}" type="submit" name="action" value="Buscar" />
                             <input th:if="${!buscarHabilitado}" type="submit" name="action" value="Buscar" disabled="disabled"/>
 

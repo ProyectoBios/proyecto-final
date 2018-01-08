@@ -11,6 +11,7 @@ public interface IDeposito {
     //Rack
     public DTRack buscarRack(String letra) throws Exception;
     public void altaRack(DTRack rack) throws Exception;
+    public void bajaRack(DTRack rack) throws Exception;
     //Fin Rack
 
 }

@@ -117,6 +117,10 @@ class ControladorDeposito implements  IDeposito {
         FabricaPersistencia.getControladorDeposito().altaRack(rack);
     }
 
+    @Override
+    public void bajaRack(DTRack rack) throws Exception {
+        FabricaPersistencia.getControladorDeposito().bajaRack(rack);
+    }
 
     //Fin Rack
 

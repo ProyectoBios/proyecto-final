@@ -202,7 +202,7 @@ public class ControladorDeposito {
                 botonesAltaRack(modelMap);
             }else{
                 modelMap.addAttribute("rack", rack);
-                botonesPorDefectoRack(modelMap);
+                botonesBajaRack(modelMap);
             }
 
             return "AltaRack";
@@ -219,15 +219,46 @@ public class ControladorDeposito {
         }
     }
 
+    @RequestMapping(value="/AltaRack", method = RequestMethod.POST, params="action=Eliminar")
+    public String bajaRack(@ModelAttribute DTRack rack, BindingResult bindingResult, ModelMap modelMap){
+        try{
+            FabricaLogica.getControladorDeposito().bajaRack(rack);
+
+            modelMap.addAttribute("rack", new DTRack());
+            modelMap.addAttribute("mensaje", "Baja exitosa.");
+            botonesPorDefectoRack(modelMap);
+            return "AltaRack";
+        }catch(ExcepcionFrigorifico ex){
+            modelMap.addAttribute("rack", rack);
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            botonesBajaRack(modelMap);
+            return "AltaRack";
+        }catch(Exception ex){
+            modelMap.addAttribute("rack", rack);
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al dar de baja el rack");
+            botonesBajaRack(modelMap);
+            return "AltaRack";
+        }
+    }
+
     public void botonesPorDefectoRack(ModelMap modelMap){
         modelMap.addAttribute("agregarHabilitado", "false");
         modelMap.addAttribute("buscarHabilitado", "true");
+        modelMap.addAttribute("eliminarHabilitado", "false");
         modelMap.addAttribute("letraBloqueado", "false");
     }
 
     public void botonesAltaRack(ModelMap modelMap){
         modelMap.addAttribute("agregarHabilitado", "true");
         modelMap.addAttribute("buscarHabilitado", "false");
+        modelMap.addAttribute("eliminarHabilitado", "false");
+        modelMap.addAttribute("letraBloqueado", "true");
+    }
+
+    public void botonesBajaRack(ModelMap modelMap){
+        modelMap.addAttribute("agregarHabilitado", "false");
+        modelMap.addAttribute("buscarHabilitado", "false");
+        modelMap.addAttribute("eliminarHabilitado", "true");
         modelMap.addAttribute("letraBloqueado", "true");
     }
 

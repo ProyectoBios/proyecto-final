@@ -19,7 +19,7 @@ class PControladorDeposito implements IPDeposito{
 
     private PControladorDeposito(){}
 
-    //Productos
+    //region Productos
     @Override
     public int altaDeProducto(DTEspecificacionProducto ep) throws Exception{
 
@@ -149,8 +149,9 @@ class PControladorDeposito implements IPDeposito{
         }
     }
 
-    //Fin Productos
-    //Rack
+    //endregion
+
+    //region Rack
 
     @Override
     public DTRack buscarRack(String letra) throws Exception {
@@ -190,5 +191,24 @@ class PControladorDeposito implements IPDeposito{
         }
 
     }
-    //Fin Rack
+
+    @Override
+    public void bajaRack(DTRack rack) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            CallableStatement consulta = con.prepareCall("{ CALL BajaRack(?) }");){
+
+            consulta.setString(1, rack.getLetra());
+
+            int filasAfectadas = consulta.executeUpdate();
+
+            if(filasAfectadas != 1){
+                throw new ExcepcionFrigorifico("¡ERROR! Ocurrio un error al dar de baja el rack");
+            }
+
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    //endregion
 }

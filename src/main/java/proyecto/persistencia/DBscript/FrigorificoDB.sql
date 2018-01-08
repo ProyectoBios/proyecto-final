@@ -93,6 +93,14 @@ BEGIN
  Create Procedure AltaRack(pLetra varchar(1), pDimAlto int, pDimAncho int)
  BEGIN
 	INSERT INTO Rack VALUES(pLetra, pDimAlto, pDimAncho);
- END
+ END//
+  
+ Create Procedure BajaRack(pLetra varchar(1)) -- El rack debe estar vacio
+ BEGIN
+	DELETE 
+    FROM Rack
+    WHERE letra = pLetra;
+ END//
+ 
  
  
