@@ -29,12 +29,28 @@ Create Table Rack(
     dimAncho int not null
 );
 
+Create Table Lote(
+	idLote int primary key AUTO_INCREMENT,
+    fechaIngreso datetime not null,
+    fechaVencimiento datetime not null,
+    cantUnidades int not null,
+    IDProducto int not null,
+    letraRack varchar(1) not null,
+    fila int not null,
+    columna int not null,
+    
+    foreign key(IDProducto) references EspecificacionProducto(ID),
+    foreign key(letraRack) references Rack(letra)    
+);
+
 INSERT INTO EspecificacionProducto VALUES(NULL, 'A', 20, 10, 100, 0);
 
 INSERT INTO PrecioProducto VALUES(1, 30.0, '20170527', '20171105');
 INSERT INTO PrecioProducto VALUES(1, 35.5, '20171105', NULL);
 
 INSERT INTO Rack VALUES('A', 10, 20);
+
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 50, 1, 'A', 1,1);
 
 DELIMITER //
 

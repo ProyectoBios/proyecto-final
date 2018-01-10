@@ -16,7 +16,7 @@ class ControladorDeposito implements  IDeposito {
 
     private ControladorDeposito(){}
 
-    //Productos
+    //region Productos
 
     private void ValidarEspecificacionProducto(DTEspecificacionProducto ep) throws ExcepcionFrigorifico{
         if(ep == null){
@@ -80,9 +80,9 @@ class ControladorDeposito implements  IDeposito {
         return FabricaPersistencia.getControladorDeposito().buscarProducto(codigo);
     }
 
-    //Fin Productos
+    //endregion
 
-    //Rack
+    //region Rack
 
     private void ValidarRack(DTRack rack) throws ExcepcionFrigorifico{
         if(rack == null){
@@ -122,6 +122,6 @@ class ControladorDeposito implements  IDeposito {
         FabricaPersistencia.getControladorDeposito().bajaRack(rack);
     }
 
-    //Fin Rack
+    //endregion
 
 }
