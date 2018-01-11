@@ -211,4 +211,34 @@ class PControladorDeposito implements IPDeposito{
     }
 
     //endregion
+
+    //region Lote
+
+    @Override
+    public int altaLote(DTLote lote) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            CallableStatement consulta = con.prepareCall("{ CALL AltaLote(?, ?, ?, ?, ?, ?)")){
+
+            consulta.setDate(1, new java.sql.Date(lote.getFechaVencimiento().getTime()));
+            consulta.setInt(2, lote.getCantUnidades());
+            consulta.setInt(3, lote.getProducto().getCodigo());
+            consulta.setString(4, lote.getUbicacion().getRack().getLetra());
+            consulta.setInt(5, lote.getUbicacion().getFila());
+            consulta.setInt(6, lote.getUbicacion().getColumna());
+            consulta.registerOutParameter(7, Types.INTEGER);
+
+            int filasAfectadas = consulta.executeUpdate();
+
+            if(filasAfectadas != 1){
+                throw new ExcepcionFrigorifico("¡ERROR! Ocurrió un error al dar de alta el lote.");
+            }
+
+            return consulta.getInt(7);
+
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
+
+    //endregion
 }

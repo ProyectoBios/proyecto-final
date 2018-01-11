@@ -123,5 +123,35 @@ class ControladorDeposito implements  IDeposito {
     }
 
     //endregion
+    //region Lote
 
+    private void ValidarLote(DTLote lote) throws ExcepcionFrigorifico{
+        if(lote == null){
+            throw new ExcepcionFrigorifico("¡ERROR! El lote no puede ser nulo.");
+        }
+
+        if(lote.getId() < 0){
+            throw new ExcepcionFrigorifico("¡ERROR! El id no puede ser menor que 0.");
+        }
+
+        if(lote.getCantUnidades() < 0){
+            throw new ExcepcionFrigorifico("¡ERROR! La cantidad de unidades no puede ser menor que 0.");
+        }
+
+        ValidarEspecificacionProducto(lote.getProducto());
+        ValidarRack(lote.getUbicacion().getRack());
+
+        if(lote.getUbicacion().getFila() < 0 || lote.getUbicacion().getColumna() < 0){
+            throw new ExcepcionFrigorifico("¡ERROR! La ubicación del lote no es válida.");
+        }
+    }
+
+    @Override
+    public int altaLote(DTLote lote) throws Exception {
+        ValidarLote(lote);
+        return FabricaPersistencia.getControladorDeposito().altaLote(lote);
+    }
+
+
+    //endregion
 }
