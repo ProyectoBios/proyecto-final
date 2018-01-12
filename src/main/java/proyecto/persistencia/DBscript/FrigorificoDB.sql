@@ -126,6 +126,13 @@ BEGIN
 	INSERT INTO Lote VALUES(NULL, NOW(), pFechaVencimiento, pCantUn, pIDProd, pLetra, pFila, pColumna);
     
     SET id = LAST_INSERT_ID();
+ END//
+ 
+ Create Procedure BajaLote(pId int)
+ BEGIN
+	DELETE 
+    FROM Lote
+    WHERE idLote = pId;
  END
  
  

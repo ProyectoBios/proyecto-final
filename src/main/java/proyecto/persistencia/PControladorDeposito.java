@@ -263,5 +263,41 @@ class PControladorDeposito implements IPDeposito{
         }
     }
 
+    @Override
+    public ArrayList<DTLote> obtenerLotesVencidos() throws Exception {
+        ArrayList<DTLote> lotes = new ArrayList<DTLote>();
+
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE fechaVencimiento < NOW()")){
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+            DTLote lote = null;
+            while(resultadoConsulta.next()){
+                lote = new DTLote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new DTUbicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                lotes.add(lote);
+            }
+
+            return lotes;
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void bajaLote(DTLote lote) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            CallableStatement consulta = con.prepareCall("{ CALL BajaLote(?) }")){
+
+            consulta.setInt(1, lote.getId());
+
+            int filasAfectadas = consulta.executeUpdate();
+            if(filasAfectadas!=1){
+                throw new ExcepcionFrigorifico("¡ERROR! No se pudo dar de baja el lote");
+            }
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
+
     //endregion
 }

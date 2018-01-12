@@ -19,5 +19,7 @@ public interface IPDeposito {
     //endregion
     //region Lote
     public int altaLote(DTLote lote) throws Exception;
+    public ArrayList<DTLote> obtenerLotesVencidos() throws Exception;
+    public void bajaLote(DTLote lote) throws Exception;
     //endregion
 }

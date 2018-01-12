@@ -161,6 +161,15 @@ class ControladorDeposito implements  IDeposito {
         return FabricaPersistencia.getControladorDeposito().altaLote(lote);
     }
 
+    @Override
+    public ArrayList<DTLote> obtenerLotesVencidos() throws Exception {
+        return FabricaPersistencia.getControladorDeposito().obtenerLotesVencidos();
+    }
+
+    @Override
+    public void bajaLote(DTLote lote) throws Exception {
+        FabricaPersistencia.getControladorDeposito().bajaLote(lote);
+    }
 
     //endregion
 }
