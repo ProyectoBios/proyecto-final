@@ -149,6 +149,29 @@ class PControladorDeposito implements IPDeposito{
         }
     }
 
+    @Override
+    public ArrayList<DTLote> buscarStock(DTEspecificacionProducto ep) throws Exception {
+        ArrayList<DTLote> stock = new ArrayList<DTLote>();
+
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE IDProducto = ? AND fechaVencimiento > NOW() ORDER BY fechaVencimiento ASC")){
+
+            consulta.setInt(1, ep.getCodigo());
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+            DTLote lote = null;
+            while(resultadoConsulta.next()){
+                lote = new DTLote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), ep, new DTUbicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                stock.add(lote);
+            }
+
+            return stock;
+
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
     //endregion
 
     //region Rack

@@ -3,6 +3,8 @@ import com.sun.scenario.effect.impl.sw.java.JSWBlend_EXCLUSIONPeer;
 import proyecto.datatypes.*;
 import proyecto.persistencia.*;
 
+import java.util.ArrayList;
+
 class ControladorDeposito implements  IDeposito {
     private static ControladorDeposito instancia = null;
 
@@ -80,6 +82,12 @@ class ControladorDeposito implements  IDeposito {
         return FabricaPersistencia.getControladorDeposito().buscarProducto(codigo);
     }
 
+    @Override
+    public ArrayList<DTLote> buscarStock(DTEspecificacionProducto ep) throws Exception {
+        ValidarEspecificacionProducto(ep);
+        return FabricaPersistencia.getControladorDeposito().buscarStock(ep);
+    }
+
     //endregion
 
     //region Rack
@@ -123,6 +131,7 @@ class ControladorDeposito implements  IDeposito {
     }
 
     //endregion
+
     //region Lote
 
     private void ValidarLote(DTLote lote) throws ExcepcionFrigorifico{
