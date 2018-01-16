@@ -43,6 +43,39 @@ Create Table Lote(
     foreign key(letraRack) references Rack(letra)    
 );
 
+Create Table Cliente(
+	nombre varchar(30) primary key,
+    telefono varchar(10) not null,
+    correo varchar(40) not null
+);
+
+Create Table OrdenPedido(
+	idOrden int primary key AUTO_INCREMENT,
+	fecha datetime not null,
+    estado varchar(20) not null,
+    ultimaActEst datetime not null,
+    direccionEnvio varchar(40) not null,
+    contacto varchar(40) not null,
+    subtotal double not null,
+    impuestos double not null,
+    total double not null,
+    nombreCliente varchar(30) not null,
+    
+    foreign key(nombreCliente) references Cliente(nombre)
+);
+
+Create Table LineaPedido(
+	idOrden int not null,
+	numero int not null,
+    cantidad int not null,
+    importe double not null,
+    idProducto int not null,
+    
+    foreign key (idProducto) references EspecificacionProducto(ID),
+    foreign key (idOrden) references OrdenPedido(idOrden),
+    primary key (idOrden, numero)
+);
+
 INSERT INTO EspecificacionProducto VALUES(NULL, 'A', 20, 10, 100, 0);
 
 INSERT INTO PrecioProducto VALUES(1, 30.0, '20170527', '20171105');
