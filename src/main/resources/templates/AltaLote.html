@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Alta de Lotes</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
+    <link rel="stylesheet" th:href="@{assets/css/main.css}" />
+    <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+    <h1 id="logo"><a href="#">Centenario</a></h1>
+    <nav id="nav">
+        <ul>
+            <li><a th:href="@{/}">Inicio</a></li>
+            <li>
+                <a href="#" class="submenu">Menú</a>
+                <ul>
+                    <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
+                    <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
+                    <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
+                    <li>
+                        <a href="#">Submenu</a>
+                        <ul>
+                            <li><a href="#">Opción uno</a></li>
+                            <li><a href="#">Opción dos</a></li>
+                            <li><a href="#">Opción tres</a></li>
+                            <li><a href="#">Opción cuatro</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main -->
+<section id="main" class="wrapper">
+    <div class="inner">
+        <header class="major">
+            <h2>Sección Usuarios</h2>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
+            <h3>Alta de lotes</h3>
+
+            <!-- Formulario con la Tabla -->
+            <form action="#" th:action="@{/AltaLote}" th:object="${lote}" method="post">
+                <table width="100%">
+                    <tbody>
+                    <tr>
+                        <td>Fecha Ingreso:</td>
+                        <td>
+                            <input th:text="*{fechaIngreso}" type="text" th:field="*{fechaIngreso}" readonly="readonly"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Producto:</td> <!-- Va un listado con los productos disponibles (each) -->
+                        <td>
+                            <select th:field="*{Producto}">
+                                <option value="0" th:text="Seleccione Producto"></option>
+                                <option th:each="prod : ${productos}" th:value="prod" th:text="${prod.Nombre}"></option>
+                            </select>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cantidad Unidades:</td>
+                        <td>
+                            <input th:text="*{cantUnidades}" type="text" th:field="*{cantUnidades}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fecha Vencimiento:</td>
+                        <td>
+                            <input th:text="*{fechaVencimiento}" type="text" th:field="*{fechaVencimiento}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ubicación</td>
+                        <td>
+                            <select th:field="*{Ubicacion.Rack}">
+                                <option value="0" th:text="Seleccione Rack"></option>
+                                <option th:each="r : ${racks}" th:value="${r}"  th:text="${r.Letra}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td> <!--Hay que agregar 3 campos (Letra, fila y columna) -->
+                        <td>
+                            <input th:text="*{Ubicacion.Fila}" type="text" th:field="*{Ubicacion.Fila}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input th:text="*{Ubicacion.Columna}" type="text" th:field="*{Ubicación.Columna}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input th:if="${agregarHabilitado}" type="submit" name="action" value="Agregar" />
+
+                            <input type="submit" name="action" value="Limpiar" />
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </form>
+            <label th:text="${mensaje}"></label>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+    <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
+        <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+</footer>
+
+<!-- Scripts -->
+<script th:src="@{assets/js/jquery.min.js}"> </script>
+<script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
+<script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{assets/js/skel.min.js}"></script>
+<script th:src="@{assets/js/util.js}"></script>
+<!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
+<script th:src="@{assets/js/main.js}"></script>
+
+</body>
+</html>
