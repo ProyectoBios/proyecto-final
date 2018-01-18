@@ -58,14 +58,14 @@
                     <tr>
                         <td>Fecha Ingreso:</td>
                         <td>
-                            <input th:text="*{fechaIngreso}" type="text" th:field="*{fechaIngreso}" readonly="readonly"/>
+                            <input type="text" th:field="*{fechaIngresoString}" readonly="readonly"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Producto:</td> <!-- Va un listado con los productos disponibles (each) -->
                         <td>
                             <select th:field="*{Producto}">
-                                <option value="0" th:text="Seleccione Producto"></option>
+                                <option value="0">Seleccione Producto</option>
                                 <option th:each="prod : ${productos}" th:value="prod" th:text="${prod.Nombre}"></option>
                             </select>
 
@@ -74,20 +74,20 @@
                     <tr>
                         <td>Cantidad Unidades:</td>
                         <td>
-                            <input th:text="*{cantUnidades}" type="text" th:field="*{cantUnidades}"/>
+                            <input type="text" th:field="*{cantUnidades}"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Fecha Vencimiento:</td>
                         <td>
-                            <input th:text="*{fechaVencimiento}" type="text" th:field="*{fechaVencimiento}"/>
+                            <input type="text" th:field="*{fechaVencimiento}"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Ubicación</td>
                         <td>
                             <select th:field="*{Ubicacion.Rack}">
-                                <option value="0" th:text="Seleccione Rack"></option>
+                                <option value="0">Seleccione Rack</option>
                                 <option th:each="r : ${racks}" th:value="${r}"  th:text="${r.Letra}"></option>
                             </select>
                         </td>
@@ -95,13 +95,13 @@
                     <tr>
                         <td></td> <!--Hay que agregar 3 campos (Letra, fila y columna) -->
                         <td>
-                            <input th:text="*{Ubicacion.Fila}" type="text" th:field="*{Ubicacion.Fila}"/>
+                            <input type="text" th:field="*{Ubicacion.Fila}"/>
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>
-                            <input th:text="*{Ubicacion.Columna}" type="text" th:field="*{Ubicación.Columna}"/>
+                            <input type="text" th:field="*{Ubicacion.Columna}"/>
                         </td>
                     </tr>
                     <tr>

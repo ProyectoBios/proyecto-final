@@ -6,11 +6,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import proyecto.datatypes.DTEspecificacionProducto;
 
+import proyecto.datatypes.DTLote;
 import proyecto.datatypes.DTRack;
 import proyecto.datatypes.ExcepcionFrigorifico;
 import proyecto.logica.*;
+
+import java.util.ArrayList;
 
 @Controller
 public class ControladorDeposito {
@@ -271,4 +275,55 @@ public class ControladorDeposito {
     }
     //endregion
 
+    //region Lotes
+
+    @RequestMapping(value="/BajaLoteXVencimiento", method = RequestMethod.GET)
+    public String getBajaLoteXVencimiento(ModelMap modelMap){
+        try{
+            ArrayList<DTLote> lotes = FabricaLogica.getControladorDeposito().obtenerLotesVencidos();
+            modelMap.addAttribute("lotes", lotes);
+
+            return "BajaLoteXVencimiento";
+        }catch(ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "BajaLoteXVencimiento";
+        }catch(Exception ex){
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al obtener los lotes vencidos");
+            return "BajaLoteXVencimiento";
+        }
+    }
+
+    @RequestMapping(value="/BajaLoteXVencimiento", method = RequestMethod.POST)
+    public String eliminarLote(@RequestParam(value="IdLote", required = false) String idLote, ModelMap modelMap){
+        try{
+            DTLote lote = FabricaLogica.getControladorDeposito().buscarLote(Integer.valueOf(idLote));
+            FabricaLogica.getControladorDeposito().bajaLote(lote);
+            modelMap.addAttribute("lotes", FabricaLogica.getControladorDeposito().obtenerLotesVencidos());
+            modelMap.addAttribute("mensaje", "Baja de lote exitosa.");
+            return "BajaLoteXVencimiento";
+        }catch(ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "BajaLoteXVencimiento";
+        }catch(Exception ex){
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al eliminar el lote.");
+            return "BajaLoteXVencimiento";
+        }
+
+    }
+
+    @RequestMapping(value="/AltaLote", method = RequestMethod.GET)
+    public String altaLote(ModelMap modelMap){
+        try {
+            modelMap.addAttribute("lote", new DTLote());
+            modelMap.addAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
+            modelMap.addAttribute("racks", FabricaLogica.getControladorDeposito().listarRack());
+            return "AltaLote";
+        }catch (ExcepcionFrigorifico ex){
+            return "error";
+        }catch (Exception ex){
+            return "error";
+        }
+    }
+
+    //endregion
 }

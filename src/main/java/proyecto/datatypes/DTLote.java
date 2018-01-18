@@ -1,5 +1,6 @@
 package proyecto.datatypes;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DTLote {
@@ -21,6 +22,11 @@ public class DTLote {
 
     public Date getFechaIngreso() {
         return fechaIngreso;
+    }
+
+    public String getFechaIngresoString(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(fechaIngreso);
     }
 
     public void setFechaIngreso(Date fechaIngreso) {

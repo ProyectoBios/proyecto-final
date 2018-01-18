@@ -88,6 +88,11 @@ class ControladorDeposito implements  IDeposito {
         return FabricaPersistencia.getControladorDeposito().buscarStock(ep);
     }
 
+    @Override
+    public ArrayList<DTEspecificacionProducto> listarProductos() throws Exception {
+        return FabricaPersistencia.getControladorDeposito().listarProductos();
+    }
+
     //endregion
 
     //region Rack
@@ -130,6 +135,11 @@ class ControladorDeposito implements  IDeposito {
         FabricaPersistencia.getControladorDeposito().bajaRack(rack);
     }
 
+    @Override
+    public ArrayList<DTRack> listarRack() throws Exception {
+        return FabricaPersistencia.getControladorDeposito().listarRacks();
+    }
+
     //endregion
 
     //region Lote
@@ -169,6 +179,11 @@ class ControladorDeposito implements  IDeposito {
     @Override
     public void bajaLote(DTLote lote) throws Exception {
         FabricaPersistencia.getControladorDeposito().bajaLote(lote);
+    }
+
+    @Override
+    public DTLote buscarLote(int id) throws Exception {
+        return FabricaPersistencia.getControladorDeposito().buscarLote(id);
     }
 
     //endregion

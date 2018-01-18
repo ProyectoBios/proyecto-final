@@ -172,6 +172,24 @@ class PControladorDeposito implements IPDeposito{
         }
     }
 
+    @Override
+    public ArrayList<DTEspecificacionProducto> listarProductos() throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM EspecificacionProducto")){
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+            ArrayList<DTEspecificacionProducto> productos = new ArrayList<DTEspecificacionProducto>();
+            DTEspecificacionProducto prod = null;
+            while(resultadoConsulta.next()){
+                prod = new DTEspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), buscarHistorico(resultadoConsulta.getInt("ID")));
+                productos.add(prod);
+            }
+            return productos;
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
+
     //endregion
 
     //region Rack
@@ -228,6 +246,25 @@ class PControladorDeposito implements IPDeposito{
                 throw new ExcepcionFrigorifico("¡ERROR! Ocurrio un error al dar de baja el rack");
             }
 
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public ArrayList<DTRack> listarRacks() throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Rack")){
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+
+            ArrayList<DTRack> racks = new ArrayList<DTRack>();
+            DTRack rack = null;
+            while(resultadoConsulta.next()){
+                rack = new DTRack(resultadoConsulta.getString("letra"), resultadoConsulta.getInt("dimAlto"), resultadoConsulta.getInt("dimAncho"));
+                racks.add(rack);
+            }
+            return racks;
         }catch (Exception ex){
             throw ex;
         }
@@ -294,6 +331,24 @@ class PControladorDeposito implements IPDeposito{
             if(filasAfectadas!=1){
                 throw new ExcepcionFrigorifico("¡ERROR! No se pudo dar de baja el lote");
             }
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public DTLote buscarLote(int id) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE idLote = ?")){
+
+            consulta.setInt(1, id);
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+            DTLote lote = null;
+            if(resultadoConsulta.next()){
+                lote = new DTLote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new DTUbicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+            }
+            return lote;
         }catch(Exception ex){
             throw ex;
         }
