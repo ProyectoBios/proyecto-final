@@ -1,12 +1,20 @@
 package proyecto.datatypes;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DTLote {
     private int id;
+
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date fechaIngreso;
+
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date fechaVencimiento;
+
+
     private int cantUnidades;
 
     private DTEspecificacionProducto producto;
@@ -22,11 +30,6 @@ public class DTLote {
 
     public Date getFechaIngreso() {
         return fechaIngreso;
-    }
-
-    public String getFechaIngresoString(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return dateFormat.format(fechaIngreso);
     }
 
     public void setFechaIngreso(Date fechaIngreso) {

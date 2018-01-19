@@ -58,15 +58,15 @@
                     <tr>
                         <td>Fecha Ingreso:</td>
                         <td>
-                            <input type="text" th:field="*{fechaIngresoString}" readonly="readonly"/>
+                            <input type="text" th:field="*{fechaIngreso}" readonly="readonly"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Producto:</td> <!-- Va un listado con los productos disponibles (each) -->
                         <td>
                             <select th:field="*{Producto}">
-                                <option value="0">Seleccione Producto</option>
-                                <option th:each="prod : ${productos}" th:value="prod" th:text="${prod.Nombre}"></option>
+                                <option th:value="NULL">Seleccione Producto</option>
+                                <option th:each="prod : ${productos}" th:value="${prod.Codigo}" th:text="${prod.Nombre}"></option>
                             </select>
 
                         </td>
@@ -80,15 +80,16 @@
                     <tr>
                         <td>Fecha Vencimiento:</td>
                         <td>
-                            <input type="text" th:field="*{fechaVencimiento}"/>
+                            <!--- <input type="text" th:field="*{fechaVencimiento}"/> -->
+                            <input type="date" th:field="*{fechaVencimiento}" />
                         </td>
                     </tr>
                     <tr>
                         <td>Ubicación</td>
                         <td>
                             <select th:field="*{Ubicacion.Rack}">
-                                <option value="0">Seleccione Rack</option>
-                                <option th:each="r : ${racks}" th:value="${r}"  th:text="${r.Letra}"></option>
+                                <option th:value="NULL">Seleccione Rack</option>
+                                <option th:each="r : ${racks}" th:value="${r.Letra}"  th:text="${r.Letra}"></option>
                             </select>
                         </td>
                     </tr>
@@ -106,7 +107,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" align="center">
-                            <input th:if="${agregarHabilitado}" type="submit" name="action" value="Agregar" />
+                            <input type="submit" name="action" value="Agregar" />
 
                             <input type="submit" name="action" value="Limpiar" />
                         </td>

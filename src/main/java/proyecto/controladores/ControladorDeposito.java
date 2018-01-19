@@ -1,20 +1,21 @@
 package proyecto.controladores;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import proyecto.datatypes.DTEspecificacionProducto;
-
 import proyecto.datatypes.DTLote;
 import proyecto.datatypes.DTRack;
 import proyecto.datatypes.ExcepcionFrigorifico;
-import proyecto.logica.*;
+import proyecto.logica.FabricaLogica;
 
+import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Controller
 public class ControladorDeposito {
@@ -312,7 +313,7 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value="/AltaLote", method = RequestMethod.GET)
-    public String altaLote(ModelMap modelMap){
+    public String getAltaLote(ModelMap modelMap){
         try {
             modelMap.addAttribute("lote", new DTLote());
             modelMap.addAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
@@ -323,6 +324,30 @@ public class ControladorDeposito {
         }catch (Exception ex){
             return "error";
         }
+    }
+
+    @RequestMapping(value="/AltaLote", method = RequestMethod.POST,  params="action=Agregar")
+    public String altaLote(@ModelAttribute @Valid DTLote lote, BindingResult bindingResult, ModelMap modelMap){
+        try{
+            int a = 3;
+            int codigo = FabricaLogica.getControladorDeposito().altaLote(lote);
+
+            modelMap.addAttribute("lote", new DTLote());
+            modelMap.addAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
+            modelMap.addAttribute("racks", FabricaLogica.getControladorDeposito().listarRack());
+            modelMap.addAttribute("mensaje", "Alta exitosa. ID: " + codigo);
+            return "AltaLote";
+        }catch(ExcepcionFrigorifico ex){
+            return "error";
+
+        }catch(Exception ex){
+            return "error";
+        }
+    }
+
+    @InitBinder
+    public void initDateBinder(final WebDataBinder binder) {
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
     }
 
     //endregion
