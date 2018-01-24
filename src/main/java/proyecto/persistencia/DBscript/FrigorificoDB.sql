@@ -40,7 +40,8 @@ Create Table Lote(
     columna int not null,
     
     foreign key(IDProducto) references EspecificacionProducto(ID),
-    foreign key(letraRack) references Rack(letra)    
+    foreign key(letraRack) references Rack(letra),    
+    constraint ubicacion UNIQUE (letraRack, fila, columna)
 );
 
 Create Table Cliente(

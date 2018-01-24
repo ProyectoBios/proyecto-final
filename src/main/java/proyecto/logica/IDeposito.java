@@ -16,6 +16,7 @@ public interface IDeposito {
     //region Rack
     public DTRack buscarRack(String letra) throws Exception;
     public void altaRack(DTRack rack) throws Exception;
+    public boolean esUbicacionVacia(DTUbicacion ubicacion) throws Exception;
     public void bajaRack(DTRack rack) throws Exception;
     public ArrayList<DTRack> listarRack() throws Exception;
     //endregion

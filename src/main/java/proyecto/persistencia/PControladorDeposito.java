@@ -277,7 +277,7 @@ class PControladorDeposito implements IPDeposito{
     @Override
     public int altaLote(DTLote lote) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
-            CallableStatement consulta = con.prepareCall("{ CALL AltaLote(?, ?, ?, ?, ?, ?)")){
+            CallableStatement consulta = con.prepareCall("{ CALL AltaLote(?, ?, ?, ?, ?, ?, ?)}")){
 
             consulta.setDate(1, new java.sql.Date(lote.getFechaVencimiento().getTime()));
             consulta.setInt(2, lote.getCantUnidades());

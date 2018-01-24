@@ -131,6 +131,11 @@ class ControladorDeposito implements  IDeposito {
     }
 
     @Override
+    public boolean esUbicacionVacia(DTUbicacion ubicacion) {
+        return false;
+    }
+
+    @Override
     public void bajaRack(DTRack rack) throws Exception {
         FabricaPersistencia.getControladorDeposito().bajaRack(rack);
     }
