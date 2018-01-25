@@ -354,5 +354,27 @@ class PControladorDeposito implements IPDeposito{
         }
     }
 
+    @Override
+    public DTLote obtenerUbicacion(DTUbicacion ubicacion) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE letraRack = ? AND fila = ? AND columna = ?")){
+
+            consulta.setString(1, ubicacion.getRack().getLetra());
+            consulta.setInt(2, ubicacion.getFila());
+            consulta.setInt(3, ubicacion.getColumna());
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+            DTLote lote = null;
+            if(resultadoConsulta.next()){
+                lote = new DTLote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new DTUbicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+            }
+
+            return lote;
+
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
     //endregion
 }

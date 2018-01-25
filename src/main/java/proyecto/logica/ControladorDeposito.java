@@ -131,8 +131,8 @@ class ControladorDeposito implements  IDeposito {
     }
 
     @Override
-    public boolean esUbicacionVacia(DTUbicacion ubicacion) {
-        return false;
+    public boolean esUbicacionVacia(DTUbicacion ubicacion) throws Exception{
+        return FabricaPersistencia.getControladorDeposito().obtenerUbicacion(ubicacion) == null;
     }
 
     @Override
@@ -173,6 +173,9 @@ class ControladorDeposito implements  IDeposito {
     @Override
     public int altaLote(DTLote lote) throws Exception {
         ValidarLote(lote);
+        if(!esUbicacionVacia(lote.getUbicacion())){
+            throw new ExcepcionFrigorifico("¡ERROR! La ubicacion está ocupada");
+        }
         return FabricaPersistencia.getControladorDeposito().altaLote(lote);
     }
 

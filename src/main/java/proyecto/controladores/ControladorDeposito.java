@@ -314,6 +314,61 @@ public class ControladorDeposito {
 
     @RequestMapping(value="/AltaLote", method = RequestMethod.GET)
     public String getAltaLote(ModelMap modelMap){
+        ArrayList<DTEspecificacionProducto> prods = new ArrayList<DTEspecificacionProducto>();
+        ArrayList<DTRack> racks = new ArrayList<DTRack>();
+        try {
+            prods=FabricaLogica.getControladorDeposito().listarProductos();
+            racks=FabricaLogica.getControladorDeposito().listarRack();
+            modelMap.addAttribute("lote", new DTLote());
+            modelMap.addAttribute("productos",prods);
+            modelMap.addAttribute("racks", racks);
+            return "AltaLote";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("lote", new DTLote());
+            modelMap.addAttribute("productos", prods);
+            modelMap.addAttribute("racks", racks);
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "AltaLote";
+        }catch (Exception ex){
+            modelMap.addAttribute("lote", new DTLote());
+            modelMap.addAttribute("productos", prods);
+            modelMap.addAttribute("racks", racks);
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al obtener el formulario.");
+            return "AltaLote";
+        }
+    }
+
+    @RequestMapping(value="/AltaLote", method = RequestMethod.POST,  params="action=Agregar")
+    public String altaLote(@ModelAttribute @Valid DTLote lote, BindingResult bindingResult, ModelMap modelMap){
+        ArrayList<DTEspecificacionProducto> prods = new ArrayList<DTEspecificacionProducto>();
+        ArrayList<DTRack> racks = new ArrayList<DTRack>();
+        try{
+            prods=FabricaLogica.getControladorDeposito().listarProductos();
+            racks=FabricaLogica.getControladorDeposito().listarRack();
+            int codigo = FabricaLogica.getControladorDeposito().altaLote(lote);
+
+            modelMap.addAttribute("lote", new DTLote());
+            modelMap.addAttribute("productos", prods);
+            modelMap.addAttribute("racks", racks);
+            modelMap.addAttribute("mensaje", "Alta exitosa. ID: " + codigo);
+            return "AltaLote";
+        }catch(ExcepcionFrigorifico ex){
+            modelMap.addAttribute("lote", lote);
+            modelMap.addAttribute("productos", prods);
+            modelMap.addAttribute("racks", racks);
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "AltaLote";
+        }catch(Exception ex){
+            modelMap.addAttribute("lote", lote);
+            modelMap.addAttribute("productos", prods);
+            modelMap.addAttribute("racks", racks);
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al dar de alta el lote.");
+            return "AltaLote";
+        }
+    }
+
+    @RequestMapping(value="/AltaLote", method = RequestMethod.POST, params="action=Limpiar")
+    public String limpiarAltaLote(ModelMap modelMap){
         try {
             modelMap.addAttribute("lote", new DTLote());
             modelMap.addAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
@@ -322,25 +377,6 @@ public class ControladorDeposito {
         }catch (ExcepcionFrigorifico ex){
             return "error";
         }catch (Exception ex){
-            return "error";
-        }
-    }
-
-    @RequestMapping(value="/AltaLote", method = RequestMethod.POST,  params="action=Agregar")
-    public String altaLote(@ModelAttribute @Valid DTLote lote, BindingResult bindingResult, ModelMap modelMap){
-        try{
-            int a = 3;
-            int codigo = FabricaLogica.getControladorDeposito().altaLote(lote);
-
-            modelMap.addAttribute("lote", new DTLote());
-            modelMap.addAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
-            modelMap.addAttribute("racks", FabricaLogica.getControladorDeposito().listarRack());
-            modelMap.addAttribute("mensaje", "Alta exitosa. ID: " + codigo);
-            return "AltaLote";
-        }catch(ExcepcionFrigorifico ex){
-            return "error";
-
-        }catch(Exception ex){
             return "error";
         }
     }

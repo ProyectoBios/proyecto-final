@@ -24,5 +24,6 @@ public interface IPDeposito {
     public ArrayList<DTLote> obtenerLotesVencidos() throws Exception;
     public void bajaLote(DTLote lote) throws Exception;
     public DTLote buscarLote(int id) throws Exception;
+    public DTLote obtenerUbicacion(DTUbicacion ubicacion) throws Exception;
     //endregion
 }
