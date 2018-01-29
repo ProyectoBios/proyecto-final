@@ -1,8 +1,16 @@
 package proyecto.controladores;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BarcodeQRCode;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +20,12 @@ import proyecto.datatypes.DTRack;
 import proyecto.datatypes.ExcepcionFrigorifico;
 import proyecto.logica.FabricaLogica;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -339,7 +352,7 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value="/AltaLote", method = RequestMethod.POST,  params="action=Agregar")
-    public String altaLote(@ModelAttribute @Valid DTLote lote, BindingResult bindingResult, ModelMap modelMap){
+    public <T> T altaLote(@ModelAttribute @Valid DTLote lote, BindingResult bindingResult, ModelMap modelMap){
         ArrayList<DTEspecificacionProducto> prods = new ArrayList<DTEspecificacionProducto>();
         ArrayList<DTRack> racks = new ArrayList<DTRack>();
         try{
@@ -347,23 +360,46 @@ public class ControladorDeposito {
             racks=FabricaLogica.getControladorDeposito().listarRack();
             int codigo = FabricaLogica.getControladorDeposito().altaLote(lote);
 
-            modelMap.addAttribute("lote", new DTLote());
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            Document qrCode = new Document(PageSize.A4);
+            PdfWriter writer = PdfWriter.getInstance(qrCode, byteArrayOutputStream);
+            qrCode.open();
+            Paragraph parrafo = new Paragraph("ID: " + codigo);
+            parrafo.setAlignment(Element.ALIGN_CENTER);
+            qrCode.add(parrafo);
+            BarcodeQRCode codigoQR = new BarcodeQRCode(String.valueOf(codigo), 300, 300, null);
+            Image qrImagen = codigoQR.getImage();
+            qrImagen.setAlignment(Element.ALIGN_CENTER);
+            qrCode.add(qrImagen);
+            qrCode.close();
+
+            byte[] pdfBytes = byteArrayOutputStream.toByteArray();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/pdf"));
+            String nombreArchivo = "Lote" + codigo + ".pdf";
+            headers.setContentDispositionFormData(nombreArchivo, nombreArchivo);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
+            return (T)response;
+
+            /*modelMap.addAttribute("lote", new DTLote());
             modelMap.addAttribute("productos", prods);
             modelMap.addAttribute("racks", racks);
             modelMap.addAttribute("mensaje", "Alta exitosa. ID: " + codigo);
-            return "AltaLote";
+            return "AltaLote";*/
         }catch(ExcepcionFrigorifico ex){
             modelMap.addAttribute("lote", lote);
             modelMap.addAttribute("productos", prods);
             modelMap.addAttribute("racks", racks);
             modelMap.addAttribute("mensaje", ex.getMessage());
-            return "AltaLote";
+            return (T)"AltaLote";
         }catch(Exception ex){
             modelMap.addAttribute("lote", lote);
             modelMap.addAttribute("productos", prods);
             modelMap.addAttribute("racks", racks);
             modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al dar de alta el lote.");
-            return "AltaLote";
+            return (T)"AltaLote";
         }
     }
 

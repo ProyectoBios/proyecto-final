@@ -21,6 +21,6 @@ public class ProductoFormatter implements Formatter<DTEspecificacionProducto>{
 
     @Override
     public String print(DTEspecificacionProducto producto, Locale locale) {
-        return producto.getNombre();
+        return String.valueOf(producto.getCodigo());
     }
 }
