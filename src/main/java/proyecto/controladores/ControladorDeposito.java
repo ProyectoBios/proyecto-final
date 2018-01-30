@@ -378,10 +378,13 @@ public class ControladorDeposito {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/pdf"));
             String nombreArchivo = "Lote" + codigo + ".pdf";
-            headers.setContentDispositionFormData(nombreArchivo, nombreArchivo);
+            //headers.setContentDispositionFormData("inline", nombreArchivo);
+            headers.add("Content-Disposition", "inline;filename=" + nombreArchivo);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
             return (T)response;
+
+
 
             /*modelMap.addAttribute("lote", new DTLote());
             modelMap.addAttribute("productos", prods);
