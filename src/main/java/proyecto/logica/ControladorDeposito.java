@@ -20,7 +20,7 @@ class ControladorDeposito implements  IDeposito {
 
     //region Productos
 
-    private void ValidarEspecificacionProducto(DTEspecificacionProducto ep) throws ExcepcionFrigorifico{
+    void ValidarEspecificacionProducto(DTEspecificacionProducto ep) throws ExcepcionFrigorifico{
         if(ep == null){
             throw new ExcepcionFrigorifico("¡ERROR! Producto nulo");
         }

@@ -88,6 +88,10 @@ INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 50, 1, 'A', 1,1);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180315', 30, 1, 'A', 3, 5);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180111', 10, 1, 'A', 4, 4);
 
+INSERT INTO Cliente VALUES('Disco', '1234567890', 'disco@disco.com');
+INSERT INTO Cliente VALUES('Carniceria Pepe', '0987654321', 'pepe@gmail.com');
+
+
 
 DELIMITER //
 
@@ -167,7 +171,25 @@ BEGIN
 	DELETE 
     FROM Lote
     WHERE idLote = pId;
- END
+ END//
  
+ Create Procedure BuscarClientes(pNombre varchar(30))
+ BEGIN
+	SELECT * 
+    FROM Cliente
+    WHERE lower(nombre) LIKE lower(concat('%', trim(pNombre), '%'));
+ END//
+ 
+ Create Procedure AltaOrdenDePedido(pEstado varchar(20), pDireccion varchar(40), pContacto varchar(40), pSubtotal double, pImpuestos double, pTotal double, pCliente varchar(30), out id int)
+ BEGIN
+	INSERT INTO OrdenPedido VALUES(NULL, NOW(), pEstado, NOW(), pDireccion, pContacto, pSubtotal, pImpuestos, pTotal, pCliente);
+    
+    SET id = LAST_INSERT_ID();
+ END//
+ 
+ Create Procedure AltaLineaPedido(pOrden int, pNumero int, pCantidad int, pImporte double, pProducto int)
+ BEGIN
+	INSERT INTO LineaPedido VALUES(pOrden, pNumero, pCantidad, pImporte, pProducto);
+ END
  
  
