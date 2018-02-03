@@ -1,5 +1,6 @@
 package proyecto.persistencia;
 
+import proyecto.controladores.ControladorDeposito;
 import proyecto.datatypes.DTCliente;
 import proyecto.datatypes.DTLineaPedido;
 import proyecto.datatypes.DTOrdenPedido;
@@ -22,6 +23,26 @@ class PControladorPedidos implements IPPedidos{
     }
 
     //region Clientes
+    @Override
+    public DTCliente buscarCliente(String nombre) throws Exception{
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Cliente WHERE nombre = ?")){
+
+            consulta.setString(1, nombre);
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+
+            DTCliente cliente = null;
+
+            if(resultadoConsulta.next()){
+                cliente = new DTCliente(resultadoConsulta.getString("nombre"), resultadoConsulta.getString("telefono"), resultadoConsulta.getString("correo"));
+            }
+
+            return cliente;
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
 
     @Override
     public ArrayList<DTCliente> buscarClientes(String nombre) throws Exception{
@@ -67,6 +88,28 @@ class PControladorPedidos implements IPPedidos{
     //endregion
 
     //region OrdenDePedido
+
+
+    @Override
+    public DTOrdenPedido buscarOrdenPedido(int idOrden) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM OrdenPedido WHERE idOrden = ?")){
+
+            consulta.setInt(1, idOrden);
+
+            ResultSet resultado = consulta.executeQuery();
+
+            DTOrdenPedido orden = null;
+
+            if(resultado.next()){
+                orden = new DTOrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getDate("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+            }
+
+            return orden;
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
 
     @Override
     public int altaOrdenDePedidio(DTOrdenPedido orden) throws Exception {
@@ -135,6 +178,68 @@ class PControladorPedidos implements IPPedidos{
             if(statement != null){
                 statement.close();
             }
+        }
+    }
+
+    @Override
+    public ArrayList<DTOrdenPedido> buscarOrdenesXCliente(DTCliente cliente) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM OrdenPedido WHERE nombreCliente = ?")){
+
+            consulta.setString(1, cliente.getNombre());
+
+            ResultSet resultado = consulta.executeQuery();
+            ArrayList<DTOrdenPedido> ordenes = new ArrayList<>();
+            DTOrdenPedido orden = null;
+
+            while(resultado.next()){
+                orden = new DTOrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getDate("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), cliente, buscarLineasXOrden(resultado.getInt("idOrden")));
+                ordenes.add(orden);
+            }
+
+            return ordenes;
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    private ArrayList<DTLineaPedido> buscarLineasXOrden(int idOrden) throws Exception{
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM LineaPedido WHERE idOrden = ?")){
+
+            consulta.setInt(1, idOrden);
+
+            ResultSet resultado = consulta.executeQuery();
+
+            ArrayList<DTLineaPedido> lineas = new ArrayList<>();
+            DTLineaPedido linea = null;
+
+            while(resultado.next()){
+                linea = new DTLineaPedido(resultado.getInt("numero"), resultado.getInt("cantidad"), resultado.getDouble("importe"), PControladorDeposito.getInstancia().buscarProducto(resultado.getInt("idProducto")));
+                lineas.add(linea);
+            }
+
+            return lineas;
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void cancelarPedido(DTOrdenPedido orden) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("UPDATE OrdenPedido SET estado = 'Cancelado' WHERE idOrden = ?")){
+
+            consulta.setInt(1, orden.getId());
+
+            int filasAfectadas = consulta.executeUpdate();
+
+            if(filasAfectadas != 1){
+                throw new ExcepcionFrigorifico("¡ERROR! No se pudo cancelar el pedido");
+            }
+
+        }catch (Exception ex){
+            throw ex;
         }
     }
 

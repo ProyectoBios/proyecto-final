@@ -133,8 +133,27 @@ class ControladorPedidos implements IPedidos {
     }
 
     @Override
+    public DTOrdenPedido buscarOrdenPedido(int idOrden) throws Exception {
+        return FabricaPersistencia.getControladorPedidos().buscarOrdenPedido(idOrden);
+    }
+
+    @Override
     public int altaOrdenDePedido(DTOrdenPedido ordenPedido) throws Exception{
         return FabricaPersistencia.getControladorPedidos().altaOrdenDePedidio(ordenPedido);
+    }
+
+    @Override
+    public ArrayList<DTOrdenPedido> buscarOrdenesXCliente(DTCliente cliente) throws Exception {
+        return FabricaPersistencia.getControladorPedidos().buscarOrdenesXCliente(cliente);
+    }
+
+    @Override
+    public void cancelarPedido(DTOrdenPedido orden) throws Exception {
+        if(orden.getEstado() != "Pendiente"){
+            throw new ExcepcionFrigorifico("¡ERROR! Solo se pueden cancelar pedidos cuyo estado sea Pendiente");
+        }
+
+        FabricaPersistencia.getControladorPedidos().cancelarPedido(orden);
     }
 
     //endregion

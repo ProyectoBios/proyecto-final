@@ -2,8 +2,6 @@ package proyecto.logica;
 
 import proyecto.datatypes.DTCliente;
 import proyecto.datatypes.DTOrdenPedido;
-import sun.reflect.annotation.ExceptionProxy;
-
 import java.util.ArrayList;
 
 public interface IPedidos {
@@ -13,6 +11,9 @@ public interface IPedidos {
     //endregion
 
     //region OrdenDePedido
+    public DTOrdenPedido buscarOrdenPedido(int idOrden) throws Exception;
     public int altaOrdenDePedido(DTOrdenPedido ordenPedido) throws Exception;
+    public ArrayList<DTOrdenPedido> buscarOrdenesXCliente(DTCliente cliente) throws Exception;
+    public void cancelarPedido(DTOrdenPedido orden) throws Exception;
     //endregion
 }
