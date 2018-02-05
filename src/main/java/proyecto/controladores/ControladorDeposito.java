@@ -364,9 +364,16 @@ public class ControladorDeposito {
             Document qrCode = new Document(PageSize.A4);
             PdfWriter writer = PdfWriter.getInstance(qrCode, byteArrayOutputStream);
             qrCode.open();
-            Paragraph parrafo = new Paragraph("ID: " + codigo);
+            Paragraph parrafo = new Paragraph(new Phrase(10f, "ID: " + codigo, FontFactory.getFont(FontFactory.COURIER, 34)));
             parrafo.setAlignment(Element.ALIGN_CENTER);
             qrCode.add(parrafo);
+            qrCode.add(Chunk.NEWLINE);
+            qrCode.add(Chunk.NEWLINE);
+            qrCode.add(Chunk.NEWLINE);
+            qrCode.add(Chunk.NEWLINE);
+            qrCode.add(Chunk.NEWLINE);
+            qrCode.add(Chunk.NEWLINE);
+
             BarcodeQRCode codigoQR = new BarcodeQRCode(String.valueOf(codigo), 300, 300, null);
             Image qrImagen = codigoQR.getImage();
             qrImagen.setAlignment(Element.ALIGN_CENTER);
