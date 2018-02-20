@@ -11,4 +11,15 @@ import proyecto.datatypes.DTEspecificacionProducto;
 @Controller
 public class ControladorPedidos {
 
+    @RequestMapping("/")
+    public String index(){
+        return "index";
+    }
+
+    @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Agregar")
+    public String AltaOrdenDePedido() {
+        return "/AltaOrdenDePedido";
+    }
+
+
 }

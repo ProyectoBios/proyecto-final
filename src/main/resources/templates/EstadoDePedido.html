@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Estado de Pedido</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
+    <link rel="stylesheet" th:href="@{assets/css/main.css}" />
+    <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+    <h1 id="logo"><a href="#">Centenario</a></h1>
+    <nav id="nav">
+        <ul>
+            <li><a th:href="@{/}">Inicio</a></li>
+            <li>
+                <a href="#" class="submenu">Menú</a>
+                <ul>
+                    <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
+                    <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
+                    <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
+                    <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
+                    <li>
+                        <a href="#">Submenu</a>
+                        <ul>
+                            <li><a href="#">Opción uno</a></li>
+                            <li><a href="#">Opción dos</a></li>
+                            <li><a href="#">Opción tres</a></li>
+                            <li><a href="#">Opción cuatro</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main -->
+<section id="main" class="wrapper">
+    <div class="inner">
+        <header class="major">
+            <h2>Sección Usuarios</h2>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
+            <h3>Alta Orden de Pedido</h3>
+
+            <!-- Formulario con la Tabla -->
+            <form action="#" th:action="@{/EstadoDePedido}" th:object="${ordenesPedido}" method="post">
+                <table id="estadoDePedido">
+                    <tr>
+                        <td>ID Pedido:&nbsp;<input type="text" /></td>
+                        <td>Nombre Cliente: &nbsp; <input type="text" /></td>
+                        <td><br /><input type="submit" name="action" value="Buscar" /></td>
+                    </tr>
+                </table>
+
+                <table th:style="display: hidden" id="hiddenTableCliente"> <!--display: grid -->
+                    <thead>
+                        <th>Nombre Cliente: </th>
+                        <th>ID Pedido: </th>
+                        <th>Estado: </th>
+                        <th>Fecha y hora de Actualización: </th>
+                    </thead>
+                    <tbody>
+                        <tr th:each="op : ${ordenesPedido}">
+                            <td th:text="${op.DTCliente.nombre}">abc</td>
+                            <td th:text="${op.id}">36</td>
+                            <td th:text="${op.estado}">pendiente</td>
+                            <td th:text="${op.ultimaActEst}">29 Set 2017 14:32</td>
+                        </tr>
+                        <tr>  <!--Filas de relleno para testear -->
+                            <td>def</td>
+                            <td>57</td>
+                            <td>entregado</td>
+                            <td>29 Set 2017 14:32</td>
+                        </tr>
+                        <tr>
+                            <td>ghi</td>
+                            <td>83</td>
+                            <td>cancelado</td>
+                            <td>29 Set 2017 14:32</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table style="border: none">
+                    <tr>
+                        <td colspan="4" align="right"><input type="submit" name="action" value="Limpiar" /></td>
+                    </tr>
+                </table>
+
+            </form>
+            <label th:text="${mensaje}"></label>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+    <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
+        <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+</footer>
+
+<!-- Scripts -->
+<script th:src="@{assets/js/jquery.min.js}"> </script>
+<script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
+<script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{assets/js/skel.min.js}"></script>
+<script th:src="@{assets/js/util.js}"></script>
+<!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
+<script th:src="@{assets/js/main.js}"></script>
+
+</body>
+</html>

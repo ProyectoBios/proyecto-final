@@ -353,8 +353,8 @@ public class ControladorDeposito {
 
     @RequestMapping(value="/AltaLote", method = RequestMethod.POST,  params="action=Agregar")
     public <T> T altaLote(@ModelAttribute @Valid DTLote lote, BindingResult bindingResult, ModelMap modelMap){
-        ArrayList<DTEspecificacionProducto> prods = new ArrayList<DTEspecificacionProducto>();
-        ArrayList<DTRack> racks = new ArrayList<DTRack>();
+        ArrayList<DTEspecificacionProducto> prods = new ArrayList<>();
+        ArrayList<DTRack> racks = new ArrayList<>();
         try{
             prods=FabricaLogica.getControladorDeposito().listarProductos();
             racks=FabricaLogica.getControladorDeposito().listarRack();
