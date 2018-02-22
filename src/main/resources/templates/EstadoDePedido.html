@@ -50,7 +50,7 @@
         <!-- Content -->
         <div class="content">
             <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
-            <h3>Alta Orden de Pedido</h3>
+            <h3>Estado de un pedido</h3>
 
             <!-- Formulario con la Tabla -->
             <form action="#" th:action="@{/EstadoDePedido}" th:object="${ordenesPedido}" method="post">
@@ -62,7 +62,7 @@
                     </tr>
                 </table>
 
-                <table th:style="display: hidden" id="hiddenTableCliente"> <!--display: grid -->
+                <table th:if="${tablaCliente}" id="hiddenTableCliente"> <!--display: grid -->
                     <thead>
                         <th>Nombre Cliente: </th>
                         <th>ID Pedido: </th>
