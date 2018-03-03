@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Alta Orden de Pedidos</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
+    <link rel="stylesheet" th:href="@{assets/css/main.css}" />
+    <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+    <h1 id="logo"><a href="#">Centenario</a></h1>
+    <nav id="nav">
+        <ul>
+            <li><a th:href="@{/}">Inicio</a></li>
+            <li>
+                <a href="#" class="submenu">Menú</a>
+                <ul>
+                    <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
+                    <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
+                    <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
+                    <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
+                    <li>
+                        <a href="#">Submenu</a>
+                        <ul>
+                            <li><a href="#">Opción uno</a></li>
+                            <li><a href="#">Opción dos</a></li>
+                            <li><a href="#">Opción tres</a></li>
+                            <li><a href="#">Opción cuatro</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main -->
+<section id="main" class="wrapper">
+    <div class="inner">
+        <header class="major">
+            <h2>Sección Usuarios</h2>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
+            <h3>Alta Orden de Pedido</h3>
+
+            <!-- Van a ser 3 fromularios dentro de la Tabla-->
+            <form action="ControladorProducto" name="AbmEspProducto" method="post">
+                <table id="buscarCliente">
+                    <tr>
+                        <td>Nombre Cliente: </td>
+                        <td><input type="text" /></td>
+                        <td><input type="submit" value="Buscar" /></td>
+                    </tr>
+                </table>
+
+                <table style="display: grid" id="hiddenClienteTable">
+                    <tr>
+                        <th>Nombre: </th>
+                        <th>Teléfono: </th>
+                        <th>e-mail: </th>
+                        <th>dirección: </th>
+                    </tr>
+
+                    <tr>
+                        <td>Peteco Gutierrez</td>
+                        <td>222222</td>
+                        <td>delpato@lalala.com</td>
+                        <td>Solomeo Paredes 1540</td>
+                        <td><input type="submit" value="Seleccionar" align="right" /></td>
+                    </tr>
+
+                </table>
+
+                <table id="seleccionarCliente">
+                    <tr>
+                        <td>Cliente seleccionado:  <input type="text" maxlength="30" disabled/> </td>
+                        <td> <br /> <input type="submit" value="Agregar nuevo cliente" align="right"/> </td>
+                    </tr>
+                </table>
+
+                <table id="altaCliente">
+                    <thead>
+                    <th>Alta Cliente</th>
+                    </thead>
+                    <tr>
+                        <td>Nombre: </td>
+                        <td><input type="text" /></td>
+                        <td>Teléfono: </td>
+                        <td><input type="text" /></td>
+                    </tr>
+                    <tr>
+                        <td>E-mail: </td>
+                        <td><input type="text" /></td>
+                        <td>Dirección: </td>
+                        <td><input type="text" /></td>
+                    </tr>
+                    <tr>
+                        <td td colspan="4" align="right"><input type="submit" value="Agregar Cliente" /></td>
+                    </tr>
+                </table>
+
+                <table id="tablaProducto">
+                    <tr>
+                        <td>Producto: &nbsp;
+
+                            <select name="productos">
+                                <option value="12">Mortadela</option>
+                                <option value="13">Chorizos</option>
+                                <option value="14">Jamón Azul</option>
+                            </select>
+                        </td>
+
+                        <td>Cantidad: &nbsp; <input type="text" /> &nbsp; <input type="submit" value="Agregar" align="right"/></td>
+                    </tr>
+
+                </table>
+
+                <table id="desplegarLineas">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                    </tr>
+                    <tr>
+                        <td>Chorizos</td>
+                        <td>20</td>
+                        <td><input type="submit" value="Eliminar" align="right" /></td>
+                    </tr>
+                </table>
+
+                <table id="confirmacionPedido">
+                    <tr><td>Dirección de envío:</td> <td><input type="text" /></td></tr>
+                    <tr><td>Total: </td> <td><input type="text" /></td></tr>
+                    <tr><td colspan="2"><input type="submit" value="Agregar" align="right" /> <input type="submit" value="Limpiar" align="right" /></td></tr>
+                </table>
+
+            </form>
+
+            <label th:text="${mensaje}"></label>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+
+    <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
+        <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+</footer>
+
+<!-- Scripts -->
+<script th:src="@{assets/js/jquery.min.js}"> </script>
+<script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
+<script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{assets/js/skel.min.js}"></script>
+<script th:src="@{assets/js/util.js}"></script>
+<!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
+<script th:src="@{assets/js/main.js}"></script>
+
+</body>
+</html>
