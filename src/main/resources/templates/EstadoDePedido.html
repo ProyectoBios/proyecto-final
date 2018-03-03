@@ -53,47 +53,108 @@
             <h3>Alta Orden de Pedido</h3>
 
             <!-- Formulario con la Tabla -->
-            <form action="#" th:action="@{/EstadoDePedido}" th:object="${ordenesPedido}" method="post">
-                <table id="estadoDePedido">
+            <form action="ControladorProducto" name="AbmEspProducto" method="post">
+                <table id="buscarCliente">
                     <tr>
-                        <td>ID Pedido:&nbsp;<input type="text" /></td>
+                        <td colspan="2">ID Pedido:&nbsp;<input type="text" /></td>
                         <td>Nombre Cliente: &nbsp; <input type="text" /></td>
-                        <td><br /><input type="submit" name="action" value="Buscar" /></td>
+                        <td><br /><input type="button" value="Buscar" /></td>
                     </tr>
                 </table>
 
-                <table th:style="display: hidden" id="hiddenTableCliente"> <!--display: grid -->
-                    <thead>
+                <!-- Tabla oculta con nombres de los Clientes que coincidan con la búsqueda -->
+
+                <table style="display: grid" id="hiddenClienteTable">
+                    <tr>
+                        <th>Nombre: </th>
+                        <th>Teléfono: </th>
+                        <th>e-mail: </th>
+                        <th>dirección: </th>
+                    </tr>
+
+                    <tr>
+                        <td>Peteco Gutierrez</td>
+                        <td>222222</td>
+                        <td>delpato@lalala.com</td>
+                        <td>Solomeo Paredes 1540</td>
+
+                        <td><input type="submit" value="seleccionar" align="right"/>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <table style="display: grid" id="hiddenPedidos">
+                    <tr>
                         <th>Nombre Cliente: </th>
                         <th>ID Pedido: </th>
                         <th>Estado: </th>
                         <th>Fecha y hora de Actualización: </th>
-                    </thead>
-                    <tbody>
-                        <tr th:each="op : ${ordenesPedido}">
-                            <td th:text="${op.DTCliente.nombre}">abc</td>
-                            <td th:text="${op.id}">36</td>
-                            <td th:text="${op.estado}">pendiente</td>
-                            <td th:text="${op.ultimaActEst}">29 Set 2017 14:32</td>
-                        </tr>
-                        <tr>  <!--Filas de relleno para testear -->
-                            <td>def</td>
-                            <td>57</td>
-                            <td>entregado</td>
-                            <td>29 Set 2017 14:32</td>
-                        </tr>
-                        <tr>
-                            <td>ghi</td>
-                            <td>83</td>
-                            <td>cancelado</td>
-                            <td>29 Set 2017 14:32</td>
-                        </tr>
-                    </tbody>
+                    </tr>
+
+                    <tr>
+                        <td>Peteco</td>
+                        <td>36</td>
+                        <td>pendiente</td>
+                        <td>29 Set 2017 14:32</td>
+                        <td><input type="submit" value="ver" align="right" /></td>
+                        <td><input type="submit" value="Cancelar" align="right" /></td>
+                    </tr>
+                    <tr>
+                        <td>Jaimito</td>
+                        <td>57</td>
+                        <td>entregado</td>
+                        <td>29 Set 2017 14:32</td>
+                        <td><input type="submit" value="ver" align="right" /></td>
+                        <td><input type="submit" value="Cancelar" align="right" /></td>
+                    </tr>
+                    <tr>
+                        <td>Pablo</td>
+                        <td>83</td>
+                        <td>cancelado</td>
+                        <td>29 Set 2017 14:32</td>
+                        <td><input type="submit" value="ver"
+                                   align="right" /></td>
+                        <td><input type="submit" value="Cancelar" align="right" /></td>
+                    </tr>
+                </table>
+
+                <!-- Tabla con Contacto, Dirección de envío, Fecha ingreso -->
+                <table id="detallePedido">
+                    <tr>
+                        <td>Fecha: </td>
+                        <td>th:text </td>
+                    </tr>
+                    <tr>
+                        <td>Dirección: </td>
+                        <td>th:text </td>
+                    </tr>
+                    <tr>
+                        <td>Contacto: </td>
+                        <td>th:text </td>
+                    </tr>
+                </table>
+
+                <table id="linesPedido">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Importe</th>
+                    </tr>
+                    <tr>
+                        <td>Mortadela Etiqueta azul</td>
+                        <td>15</td>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" align="right">Total: </td>
+                    </tr>
+
                 </table>
 
                 <table style="border: none">
                     <tr>
-                        <td colspan="4" align="right"><input type="submit" name="action" value="Limpiar" /></td>
+                        <td td colspan="4" align="right"><input type="button" value="Limpiar" /></td>
                     </tr>
                 </table>
 
