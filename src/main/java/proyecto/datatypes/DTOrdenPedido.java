@@ -1,5 +1,8 @@
 package proyecto.datatypes;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,7 +10,9 @@ public class DTOrdenPedido {
     private int id;
     private Date fecha;
     private String estado;
+
     private Date ultimaActEst;
+
     private String direccionEnvio;
     private String contacto;
     private double subtotal;
@@ -41,6 +46,7 @@ public class DTOrdenPedido {
         this.estado = estado;
     }
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     public Date getUltimaActEst() {
         return ultimaActEst;
     }

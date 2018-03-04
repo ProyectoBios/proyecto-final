@@ -427,6 +427,8 @@ public class ControladorDeposito {
         }
     }
 
+
+
     @InitBinder
     public void initDateBinder(final WebDataBinder binder) {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd/MM/yyyy"), true));

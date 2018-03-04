@@ -53,18 +53,18 @@
             <h3>Alta Orden de Pedido</h3>
 
             <!-- Formulario con la Tabla -->
-            <form action="ControladorProducto" name="AbmEspProducto" method="post">
+            <form action="#" th:action="@{/EstadoDePedido}" method="post">
                 <table id="buscarCliente">
                     <tr>
-                        <td colspan="2">ID Pedido:&nbsp;<input type="text" /></td>
-                        <td>Nombre Cliente: &nbsp; <input type="text" /></td>
-                        <td><br /><input type="button" value="Buscar" /></td>
+                        <td colspan="2">ID Pedido:&nbsp;<input type="text" name="idPedido"/></td>
+                        <td>Nombre Cliente: &nbsp; <input type="text" name="nombreCliente"/></td>
+                        <td><br /><input type="submit" name="action" value="Buscar" /></td>
                     </tr>
                 </table>
+            </form>
 
                 <!-- Tabla oculta con nombres de los Clientes que coincidan con la búsqueda -->
-
-                <table style="display: grid" id="hiddenClienteTable">
+                <table th:if="${tablaClientes}" style="display : grid" id="hiddenClienteTable">
                     <tr>
                         <th>Nombre: </th>
                         <th>Teléfono: </th>
@@ -72,19 +72,21 @@
                         <th>dirección: </th>
                     </tr>
 
-                    <tr>
-                        <td>Peteco Gutierrez</td>
-                        <td>222244</td>
-                        <td>delpato@lalala.com</td>
-                        <td>Solomeo Paredes 1540</td>
-
-                        <td><input type="submit" value="seleccionar" align="right"/>
-                        </td>
+                    <tr th:each="c : ${clientes}">
+                        <form action="#" th:action="@{/EstadoDePedido}" method = "post">
+                            <td th:text="${c.Nombre}"></td>
+                            <td th:text="${c.Telefono}"></td>
+                            <td th:text="${c.Correo}"></td>
+                            <td>
+                                <input type="hidden" th:value="${c.Nombre}" name="nombre"/>
+                                <input type="submit"  name="action" value="Seleccionar" />
+                            </td>
+                        </form>
                     </tr>
 
                 </table>
 
-                <table style="display: grid" id="hiddenPedidos">
+                <table th:if="${tablaPedidos}" style="display: grid" id="hiddenPedidos">
                     <tr>
                         <th>Nombre Cliente: </th>
                         <th>ID Pedido: </th>
@@ -92,73 +94,79 @@
                         <th>Fecha y hora de Actualización: </th>
                     </tr>
 
-                    <tr>
-                        <td>Peteco</td>
-                        <td>36</td>
-                        <td>pendiente</td>
-                        <td>29 Set 2017 14:32</td>
-                        <td><input type="submit" value="ver" align="right" /></td>
-                        <td><input type="submit" value="Cancelar" align="right" /></td>
+                    <tr th:each="orden : ${ordenes}">
+                        <form action="#" th:action="@{/EstadoDePedido}" method="post">
+                            <td th:text="${orden.Cliente.Nombre}"></td>
+                            <td th:text="${orden.Id}"></td>
+                            <td th:text="${orden.Estado}"></td>
+                            <td th:text="${#dates.format(orden.UltimaActEst, 'dd/MM/yyyy HH:mm')}"></td>
+                            <td>
+                                <input type="hidden" th:value="${orden.Id}" name="idPedido"/>
+                                <input type="submit" name="action" value="Ver"/>
+                            </td>
+                        </form>
                     </tr>
-                    <tr>
-                        <td>Jaimito</td>
-                        <td>57</td>
-                        <td>entregado</td>
-                        <td>29 Set 2017 14:32</td>
-                        <td><input type="submit" value="ver" align="right" /></td>
-                        <td><input type="submit" value="Cancelar" align="right" /></td>
-                    </tr>
-                    <tr>
-                        <td>Pablo</td>
-                        <td>83</td>
-                        <td>cancelado</td>
-                        <td>29 Set 2017 14:32</td>
-                        <td><input type="submit" value="ver"
-                                   align="right" /></td>
-                        <td><input type="submit" value="Cancelar" align="right" /></td>
-                    </tr>
+
                 </table>
 
                 <!-- Tabla con Contacto, Dirección de envío, Fecha ingreso -->
-                <table id="detallePedido">
+                <table th:if="${detallePedido}" id="detallePedido">
+                    <tr>
+                        <td>Cliente: </td>
+                        <td th:text="${ordenPedido.Cliente.Nombre}"></td>
+                    </tr>
                     <tr>
                         <td>Fecha: </td>
-                        <td>th:text </td>
+                        <td th:text="${#dates.format(ordenPedido.Fecha, 'dd/MM/yyyy HH:mm')}"> </td>
+                    </tr>
+                    <tr>
+                        <td>Estado: </td>
+                        <td th:text="${ordenPedido.Estado}"></td>
                     </tr>
                     <tr>
                         <td>Dirección: </td>
-                        <td>th:text </td>
+                        <td th:text="${ordenPedido.DireccionEnvio}"></td>
                     </tr>
                     <tr>
                         <td>Contacto: </td>
-                        <td>th:text </td>
+                        <td th:text="${ordenPedido.Contacto}"> </td>
                     </tr>
                 </table>
 
-                <table id="linesPedido">
+                <table th:if="${detallePedido}" id="lineasPedido">
                     <tr>
+                        <th>#</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Importe</th>
                     </tr>
-                    <tr>
-                        <td>Mortadela Etiqueta azul</td>
-                        <td>15</td>
-                        <td>200</td>
+                    <tr th:each="linea : ${ordenPedido.Lineas}">
+                        <td th:text="${linea.Numero}"></td>
+                        <td th:text="${linea.Producto.Nombre}"></td>
+                        <td th:text="${linea.Cantidad}"></td>
+                        <td th:text="${linea.Importe}"></td>
                     </tr>
                     <tr>
-                        <td colspan="3" align="right">Total: </td>
+                        <td colspan="4" align="right" th:text="${'Subtotal: ' + ordenPedido.Subtotal + ', Impuestos: ' + ordenPedido.Impuestos + ', Total: ' + ordenPedido.Total}"> </td>
+                    </tr>
+                    <tr>
+                        <form action="#" th:action="@{/EstadoDePedido}" method="post">
+                            <td colspan="4" align="right">
+                                <input type="hidden" name="idPedido" th:value="${ordenPedido.Id}"/>
+                                <input th:if="${ordenPedido.Estado == 'pendiente'}" type="submit" name="action" value="Cancelar Pedido"/>
+                                <input th:if="${ordenPedido.Estado != 'pendiente'}" type="submit" name="action" value="Cancelar Pedido" disabled="disabled"/>
+                            </td>
+                        </form>
+
                     </tr>
 
                 </table>
 
                 <table style="border: none">
                     <tr>
-                        <td td colspan="4" align="right"><input type="button" value="Limpiar" /></td>
+                        <td colspan="4" align="right"><input type="button" value="Limpiar" /></td>
                     </tr>
                 </table>
-
-            </form>
             <label th:text="${mensaje}"></label>
         </div>
 
