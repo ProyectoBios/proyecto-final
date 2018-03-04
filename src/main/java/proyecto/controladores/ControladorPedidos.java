@@ -141,4 +141,15 @@ public class ControladorPedidos {
         }
     }
 
+    @RequestMapping(value="/EstadoDePedido", method=RequestMethod.POST, params="action=Limpiar")
+    public String limpiarEstadoDePedido(ModelMap modelMap){
+        try{
+            return "EstadoDePedido";
+        }catch(Exception ex){
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al buscar.");
+            return "EstadoDePedido";
+        }
+    }
+
+
 }
