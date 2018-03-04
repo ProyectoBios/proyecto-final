@@ -11,7 +11,7 @@ import proyecto.datatypes.DTEspecificacionProducto;
 @Controller
 public class ControladorPedidos {
 
-    @RequestMapping("/")
+    /*@RequestMapping("/")
     public String index(){
         return "index";
     }
@@ -19,6 +19,12 @@ public class ControladorPedidos {
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Agregar")
     public String AltaOrdenDePedido() {
         return "/AltaOrdenDePedido";
+    }*/
+
+    @RequestMapping(value="/EstadoDePedido", method = RequestMethod.GET)
+    public String getEstadoDePedido(ModelMap modelMap){
+        modelMap.addAttribute("tablaCliente", false);
+        return "EstadoDePedido";
     }
 
 
