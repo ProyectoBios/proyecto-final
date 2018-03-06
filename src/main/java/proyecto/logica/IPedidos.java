@@ -8,6 +8,7 @@ public interface IPedidos {
     //region Clientes
     public ArrayList<DTCliente> buscarClientes(String nombre) throws Exception;
     public void altaCliente(DTCliente cliente) throws Exception;
+    public DTCliente buscarCliente(String nombre) throws  Exception;
     //endregion
 
     //region OrdenDePedido

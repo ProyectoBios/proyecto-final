@@ -70,6 +70,11 @@ class ControladorPedidos implements IPedidos {
         FabricaPersistencia.getControladorPedidos().altaCliente(cliente);
     }
 
+    @Override
+    public DTCliente buscarCliente(String nombre) throws Exception{
+        return FabricaPersistencia.getControladorPedidos().buscarCliente(nombre);
+    }
+
     //endregion
 
     //region OrdenDePedido
@@ -149,8 +154,8 @@ class ControladorPedidos implements IPedidos {
 
     @Override
     public void cancelarPedido(DTOrdenPedido orden) throws Exception {
-        if(orden.getEstado() != "Pendiente"){
-            throw new ExcepcionFrigorifico("¡ERROR! Solo se pueden cancelar pedidos cuyo estado sea Pendiente");
+        if(!orden.getEstado().equals("pendiente")){
+            throw new ExcepcionFrigorifico("¡ERROR! Solo se pueden cancelar pedidos cuyo estado sea pendiente");
         }
 
         FabricaPersistencia.getControladorPedidos().cancelarPedido(orden);

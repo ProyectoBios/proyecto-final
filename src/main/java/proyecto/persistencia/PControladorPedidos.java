@@ -193,7 +193,7 @@ class PControladorPedidos implements IPPedidos{
             DTOrdenPedido orden = null;
 
             while(resultado.next()){
-                orden = new DTOrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getDate("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), cliente, buscarLineasXOrden(resultado.getInt("idOrden")));
+                orden = new DTOrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), cliente, buscarLineasXOrden(resultado.getInt("idOrden")));
                 ordenes.add(orden);
             }
 
@@ -228,7 +228,7 @@ class PControladorPedidos implements IPPedidos{
     @Override
     public void cancelarPedido(DTOrdenPedido orden) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
-            PreparedStatement consulta = con.prepareStatement("UPDATE OrdenPedido SET estado = 'Cancelado' WHERE idOrden = ?")){
+            PreparedStatement consulta = con.prepareStatement("UPDATE OrdenPedido SET estado = 'cancelado' WHERE idOrden = ?")){
 
             consulta.setInt(1, orden.getId());
 

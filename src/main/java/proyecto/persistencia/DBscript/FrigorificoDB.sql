@@ -80,7 +80,7 @@ Create Table LineaPedido(
 INSERT INTO EspecificacionProducto VALUES(NULL, 'Mortadela', 20, 10, 100, 0);
 
 INSERT INTO PrecioProducto VALUES(1, 30.0, '20170527', '20171105');
-INSERT INTO PrecioProducto VALUES(1, 35.5, '20171105', NULL);
+INSERT INTO PrecioProducto VALUES(1, 10.0, '20171105', NULL);
 
 INSERT INTO Rack VALUES('A', 10, 20);
 
@@ -90,6 +90,10 @@ INSERT INTO Lote VALUES(NULL, NOW(), '20180111', 10, 1, 'A', 4, 4);
 
 INSERT INTO Cliente VALUES('Disco', '1234567890', 'disco@disco.com');
 INSERT INTO Cliente VALUES('Carniceria Pepe', '0987654321', 'pepe@gmail.com');
+
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', NOW(), 'Solomeo Paredes 2020', 'Peteco', 2000, 440, 2440, 'Carniceria Pepe'); 
+
+INSERT INTO LineaPedido VALUES(1, 1, 200, 2000.0, 1);
 
 
 
