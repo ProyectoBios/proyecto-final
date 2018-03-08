@@ -8,6 +8,16 @@
     <link rel="stylesheet" th:href="@{assets/css/main.css}" />
     <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
     <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+    <style>
+        .grilla tbody tr:nth-child(2n + 1) {
+			background-color: rgba(144, 144, 144, 0.075);
+		}
+
+		.linea tbody tr {
+		    border-top: solid 1px;
+		    border-bottom: solid 1px;
+		}
+    </style>
 </head>
 <body>
 
@@ -50,13 +60,13 @@
         <!-- Content -->
         <div class="content">
             <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
-            <h3>Alta Orden de Pedido</h3>
+            <h3>Estado de Pedido</h3>
 
             <!-- Formulario con la Tabla -->
             <form action="#" th:action="@{/EstadoDePedido}" method="post">
                 <table id="buscarCliente">
                     <tr>
-                        <td colspan="2">ID Pedido:&nbsp;<input type="text" name="idPedido"/></td>
+                        <td colspan="2">ID Pedido:&nbsp;<input type="text" name="idPedido" size="1"/></td>
                         <td>Nombre Cliente: &nbsp; <input type="text" name="nombreCliente"/></td>
                         <td><br /><input type="submit" name="action" value="Buscar" /></td>
                     </tr>
@@ -64,14 +74,16 @@
             </form>
 
                 <!-- Tabla oculta con nombres de los Clientes que coincidan con la búsqueda -->
-                <table th:if="${tablaClientes}" style="display : grid" id="hiddenClienteTable">
+                <table class="grilla" th:if="${tablaClientes}" style="display : grid" id="hiddenClienteTable">
+                    <thead>
                     <tr>
                         <th>Nombre: </th>
                         <th>Teléfono: </th>
                         <th>e-mail: </th>
-                        <th>dirección: </th>
                     </tr>
+                    </thead>
 
+                    <tbody>
                     <tr th:each="c : ${clientes}">
                         <form action="#" th:action="@{/EstadoDePedido}" method = "post">
                             <td th:text="${c.Nombre}"></td>
@@ -83,17 +95,21 @@
                             </td>
                         </form>
                     </tr>
+                    </tbody>
 
                 </table>
 
-                <table th:if="${tablaPedidos}" style="display: grid" id="hiddenPedidos">
+                <table class="grilla" th:if="${tablaPedidos}" style="display: grid" id="hiddenPedidos">
+                    <thead>
                     <tr>
                         <th>Nombre Cliente: </th>
                         <th>ID Pedido: </th>
                         <th>Estado: </th>
                         <th>Fecha y hora de Actualización: </th>
                     </tr>
+                    </thead>
 
+                    <tbody>
                     <tr th:each="orden : ${ordenes}">
                         <form action="#" th:action="@{/EstadoDePedido}" method="post">
                             <td th:text="${orden.Cliente.Nombre}"></td>
@@ -106,11 +122,16 @@
                             </td>
                         </form>
                     </tr>
+                    </tbody>
 
                 </table>
 
                 <!-- Tabla con Contacto, Dirección de envío, Fecha ingreso -->
-                <table th:if="${detallePedido}" id="detallePedido">
+                <table class="linea" th:if="${detallePedido}" id="detallePedido">
+                    <tr>
+                        <td>ID:</td>
+                        <td th:text="${ordenPedido.Id}"></td>
+                    </tr>
                     <tr>
                         <td>Cliente: </td>
                         <td th:text="${ordenPedido.Cliente.Nombre}"></td>
@@ -133,19 +154,25 @@
                     </tr>
                 </table>
 
-                <table th:if="${detallePedido}" id="lineasPedido">
+                <table class="grilla" th:if="${detallePedido}" id="lineasPedido">
+                    <thead>
                     <tr>
                         <th>#</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Importe</th>
                     </tr>
+                    </thead>
+
+                    <tbody>
                     <tr th:each="linea : ${ordenPedido.Lineas}">
                         <td th:text="${linea.Numero}"></td>
                         <td th:text="${linea.Producto.Nombre}"></td>
                         <td th:text="${linea.Cantidad}"></td>
                         <td th:text="${linea.Importe}"></td>
                     </tr>
+                    </tbody>
+                    <tfoot>
                     <tr>
                         <td colspan="4" align="right" th:text="${'Subtotal: ' + ordenPedido.Subtotal + ', Impuestos: ' + ordenPedido.Impuestos + ', Total: ' + ordenPedido.Total}"> </td>
                     </tr>
@@ -159,6 +186,7 @@
                         </form>
 
                     </tr>
+                    </tfoot>
 
                 </table>
 

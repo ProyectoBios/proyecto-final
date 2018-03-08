@@ -46,7 +46,6 @@ public class DTOrdenPedido {
         this.estado = estado;
     }
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     public Date getUltimaActEst() {
         return ultimaActEst;
     }

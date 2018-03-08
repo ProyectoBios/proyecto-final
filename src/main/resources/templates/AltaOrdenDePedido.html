@@ -8,6 +8,17 @@
     <link rel="stylesheet" th:href="@{assets/css/main.css}" />
     <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
     <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+
+    <style>
+        .grilla tbody tr:nth-child(2n + 1) {
+			background-color: rgba(144, 144, 144, 0.075);
+		}
+
+		.linea tbody tr {
+		    border-top: solid 1px;
+		    border-bottom: solid 1px;
+		}
+    </style>
 </head>
 <body>
 
@@ -50,34 +61,34 @@
         <!-- Content -->
         <div class="content">
             <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
-            <h3>Alta Orden de Pedido</h3>
-
-            <!-- Van a ser 3 fromularios dentro de la Tabla-->
+            <h3>ALTA ORDEN DE PEDIDOs</h3>
+            <!-- Formulario con la Tabla -->
             <form action="ControladorProducto" name="AbmEspProducto" method="post">
                 <table id="buscarCliente">
                     <tr>
                         <td>Nombre Cliente: </td>
-                        <td><input type="text" /></td>
+                        <td><input type="text" maxlength="30"/></td>
                         <td><input type="submit" value="Buscar" /></td>
                     </tr>
                 </table>
 
                 <table style="display: grid" id="hiddenClienteTable">
+                    <thead>
                     <tr>
                         <th>Nombre: </th>
                         <th>Teléfono: </th>
                         <th>e-mail: </th>
-                        <th>dirección: </th>
                     </tr>
+                    </thead>
 
+                    <tbody>
                     <tr>
                         <td>Peteco Gutierrez</td>
                         <td>222222</td>
                         <td>delpato@lalala.com</td>
-                        <td>Solomeo Paredes 1560</td>
                         <td><input type="submit" value="Seleccionar" align="right" /></td>
                     </tr>
-
+                    </tbody>
                 </table>
 
                 <table id="seleccionarCliente">
@@ -100,18 +111,15 @@
                     <tr>
                         <td>E-mail: </td>
                         <td><input type="text" /></td>
-                        <td>Dirección: </td>
-                        <td><input type="text" /></td>
-                    </tr>
-                    <tr>
-                        <td td colspan="4" align="right"><input type="submit" value="Agregar Cliente" /></td>
+                        <td colspan="2" align="right"><input type="submit" value="Agregar Cliente" /></td>
                     </tr>
                 </table>
 
                 <table id="tablaProducto">
                     <tr>
-                        <td>Producto: &nbsp;
+                        <td style="width: 10%">Producto: </td>
 
+                        <td>
                             <select name="productos">
                                 <option value="12">Mortadela</option>
                                 <option value="13">Chorizos</option>
@@ -119,7 +127,9 @@
                             </select>
                         </td>
 
-                        <td>Cantidad: &nbsp; <input type="text" /> &nbsp; <input type="submit" value="Agregar" align="right"/></td>
+                        <td  style="width: 10%">Cantidad: </td>
+                        <td style="width: 10%"> <input type="text" size="1"/> </td>
+                        <td style="text-align: right"> <input type="submit" value="Agregar" /> </td>
                     </tr>
 
                 </table>
@@ -144,7 +154,6 @@
 
             </form>
 
-            <label th:text="${mensaje}"></label>
         </div>
 
     </div>
