@@ -13,11 +13,6 @@
         .grilla tbody tr:nth-child(2n + 1) {
 			background-color: rgba(144, 144, 144, 0.075);
 		}
-
-		.linea tbody tr {
-		    border-top: solid 1px;
-		    border-bottom: solid 1px;
-		}
     </style>
 </head>
 <body>
@@ -65,18 +60,20 @@
             <!-- Formulario con la Tabla -->
             <form action="ControladorProducto" name="AbmEspProducto" method="post">
                 <table id="buscarCliente">
+                    <tbody>
                     <tr>
-                        <td>Nombre Cliente: </td>
+                        <td style="width: 20%">Nombre Cliente: </td>
                         <td><input type="text" maxlength="30"/></td>
                         <td><input type="submit" value="Buscar" /></td>
                     </tr>
+                    </tbody>
                 </table>
 
-                <table style="display: grid" id="hiddenClienteTable">
+                <table class="grilla" style="display: grid" id="hiddenClienteTable">
                     <thead>
                     <tr>
-                        <th>Nombre: </th>
-                        <th>Teléfono: </th>
+                        <th style="width: 35%">Nombre: </th>
+                        <th style="width: 15%">Teléfono: </th>
                         <th>e-mail: </th>
                     </tr>
                     </thead>
@@ -86,22 +83,25 @@
                         <td>Peteco Gutierrez</td>
                         <td>222222</td>
                         <td>delpato@lalala.com</td>
-                        <td><input type="submit" value="Seleccionar" align="right" /></td>
+                        <td style="width: 20%"><input type="submit" value="Seleccionar" align="right" /></td>
                     </tr>
                     </tbody>
                 </table>
 
                 <table id="seleccionarCliente">
+                    <tbody>
                     <tr>
                         <td>Cliente seleccionado:  <input type="text" maxlength="30" disabled/> </td>
                         <td> <br /> <input type="submit" value="Agregar nuevo cliente" align="right"/> </td>
                     </tr>
+                    </tbody>
                 </table>
 
                 <table id="altaCliente">
                     <thead>
                     <th>Alta Cliente</th>
                     </thead>
+                    <tbody>
                     <tr>
                         <td>Nombre: </td>
                         <td><input type="text" /></td>
@@ -113,9 +113,11 @@
                         <td><input type="text" /></td>
                         <td colspan="2" align="right"><input type="submit" value="Agregar Cliente" /></td>
                     </tr>
+                    </tbody>
                 </table>
 
                 <table id="tablaProducto">
+                    <tbody>
                     <tr>
                         <td style="width: 10%">Producto: </td>
 
@@ -128,13 +130,15 @@
                         </td>
 
                         <td  style="width: 10%">Cantidad: </td>
-                        <td style="width: 10%"> <input type="text" size="1"/> </td>
-                        <td style="text-align: right"> <input type="submit" value="Agregar" /> </td>
+                        <td style="width: 15%"> <input type="text" size="1"/> </td>
+                        <td style="width: 10%"> <input type="submit" value="Agregar" /> </td>
                     </tr>
+                    </tbody>
 
                 </table>
 
-                <table id="desplegarLineas">
+                <table class="grilla" id="desplegarLineas">
+                    <tbody>
                     <tr>
                         <th>Producto</th>
                         <th>Cantidad</th>
@@ -142,14 +146,18 @@
                     <tr>
                         <td>Chorizos</td>
                         <td>20</td>
-                        <td><input type="submit" value="Eliminar" align="right" /></td>
+                        <td style="text-align: right; width: 10%"><input type="submit" value="Eliminar" align="right" /></td>
                     </tr>
+                    </tbody>
                 </table>
 
                 <table id="confirmacionPedido">
-                    <tr><td>Dirección de envío:</td> <td><input type="text" /></td></tr>
-                    <tr><td>Total: </td> <td><input type="text" /></td></tr>
-                    <tr><td colspan="2"><input type="submit" value="Agregar" align="right" /> <input type="submit" value="Limpiar" align="right" /></td></tr>
+                    <tbody>
+                    <tr><td style="width: 25%">Dirección de envío:</td> <td><input type="text" /></td></tr>
+                    <tr><td>Total: </td> <td><label>Precio total calculado</label></td></tr>
+                    <tr style="text-align: right"><td colspan="2"><input type="submit" value="Agregar" align="right" /> &nbsp;<input type="submit" value="Limpiar" align="right" /></td>
+                    </tr>
+                    </tbody>
                 </table>
 
             </form>

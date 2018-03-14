@@ -2581,11 +2581,11 @@
 		width: 100%;
 	}
 
-		table tbody tr {
-			/*border: solid 1px;*/
+		/* table tbody tr {
+			border: solid 1px;
 			border-left: 0;
 			border-right: 0;
-		}
+		} */
 
 		table td {
 			padding: 0.75em 0.75em;
@@ -2598,9 +2598,9 @@
 			text-align: left;
 		}
 
-		table thead {
+		/* table thead {
 			border-bottom: solid 2px;
-		}
+		} */
 
 		table tfoot {
 			border-top: solid 2px;
@@ -2659,7 +2659,7 @@
 
 	@media screen and (max-width: 1680px) {
 			table {
-				width: 65%;
+				width: 80%;
 			}
 
 		}
