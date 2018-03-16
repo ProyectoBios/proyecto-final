@@ -21,8 +21,10 @@
                 <a href="#" class="submenu">Menú</a>
                 <ul>
                     <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
-                    <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
-                    <li><a href="#">Menú 3</a></li>
+                    <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
+                    <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
+                    <li><a th:href="@{/AltaOrdenDePedido}">Alta orden de pedido</a></li>
+                    <li><a th:href="@{/EstadoDePedido}">Estado de pedidos</a></li>
                     <li>
                         <a href="#">Submenu</a>
                         <ul>
@@ -58,7 +60,7 @@
                     <tr>
                         <td width="5%">Letra:</td>
                         <td width="15%">
-                            <input th:if="${rack.Letra != '-' and letraBloqueado}"  type="text" th:field ="*{Letra}" readonly="readonly"/>
+                            <input style="width: 20%" th:if="${rack.Letra != '-' and letraBloqueado}"  type="text" th:field ="*{Letra}" readonly="readonly"/>
                             <input th:if="${rack.Letra != '-' and !letraBloqueado}"  type="text" th:field ="*{Letra}"/>
                             <input th:if="${rack.Letra == '-' and letraBloqueado}"  type="text" name="Letra" placeholder="" readonly="readonly"/>
                             <input th:if="${rack.Letra == '-' and !letraBloqueado}"  type="text" name="Letra" placeholder="" />

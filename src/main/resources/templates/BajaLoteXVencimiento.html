@@ -8,6 +8,12 @@
     <link rel="stylesheet" th:href="@{assets/css/main.css}" />
     <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
     <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+    <style>
+        .grilla tbody tr:nth-child(2n + 1) {
+			background-color: rgba(144, 144, 144, 0.075);
+		}
+    </style>
+
 </head>
 <body>
 
@@ -23,7 +29,8 @@
                     <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
                     <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
                     <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
-                    <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
+                    <li><a th:href="@{/AltaOrdenDePedido}">Alta orden de pedido</a></li>
+                    <li><a th:href="@{/EstadoDePedido}">Estado de pedidos</a></li>
                     <li>
                         <a href="#">Submenu</a>
                         <ul>
@@ -53,7 +60,7 @@
             <h3>Baja de lotes por vencimiento</h3>
 
             <!-- Formulario con la Tabla -->
-                <table width="100%">
+                <table style="grilla" width="100%">
                     <thead>
                         <tr>
                             <th>Id</th>

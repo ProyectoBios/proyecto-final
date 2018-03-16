@@ -30,6 +30,7 @@
                     <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
                     <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
                     <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
+                    <li><a th:href="@{/EstadoDePedido}">Estado de pedidos</a></li>
                     <li>
                         <a href="#">Submenu</a>
                         <ul>
@@ -69,7 +70,7 @@
                     </tbody>
                 </table>
 
-                <table class="grilla" style="display: grid" id="hiddenClienteTable">
+                <table class="grilla" style="display: table" id="hiddenClienteTable">
                     <thead>
                     <tr>
                         <th style="width: 35%">Nombre: </th>
@@ -91,7 +92,7 @@
                 <table id="seleccionarCliente">
                     <tbody>
                     <tr>
-                        <td>Cliente seleccionado:  <input type="text" maxlength="30" disabled/> </td>
+                        <td>Cliente seleccionado:  <label>Cliente seleccionado</label> </td>
                         <td> <br /> <input type="submit" value="Agregar nuevo cliente" align="right"/> </td>
                     </tr>
                     </tbody>

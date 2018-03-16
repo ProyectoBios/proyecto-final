@@ -20,9 +20,11 @@
 						<li>
 							<a href="#" class="submenu">Menú</a>
 							<ul>
-								<li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
 								<li><a th:href="@{/AltaRack}">Alta Rack</a></li>
-								<li><a href="#">Menú 3</a></li>
+								<li><a th:href="@{/AltaLote}">Alta Lote</a></li>
+								<li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
+								<li><a th:href="@{/AltaOrdenDePedido}">Alta orden de pedido</a></li>
+								<li><a th:href="@{/EstadoDePedido}">Estado de pedidos</a></li>
 								<li>
 									<a href="#">Submenu</a>
 									<ul>
@@ -56,17 +58,17 @@
                             	<table width="100%">
   <tbody>
     <tr>
-      <td>ID:</td>
-      <td width="15%">
-		  <input size="1" th:if="${producto.Codigo != 0 and codigoBloqueado}"  type="text" th:field ="*{Codigo}" readonly="readonly"/>
-		  <input size="1" th:if="${producto.Codigo != 0 and !codigoBloqueado}"  type="text" th:field ="*{Codigo}"/>
-		  <input size="1" th:if="${producto.Codigo == 0 and codigoBloqueado}"  type="text" name="Codigo" placeholder="" readonly="readonly"/>
-		  <input size="1" th:if="${producto.Codigo == 0 and !codigoBloqueado}"  type="text" name="Codigo" placeholder="" />
+      <td style="width: 20%">ID:</td>
+      <td>
+		  <input th:if="${producto.Codigo != 0 and codigoBloqueado}"  type="text" th:field ="*{Codigo}" readonly="readonly" id="id" size="1" style="width: 20%"/>
+		  <input th:if="${producto.Codigo != 0 and !codigoBloqueado}"  type="text" th:field ="*{Codigo}" size="1" style="width: 20%"/>
+		  <input th:if="${producto.Codigo == 0 and codigoBloqueado}"  type="text" name="Codigo" placeholder="" readonly="readonly" size="1" style="width: 20%"/>
+		  <input th:if="${producto.Codigo == 0 and !codigoBloqueado}"  type="text" name="Codigo" placeholder="" size="1" style="width: 20%" />
 	  </td>
 	</tr>
     <tr>
       <td>Nombre:</td>
-		<td>
+		<td style="text-align: left">
 		  <input th:if="*{Nombre != 'N/D'}" type="text" th:field ="*{Nombre}" />
 		  <input th:if="*{Nombre == 'N/D'}" type="text" name="nombre" placeholder="" />
 	  	</td>
@@ -74,33 +76,33 @@
 	<tr>
 		<td>Precio:</td>
 		<td>
-		  <input size="1" th:if="*{PrecioActual != 0}" type="text" th:field="*{PrecioActual}"/>
-		  <input size="1" th:if="*{PrecioActual == 0}" type = "text" name="precioActual" placeholder="" />
+		  <input th:if="*{PrecioActual != 0}" type="text" th:field="*{PrecioActual}" size="1" style="width: 20%"/>
+		  <input th:if="*{PrecioActual == 0}" type = "text" name="precioActual" placeholder="" size="1" style="width: 20%"/>
 		</td>
 	</tr>
     <tr>
       <td>Stock mínimo</td>
       <td>
-		  <input size="1" th:if="*{MinStock != 0}"  type="text" th:field ="*{MinStock}" />
-		  <input size="1" th:if="*{MinStock == 0}"  type="text" name="minStock" placeholder="" />
+		  <input th:if="*{MinStock != 0}"  type="text" th:field ="*{MinStock}" size="1" style="width: 20%"/>
+		  <input th:if="*{MinStock == 0}"  type="text" name="minStock" placeholder="" size="1" style="width: 20%"/>
 	  </td>
     </tr>
     <tr>
       <td>Stock Crítico</td>
       <td>
-		  <input size="1" th:if="*{StockCritico != 0}" type="text" th:field ="*{StockCritico}"/>
-		  <input size="1" th:if="*{StockCritico == 0}" type="text" name="stockCritico" placeholder=""/>
+		  <input th:if="*{StockCritico != 0}" type="text" th:field ="*{StockCritico}" size="1" style="width: 20%"/>
+		  <input th:if="*{StockCritico == 0}" type="text" name="stockCritico" placeholder="" size="1" style="width: 20%"/>
 	  </td>
     </tr>
     <tr>
       <td>Stock Máximo</td>
       <td>
-		  <input size="1" th:if="*{MaxStock != 0}" type="text" th:field ="*{MaxStock}"/>
-		  <input size="1" th:if="*{MaxStock == 0}" type="text" name="maxStock" placeholder="" />
+		  <input th:if="*{MaxStock != 0}" type="text" th:field ="*{MaxStock}" size="1" style="width: 20%"/>
+		  <input th:if="*{MaxStock == 0}" type="text" name="maxStock" placeholder="" size="1" style="width: 20%"/>
 	  </td>
     </tr>
     <tr>
-      <td colspan="2" style="text-align = center">
+      <td colspan="2" style="text-align: center">
 		  <input th:if="${agregarHabilitado}" type="submit" name="action" value="Agregar" />
 		  <input th:if="${!agregarHabilitado}" type="submit" name="action" value="Agregar" disabled="disabled"/>
 
