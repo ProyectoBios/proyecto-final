@@ -151,5 +151,21 @@ public class ControladorPedidos {
         }
     }
 
+    @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params = "action=Alta Cliente")
+    public String altaCliente(@ModelAttribute DTCliente cliente, BindingResult bindingResult, ModelMap modelMap){
+        try{
+            FabricaLogica.getControladorPedidos().altaCliente(cliente);
+
+            modelMap.addAttribute("mensaje", "Cliente agregado con éxito.");
+            return "AltaOrdenDePedido";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "AltaOrdenDePedido";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al dar de alta el cliente.");
+            return "AltaOrdenDePedido";
+        }
+    }
+
 
 }
