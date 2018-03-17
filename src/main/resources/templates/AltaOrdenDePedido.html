@@ -59,18 +59,19 @@
             <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
             <h3>ALTA ORDEN DE PEDIDOs</h3>
             <!-- Formulario con la Tabla -->
-            <form action="ControladorProducto" name="AbmEspProducto" method="post">
-                <table id="buscarCliente">
+            <table th:if="${tablaBusquedaCliente}" id="buscarCliente">
+                <form action="#" th:action="@{/AltaOrdenDePedido}" method="post">
                     <tbody>
-                    <tr>
-                        <td style="width: 20%">Nombre Cliente: </td>
-                        <td><input type="text" maxlength="30"/></td>
-                        <td><input type="submit" value="Buscar" /></td>
-                    </tr>
+                        <tr>
+                            <td style="width: 20%">Nombre Cliente: </td>
+                            <td><input type="text" name="nombreCliente" maxlength="30"/></td>
+                            <td><input type="submit" name="action" value="Buscar" /></td>
+                        </tr>
                     </tbody>
-                </table>
+                </form>
+            </table>
 
-                <table class="grilla" style="display: table" id="hiddenClienteTable">
+                <table th:if="${tablaClientes}" class="grilla" style="display: table" id="hiddenClienteTable">
                     <thead>
                     <tr>
                         <th style="width: 35%">Nombre: </th>
@@ -80,89 +81,114 @@
                     </thead>
 
                     <tbody>
+                        <tr th:each="c : ${clientes}">
+                            <form action="#" th:action="@{/AltaOrdenDePedido}" method = "post">
+                                <td th:text="${c.Nombre}"></td>
+                                <td th:text="${c.Telefono}"></td>
+                                <td th:text="${c.Correo}"></td>
+                                <td>
+                                    <input type="hidden" th:value="${c.Nombre}" name="nombre"/>
+                                    <input type="submit" name="action" value="Seleccionar" />
+                                </td>
+                            </form>
+                        </tr>
+                        <tr>
+                            <form action="#" th:action="@{/AltaOrdenDePedido}" method="post">
+                                <td colspan="4" align="right"> <input type="submit" name="action" value="Agregar nuevo cliente" align="right"/> </td>
+                            </form>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <table th:if="${tablaAltaCliente}" id="altaCliente">
+                    <form action="#" th:action="@{/AltaOrdenDePedido}" method="post" th:object="${cliente}">
+                            <thead>
+                            <th>Alta Cliente</th>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Nombre: </td>
+                                <td><input type="text" th:field="*{Nombre}"/></td>
+                                <td>Teléfono: </td>
+                                <td><input type="text" th:field="*{Telefono}"/></td>
+                            </tr>
+                            <tr>
+                                <td>E-mail: </td>
+                                <td><input type="text" th:field="*{Correo}"/></td>
+                                <td colspan="2" align="right"><input type="submit" name="action" value="Agregar Cliente" /></td>
+                            </tr>
+                            </tbody>
+                    </form>
+                </table>
+
+
+
+                <table th:if="${tablaProducto}" id="seleccionarCliente">
+                    <tbody>
                     <tr>
-                        <td>Peteco Gutierrez</td>
-                        <td>222222</td>
-                        <td>delpato@lalala.com</td>
-                        <td style="width: 20%"><input type="submit" value="Seleccionar" align="right" /></td>
+                        <td>Cliente seleccionado:  <label th:text="${session.cliente.Nombre}"></label> </td>
                     </tr>
                     </tbody>
                 </table>
 
-                <table id="seleccionarCliente">
-                    <tbody>
-                    <tr>
-                        <td>Cliente seleccionado:  <label>Cliente seleccionado</label> </td>
-                        <td> <br /> <input type="submit" value="Agregar nuevo cliente" align="right"/> </td>
-                    </tr>
-                    </tbody>
+
+                <table th:if="${tablaProducto}" id="tablaProducto">
+                    <form action="#" th:action="@{/AltaOrdenDePedido}" method="post">
+                        <tbody>
+                            <tr>
+                                <td style="width: 10%">Producto: </td>
+
+                                <td>
+                                    <select name="producto">
+                                        <option th:value="NULL">Seleccione Producto</option>
+                                        <option th:each="prod : ${session.productos}" th:value="${prod.Codigo}" th:text="${prod.Nombre + ' ($' + prod.PrecioActual + ' c/u)'}"></option>
+                                    </select>
+                                </td>
+
+                                <td style="width: 15%">Cantidad Unidades: </td>
+                                <td style="width: 15%"> <input type="text" size="1" name="cantUnidades"/> </td>
+                                <td style="width: 10%"> <input type="submit" name="action" value="Agregar" /> </td>
+                            </tr>
+                        </tbody>
+                    </form>
                 </table>
 
-                <table id="altaCliente">
-                    <thead>
-                    <th>Alta Cliente</th>
-                    </thead>
+                <!--<table th:if="${tablaProducto and (#lists.size(session.orden.Lineas)>0)}" class="grilla" id="desplegarLineas">-->
+                <table th:if="${tablaProducto}" class="grilla" id="desplegarLineas">
                     <tbody>
                     <tr>
-                        <td>Nombre: </td>
-                        <td><input type="text" /></td>
-                        <td>Teléfono: </td>
-                        <td><input type="text" /></td>
-                    </tr>
-                    <tr>
-                        <td>E-mail: </td>
-                        <td><input type="text" /></td>
-                        <td colspan="2" align="right"><input type="submit" value="Agregar Cliente" /></td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <table id="tablaProducto">
-                    <tbody>
-                    <tr>
-                        <td style="width: 10%">Producto: </td>
-
-                        <td>
-                            <select name="productos">
-                                <option value="12">Mortadela</option>
-                                <option value="13">Chorizos</option>
-                                <option value="14">Jamón Azul</option>
-                            </select>
-                        </td>
-
-                        <td  style="width: 10%">Cantidad: </td>
-                        <td style="width: 15%"> <input type="text" size="1"/> </td>
-                        <td style="width: 10%"> <input type="submit" value="Agregar" /> </td>
-                    </tr>
-                    </tbody>
-
-                </table>
-
-                <table class="grilla" id="desplegarLineas">
-                    <tbody>
-                    <tr>
+                        <th>#</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
+                        <th>Importe</th>
+                        <th></th>
                     </tr>
-                    <tr>
-                        <td>Chorizos</td>
-                        <td>20</td>
-                        <td style="text-align: right; width: 10%"><input type="submit" value="Eliminar" align="right" /></td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <table id="confirmacionPedido">
-                    <tbody>
-                    <tr><td style="width: 25%">Dirección de envío:</td> <td><input type="text" /></td></tr>
-                    <tr><td>Total: </td> <td><label>Precio total calculado</label></td></tr>
-                    <tr style="text-align: right"><td colspan="2"><input type="submit" value="Agregar" align="right" /> &nbsp;<input type="submit" value="Limpiar" align="right" /></td>
+                    <tr th:each="linea : ${session.orden.Lineas}">
+                        <td th:text="${linea.Numero}"></td>
+                        <td th:text="${linea.Producto.Nombre}"></td>
+                        <td th:text="${linea.Cantidad}"></td>
+                        <td th:text="${'$' + linea.Importe}"></td>
+                        <form action="#" th:action="@{/AltaOrdenDePedido}" method="post">
+                            <td style="text-align: right; width: 10%"><input type="hidden" name="numeroLinea" th:value="${linea.Numero}"/><input type="submit" name="action" value="Eliminar" align="right" /></td>
+                        </form>
                     </tr>
                     </tbody>
                 </table>
 
-            </form>
+                <table th:if="${tablaProducto}" id="confirmacionPedido">
+                    <form action="#" th:action="@{/AltaOrdenDePedido}" method="post">
+                        <tbody>
+                        <tr><td> </td> <td><label th:text="${'Subtotal: $' + session.orden.Subtotal + ', Impuestos: $' + session.orden.Impuestos + ', Total: $' + session.orden.Total}"></label></td></tr>
+                        <tr><td style="width: 25%">Dirección de envío:</td> <td><input type="text" name="direccionEnvio"/></td></tr>
+                        <tr><td>Contacto: </td><td><input type="text" name="contacto"/></td></tr>
+                        <tr style="text-align: right"><td colspan="2"><input type="submit" name="action" value="Finalizar" align="right" /> &nbsp;<input type="submit" name="action" value="Limpiar" align="right" /></td>
+                        </tr>
+                        </tbody>
+                    </form>
+                </table>
 
+                <label th:text="${mensaje}"></label>
         </div>
 
     </div>

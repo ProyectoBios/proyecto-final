@@ -76,6 +76,8 @@ public class DTOrdenPedido {
 
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
+        this.impuestos = subtotal*0.22;
+        this.total = subtotal+impuestos;
     }
 
     public double getImpuestos() {

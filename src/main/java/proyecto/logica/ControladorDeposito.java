@@ -93,6 +93,11 @@ class ControladorDeposito implements  IDeposito {
         return FabricaPersistencia.getControladorDeposito().listarProductos();
     }
 
+    @Override
+    public ArrayList<DTLote> stockProducto(DTEspecificacionProducto producto) throws Exception {
+        return null;
+    }
+
     //endregion
 
     //region Rack

@@ -12,6 +12,7 @@ public interface IDeposito {
     public DTEspecificacionProducto buscarProducto(int codigo) throws Exception;
     public ArrayList<DTLote> buscarStock(DTEspecificacionProducto ep) throws Exception;
     public ArrayList<DTEspecificacionProducto> listarProductos() throws Exception;
+    public ArrayList<DTLote> stockProducto(DTEspecificacionProducto producto) throws Exception;
     //endregion
     //region Rack
     public DTRack buscarRack(String letra) throws Exception;

@@ -1,5 +1,6 @@
 package proyecto.controladores;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,6 +14,7 @@ import proyecto.datatypes.ExcepcionFrigorifico;
 import proyecto.logica.FabricaLogica;
 import proyecto.persistencia.FabricaPersistencia;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -151,11 +153,88 @@ public class ControladorPedidos {
         }
     }
 
-    @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params = "action=Alta Cliente")
-    public String altaCliente(@ModelAttribute DTCliente cliente, BindingResult bindingResult, ModelMap modelMap){
+    @RequestMapping(value="/AltaOrdenDePedido", method=RequestMethod.GET)
+    public String getAltaOrdenDePedido(ModelMap modelMap, HttpSession session){
+        session.removeAttribute("cliente");
+        session.removeAttribute("orden");
+        session.removeAttribute("productos");
+        modelMap.addAttribute("tablaProducto", false);
+        modelMap.addAttribute("tablaBusquedaCliente", true);
+
+        return "AltaOrdenDePedido";
+    }
+
+    @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params="action=Buscar")
+    public String buscarClientes(@RequestParam(value="nombreCliente", required = false) String nombreCliente, ModelMap modelMap){
+        try{
+            ArrayList<DTCliente> clientes = null;
+            if(!nombreCliente.equals("")) {
+                clientes = FabricaLogica.getControladorPedidos().buscarClientes(nombreCliente);
+            }else{
+                throw new ExcepcionFrigorifico("El nombre del cliente no puede quedar vacío");
+            }
+            modelMap.addAttribute("tablaClientes", true);
+            modelMap.addAttribute("tablaProducto", false);
+
+            modelMap.addAttribute("clientes", clientes);
+            return "AltaOrdenDePedido";
+        }catch(ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "AltaOrdenDePedido";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al buscar el cliente.");
+            return "AltaOrdenDePedido";
+        }
+    }
+
+    @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params="action=Seleccionar")
+    public String seleccionarClienteOrdenPedido(@RequestParam(value="nombre", required = true) String nombreCliente, ModelMap modelMap, HttpSession session){
+        try{
+            DTCliente cliente = FabricaLogica.getControladorPedidos().buscarCliente(nombreCliente);
+
+            session.setAttribute("cliente", cliente);
+            DTOrdenPedido orden = new DTOrdenPedido();
+            orden.setEstado("pendiente");
+            orden.setCliente(cliente);
+            session.setAttribute("orden", orden);
+            modelMap.addAttribute("tablaProducto", true);
+            session.setAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
+            return "AltaOrdenDePedido";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "AltaOrdenDePedido";
+        }catch(Exception ex){
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al buscar.");
+            return "AltaOrdenDePedido";
+        }
+    }
+
+    @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params = "action=Agregar nuevo cliente")
+    public String habilitarAltaDeCliente(ModelMap modelMap){
+        try {
+            modelMap.addAttribute("tablaAltaCliente", true);
+            modelMap.addAttribute("tablaProducto", false);
+            modelMap.addAttribute("cliente", new DTCliente());
+            return "AltaOrdenDePedido";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al dar de alta el cliente.");
+            return "AltaOrdenDePedido";
+        }
+    }
+
+    @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params = "action=Agregar Cliente")
+    public String altaCliente(@ModelAttribute DTCliente cliente, BindingResult bindingResult, ModelMap modelMap, HttpSession session){
         try{
             FabricaLogica.getControladorPedidos().altaCliente(cliente);
 
+            session.setAttribute("cliente", cliente);
+            DTOrdenPedido orden = new DTOrdenPedido();
+            orden.setEstado("pendiente");
+            orden.setCliente(cliente);
+            session.setAttribute("orden", orden);
+
+            modelMap.addAttribute("tablaProducto", true);
+            session.setAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
             modelMap.addAttribute("mensaje", "Cliente agregado con éxito.");
             return "AltaOrdenDePedido";
         }catch (ExcepcionFrigorifico ex){
@@ -165,6 +244,109 @@ public class ControladorPedidos {
             modelMap.addAttribute("mensaje", "Ocurrió un error al dar de alta el cliente.");
             return "AltaOrdenDePedido";
         }
+    }
+
+    @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params = "action=Agregar")
+    public String agregarProductoALinea(@RequestParam(value="producto") String idProducto, @RequestParam(value="cantUnidades") String cantUnidades, ModelMap modelMap, HttpSession session){
+        try{
+            if(cantUnidades.equals("")){
+                modelMap.addAttribute("tablaProducto", true);
+                throw new ExcepcionFrigorifico("La cantidad de unidades no puede quedar vacía");
+            }
+
+            int id;
+            try{
+                id = Integer.parseInt(idProducto);
+            }catch (Exception ex){
+                modelMap.addAttribute("tablaProducto", true);
+                throw new ExcepcionFrigorifico("ERROR! Debe seleccionar un producto");
+            }
+            DTEspecificacionProducto producto = FabricaLogica.getControladorDeposito().buscarProducto(id);
+
+            int cantidadUnidades;
+            try{
+                cantidadUnidades = Integer.parseInt(cantUnidades);
+            }catch (Exception ex){
+                modelMap.addAttribute("tablaProducto", true);
+                throw new ExcepcionFrigorifico("ERROR! Ingrese una cantidad correcta");
+            }
+
+            FabricaLogica.getControladorPedidos().agregarLineaDePedido((DTOrdenPedido)session.getAttribute("orden"), producto, cantidadUnidades);
+            modelMap.addAttribute("tablaProducto", true);
+
+            return "AltaOrdenDePedido";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "AltaOrdenDePedido";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al dar de alta el cliente.");
+            return "AltaOrdenDePedido";
+        }
+    }
+
+    @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params = "action=Eliminar")
+    public String eliminarLinea(@RequestParam(value="numeroLinea") String numero, ModelMap modelMap, HttpSession session){
+        try{
+            int nro = Integer.parseInt(numero);
+            FabricaLogica.getControladorPedidos().eliminarLinea((DTOrdenPedido)session.getAttribute("orden"), nro);
+
+            modelMap.addAttribute("tablaProducto", true);
+
+            return "AltaOrdenDePedido";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "AltaOrdenDePedido";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al dar de alta el cliente.");
+            return "AltaOrdenDePedido";
+        }
+    }
+
+    @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params = "action=Finalizar")
+    public String confirmarOrdenPedido(@RequestParam(value="contacto") String contacto, @RequestParam(value="direccionEnvio") String direccion, ModelMap modelMap, HttpSession session){
+        try{
+            if(contacto.equals("")){
+                modelMap.addAttribute("tablaProducto", true);
+                throw new ExcepcionFrigorifico("¡ERROR! Especifique un nombre de contacto.");
+            }
+
+            if(direccion.equals("")){
+                modelMap.addAttribute("tablaProducto", true);
+                throw new ExcepcionFrigorifico("¡ERROR! Especifique una direccion de envio.");
+            }
+
+            DTOrdenPedido orden = (DTOrdenPedido)session.getAttribute("orden");
+
+            orden.setContacto(contacto);
+            orden.setDireccionEnvio(direccion);
+
+            int id = FabricaLogica.getControladorPedidos().altaOrdenDePedido(orden);
+
+            session.removeAttribute("orden");
+            session.removeAttribute("cliente");
+            session.removeAttribute("productos");
+
+            modelMap.addAttribute("tablaBusquedaCliente", true);
+            modelMap.addAttribute("mensaje", "Alta de pedido exitosa. ID: " + String.valueOf(id));
+            return "AltaOrdenDePedido";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "AltaOrdenDePedido";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al dar de alta el cliente.");
+            return "AltaOrdenDePedido";
+        }
+    }
+
+    @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params = "action=Limpiar")
+    public String limpiarOrdenPedido(ModelMap modelMap, HttpSession session){
+        session.removeAttribute("cliente");
+        session.removeAttribute("orden");
+        session.removeAttribute("productos");
+        modelMap.addAttribute("tablaProducto", false);
+        modelMap.addAttribute("tablaBusquedaCliente", true);
+
+        return "AltaOrdenDePedido";
     }
 
 

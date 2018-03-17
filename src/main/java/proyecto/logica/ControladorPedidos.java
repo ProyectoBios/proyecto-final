@@ -1,10 +1,7 @@
 package proyecto.logica;
 
 import org.springframework.stereotype.Controller;
-import proyecto.datatypes.DTCliente;
-import proyecto.datatypes.DTLineaPedido;
-import proyecto.datatypes.DTOrdenPedido;
-import proyecto.datatypes.ExcepcionFrigorifico;
+import proyecto.datatypes.*;
 import proyecto.persistencia.FabricaPersistencia;
 
 import java.util.ArrayList;
@@ -159,6 +156,43 @@ class ControladorPedidos implements IPedidos {
         }
 
         FabricaPersistencia.getControladorPedidos().cancelarPedido(orden);
+    }
+
+    public void agregarLineaDePedido(DTOrdenPedido orden, DTEspecificacionProducto producto, int cantidad){
+        Boolean encontrado = false;
+        DTLineaPedido linea = null;
+        for(DTLineaPedido l : orden.getLineas()){
+            if(l.getProducto().getCodigo() == producto.getCodigo()){
+                encontrado = true;
+                linea = l;
+                break;
+            }
+        }
+
+        if(encontrado){
+            linea.setCantidad(linea.getCantidad() + cantidad);
+            linea.setImporte(linea.getImporte() + producto.getPrecioActual()*cantidad);
+            orden.setSubtotal(orden.getSubtotal() + producto.getPrecioActual()*cantidad);
+        }else {
+            int numero = orden.getLineas().size() + 1;
+            DTLineaPedido lineaPedido = new DTLineaPedido(numero, cantidad, cantidad * producto.getPrecioActual(), producto);
+
+            orden.getLineas().add(lineaPedido);
+            orden.setSubtotal(orden.getSubtotal() + lineaPedido.getImporte());
+        }
+    }
+
+    @Override
+    public void eliminarLinea(DTOrdenPedido orden, int numero) throws Exception {
+        DTLineaPedido linea = orden.getLineas().get(numero-1);
+        orden.getLineas().remove(numero-1);
+
+        orden.setSubtotal(orden.getSubtotal() - linea.getImporte());
+
+        //ajuste de indices
+        for(int i = numero-1; i<orden.getLineas().size(); i++){
+            orden.getLineas().get(i).setNumero(orden.getLineas().get(i).getNumero()-1);
+        }
     }
 
     //endregion
