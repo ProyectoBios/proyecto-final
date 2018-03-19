@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+    <title>Movimiento de Lotes</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
+    <link rel="stylesheet" th:href="@{assets/css/main.css}" />
+    <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+
+    <style>
+            .grilla tbody tr:nth-child(2n + 1) {
+                background-color: rgba(144, 144, 144, 0.075);
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- Header -->
+        <header id="header">
+            <h1 id="logo"><a th:href="@{/}">Centenario</a></h1>
+            <nav id="nav">
+                <ul>
+                    <li><a th:href="@{/}">Inicio</a></li>
+                    <li>
+                        <a href="#" class="submenu">Menú</a>
+                        <ul>
+                            <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
+                            <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
+                            <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
+                            <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
+                            <li><a th:href="@{/AltaOrdenDePedido}">Alta orden de pedido</a></li>
+                            <li><a th:href="@{/EstadoDePedido}">Estado de pedidos</a></li>
+                            <li><a th:href="@{/MoverLote}">Mover Lote</a></li>
+                            <li>
+                                <a href="#">Submenu</a>
+                                <ul>
+                                    <li><a href="#">Opción uno</a></li>
+                                    <li><a href="#">Opción dos</a></li>
+                                    <li><a href="#">Opción tres</a></li>
+                                    <li><a href="#">Opción cuatro</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Salir</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main -->
+        <section id="main" class="wrapper">
+                    <div class="inner">
+                        <header >
+                            <h2>Sección Usuarios</h2>
+                        </header>
+
+                        <!-- Content -->
+                        <div class="content">
+                            <h3>Movimiento de Lotes</h3>
+                            <!-- Formulario con la Tabla -->
+                            <form action="ControladorDeposito" name="MoverLote" method="post">
+
+                                <table id="rackOrigen">
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 25%"><label>Seleccione rack Origen: </label></td>
+                                        <td>
+                                            <select name="productos">
+                                                <option value="1">Rack 1</option>
+                                                <option value="2">Rack 2</option>
+                                                <option value="3">Rack 3</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 60%">
+                                            <input type="submit" name="action" value="Seleccionar" />
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="linea" id="rack1" style="display: table; text-align: center"> <!-- none -->
+                                    <tbody>
+                                    <tr>
+                                        <td style="background-color: aqua; ">ID Lote</td>
+                                        <td style="background-color: aqua">ID Lote</td>
+                                        <td style="background-color: aqua">ID Lote</td>
+                                        <td style="background-color: aqua">ID Lote</td>
+                                        <td style="background-color: aqua">ID Lote</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color: aqua">ID Lote</td>
+                                        <td style="background-color: aqua">ID Lote</td>
+                                        <td style="background-color: aqua">ID Lote</td>
+                                        <td style="background-color: aqua">ID Lote</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="espLoteA" style="display: table"> <!-- display: none -->
+                                    <thead>
+                                    <th style="width: 15%"># ID</th>
+                                    <th style="width: 40%">Producto</th>
+                                    <th style="width: 10%">Cantidad</th>
+                                    <th>Vence</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>ID Lote</td>
+                                        <td>Chorelos</td>
+                                        <td>200</td>
+                                        <td>18/04/2019</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="rackDestino">
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 25%"><label>Seleccione rack Destino: </label></td>
+                                        <td>
+                                            <select name="productos">
+                                                <option value="2">Rack 2</option>
+                                                <option value="1">Rack 1</option>
+                                                <option value="3">Rack 3</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 60%">
+                                            <input type="submit" name="action" value="Seleccionar" />
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="linea" id="rack" style="display: table; text-align: center"> <!-- none -->
+                                    <tbody>
+                                    <tr>
+                                        <td>ID Ubicación</td>
+                                        <td>ID Ubicación</td>
+                                        <td>ID Ubicación</td>
+                                        <td>ID Ubicación</td>
+                                        <td>ID Ubicación</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ID Ubicación</td>
+                                        <td>ID Ubicación</td>
+                                        <td>ID Ubicación</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <label>Ubicación seleccionada: ID Lote</label>
+
+                                <table id="espLote" style="display: table">
+                                    <tbody>
+                                    <tr style="text-align: right">
+                                        <td><input type="submit" name="action" value="Mover" /> &nbsp;<input type="submit" name="action" value="Cancelar" /></td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                </section>
+
+        <!-- Footer -->
+        <footer id="footer">
+
+                <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
+                    <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+            </footer>
+
+    <!-- Scripts -->
+    <script th:src="@{assets/js/jquery.min.js}"> </script>
+    <script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
+    <script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
+    <script th:src="@{assets/js/skel.min.js}"></script>
+    <script th:src="@{assets/js/util.js}"></script>
+    <!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
+    <script th:src="@{assets/js/main.js}"></script>
+
+    </body>
+</html>

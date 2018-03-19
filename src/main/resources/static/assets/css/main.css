@@ -1841,6 +1841,7 @@
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],
+	input[type="number"],
 	select,
 	textarea {
 		-moz-appearance: none;
@@ -1861,6 +1862,7 @@
 		input[type="text"]:invalid,
 		input[type="password"]:invalid,
 		input[type="email"]:invalid,
+		input[type="number"]:invalid,
 		select:invalid,
 		textarea:invalid {
 			box-shadow: none;
@@ -1901,6 +1903,7 @@
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],
+	input[type="number"],
 	select {
 		height: 2.75em;
 	}
@@ -1909,7 +1912,7 @@
 		padding: 0.75em 1em;
 	}
 
-	input[type="checkbox"],
+	 input[type="checkbox"],
 	input[type="radio"] {
 		-moz-appearance: none;
 		-webkit-appearance: none;
@@ -2000,6 +2003,7 @@
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],
+	input[type="number"],
 	select,
 	textarea {
 		background: rgba(144, 144, 144, 0.075);
@@ -2009,6 +2013,7 @@
 		input[type="text"]:focus,
 		input[type="password"]:focus,
 		input[type="email"]:focus,
+		input[type="number"]:focus,
 		select:focus,
 		textarea:focus {
 			border-color: #54d3cf;
@@ -2582,10 +2587,10 @@
 	}
 
 		/* table tbody tr {
-			border: solid 1px;
+			/*border: solid 1px;
 			border-left: 0;
 			border-right: 0;
-		} */
+		}*/
 
 		table td {
 			padding: 0.75em 0.75em;
@@ -2600,7 +2605,7 @@
 
 		/* table thead {
 			border-bottom: solid 2px;
-		} */
+		}*/
 
 		table tfoot {
 			border-top: solid 2px;
@@ -2636,9 +2641,9 @@
 		border-color: rgba(144, 144, 144, 0.25);
 	}
 
-		table tbody tr:nth-child(2n + 1) {
-			/*background-color: rgba(144, 144, 144, 0.075);*/
-		}
+		/* table tbody tr:nth-child(2n + 1) {
+			background-color: rgba(144, 144, 144, 0.075);
+		}*/
 
 	table th {
 		color: #4d5968;
@@ -2800,6 +2805,7 @@
 			.wrapper.style1 input[type="text"],
 			.wrapper.style1 input[type="password"],
 			.wrapper.style1 input[type="email"],
+			.wrapper.style1 input[type="number"],
 			.wrapper.style1 select,
 			.wrapper.style1 textarea {
 				background: rgba(255, 255, 255, 0.075);
@@ -2809,6 +2815,7 @@
 				.wrapper.style1 input[type="text"]:focus,
 				.wrapper.style1 input[type="password"]:focus,
 				.wrapper.style1 input[type="email"]:focus,
+				.wrapper.style1 input[type="number"]:focus,
 				.wrapper.style1 select:focus,
 				.wrapper.style1 textarea:focus {
 					border-color: #ffffff;
@@ -3010,6 +3017,7 @@
 			.wrapper.style2 input[type="text"],
 			.wrapper.style2 input[type="password"],
 			.wrapper.style2 input[type="email"],
+			.wrapper.style2 input[type="number"],
 			.wrapper.style2 select,
 			.wrapper.style2 textarea {
 				background: rgba(255, 255, 255, 0.075);
@@ -3019,6 +3027,7 @@
 				.wrapper.style2 input[type="text"]:focus,
 				.wrapper.style2 input[type="password"]:focus,
 				.wrapper.style2 input[type="email"]:focus,
+				.wrapper.style2 input[type="number"]:focus,
 				.wrapper.style2 select:focus,
 				.wrapper.style2 textarea:focus {
 					border-color: #ffffff;
@@ -3220,6 +3229,7 @@
 			.wrapper.style3 input[type="text"],
 			.wrapper.style3 input[type="password"],
 			.wrapper.style3 input[type="email"],
+			.wrapper.style3 input[type="number"],
 			.wrapper.style3 select,
 			.wrapper.style3 textarea {
 				background: rgba(255, 255, 255, 0.075);
@@ -3229,6 +3239,7 @@
 				.wrapper.style3 input[type="text"]:focus,
 				.wrapper.style3 input[type="password"]:focus,
 				.wrapper.style3 input[type="email"]:focus,
+				.wrapper.style3 input[type="number"]:focus,
 				.wrapper.style3 select:focus,
 				.wrapper.style3 textarea:focus {
 					border-color: #ffffff;
@@ -3430,6 +3441,7 @@
 			.wrapper.style4 input[type="text"],
 			.wrapper.style4 input[type="password"],
 			.wrapper.style4 input[type="email"],
+			.wrapper.style4 input[type="number"],
 			.wrapper.style4 select,
 			.wrapper.style4 textarea {
 				background: rgba(255, 255, 255, 0.075);
@@ -3439,6 +3451,7 @@
 				.wrapper.style4 input[type="text"]:focus,
 				.wrapper.style4 input[type="password"]:focus,
 				.wrapper.style4 input[type="email"]:focus,
+				.wrapper.style4 input[type="number"]:focus,
 				.wrapper.style4 select:focus,
 				.wrapper.style4 textarea:focus {
 					border-color: #ffffff;
