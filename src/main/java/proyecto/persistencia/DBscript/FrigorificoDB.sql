@@ -77,6 +77,15 @@ Create Table LineaPedido(
     primary key (idOrden, numero)
 );
 
+Create Table Empleado(
+	ci varchar(8) primary key,
+    nombre varchar(30) not null,
+    edad int not null,
+    fechaContratacion date not null,
+    telefono varchar(10) not null,
+    rol varchar(15) not null
+);
+
 INSERT INTO EspecificacionProducto VALUES(NULL, 'Mortadela', 20, 10, 100, 0);
 
 INSERT INTO PrecioProducto VALUES(1, 30.0, '20170527', '20171105');
