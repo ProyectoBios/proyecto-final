@@ -53,73 +53,30 @@
         <div class="content">
             <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
             <label>Seleccione hasta 5 pedidos:</label>
-            <table>
-                <thead>
-                    <th>ID</th>
-                    <th>Fecha</th>
-                    <th>Cliente</th>
-                    <th>Total</th>
-                    <th>Selec</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>231</td>
-                        <td>21/03/2018</td>
-                        <td>Peteco</td>
-                        <td>$450.0</td>
-                        <td><input class="pedido" type="checkbox" /></td>
-                    </tr>
-                    <tr>
-                        <td>231</td>
-                        <td>21/03/2018</td>
-                        <td>Peteco</td>
-                        <td>$450.0</td>
-                        <td><input class="pedido" type="checkbox" /></td>
-                    </tr>
-                    <tr>
-                        <td>231</td>
-                        <td>21/03/2018</td>
-                        <td>Peteco</td>
-                        <td>$450.0</td>
-                        <td><input class="pedido" type="checkbox" /></td>
-                    </tr>
-                    <tr>
-                        <td>231</td>
-                        <td>21/03/2018</td>
-                        <td>Peteco</td>
-                        <td>$450.0</td>
-                        <td><input class="pedido" type="checkbox" /></td>
-                    </tr>
-                    <tr>
-                        <td>231</td>
-                        <td>21/03/2018</td>
-                        <td>Peteco</td>
-                        <td>$450.0</td>
-                        <td><input class="pedido" type="checkbox" /></td>
-                    </tr>
-                    <tr>
-                        <td>231</td>
-                        <td>21/03/2018</td>
-                        <td>Peteco</td>
-                        <td>$450.0</td>
-                        <td><input class="pedido" type="checkbox" /></td>
-                    </tr>
-                    <tr>
-                        <td>231</td>
-                        <td>21/03/2018</td>
-                        <td>Peteco</td>
-                        <td>$450.0</td>
-                        <td><input class="pedido" type="checkbox" /></td>
-                    </tr>
-                    <tr>
-                        <td>231</td>
-                        <td>21/03/2018</td>
-                        <td>Peteco</td>
-                        <td>$450.0</td>
-                        <td><input class="pedido" type="checkbox" /></td>
-                    </tr>
-                </tbody>
-            </table>
+
+                <table>
+                    <form action="#" th:action="@{/realizarPicking}" method="post">
+                        <thead>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Cliente</th>
+                            <th>Total</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            <tr th:each="pedido : ${pedidos}">
+                                <td th:text="${pedido.Id}"></td>
+                                <td th:text="${#dates.format(pedido.Fecha, 'dd/MM/yyyy')}"></td>
+                                <td th:text="${pedido.Cliente.Nombre}"></td>
+                                <td th:text="${pedido.Total}"></td>
+                                <td><input class="pedido" type="checkbox" name="pedidos" th:value="${pedido.Id}"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" align="right"><input type="submit" name="action" value="Seleccionar"/></td>
+                            </tr>
+                        </tbody>
+                    </form>
+                </table>
 
 
             <label th:text="${mensaje}"></label>

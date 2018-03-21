@@ -353,7 +353,30 @@ public class ControladorPedidos {
 
     @RequestMapping(value="/RealizarPicking", method = RequestMethod.GET)
     public String getRealizarPicking(ModelMap modelMap){
-        return "realizarPicking";
+        try {
+            modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
+            return "realizarPicking";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "realizarPicking";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            return "realizarPicking";
+        }
+    }
+
+    @RequestMapping(value="/RealizarPicking", method = RequestMethod.POST, params = "action=Seleccionar")
+    public String seleccionarPedidosPicking(@RequestParam(value="pedidos", required = false)int[] pedidos, ModelMap modelMap, HttpSession session){
+        try {
+            modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
+            return "realizarPicking";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "realizarPicking";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            return "realizarPicking";
+        }
     }
 
     //endregion

@@ -21,5 +21,6 @@ public interface IPedidos {
     public void cancelarPedido(DTOrdenPedido orden) throws Exception;
     void agregarLineaDePedido(DTOrdenPedido orden, DTEspecificacionProducto producto, int cantidad) throws Exception;
     void eliminarLinea(DTOrdenPedido orden, int numero) throws Exception;
+    public ArrayList<DTOrdenPedido> listarPedidosXEstado(String estado) throws Exception;
     //endregion
 }

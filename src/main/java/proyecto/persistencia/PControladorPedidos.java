@@ -243,5 +243,27 @@ class PControladorPedidos implements IPPedidos{
         }
     }
 
+    @Override
+    public ArrayList<DTOrdenPedido> listarPedidosXEstado(String estado) throws Exception{
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM OrdenPedido WHERE estado = ?")){
+
+            preparedStatement.setString(1, estado);
+
+            ResultSet resultado = preparedStatement.executeQuery();
+            ArrayList<DTOrdenPedido> pedidos = new ArrayList<>();
+            DTOrdenPedido pedido = null;
+
+            while(resultado.next()){
+                pedido = new DTOrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                pedidos.add(pedido);
+            }
+
+            return pedidos;
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
+
     //endregion
 }

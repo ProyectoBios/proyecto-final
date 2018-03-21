@@ -104,9 +104,7 @@ class ControladorPedidos implements IPedidos {
             throw new ExcepcionFrigorifico("¡ERROR! El estado no puede quedar vacio.");
         }
 
-        if(!(orden.getEstado() == "Pendiente" || orden.getEstado() == "En preparacion" || orden.getEstado() == "Preparado" || orden.getEstado() == "En distribucion" || orden.getEstado() == "Entregado" ||orden.getEstado() == "Entrega fallida")){
-            throw new ExcepcionFrigorifico("¡ERROR! El estado no es valido.");
-        }
+        validarEstadoPedido(orden.getEstado());
 
         if(orden.getDireccionEnvio() == null || orden.getDireccionEnvio().isEmpty()){
             throw new ExcepcionFrigorifico("¡ERROR! La direccion de envio no puede quedar vacia.");
@@ -131,6 +129,12 @@ class ControladorPedidos implements IPedidos {
         validarCliente(orden.getCliente());
         for(DTLineaPedido linea : orden.getLineas()){
             validarLineaDePedido(linea);
+        }
+    }
+
+    public void validarEstadoPedido(String estado) throws ExcepcionFrigorifico{
+        if(!(estado == "pendiente" || estado == "en preparacion" || estado == "preparado" || estado == "en distribucion" || estado == "entregado" || estado == "entrega fallida")){
+            throw new ExcepcionFrigorifico("¡ERROR! El estado no es valido.");
         }
     }
 
@@ -193,6 +197,12 @@ class ControladorPedidos implements IPedidos {
         for(int i = numero-1; i<orden.getLineas().size(); i++){
             orden.getLineas().get(i).setNumero(orden.getLineas().get(i).getNumero()-1);
         }
+    }
+
+    @Override
+    public ArrayList<DTOrdenPedido> listarPedidosXEstado(String estado) throws Exception {
+        validarEstadoPedido(estado);
+        return FabricaPersistencia.getControladorPedidos().listarPedidosXEstado(estado);
     }
 
     //endregion
