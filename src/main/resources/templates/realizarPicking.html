@@ -85,6 +85,14 @@
         <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
 </footer>
 
+<script>
+        $('.pedido').on('change', function() {
+           if($('.pedido:checked').length > 5) {
+               this.checked = false;
+           }
+        });
+</script>
+
 <!-- Scripts -->
 <script th:src="@{assets/js/jquery.min.js}"> </script>
 <script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
