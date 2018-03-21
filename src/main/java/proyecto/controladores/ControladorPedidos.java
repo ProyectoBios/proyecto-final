@@ -349,5 +349,13 @@ public class ControladorPedidos {
         return "AltaOrdenDePedido";
     }
 
+    //region Picking
+
+    @RequestMapping(value="/RealizarPicking", method = RequestMethod.GET)
+    public String getRealizarPicking(ModelMap modelMap){
+        return "realizarPicking";
+    }
+
+    //endregion
 
 }
