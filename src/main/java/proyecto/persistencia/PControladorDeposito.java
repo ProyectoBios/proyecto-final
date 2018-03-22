@@ -199,7 +199,7 @@ class PControladorDeposito implements IPDeposito{
         DTRack rackEncontrado = null;
 
         try(Connection con = Conexion.AbrirConexion();
-            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Rack WHERE letra = ?;");){
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Rack WHERE letra = ?;")){
 
             consulta.setString(1, letra);
 
@@ -351,6 +351,26 @@ class PControladorDeposito implements IPDeposito{
             return lote;
         }catch(Exception ex){
             throw ex;
+        }
+    }
+
+    @Override
+    public ArrayList<DTLote> listarLotesXRack(String letra) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE letraRack = ?")){
+            ArrayList<DTLote> lotes = null;
+
+            consulta.setString(1, letra);
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+            while(resultadoConsulta.next()) {
+               DTLote lote = new DTLote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new DTUbicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                lotes.add(lote);
+            }
+            return lotes;
+
+            }catch(Exception ex){
+                throw ex;
         }
     }
 

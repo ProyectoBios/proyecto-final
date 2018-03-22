@@ -13,7 +13,7 @@
             .grilla tbody tr:nth-child(2n + 1) {
                 background-color: rgba(144, 144, 144, 0.075);
             }
-        </style>
+    </style>
     </head>
     <body>
 
@@ -28,6 +28,7 @@
                         <ul>
                             <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
                             <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
+                            <li><a th:href="@{/EstadoDeRack}">Estado de Rack</a></li>
                             <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
                             <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
                             <li><a th:href="@{/AltaOrdenDePedido}">Alta orden de pedido</a></li>
@@ -60,17 +61,14 @@
                         <div class="content">
                             <h3>Movimiento de Lotes</h3>
                             <!-- Formulario con la Tabla -->
-                            <form action="ControladorDeposito" name="EstadoRack" method="post">
-
+                            <form action="#" th:action="@{/ControladorDeposito}" name="EstadoDeRack" method="post" th:object="${listaRacks}">
                                 <table>
                                     <tbody>
                                     <tr>
                                         <td style="width: 25%"><label>Seleccione un rack: </label></td>
                                         <td>
                                             <select name="productos">
-                                                <option value="1">Rack 1</option>
-                                                <option value="2">Rack 2</option>
-                                                <option value="3">Rack 3</option>
+                                                <option th:each="r : ${racks}" th:value="$r.letra">Rack 1</option>
                                             </select>
                                         </td>
                                         <td style="width: 60%">
@@ -80,41 +78,35 @@
                                     </tbody>
                                 </table>
 
-                                <table class="linea" id="rack" style="display: table; text-align: center"> <!-- none -->
+                                <table th:if="${tablaRack}" class="linea" id="rack" style="display: table; text-align: center">
                                     <tbody>
-                                    <tr>
-                                        <td style="background-color: aqua; ">ID Lote</td>
-                                        <td style="background-color: aqua">ID Lote</td>
-                                        <td>vacío</td>
-                                        <td>vacío</td>
-                                        <td style="background-color: aqua">ID Lote</td>
-                                    </tr>
-                                    <tr>
-                                        <td>vacío</td>
-                                        <td style="background-color: aqua">ID Lote</td>
-                                        <td>vacío</td>
-                                        <td style="background-color: aqua">ID Lote</td>
-                                        <td style="background-color: aqua">ID Lote</td>
+                                    <tr th:each="l : ${session.lotes}">
+                                        <td th:if="${l.CantUnidades != 0}" th:text="${l.Id}" style="background-color: aqua; ">ID Lote</td> <!-- Fatla crear un botón por cada lote y mostrar de a 5 por fila -->
+                                        <td th:if="${l.CantUnidades == 0}" th:text="vacío">vacío</td>
                                     </tr>
                                     </tbody>
                                 </table>
 
-                                <table id="espLote" style="display: table"> <!-- display: none -->
+                                <table th:if="${tablaEspLote}" id="espLote" style="display: table">
                                     <thead>
-                                    <th style="width: 15%"># ID</th>
-                                    <th style="width: 40%">Producto</th>
-                                    <th style="width: 10%">Cantidad</th>
-                                    <th>Vence</th>
+                                        <th style="width: 15%">Ubicación</th>
+                                        <th># ID</th>
+                                        <th style="width: 40%">Producto</th>
+                                        <th style="width: 10%">Cantidad</th>
+                                        <th>Vence</th>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>ID Lote</td>
-                                        <td>Chorelos</td>
-                                        <td>200</td>
-                                        <td>18/04/2019</td>
+                                        <td th:text="${lote.Ubicacion.Fila + ' ($' + lote.Ubicacion.Columna')'}">0101</td>
+                                        <td th:text="${lote.Id}">15</td>
+                                        <td th:text="${lote.Producto.Nombre}">Chorelos</td>
+                                        <td th:text="${lote.Cantidad}">200</td>
+                                        <td th:text="${lote.FechaVencimiento}">18/04/2019</td>
                                     </tr>
                                     </tbody>
                                 </table>
+
+                                <label th:text="${mensaje}">Mensaje</label>
 
                             </form>
 

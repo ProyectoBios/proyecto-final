@@ -141,7 +141,7 @@ class ControladorDeposito implements  IDeposito {
     }
 
     @Override
-    public ArrayList<DTRack> listarRack() throws Exception {
+    public ArrayList<DTRack> listarRacks() throws Exception {
         return FabricaPersistencia.getControladorDeposito().listarRacks();
     }
 
@@ -192,6 +192,11 @@ class ControladorDeposito implements  IDeposito {
     @Override
     public DTLote buscarLote(int id) throws Exception {
         return FabricaPersistencia.getControladorDeposito().buscarLote(id);
+    }
+
+    @Override
+    public ArrayList<DTLote> listarLotesXRack(String letra) throws Exception {
+        return FabricaPersistencia.getControladorDeposito().listarLotesXRack(letra);
     }
 
     @Override

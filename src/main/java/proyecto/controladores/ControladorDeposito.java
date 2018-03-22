@@ -19,8 +19,11 @@ import proyecto.datatypes.DTLote;
 import proyecto.datatypes.DTRack;
 import proyecto.datatypes.ExcepcionFrigorifico;
 import proyecto.logica.FabricaLogica;
+import proyecto.persistencia.FabricaPersistencia;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -259,6 +262,19 @@ public class ControladorDeposito {
         }
     }
 
+    @RequestMapping(value="/EstadoDeRack", method = RequestMethod.GET)
+    public String getListarRacks(ModelMap modelMap) throws Exception {
+        try{
+            ArrayList<DTRack> listaRacks = FabricaLogica.getControladorDeposito().listarRacks();
+            modelMap.addAttribute("Racks",listaRacks);
+            return "EstadoDeRack";
+
+        }catch(Exception ex) {
+            modelMap.addAttribute("mensaje", "Error al listar los Racks");
+            return "EstadoDeRack";
+        }
+    }
+
     public void botonesPorDefectoRack(ModelMap modelMap){
         modelMap.addAttribute("agregarHabilitado", "false");
         modelMap.addAttribute("buscarHabilitado", "true");
@@ -331,7 +347,7 @@ public class ControladorDeposito {
         ArrayList<DTRack> racks = new ArrayList<DTRack>();
         try {
             prods=FabricaLogica.getControladorDeposito().listarProductos();
-            racks=FabricaLogica.getControladorDeposito().listarRack();
+            racks=FabricaLogica.getControladorDeposito().listarRacks();
             modelMap.addAttribute("lote", new DTLote());
             modelMap.addAttribute("productos",prods);
             modelMap.addAttribute("racks", racks);
@@ -357,7 +373,7 @@ public class ControladorDeposito {
         ArrayList<DTRack> racks = new ArrayList<>();
         try{
             prods=FabricaLogica.getControladorDeposito().listarProductos();
-            racks=FabricaLogica.getControladorDeposito().listarRack();
+            racks=FabricaLogica.getControladorDeposito().listarRacks();
             int codigo = FabricaLogica.getControladorDeposito().altaLote(lote);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -408,9 +424,19 @@ public class ControladorDeposito {
             modelMap.addAttribute("lote", lote);
             modelMap.addAttribute("productos", prods);
             modelMap.addAttribute("racks", racks);
-            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al dar de alta el lote.");
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrió un error al dar de alta el lote.");
             return (T)"AltaLote";
         }
+    }
+
+    @RequestMapping(value = "/EstadoDeRack", method = RequestMethod.POST, params = "action=Seleccionar")
+    public String listarLotesXRack(@RequestParam(value="letraRack", required = false) String letraRack, ModelMap modelMap, HttpSession session) throws Exception {
+        ArrayList<DTLote> lotes = FabricaLogica.getControladorDeposito().listarLotesXRack(letraRack);
+        session.removeAttribute("lotes");
+        modelMap.addAttribute("lotes", lotes); //TODO: es necesario sí o sí teniéndolo ya la session?
+        session.setAttribute("lotes", lotes);
+        modelMap.addAttribute("tablaRack", true);
+        return "EstadoDeRack";
     }
 
     @RequestMapping(value="/AltaLote", method = RequestMethod.POST, params="action=Limpiar")
@@ -418,7 +444,7 @@ public class ControladorDeposito {
         try {
             modelMap.addAttribute("lote", new DTLote());
             modelMap.addAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
-            modelMap.addAttribute("racks", FabricaLogica.getControladorDeposito().listarRack());
+            modelMap.addAttribute("racks", FabricaLogica.getControladorDeposito().listarRacks());
             return "AltaLote";
         }catch (ExcepcionFrigorifico ex){
             return "error";
