@@ -38,6 +38,7 @@ Create Table Lote(
     letraRack varchar(1) not null,
     fila int not null,
     columna int not null,
+    eliminado bit,
     
     foreign key(IDProducto) references EspecificacionProducto(ID),
     foreign key(letraRack) references Rack(letra),    
@@ -87,23 +88,36 @@ Create Table Empleado(
 );
 
 INSERT INTO EspecificacionProducto VALUES(NULL, 'Mortadela', 20, 10, 100, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Chorizo', 100, 50, 500, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Longaniza', 140, 60, 650, 0);
 
 INSERT INTO PrecioProducto VALUES(1, 30.0, '20170527', '20171105');
 INSERT INTO PrecioProducto VALUES(1, 10.0, '20171105', NULL);
+INSERT INTO PrecioProducto VALUES(2, 25.0, '20171105', NULL);
+INSERT INTO PrecioProducto VALUES(3, 30.0, '20171105', NULL);
 
 INSERT INTO Rack VALUES('A', 10, 20);
 
-INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 50, 1, 'A', 1,1);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180315', 30, 1, 'A', 3, 5);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180111', 10, 1, 'A', 4, 4);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 50, 1, 'A', 1,1, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180322', 30, 1, 'A', 3, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180111', 10, 1, 'A', 4, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180324', 1000, 1, 'A', 1, 2, 0);
+
+INSERT INTO Lote VALUES(NULL, NOW(), '20180322', 30, 2, 'A', 1, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180329', 150, 2, 'A', 1, 4, 0);
+
+INSERT INTO Lote VALUES(NULL, NOW(), '20180325', 60, 3, 'A', 2, 1, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180327', 10, 3, 'A', 2, 2, 0);
+
 
 INSERT INTO Cliente VALUES('Disco', '1234567890', 'disco@disco.com');
 INSERT INTO Cliente VALUES('Carniceria Pepe', '0987654321', 'pepe@gmail.com');
 
-INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', NOW(), 'Solomeo Paredes 2020', 'Peteco', 2000, 440, 2440, 'Carniceria Pepe'); 
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', NOW(), 'Solomeo Paredes 2020', 'Peteco', 5075, 1116.5, 6191.5, 'Carniceria Pepe'); 
 
 INSERT INTO LineaPedido VALUES(1, 1, 200, 2000.0, 1);
-
+INSERT INTO LineaPedido VALUES(1, 2, 45, 1125.0, 2);
+INSERT INTO LineaPedido VALUES(1, 3, 65, 1950.0, 3);
 
 
 DELIMITER //

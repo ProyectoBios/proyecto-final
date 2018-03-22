@@ -1,9 +1,6 @@
 package proyecto.logica;
 
-import proyecto.datatypes.DTCliente;
-import proyecto.datatypes.DTEspecificacionProducto;
-import proyecto.datatypes.DTOrdenPedido;
-import proyecto.datatypes.ExcepcionFrigorifico;
+import proyecto.datatypes.*;
 
 import java.util.ArrayList;
 
@@ -22,5 +19,7 @@ public interface IPedidos {
     void agregarLineaDePedido(DTOrdenPedido orden, DTEspecificacionProducto producto, int cantidad) throws Exception;
     void eliminarLinea(DTOrdenPedido orden, int numero) throws Exception;
     public ArrayList<DTOrdenPedido> listarPedidosXEstado(String estado) throws Exception;
+    public ArrayList<DTPicking> obtenerPicking(ArrayList<DTOrdenPedido> ordenes) throws Exception;
+    public void modificarEstadoDePedido(DTOrdenPedido ordenPedido, String estado) throws Exception;
     //endregion
 }

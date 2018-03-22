@@ -1,10 +1,11 @@
 package proyecto.logica;
 
-import org.springframework.stereotype.Controller;
 import proyecto.datatypes.*;
 import proyecto.persistencia.FabricaPersistencia;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 class ControladorPedidos implements IPedidos {
     private static ControladorPedidos instancia = null;
@@ -133,7 +134,7 @@ class ControladorPedidos implements IPedidos {
     }
 
     public void validarEstadoPedido(String estado) throws ExcepcionFrigorifico{
-        if(!(estado == "pendiente" || estado == "en preparacion" || estado == "preparado" || estado == "en distribucion" || estado == "entregado" || estado == "entrega fallida")){
+        if(!(estado.equals("pendiente") || estado.equals("en preparacion") || estado.equals("preparado") || estado.equals("en distribucion") || estado.equals("cancelado") || estado.equals("entregado") || estado.equals("entrega fallida"))){
             throw new ExcepcionFrigorifico("¡ERROR! El estado no es valido.");
         }
     }
@@ -159,7 +160,7 @@ class ControladorPedidos implements IPedidos {
             throw new ExcepcionFrigorifico("¡ERROR! Solo se pueden cancelar pedidos cuyo estado sea pendiente");
         }
 
-        FabricaPersistencia.getControladorPedidos().cancelarPedido(orden);
+        modificarEstadoDePedido(orden, "cancelado");
     }
 
     public void agregarLineaDePedido(DTOrdenPedido orden, DTEspecificacionProducto producto, int cantidad){
@@ -203,6 +204,58 @@ class ControladorPedidos implements IPedidos {
     public ArrayList<DTOrdenPedido> listarPedidosXEstado(String estado) throws Exception {
         validarEstadoPedido(estado);
         return FabricaPersistencia.getControladorPedidos().listarPedidosXEstado(estado);
+    }
+
+    @Override
+    public ArrayList<DTPicking> obtenerPicking(ArrayList<DTOrdenPedido> ordenes) throws Exception {
+        HashMap<Integer, DTPicking> pickingHashMap = new HashMap<Integer, DTPicking>();
+        HashMap<Integer, ArrayList<DTLote>> stocks = new HashMap<Integer, ArrayList<DTLote>>();
+
+        for(DTOrdenPedido orden : ordenes){
+            for(DTLineaPedido linea : orden.getLineas()){
+                if(!stocks.containsKey(linea.getProducto().getCodigo())){
+                    stocks.put(linea.getProducto().getCodigo(), FabricaLogica.getControladorDeposito().buscarStock(linea.getProducto()));
+                }
+
+                DTPicking p;
+                if(!pickingHashMap.containsKey(linea.getProducto().getCodigo())){
+                    p = new DTPicking(linea.getProducto(), linea.getCantidad(), new ArrayList<DTLote>());
+                    pickingHashMap.put(linea.getProducto().getCodigo(), p);
+                }else{
+                    p = pickingHashMap.get(linea.getProducto().getCodigo());
+                    p.setCantidad(p.getCantidad() + linea.getCantidad());
+                }
+
+                while(p.getCantidad() > p.getCantidadUnidadesTotal()){
+                    if(stocks.get(p.getProducto().getCodigo()).size() == 0){
+                        throw new ExcepcionFrigorifico("ERROR! No hay suficiente stock de: " + p.getProducto().getNombre() + " para realizar el picking seleccionado");
+                    }
+                    p.getLotes().add(stocks.get(p.getProducto().getCodigo()).get(0));
+                    stocks.get(p.getProducto().getCodigo()).remove(0);
+                }
+            }
+        }
+
+        ArrayList<DTPicking> picking = new ArrayList<>(pickingHashMap.values());
+
+        for(DTPicking p : picking){
+            for(int i=0; i<p.getLotes().size(); i++){
+                if(i!=p.getLotes().size()-1) {
+                    FabricaPersistencia.getControladorDeposito().bajaLogicaLote(p.getLotes().get(i)); //Baja logica del lote a remover.
+                }else{
+                    FabricaPersistencia.getControladorDeposito().actualizarStock(p.getLotes().get(i), (p.getCantidadUnidadesTotal() - p.getCantidad()) - p.getLotes().get(i).getCantUnidades()); //actualizo de forma temporal el stock en el último lote de la cola
+                }
+            }
+        }
+
+        return picking;
+    }
+
+    @Override
+    public void modificarEstadoDePedido(DTOrdenPedido ordenPedido, String estado) throws Exception {
+        validarEstadoPedido(estado);
+        ordenPedido.setEstado(estado);
+        FabricaPersistencia.getControladorPedidos().modificarEstadoDePedido(ordenPedido, estado);
     }
 
     //endregion

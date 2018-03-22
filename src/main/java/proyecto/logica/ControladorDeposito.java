@@ -1,5 +1,5 @@
 package proyecto.logica;
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_EXCLUSIONPeer;
+
 import proyecto.datatypes.*;
 import proyecto.persistencia.*;
 
@@ -91,11 +91,6 @@ class ControladorDeposito implements  IDeposito {
     @Override
     public ArrayList<DTEspecificacionProducto> listarProductos() throws Exception {
         return FabricaPersistencia.getControladorDeposito().listarProductos();
-    }
-
-    @Override
-    public ArrayList<DTLote> stockProducto(DTEspecificacionProducto producto) throws Exception {
-        return null;
     }
 
     //endregion
@@ -197,6 +192,16 @@ class ControladorDeposito implements  IDeposito {
     @Override
     public DTLote buscarLote(int id) throws Exception {
         return FabricaPersistencia.getControladorDeposito().buscarLote(id);
+    }
+
+    @Override
+    public void deshacerBajaLogicaLote(DTLote lote) throws Exception {
+        FabricaPersistencia.getControladorDeposito().deshacerBajaLogicaLote(lote);
+    }
+
+    @Override
+    public void actualizarStock(DTLote lote, int cant) throws Exception {
+        FabricaPersistencia.getControladorDeposito().actualizarStock(lote,cant);
     }
 
     //endregion

@@ -12,7 +12,6 @@ public interface IDeposito {
     public DTEspecificacionProducto buscarProducto(int codigo) throws Exception;
     public ArrayList<DTLote> buscarStock(DTEspecificacionProducto ep) throws Exception;
     public ArrayList<DTEspecificacionProducto> listarProductos() throws Exception;
-    public ArrayList<DTLote> stockProducto(DTEspecificacionProducto producto) throws Exception;
     //endregion
     //region Rack
     public DTRack buscarRack(String letra) throws Exception;
@@ -26,6 +25,8 @@ public interface IDeposito {
     public ArrayList<DTLote> obtenerLotesVencidos() throws Exception;
     public void bajaLote(DTLote lote) throws  Exception;
     public DTLote buscarLote(int id) throws Exception;
+    public void deshacerBajaLogicaLote(DTLote lote) throws Exception;
+    public void actualizarStock(DTLote lote, int cant) throws Exception;
     //endregion
 
 }

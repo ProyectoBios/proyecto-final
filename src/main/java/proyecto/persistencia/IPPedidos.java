@@ -16,7 +16,8 @@ public interface IPPedidos {
     public DTOrdenPedido buscarOrdenPedido(int idOrden) throws Exception;
     public int altaOrdenDePedidio(DTOrdenPedido orden) throws Exception;
     public ArrayList<DTOrdenPedido> buscarOrdenesXCliente(DTCliente cliente) throws Exception;
-    public void cancelarPedido(DTOrdenPedido orden) throws Exception;
+    public void modificarEstadoDePedido(DTOrdenPedido orden, String estado) throws Exception;
     public ArrayList<DTOrdenPedido> listarPedidosXEstado(String estado) throws Exception;
+
     //endregion
 }

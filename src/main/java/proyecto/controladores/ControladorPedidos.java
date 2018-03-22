@@ -1,18 +1,15 @@
 package proyecto.controladores;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
+
 import org.springframework.web.bind.annotation.*;
 import proyecto.datatypes.DTCliente;
 import proyecto.datatypes.DTEspecificacionProducto;
 import proyecto.datatypes.DTOrdenPedido;
 import proyecto.datatypes.ExcepcionFrigorifico;
 import proyecto.logica.FabricaLogica;
-import proyecto.persistencia.FabricaPersistencia;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -352,9 +349,15 @@ public class ControladorPedidos {
     //region Picking
 
     @RequestMapping(value="/RealizarPicking", method = RequestMethod.GET)
-    public String getRealizarPicking(ModelMap modelMap){
+    public String getRealizarPicking(ModelMap modelMap, HttpSession session){
         try {
-            modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
+            if(session.getAttribute("listaPicking") == null){
+                modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
+                modelMap.addAttribute("tablaPedidos", true);
+            }else{
+                modelMap.addAttribute("tablaPicking", true);
+            }
+
             return "realizarPicking";
         }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
@@ -368,8 +371,31 @@ public class ControladorPedidos {
     @RequestMapping(value="/RealizarPicking", method = RequestMethod.POST, params = "action=Seleccionar")
     public String seleccionarPedidosPicking(@RequestParam(value="pedidos", required = false)int[] pedidos, ModelMap modelMap, HttpSession session){
         try {
-            modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
+            ArrayList<DTOrdenPedido> ordenesPedido = new ArrayList<>();
+            for(int i=0; i<pedidos.length; i++){
+                DTOrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
+                FabricaLogica.getControladorPedidos().modificarEstadoDePedido(orden, "en preparacion");
+                ordenesPedido.add(orden);
+            }
+            session.setAttribute("pedidosPicking", ordenesPedido);
+
+            session.setAttribute("listaPicking", FabricaLogica.getControladorPedidos().obtenerPicking(ordenesPedido));
+
+            modelMap.addAttribute("tablaPicking", true);
             return "realizarPicking";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "realizarPicking";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            return "realizarPicking";
+        }
+    }
+
+    @RequestMapping(value="/RealizarPicking", method = RequestMethod.POST, params="action=Finalizar")
+    public String finalizarPicking(ModelMap modelMap){
+        try{
+            throw new ExcepcionFrigorifico("");
         }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "realizarPicking";

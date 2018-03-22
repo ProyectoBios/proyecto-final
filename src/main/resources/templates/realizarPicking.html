@@ -52,10 +52,10 @@
         <!-- Content -->
         <div class="content">
             <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
-            <label>Seleccione hasta 5 pedidos:</label>
+            <label th:if="${tablaPedidos}">Seleccione hasta 5 pedidos:</label>
 
-                <table>
-                    <form action="#" th:action="@{/realizarPicking}" method="post">
+                <table th:if="${tablaPedidos}">
+                    <form action="#" th:action="@{/RealizarPicking}" method="post">
                         <thead>
                             <th>ID</th>
                             <th>Fecha</th>
@@ -68,7 +68,7 @@
                                 <td th:text="${pedido.Id}"></td>
                                 <td th:text="${#dates.format(pedido.Fecha, 'dd/MM/yyyy')}"></td>
                                 <td th:text="${pedido.Cliente.Nombre}"></td>
-                                <td th:text="${pedido.Total}"></td>
+                                <td th:text="${'$' + pedido.Total}"></td>
                                 <td><input class="pedido" type="checkbox" name="pedidos" th:value="${pedido.Id}"/></td>
                             </tr>
                             <tr>
@@ -77,6 +77,27 @@
                         </tbody>
                     </form>
                 </table>
+
+            <label th:if="${tablaPicking}">Detalle del Picking:</label>
+            <table th:if="${tablaPicking}">
+                <thead>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Ubicaciones</th>
+                </thead>
+                <tbody>
+                    <tr th:each="picking : ${session.listaPicking}">
+                        <td th:text="${picking.Producto.Nombre}"></td>
+                        <td th:text="${picking.Cantidad}"></td>
+                        <td th:text="${picking.UbicacionesString}"></td>
+                    </tr>
+                    <tr>
+                        <form action="#" th:action="@{/RealizarPicking}" method="post">
+                            <td colspan="2" align="right"><input type="submit" name="action" value="Finalizar"/> <input type="submit" name="action" value="Cancelar Picking"/></td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
 
 
             <label th:text="${mensaje}"></label>

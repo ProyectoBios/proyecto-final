@@ -1,6 +1,5 @@
 package proyecto.persistencia;
 
-import proyecto.controladores.ControladorDeposito;
 import proyecto.datatypes.DTCliente;
 import proyecto.datatypes.DTLineaPedido;
 import proyecto.datatypes.DTOrdenPedido;
@@ -226,16 +225,17 @@ class PControladorPedidos implements IPPedidos{
     }
 
     @Override
-    public void cancelarPedido(DTOrdenPedido orden) throws Exception {
+    public void modificarEstadoDePedido(DTOrdenPedido orden, String estado) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
-            PreparedStatement consulta = con.prepareStatement("UPDATE OrdenPedido SET estado = 'cancelado' WHERE idOrden = ?")){
+        PreparedStatement consulta = con.prepareStatement("UPDATE OrdenPedido SET estado = ? WHERE idOrden = ?")){
 
-            consulta.setInt(1, orden.getId());
+            consulta.setString(1, estado);
+            consulta.setInt(2, orden.getId());
 
             int filasAfectadas = consulta.executeUpdate();
 
             if(filasAfectadas != 1){
-                throw new ExcepcionFrigorifico("¡ERROR! No se pudo cancelar el pedido");
+                throw new ExcepcionFrigorifico("¡ERROR! No se pudo modificar el estado de el pedido");
             }
 
         }catch (Exception ex){
@@ -264,6 +264,8 @@ class PControladorPedidos implements IPPedidos{
             throw ex;
         }
     }
+
+
 
     //endregion
 }

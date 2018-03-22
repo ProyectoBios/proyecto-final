@@ -154,7 +154,7 @@ class PControladorDeposito implements IPDeposito{
         ArrayList<DTLote> stock = new ArrayList<DTLote>();
 
         try(Connection con = Conexion.AbrirConexion();
-            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE IDProducto = ? AND fechaVencimiento > NOW() ORDER BY fechaVencimiento ASC")){
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE IDProducto = ? AND fechaVencimiento > NOW() AND eliminado = 0 ORDER BY fechaVencimiento ASC")){
 
             consulta.setInt(1, ep.getCodigo());
 
@@ -372,6 +372,46 @@ class PControladorDeposito implements IPDeposito{
             return lote;
 
         }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void bajaLogicaLote(DTLote lote) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("UPDATE Lote SET eliminado = 1 WHERE idLote = ?")){
+
+            consulta.setInt(1, lote.getId());
+
+            consulta.executeUpdate();
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void deshacerBajaLogicaLote(DTLote lote) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("UPDATE Lote SET eliminado = 0 WHERE idLote = ?")){
+
+            consulta.setInt(1, lote.getId());
+
+            consulta.executeUpdate();
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void actualizarStock(DTLote lote, int cant) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("UPDATE Lote SET cantUnidades = cantUnidades + ? WHERE idLote = ?")){
+
+            consulta.setInt(1, cant);
+            consulta.setInt(2, lote.getId());
+
+            consulta.executeUpdate();
+        }catch(Exception ex){
             throw ex;
         }
     }
