@@ -5,10 +5,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
 import org.springframework.web.bind.annotation.*;
-import proyecto.datatypes.DTCliente;
-import proyecto.datatypes.DTEspecificacionProducto;
-import proyecto.datatypes.DTOrdenPedido;
-import proyecto.datatypes.ExcepcionFrigorifico;
+import proyecto.datatypes.*;
 import proyecto.logica.FabricaLogica;
 
 import javax.servlet.http.HttpSession;
@@ -405,6 +402,43 @@ public class ControladorPedidos {
         }
     }
 
+
+    @RequestMapping(value="/RealizarPicking", method = RequestMethod.POST, params="action=Cancelar Picking")
+    public String cancelarPicking(ModelMap modelMap, HttpSession session){
+        try{
+            if(session.getAttribute("pedidosPicking") != null){
+                ArrayList<DTOrdenPedido> ordenes = (ArrayList<DTOrdenPedido>) session.getAttribute("pedidosPicking");
+                for (DTOrdenPedido ordenPedido : ordenes) {
+                    FabricaLogica.getControladorPedidos().modificarEstadoDePedido(ordenPedido, "pendiente");
+                }
+                session.removeAttribute("pedidosPicking");
+            }
+
+            if(session.getAttribute("listaPicking") != null){
+                ArrayList<DTPicking> picking = (ArrayList<DTPicking>)session.getAttribute("listaPicking");
+                for(DTPicking p : picking){
+                    for(int i=0; i<p.getLotes().size(); i++){
+                        if(i!=p.getLotes().size()-1) {
+                            FabricaLogica.getControladorDeposito().deshacerBajaLogicaLote(p.getLotes().get(i)); //deshacer la baja logica temporal sobre el lote
+                        }else{
+                            FabricaLogica.getControladorDeposito().actualizarStock(p.getLotes().get(i), p.getLotes().get(i).getCantUnidades() - (p.getCantidadUnidadesTotal() - p.getCantidad())); //devolver el stock al lugar de origen
+                        }
+                    }
+                }
+                session.removeAttribute("listaPicking");
+            }
+            modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
+            modelMap.addAttribute("tablaPedidos", true);
+            modelMap.addAttribute("mensaje", "Picking cancelado con exito.");
+            return "realizarPicking";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "realizarPicking";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            return "realizarPicking";
+        }
+    }
     //endregion
 
 }
