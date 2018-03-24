@@ -1,9 +1,12 @@
 package proyecto.logica;
 
+import javafx.scene.effect.SepiaTone;
 import proyecto.datatypes.*;
 import proyecto.persistencia.*;
 
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 class ControladorDeposito implements  IDeposito {
     private static ControladorDeposito instancia = null;
@@ -142,7 +145,9 @@ class ControladorDeposito implements  IDeposito {
 
     @Override
     public ArrayList<DTRack> listarRacks() throws Exception {
-        return FabricaPersistencia.getControladorDeposito().listarRacks();
+        Set<DTRack> listaOrdenada = new TreeSet<>(FabricaPersistencia.getControladorDeposito().listarRacks());
+        ArrayList<DTRack> listaOrdenadaArray = new ArrayList<>(listaOrdenada); //Ordena alfabéticamente los racks y devuelve el ArrayList para poder acceder fácilmente por índice.
+        return listaOrdenadaArray;
     }
 
     //endregion

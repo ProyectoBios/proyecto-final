@@ -20,7 +20,8 @@ import proyecto.datatypes.DTRack;
 import proyecto.datatypes.ExcepcionFrigorifico;
 import proyecto.logica.FabricaLogica;
 import proyecto.persistencia.FabricaPersistencia;
-import java.util.ArrayList;
+
+import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -31,7 +32,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 @Controller
 public class ControladorDeposito {
@@ -263,10 +263,14 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value="/EstadoDeRack", method = RequestMethod.GET)
-    public String getListarRacks(ModelMap modelMap) throws Exception {
+    public String getListarRacks(ModelMap modelMap, HttpSession session) throws Exception {
         try{
             ArrayList<DTRack> listaRacks = FabricaLogica.getControladorDeposito().listarRacks();
-            modelMap.addAttribute("Racks",listaRacks);
+            if(listaRacks.size() == 0) {
+                modelMap.addAttribute("mensaje", "No se encontraron Racks");
+            }
+            modelMap.addAttribute("racks",listaRacks);
+            session.setAttribute("racks", listaRacks);
             return "EstadoDeRack";
 
         }catch(Exception ex) {
@@ -433,7 +437,7 @@ public class ControladorDeposito {
     public String listarLotesXRack(@RequestParam(value="letraRack", required = false) String letraRack, ModelMap modelMap, HttpSession session) throws Exception {
         ArrayList<DTLote> lotes = FabricaLogica.getControladorDeposito().listarLotesXRack(letraRack);
         session.removeAttribute("lotes");
-        modelMap.addAttribute("lotes", lotes); //TODO: es necesario sí o sí teniéndolo ya la session?
+        modelMap.addAttribute("lotes", lotes); //TODO: es necesario sí o sí teniéndolo ya en la session?
         session.setAttribute("lotes", lotes);
         modelMap.addAttribute("tablaRack", true);
         return "EstadoDeRack";

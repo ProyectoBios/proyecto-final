@@ -59,16 +59,16 @@
 
                         <!-- Content -->
                         <div class="content">
-                            <h3>Movimiento de Lotes</h3>
+                            <h3>Estado de Racks</h3>
                             <!-- Formulario con la Tabla -->
-                            <form action="#" th:action="@{/ControladorDeposito}" name="EstadoDeRack" method="post" th:object="${listaRacks}">
+                            <form action="#" th:action="@{/ControladorDeposito}" name="EstadoDeRack" th:object="${racks}" method="post">
                                 <table>
                                     <tbody>
                                     <tr>
                                         <td style="width: 25%"><label>Seleccione un rack: </label></td>
                                         <td>
-                                            <select name="productos">
-                                                <option th:each="r : ${racks}" th:value="$r.letra">Rack 1</option>
+                                            <select name="racks">
+                                                <option th:each="r : ${racks}" th:value="${r.Letra}" th:text="${r.Letra}">Rack 1</option>
                                             </select>
                                         </td>
                                         <td style="width: 60%">
