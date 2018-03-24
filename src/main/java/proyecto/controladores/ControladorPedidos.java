@@ -9,6 +9,7 @@ import proyecto.datatypes.*;
 import proyecto.logica.FabricaLogica;
 
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -389,20 +390,6 @@ public class ControladorPedidos {
         }
     }
 
-    @RequestMapping(value="/RealizarPicking", method = RequestMethod.POST, params="action=Finalizar")
-    public String finalizarPicking(ModelMap modelMap){
-        try{
-            throw new ExcepcionFrigorifico("");
-        }catch (ExcepcionFrigorifico ex){
-            modelMap.addAttribute("mensaje", ex.getMessage());
-            return "realizarPicking";
-        }catch (Exception ex){
-            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
-            return "realizarPicking";
-        }
-    }
-
-
     @RequestMapping(value="/RealizarPicking", method = RequestMethod.POST, params="action=Cancelar Picking")
     public String cancelarPicking(ModelMap modelMap, HttpSession session){
         try{
@@ -439,6 +426,133 @@ public class ControladorPedidos {
             return "realizarPicking";
         }
     }
+
+    @RequestMapping(value="/PreparacionPedidos", method = RequestMethod.POST, params="action=Finalizar")
+    public String finalizarPicking(ModelMap modelMap, HttpSession session){
+        try{
+            if(session.getAttribute("pedidosPicking") != null){
+                return "PreparacionPedidos";
+            }else{
+                throw new ExcepcionFrigorifico("");
+            }
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "realizarPicking";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            return "realizarPicking";
+        }
+    }
+
+    @RequestMapping(value="/PreparacionPedidos", method = RequestMethod.POST, params="action=Seleccionar")
+    public String seleccionarPedidoPreparacion(@RequestParam(value="idPedido", required = true) String  idPedido, ModelMap modelMap, HttpSession session){
+        try{
+            int id = Integer.parseInt(idPedido);
+            for(DTOrdenPedido orden : (ArrayList<DTOrdenPedido>)session.getAttribute("pedidosPicking")){
+                if(orden.getId() == id){
+                    modelMap.addAttribute("ordenPedido", orden);
+                    break;
+                }
+            }
+            modelMap.addAttribute("detallePedido", true);
+            return "PreparacionPedidos";
+        }/*catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "realizarPicking";
+        }*/catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            return "realizarPicking";
+        }
+    }
+
+    @RequestMapping(value="/PreparacionPedidos", method = RequestMethod.POST, params="action=Cancelar Preparacion")
+    public String cancelarPreparacionPedidos(ModelMap modelMap, HttpSession session){
+        try{
+            if(session.getAttribute("pedidosPicking") != null){
+                ArrayList<DTOrdenPedido> ordenes = (ArrayList<DTOrdenPedido>) session.getAttribute("pedidosPicking");
+                for (DTOrdenPedido ordenPedido : ordenes) {
+                    FabricaLogica.getControladorPedidos().modificarEstadoDePedido(ordenPedido, "pendiente");
+                }
+                session.removeAttribute("pedidosPicking");
+            }
+
+            if(session.getAttribute("listaPicking") != null){
+                ArrayList<DTPicking> picking = (ArrayList<DTPicking>)session.getAttribute("listaPicking");
+                for(DTPicking p : picking){
+                    for(int i=0; i<p.getLotes().size(); i++){
+                        if(i!=p.getLotes().size()-1) {
+                            FabricaLogica.getControladorDeposito().deshacerBajaLogicaLote(p.getLotes().get(i)); //deshacer la baja logica temporal sobre el lote
+                        }else{
+                            FabricaLogica.getControladorDeposito().actualizarStock(p.getLotes().get(i), p.getLotes().get(i).getCantUnidades() - (p.getCantidadUnidadesTotal() - p.getCantidad())); //devolver el stock al lugar de origen
+                        }
+                    }
+                }
+                session.removeAttribute("listaPicking");
+            }
+
+            return "index";
+        }/*catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "realizarPicking";
+        }*/catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            return "realizarPicking";
+        }
+    }
+
+    @RequestMapping(value="/PreparacionPedidos", method = RequestMethod.POST, params="action=Listo")
+    public String pedidoListo(@RequestParam(value="idPedido", required = true) String  idPedido, ModelMap modelMap, HttpSession session){
+        try{
+            int id = Integer.parseInt(idPedido);
+            DTOrdenPedido ordenPedido = null;
+            for(DTOrdenPedido orden : (ArrayList<DTOrdenPedido>)session.getAttribute("pedidosPicking")){
+                if(orden.getId() == id){
+                    ordenPedido=orden;
+                    break;
+                }
+            }
+
+            ((ArrayList<DTOrdenPedido>)session.getAttribute("pedidosPicking")).remove(ordenPedido);
+            FabricaLogica.getControladorPedidos().modificarEstadoDePedido(ordenPedido, "preparado");
+
+            for(DTLineaPedido linea : ordenPedido.getLineas()){
+                for(DTPicking p : (ArrayList<DTPicking>)session.getAttribute("listaPicking")){
+                    if(p.getProducto().getCodigo() == linea.getProducto().getCodigo()){
+                        int cantidadARestar = linea.getCantidad();
+                        p.setCantidad(p.getCantidad() - cantidadARestar);
+                        while((p.getLotes().get(0) != null) && (p.getLotes().get(0).getCantUnidades() < cantidadARestar)){
+                            cantidadARestar = cantidadARestar - p.getLotes().get(0).getCantUnidades();
+                            FabricaLogica.getControladorDeposito().bajaLote(p.getLotes().get(0));
+                            p.getLotes().remove(0);
+                        }
+
+                        if(p.getLotes().get(0) != null){
+                            p.getLotes().get(0).setCantUnidades(p.getLotes().get(0).getCantUnidades() - cantidadARestar);
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            if(((ArrayList<DTOrdenPedido>) session.getAttribute("pedidosPicking")).size() == 0){
+                session.removeAttribute("pedidosPicking");
+                modelMap.addAttribute("mensaje", "Pedidos preparados con éxito.");
+                return "index";
+            }else{
+                modelMap.addAttribute("mensaje", "Pedido preparado con éxito.");
+                return "PreparacionPedidos";
+            }
+
+        }/*catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "realizarPicking";
+        }*/catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            return "realizarPicking";
+        }
+    }
+
     //endregion
 
 }
