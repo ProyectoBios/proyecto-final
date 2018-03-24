@@ -91,10 +91,14 @@
                         <td th:text="${picking.Cantidad}"></td>
                         <td th:text="${picking.UbicacionesString}"></td>
                     </tr>
-                    <tr>
-                        <form action="#" th:action="@{/RealizarPicking}" method="post">
-                            <td colspan="2" align="right"><input type="submit" name="action" value="Finalizar"/> <input type="submit" name="action" value="Cancelar Picking"/></td>
+                    <tr><td colspan="2" align="right">
+                        <form action="#" th:action="@{/PreparacionPedidos}" method="post">
+                            <input type="submit" name="action" value="Finalizar"/>
                         </form>
+                        <form action="#" th:action="@{/RealizarPicking}" method="post">
+                             <input type="submit" name="action" value="Cancelar Picking"/>
+                        </form>
+                        </td>
                     </tr>
                 </tbody>
             </table>
