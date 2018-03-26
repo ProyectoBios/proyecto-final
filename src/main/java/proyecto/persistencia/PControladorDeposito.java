@@ -357,7 +357,7 @@ class PControladorDeposito implements IPDeposito{
     @Override
     public ArrayList<DTLote> listarLotesXRack(String letra) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
-            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE letraRack = ?")){
+            PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE letraRack = ? order by fila ASC, columna ASC;")){
             ArrayList<DTLote> lotes = new ArrayList<>();
 
             consulta.setString(1, letra);

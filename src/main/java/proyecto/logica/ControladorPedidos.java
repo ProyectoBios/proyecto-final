@@ -243,7 +243,11 @@ class ControladorPedidos implements IPedidos {
                 if(i!=p.getLotes().size()-1) {
                     FabricaPersistencia.getControladorDeposito().bajaLogicaLote(p.getLotes().get(i)); //Baja logica del lote a remover.
                 }else{
-                    FabricaPersistencia.getControladorDeposito().actualizarStock(p.getLotes().get(i), (p.getCantidadUnidadesTotal() - p.getCantidad()) - p.getLotes().get(i).getCantUnidades()); //actualizo de forma temporal el stock en el último lote de la cola
+                    if(p.getCantidad()==p.getCantidadUnidadesTotal()){
+                        FabricaPersistencia.getControladorDeposito().bajaLogicaLote(p.getLotes().get(i));
+                    }else{
+                        FabricaPersistencia.getControladorDeposito().actualizarStock(p.getLotes().get(i), (p.getCantidadUnidadesTotal() - p.getCantidad()) - p.getLotes().get(i).getCantUnidades()); //actualizo de forma temporal el stock en el último lote de la cola
+                    }
                 }
             }
         }

@@ -435,8 +435,6 @@ public class ControladorDeposito {
     @RequestMapping(value = "/EstadoDeRack", method = RequestMethod.POST, params = "action=Seleccionar")
     public String listarLotesXRack(@RequestParam(value="letraRack", required = false) String letraRack, ModelMap modelMap, HttpSession session) throws Exception {
         ArrayList<DTLote> lotes = FabricaLogica.getControladorDeposito().listarLotesXRack(letraRack);
-        session.removeAttribute("lotes");
-        modelMap.addAttribute("lotes", lotes); //TODO: es necesario sí o sí teniéndolo ya en la session?
         session.setAttribute("lotes", lotes);
         modelMap.addAttribute("tablaRack", true);
         return "EstadoDeRack";

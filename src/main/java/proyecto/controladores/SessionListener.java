@@ -46,7 +46,11 @@ public class SessionListener implements HttpSessionListener, ApplicationContextA
                         if(i!=p.getLotes().size()-1) {
                             FabricaLogica.getControladorDeposito().deshacerBajaLogicaLote(p.getLotes().get(i)); //deshacer la baja logica temporal sobre el lote
                         }else{
-                            FabricaLogica.getControladorDeposito().actualizarStock(p.getLotes().get(i), p.getLotes().get(i).getCantUnidades() - (p.getCantidadUnidadesTotal() - p.getCantidad())); //devolver el stock al lugar de origen
+                            if(p.getCantidad()==p.getCantidadUnidadesTotal()){
+                                FabricaLogica.getControladorDeposito().deshacerBajaLogicaLote(p.getLotes().get(i));
+                            }else {
+                                FabricaLogica.getControladorDeposito().actualizarStock(p.getLotes().get(i), p.getLotes().get(i).getCantUnidades() - (p.getCantidadUnidadesTotal() - p.getCantidad())); //devolver el stock al lugar de origen
+                            }
                         }
                     }
                 }

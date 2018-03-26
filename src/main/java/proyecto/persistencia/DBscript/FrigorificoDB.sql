@@ -112,7 +112,6 @@ INSERT INTO Lote VALUES(NULL, NOW(), '20180329', 150, 2, 'A', 1, 4, 0);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180325', 60, 3, 'A', 2, 1, 0);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180327', 10, 3, 'A', 2, 2, 0);
 
-
 INSERT INTO Cliente VALUES('Disco', '1234567890', 'disco@disco.com');
 INSERT INTO Cliente VALUES('Carniceria Pepe', '0987654321', 'pepe@gmail.com');
 

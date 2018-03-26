@@ -408,7 +408,11 @@ public class ControladorPedidos {
                         if(i!=p.getLotes().size()-1) {
                             FabricaLogica.getControladorDeposito().deshacerBajaLogicaLote(p.getLotes().get(i)); //deshacer la baja logica temporal sobre el lote
                         }else{
-                            FabricaLogica.getControladorDeposito().actualizarStock(p.getLotes().get(i), p.getLotes().get(i).getCantUnidades() - (p.getCantidadUnidadesTotal() - p.getCantidad())); //devolver el stock al lugar de origen
+                            if(p.getCantidad()==p.getCantidadUnidadesTotal()){
+                                FabricaLogica.getControladorDeposito().deshacerBajaLogicaLote(p.getLotes().get(i));
+                            }else {
+                                FabricaLogica.getControladorDeposito().actualizarStock(p.getLotes().get(i), p.getLotes().get(i).getCantUnidades() - (p.getCantidadUnidadesTotal() - p.getCantidad())); //devolver el stock al lugar de origen
+                            }
                         }
                     }
                 }
@@ -483,8 +487,11 @@ public class ControladorPedidos {
                         if(i!=p.getLotes().size()-1) {
                             FabricaLogica.getControladorDeposito().deshacerBajaLogicaLote(p.getLotes().get(i)); //deshacer la baja logica temporal sobre el lote
                         }else{
-                            FabricaLogica.getControladorDeposito().actualizarStock(p.getLotes().get(i), p.getLotes().get(i).getCantUnidades() - (p.getCantidadUnidadesTotal() - p.getCantidad())); //devolver el stock al lugar de origen
-                        }
+                            if(p.getCantidad()==p.getCantidadUnidadesTotal()){
+                                FabricaLogica.getControladorDeposito().deshacerBajaLogicaLote(p.getLotes().get(i));
+                            }else {
+                                FabricaLogica.getControladorDeposito().actualizarStock(p.getLotes().get(i), p.getLotes().get(i).getCantUnidades() - (p.getCantidadUnidadesTotal() - p.getCantidad())); //devolver el stock al lugar de origen
+                            }                        }
                     }
                 }
                 session.removeAttribute("listaPicking");
@@ -544,10 +551,10 @@ public class ControladorPedidos {
                 return "PreparacionPedidos";
             }
 
-        }/*catch (ExcepcionFrigorifico ex){
+        }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "realizarPicking";
-        }*/catch (Exception ex){
+        }catch (Exception ex){
             modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
             return "realizarPicking";
         }
