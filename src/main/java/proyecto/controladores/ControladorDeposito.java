@@ -19,7 +19,6 @@ import proyecto.datatypes.DTLote;
 import proyecto.datatypes.DTRack;
 import proyecto.datatypes.ExcepcionFrigorifico;
 import proyecto.logica.FabricaLogica;
-import proyecto.persistencia.FabricaPersistencia;
 
 import java.util.*;
 
