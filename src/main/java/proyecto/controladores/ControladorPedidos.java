@@ -166,6 +166,7 @@ public class ControladorPedidos {
             if(!nombreCliente.equals("")) {
                 clientes = FabricaLogica.getControladorPedidos().buscarClientes(nombreCliente);
             }else{
+                modelMap.addAttribute("tablaBusquedaCliente", true);
                 throw new ExcepcionFrigorifico("El nombre del cliente no puede quedar vacío");
             }
             modelMap.addAttribute("tablaClientes", true);
@@ -267,6 +268,25 @@ public class ControladorPedidos {
             }
 
             FabricaLogica.getControladorPedidos().agregarLineaDePedido((DTOrdenPedido)session.getAttribute("orden"), producto, cantidadUnidades);
+
+            DTLineaPedido linea = null;
+            for(DTLineaPedido l : ((DTOrdenPedido)session.getAttribute("orden")).getLineas()){
+                if(l.getProducto().getCodigo() == producto.getCodigo()){
+                    linea = l;
+                    break;
+                }
+            }
+
+            ArrayList<DTLote> stock = FabricaLogica.getControladorDeposito().buscarStock(producto);
+            int cantidad = 0;
+            for(DTLote l : stock){
+                cantidad+=l.getCantUnidades();
+            }
+
+            if(cantidad < linea.getCantidad()){
+                modelMap.addAttribute("mensajeStock", "AVISO: No hay suficiente stock actualmente para satisfacer " + linea.getCantidad() + " unidades de " + linea.getProducto().getNombre() + ".");
+            }
+
             modelMap.addAttribute("tablaProducto", true);
 
             return "AltaOrdenDePedido";

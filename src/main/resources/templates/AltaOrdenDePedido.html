@@ -175,6 +175,8 @@
                     </tbody>
                 </table>
 
+                <label th:text="${mensajeStock}"></label>
+
                 <table th:if="${tablaProducto}" id="confirmacionPedido">
                     <form action="#" th:action="@{/AltaOrdenDePedido}" method="post">
                         <tbody>

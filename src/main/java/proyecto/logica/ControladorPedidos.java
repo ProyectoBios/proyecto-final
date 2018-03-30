@@ -180,11 +180,15 @@ class ControladorPedidos implements IPedidos {
             orden.setSubtotal(orden.getSubtotal() + producto.getPrecioActual()*cantidad);
         }else {
             int numero = orden.getLineas().size() + 1;
-            DTLineaPedido lineaPedido = new DTLineaPedido(numero, cantidad, cantidad * producto.getPrecioActual(), producto);
+            linea = new DTLineaPedido(numero, cantidad, cantidad * producto.getPrecioActual(), producto);
 
-            orden.getLineas().add(lineaPedido);
-            orden.setSubtotal(orden.getSubtotal() + lineaPedido.getImporte());
+            orden.getLineas().add(linea);
+            orden.setSubtotal(orden.getSubtotal() + linea.getImporte());
         }
+
+
+
+
     }
 
     @Override
