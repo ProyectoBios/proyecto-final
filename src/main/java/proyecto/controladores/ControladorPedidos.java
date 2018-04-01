@@ -284,7 +284,7 @@ public class ControladorPedidos {
             }
 
             if(cantidad < linea.getCantidad()){
-                modelMap.addAttribute("mensajeStock", "AVISO: No hay suficiente stock actualmente para satisfacer " + linea.getCantidad() + " unidades de " + linea.getProducto().getNombre() + ".");
+                modelMap.addAttribute("mensajeStock", "AVISO: No hay suficiente stock actualmente para satisfacer " + linea.getCantidad() + " unidades de " + linea.getProducto().getNombre() + ". Stock actual: " + cantidad + " unidades.");
             }
 
             modelMap.addAttribute("tablaProducto", true);
