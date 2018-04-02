@@ -166,6 +166,7 @@ public class ControladorPedidos {
             if(!nombreCliente.equals("")) {
                 clientes = FabricaLogica.getControladorPedidos().buscarClientes(nombreCliente);
             }else{
+                modelMap.addAttribute("tablaBusquedaCliente", true);
                 throw new ExcepcionFrigorifico("El nombre del cliente no puede quedar vacío");
             }
             modelMap.addAttribute("tablaClientes", true);
@@ -267,6 +268,25 @@ public class ControladorPedidos {
             }
 
             FabricaLogica.getControladorPedidos().agregarLineaDePedido((DTOrdenPedido)session.getAttribute("orden"), producto, cantidadUnidades);
+
+            DTLineaPedido linea = null;
+            for(DTLineaPedido l : ((DTOrdenPedido)session.getAttribute("orden")).getLineas()){
+                if(l.getProducto().getCodigo() == producto.getCodigo()){
+                    linea = l;
+                    break;
+                }
+            }
+
+            ArrayList<DTLote> stock = FabricaLogica.getControladorDeposito().buscarStock(producto);
+            int cantidad = 0;
+            for(DTLote l : stock){
+                cantidad+=l.getCantUnidades();
+            }
+
+            if(cantidad < linea.getCantidad()){
+                modelMap.addAttribute("mensajeStock", "AVISO: No hay suficiente stock actualmente para satisfacer " + linea.getCantidad() + " unidades de " + linea.getProducto().getNombre() + ". Stock actual: " + cantidad + " unidades.");
+            }
+
             modelMap.addAttribute("tablaProducto", true);
 
             return "AltaOrdenDePedido";
@@ -382,9 +402,27 @@ public class ControladorPedidos {
             modelMap.addAttribute("tablaPicking", true);
             return "realizarPicking";
         }catch (ExcepcionFrigorifico ex){
+            try{
+                for(int i=0; i<pedidos.length; i++){
+                    DTOrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
+                    FabricaLogica.getControladorPedidos().modificarEstadoDePedido(orden, "pendiente");
+                }
+                modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
+            }catch (Exception e){}
+
+            modelMap.addAttribute("tablaPedidos", true);
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "realizarPicking";
         }catch (Exception ex){
+            try{
+                for(int i=0; i<pedidos.length; i++){
+                    DTOrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
+                    FabricaLogica.getControladorPedidos().modificarEstadoDePedido(orden, "pendiente");
+                }
+                modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
+            }catch (Exception e){}
+
+            modelMap.addAttribute("tablaPedidos", true);
             modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
             return "realizarPicking";
         }
@@ -527,13 +565,13 @@ public class ControladorPedidos {
                     if(p.getProducto().getCodigo() == linea.getProducto().getCodigo()){
                         int cantidadARestar = linea.getCantidad();
                         p.setCantidad(p.getCantidad() - cantidadARestar);
-                        while((p.getLotes().get(0) != null) && (p.getLotes().get(0).getCantUnidades() < cantidadARestar)){
+                        while((p.getLotes().size() > 0) && (p.getLotes().get(0).getCantUnidades() <= cantidadARestar)){
                             cantidadARestar = cantidadARestar - p.getLotes().get(0).getCantUnidades();
                             FabricaLogica.getControladorDeposito().bajaLote(p.getLotes().get(0));
                             p.getLotes().remove(0);
                         }
 
-                        if(p.getLotes().get(0) != null){
+                        if(p.getLotes().size() > 0){
                             p.getLotes().get(0).setCantUnidades(p.getLotes().get(0).getCantUnidades() - cantidadARestar);
                         }
 

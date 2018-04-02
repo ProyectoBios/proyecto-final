@@ -180,11 +180,15 @@ class ControladorPedidos implements IPedidos {
             orden.setSubtotal(orden.getSubtotal() + producto.getPrecioActual()*cantidad);
         }else {
             int numero = orden.getLineas().size() + 1;
-            DTLineaPedido lineaPedido = new DTLineaPedido(numero, cantidad, cantidad * producto.getPrecioActual(), producto);
+            linea = new DTLineaPedido(numero, cantidad, cantidad * producto.getPrecioActual(), producto);
 
-            orden.getLineas().add(lineaPedido);
-            orden.setSubtotal(orden.getSubtotal() + lineaPedido.getImporte());
+            orden.getLineas().add(linea);
+            orden.setSubtotal(orden.getSubtotal() + linea.getImporte());
         }
+
+
+
+
     }
 
     @Override
@@ -228,7 +232,7 @@ class ControladorPedidos implements IPedidos {
 
                 while(p.getCantidad() > p.getCantidadUnidadesTotal()){
                     if(stocks.get(p.getProducto().getCodigo()).size() == 0){
-                        throw new ExcepcionFrigorifico("ERROR! No hay suficiente stock de: " + p.getProducto().getNombre() + " para realizar el picking seleccionado");
+                        throw new ExcepcionFrigorifico("ERROR! No hay suficiente stock de: " + p.getProducto().getNombre() + " para satisfacer el pedido con ID: " + orden.getId());
                     }
                     p.getLotes().add(stocks.get(p.getProducto().getCodigo()).get(0));
                     stocks.get(p.getProducto().getCodigo()).remove(0);
