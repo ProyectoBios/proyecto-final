@@ -268,7 +268,6 @@ public class ControladorDeposito {
             if(listaRacks.size() == 0) {
                 modelMap.addAttribute("mensaje", "No se encontraron Racks");
             }
-            modelMap.addAttribute("racks",listaRacks);
             session.setAttribute("racks", listaRacks);
             return "EstadoDeRack";
 
@@ -433,11 +432,19 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value = "/EstadoDeRack", method = RequestMethod.POST, params = "action=Seleccionar")
-    public String listarLotesXRack(@RequestParam(value="letraRack", required = false) String letraRack, ModelMap modelMap, HttpSession session) throws Exception {
-        ArrayList<DTLote> lotes = FabricaLogica.getControladorDeposito().listarLotesXRack(letraRack);
-        session.setAttribute("lotes", lotes);
-        modelMap.addAttribute("tablaRack", true);
-        return "EstadoDeRack";
+    public String listarLotesXRack(@RequestParam(value="letraRacks", required = false) String letraRack, ModelMap modelMap, HttpSession session) throws Exception {
+        try{
+            if(letraRack.isEmpty()) {
+                modelMap.addAttribute("mensaje", "Debe seleccionar un rack de la lista");
+            } else {
+                ArrayList<ArrayList<DTLote>> lotes = FabricaLogica.getControladorDeposito().obtenerRack(FabricaLogica.getControladorDeposito().buscarRack(letraRack));
+                session.setAttribute("lotes", lotes);
+                modelMap.addAttribute("tablaRack", true);
+            }
+            return "EstadoDeRack";
+        }catch (Exception ex){
+            throw ex;
+        }
     }
 
     @RequestMapping(value="/AltaLote", method = RequestMethod.POST, params="action=Limpiar")
@@ -453,7 +460,6 @@ public class ControladorDeposito {
             return "error";
         }
     }
-
 
 
     @InitBinder

@@ -19,6 +19,7 @@ public interface IDeposito {
     public boolean esUbicacionVacia(DTUbicacion ubicacion) throws Exception;
     public void bajaRack(DTRack rack) throws Exception;
     public ArrayList<DTRack> listarRacks() throws Exception;
+    ArrayList<ArrayList<DTLote>> obtenerRack(DTRack rack) throws Exception;
     //endregion
     //region Lote
     public int altaLote(DTLote lote) throws Exception;

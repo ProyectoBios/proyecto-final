@@ -30,6 +30,25 @@ public class DTUbicacion {
         this.rack = rack;
     }
 
+    public String getUbicacionString(){
+        String ubicacion = "";
+
+        ubicacion+= this.getRack().getLetra();
+        if(this.getFila() <= 9){
+            ubicacion+="0" + this.getFila();
+        }else{
+            ubicacion+=this.getFila();
+        }
+
+        if(this.getColumna() <= 9){
+            ubicacion+="0" + this.getColumna();
+        }else{
+            ubicacion+=this.getColumna();
+        }
+
+        return ubicacion;
+    }
+
     public DTUbicacion(int fila, int columna, DTRack rack) {
         this.fila = fila;
         this.columna = columna;

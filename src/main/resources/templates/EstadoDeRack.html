@@ -67,8 +67,9 @@
                                     <tr>
                                         <td style="width: 25%"><label>Seleccione un rack: </label></td>
                                         <td>
-                                            <select name="racks">
-                                                <option th:each="r : ${racks}" th:value="${r.Letra}" th:text="${r.Letra}">Rack 1</option>
+                                            <select name="letraRacks">
+                                                <option th:value="null">Rack</option>
+                                                <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}">Rack 1</option>
                                             </select>
                                         </td>
                                         <td style="width: 60%">
@@ -80,42 +81,46 @@
 
                                 <table th:if="${tablaRack}" class="linea" id="rack" style="display: table; text-align: center">
                                     <tbody>
-                                    <tr th:each="l : ${session.lotes}">
-                                        <td th:if="${l.CantUnidades != 0}" th:text="${l.Id}" style="background-color: aqua; ">ID Lote</td> <!-- Fatla crear un botón por cada lote y mostrar de a 5 por fila -->
-                                        <td th:if="${l.CantUnidades == 0}" th:text="vacío">vacío</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                    <tr th:each="fila : ${session.lotes}">
+                                        <th:block th:each="l : ${fila}">
+                                            <td th:if="${l.cantUnidades != 0}" th:text="${l.id + ' ' + l.ubicacion.ubicacionString}" style="background-color: aqua; ">ID Lote</td> <!-- Fatla crear un botón por cada lote y mostrar de a 5 por fila -->
+                                            <td th:if="${l.cantUnidades == 0}" th:text="${'vacío ' + l.ubicacion.ubicacionString}">vacío</td>
+                                        </th:block>
+                                   </tr>
+                                   </tbody>
+                               </table>
 
-                                <table th:if="${tablaEspLote}" id="espLote" style="display: table">
-                                    <thead>
-                                        <th style="width: 15%">Ubicación</th>
-                                        <th># ID</th>
-                                        <th style="width: 40%">Producto</th>
-                                        <th style="width: 10%">Cantidad</th>
-                                        <th>Vence</th>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td th:text="${lote.Ubicacion.Fila + ' ($' + lote.Ubicacion.Columna')'}">0101</td>
-                                        <td th:text="${lote.Id}">15</td>
-                                        <td th:text="${lote.Producto.Nombre}">Chorelos</td>
-                                        <td th:text="${lote.Cantidad}">200</td>
-                                        <td th:text="${lote.FechaVencimiento}">18/04/2019</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                               <table th:if="${tablaEspLote}" id="espLote" style="display: table">
+                                   <form action="#" th:action="@{/EstadoDeRack}" name="EstadoDeRack" method="post">
+                                       <thead>
+                                           <th style="width: 15%">Ubicación</th>
+                                           <th># ID</th>
+                                           <th style="width: 40%">Producto</th>
+                                           <th style="width: 10%">Cantidad</th>
+                                           <th>Vence</th>
+                                       </thead>
+                                       <tbody>
+                                       <tr>
+                                           <td th:text="${lote.Ubicacion.Fila + lote.Ubicacion.Columna}">0101</td>
+                                           <td th:text="${lote.Id}">15</td>
+                                           <td th:text="${lote.Producto.Nombre}">Chorelos</td>
+                                           <td th:text="${lote.Cantidad}">200</td>
+                                           <td th:text="${lote.FechaVencimiento}">18/04/2019</td>
+                                       </tr>
+                                       </tbody>
+                                   </form>
+                               </table>
 
-                                <label th:text="${mensaje}">Mensaje</label>
+                               <label th:text="${mensaje}">Mensaje</label>
 
-                            </form>
+                           </form>
 
-                        </div>
+                       </div>
 
-                    </div>
-                </section>
+                   </div>
+               </section>
 
-        <!-- Footer -->
+       <!-- Footer -->
         <footer id="footer">
 
                 <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />

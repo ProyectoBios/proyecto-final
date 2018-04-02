@@ -3,6 +3,8 @@ package proyecto.logica;
 import javafx.scene.effect.SepiaTone;
 import proyecto.datatypes.*;
 import proyecto.persistencia.*;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 class ControladorDeposito implements  IDeposito {
@@ -197,6 +199,33 @@ class ControladorDeposito implements  IDeposito {
     @Override
     public ArrayList<DTLote> listarLotesXRack(String letra) throws Exception {
         return FabricaPersistencia.getControladorDeposito().listarLotesXRack(letra);
+    }
+
+    @Override
+    public ArrayList<ArrayList<DTLote>> obtenerRack(DTRack rack) throws Exception{
+        ArrayList<ArrayList<DTLote>> rackResultado = new ArrayList<ArrayList<DTLote>>();
+
+        ArrayList<DTLote> lotes = listarLotesXRack(rack.getLetra());
+
+        for(int i = 1; i<=rack.getDimAlto();i++){
+            ArrayList<DTLote> fila = new ArrayList<>();
+            for(int j = 1; j<=rack.getDimAncho();j++){
+                DTLote lote = new DTLote();
+                lote.setUbicacion(new DTUbicacion(i, j, rack));
+                for (DTLote l : lotes) {
+                    if(l.getUbicacion().getFila()>i || (l.getUbicacion().getFila()==i && l.getUbicacion().getColumna()>j)){
+                        break;
+                    }
+                    if(l.getUbicacion().getFila()==i && l.getUbicacion().getColumna()==j){
+                        lote = l;
+                        break;
+                    }
+                }
+                fila.add(lote);
+            }
+            rackResultado.add(fila);
+        }
+        return  rackResultado;
     }
 
     @Override
