@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Listado De Pedidos</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+    <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
+    <link rel="stylesheet" th:href="@{assets/css/main.css}" />
+    <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+    <style>
+        .grilla tbody tr:nth-child(2n + 1) {
+			background-color: rgba(144, 144, 144, 0.075);
+		}
+    </style>
+
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+    <h1 id="logo"><a th:href="@{/}">Centenario</a></h1>
+    <nav id="nav">
+        <ul>
+            <li><a th:href="@{/}">Inicio</a></li>
+            <li>
+                <a href="#" class="submenu">Menú</a>
+                <ul>
+                    <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
+                    <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
+                    <li><a th:href="@{/EstadoDeRack}">Estado de Rack</a></li>
+                    <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
+                    <li><a th:href="@{/AltaOrdenDePedido}">Alta orden de pedido</a></li>
+                    <li><a th:href="@{/EstadoDePedido}">Estado de pedidos</a></li>
+                    <li>
+                        <a href="#">Submenu</a>
+                        <ul>
+                            <li><a href="#">Opción uno</a></li>
+                            <li><a href="#">Opción dos</a></li>
+                            <li><a href="#">Opción tres</a></li>
+                            <li><a href="#">Opción cuatro</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main -->
+<section id="main" class="wrapper">
+    <div class="inner">
+        <header class="major">
+            <h2>Sección Usuarios</h2>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
+            <h3>Listado de pedidos</h3>
+
+            <!-- Formulario con la Tabla -->
+            <table id="tablaPedidos" width="100%">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Op. Telefonico</th>
+                    <th>Preparador</th>
+                    <th>Repartidor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p : ${listadoPedidos}">
+                    <form action="#" th:action="@{/EstadoDePedido}" method="post">
+                        <td th:text="${p.Id}"></td>
+                        <td th:text="${p.Cliente.Nombre}"></td>
+                        <td th:text="${#dates.format(p.Fecha, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${p.Estado}"></td>
+                        <td th:text="${p.Total}"></td>
+                        <td th:text="---"></td>
+                        <td th:text="---"></td>
+                        <td th:text="---"></td>
+                        <td>
+                            <input type="hidden" th:value="${p.Id}" name="idPedido"/>
+                            <input type="submit" name="action" value="Detalle" />
+                        </td>
+                    </form>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <label th:text="${mensaje}"></label>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+    <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
+        <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+</footer>
+
+
+<!-- Scripts -->
+
+
+<script th:src="@{assets/js/tablesort.js}"> </script>
+<script th:src="@{assets/js/tablesort.date.js}"> </script>
+<script th:src="@{assets/js/tablesort.number.js}"> </script>
+
+<script>
+  new Tablesort(document.getElementById('tablaPedidos'));
+</script>
+
+<script th:src="@{assets/js/jquery.min.js}"> </script>
+<script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
+<script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{assets/js/skel.min.js}"></script>
+<script th:src="@{assets/js/util.js}"></script>
+<!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
+<script th:src="@{assets/js/main.js}"></script>
+
+</body>
+</html>

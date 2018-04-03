@@ -17,16 +17,6 @@ import java.util.Date;
 @Controller
 public class ControladorPedidos {
 
-    /*@RequestMapping("/")
-    public String index(){
-        return "index";
-    }
-
-    @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Agregar")
-    public String AltaOrdenDePedido() {
-        return "/AltaOrdenDePedido";
-    }*/
-
     @RequestMapping(value="/EstadoDePedido", method = RequestMethod.GET)
     public String getEstadoDePedido(ModelMap modelMap){
         modelMap.addAttribute("tablaClientes", false);
@@ -49,7 +39,7 @@ public class ControladorPedidos {
             }
 
             if(ordenPedido==null){
-                if(nombreCliente==""){
+                if(nombreCliente.isEmpty()){
                     throw new ExcepcionFrigorifico("No hay coincidencias con los parámetros de búsqueda.");
                 }
 
@@ -595,6 +585,22 @@ public class ControladorPedidos {
         }catch (Exception ex){
             modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
             return "realizarPicking";
+        }
+    }
+
+    @RequestMapping(value="/ListadoDePedidos", method = RequestMethod.GET)
+    public String getListadoDePedidos(ModelMap modelMap, HttpSession session){
+        try{
+            ArrayList<DTOrdenPedido> pedidos = FabricaLogica.getControladorPedidos().listarPedidos();
+            session.setAttribute("ListadoDePedidos", pedidos);
+            modelMap.addAttribute("listadoPedidos", pedidos);
+            return "ListadoDePedidos";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "ListadoDePedidos";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            return "ListadoDePedidos";
         }
     }
 

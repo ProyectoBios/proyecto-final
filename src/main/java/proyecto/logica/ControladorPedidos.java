@@ -185,10 +185,6 @@ class ControladorPedidos implements IPedidos {
             orden.getLineas().add(linea);
             orden.setSubtotal(orden.getSubtotal() + linea.getImporte());
         }
-
-
-
-
     }
 
     @Override
@@ -264,6 +260,11 @@ class ControladorPedidos implements IPedidos {
         validarEstadoPedido(estado);
         ordenPedido.setEstado(estado);
         FabricaPersistencia.getControladorPedidos().modificarEstadoDePedido(ordenPedido, estado);
+    }
+
+    @Override
+    public ArrayList<DTOrdenPedido> listarPedidos() throws Exception {
+        return FabricaPersistencia.getControladorPedidos().listarPedidos();
     }
 
     //endregion

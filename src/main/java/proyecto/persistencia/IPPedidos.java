@@ -18,6 +18,7 @@ public interface IPPedidos {
     public ArrayList<DTOrdenPedido> buscarOrdenesXCliente(DTCliente cliente) throws Exception;
     public void modificarEstadoDePedido(DTOrdenPedido orden, String estado) throws Exception;
     public ArrayList<DTOrdenPedido> listarPedidosXEstado(String estado) throws Exception;
+    public ArrayList<DTOrdenPedido> listarPedidos() throws Exception;
 
     //endregion
 }

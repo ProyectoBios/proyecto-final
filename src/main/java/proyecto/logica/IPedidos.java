@@ -21,5 +21,6 @@ public interface IPedidos {
     public ArrayList<DTOrdenPedido> listarPedidosXEstado(String estado) throws Exception;
     public ArrayList<DTPicking> obtenerPicking(ArrayList<DTOrdenPedido> ordenes) throws Exception;
     public void modificarEstadoDePedido(DTOrdenPedido ordenPedido, String estado) throws Exception;
+    public ArrayList<DTOrdenPedido> listarPedidos() throws Exception;
     //endregion
 }
