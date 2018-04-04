@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Listado De Pedidos</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+    <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
+    <link rel="stylesheet" th:href="@{assets/css/main.css}" />
+    <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+    <style>
+        .grilla tbody tr:nth-child(2n + 1) {
+			background-color: rgba(144, 144, 144, 0.075);
+		}
+    </style>
+
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+    <h1 id="logo"><a th:href="@{/}">Centenario</a></h1>
+    <nav id="nav">
+        <ul>
+            <li><a th:href="@{/}">Inicio</a></li>
+            <li>
+                <a href="#" class="submenu">Menú</a>
+                <ul>
+                    <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
+                    <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
+                    <li><a th:href="@{/EstadoDeRack}">Estado de Rack</a></li>
+                    <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
+                    <li><a th:href="@{/AltaOrdenDePedido}">Alta orden de pedido</a></li>
+                    <li><a th:href="@{/EstadoDePedido}">Estado de pedidos</a></li>
+                    <li>
+                        <a href="#">Submenu</a>
+                        <ul>
+                            <li><a href="#">Opción uno</a></li>
+                            <li><a href="#">Opción dos</a></li>
+                            <li><a href="#">Opción tres</a></li>
+                            <li><a href="#">Opción cuatro</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main -->
+<section id="main" class="wrapper">
+    <div class="inner">
+        <header class="major">
+            <h2>Sección Usuarios</h2>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
+            <h3>Listado de pedidos</h3>
+
+            <form action="#" th:action="@{/ListadoDePedidos}" method="post">
+                <table>
+                    <tr>
+                        <td>Cliente: </td>
+                        <td>
+                            <select name="cliente">
+                                <option th:value="null">---</option>
+                                <option th:each="c : ${session.clientes}" th:value="${c.Nombre}" th:text="${c.Nombre}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fechas: </td>
+                        <td>Inicial: <input type="date" name="fechaIni"/></td>
+                        <td>Final: <input type="date" name="fechaFin"/></td>
+                    </tr>
+                    <tr>
+                        <td>Importe: </td>
+                        <td>Min: <input type="number" step="any" name="importeMin"/></td>
+                        <td>Max: <input type="number" step="any" name="importeMax"/></td>
+                    </tr>
+                    <tr>
+                        <td>Estado: </td>
+                        <td>
+                            <select name="estado">
+                                <option th:value="null">---</option>
+                                <option value="pendiente">pendiente</option>
+                                <option value="en preparacion" >en preparacion</option>
+                                <option value="preparado" >preparado</option>
+                                <option value="en distribucion" >en distribucion</option>
+                                <option value="entregado" >entregado</option>
+                                <option value="entrega fallida">entrega fallida</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Op. Telefonico: </td>
+                        <td>
+                            <select name="opTel">
+                                <option th:value="null">---</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Preparador: </td>
+                        <td>
+                            <select name="preparador">
+                                <option th:value="null">---</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Repartidor: </td>
+                        <td>
+                            <select name="repartidor">
+                                <option th:value="null">---</option>
+                            </select>
+                        </td>
+                        <td align="right"><input type="submit" name="action" value="Filtrar"/></td>
+                    </tr>
+
+                </table>
+            </form>
+            <!-- Formulario con la Tabla -->
+            <table id="tablaPedidos" width="100%">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Op. Telefonico</th>
+                    <th>Preparador</th>
+                    <th>Repartidor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p : ${listadoPedidos}">
+                    <form action="#" th:action="@{/EstadoDePedido}" method="post">
+                        <td th:text="${p.Id}"></td>
+                        <td th:text="${p.Cliente.Nombre}"></td>
+                        <td th:text="${#dates.format(p.Fecha, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td th:text="${p.Estado}"></td>
+                        <td th:text="${p.Total}"></td>
+                        <td th:text="---"></td>
+                        <td th:text="---"></td>
+                        <td th:text="---"></td>
+                        <td>
+                            <input type="hidden" th:value="${p.Id}" name="idPedido"/>
+                            <input type="submit" name="action" value="Ver" />
+                        </td>
+                    </form>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <form action="#" th:action="@{/ListadoDePedidos}" method="get">
+                <input type="submit" value="Reestablecer" />
+            </form>
+
+            <label th:text="${mensaje}"></label>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+    <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
+        <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+</footer>
+
+
+<!-- Scripts -->
+
+
+<script th:src="@{assets/js/tablesort.js}"> </script>
+<script th:src="@{assets/js/tablesort.date.js}"> </script>
+<script th:src="@{assets/js/tablesort.number.js}"> </script>
+
+<script>
+  new Tablesort(document.getElementById('tablaPedidos'));
+</script>
+
+<script th:src="@{assets/js/jquery.min.js}"> </script>
+<script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
+<script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{assets/js/skel.min.js}"></script>
+<script th:src="@{assets/js/util.js}"></script>
+<!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
+<script th:src="@{assets/js/main.js}"></script>
+
+</body>
+</html>

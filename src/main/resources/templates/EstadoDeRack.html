@@ -70,7 +70,7 @@
                                         <td>
                                             <select name="letraRacks">
                                                 <option th:value="null">Rack</option>
-                                                <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}">Rack 1</option>
+                                                <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}"></option>
                                             </select>
                                         </td>
                                         <td style="width: 60%">

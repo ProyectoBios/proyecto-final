@@ -42,20 +42,7 @@ public class DTPicking {
     public String getUbicacionesString(){
         String ubicaciones = "";
         for(DTLote l : this.lotes){
-            ubicaciones+= l.getUbicacion().getRack().getLetra();
-            if(l.getUbicacion().getFila() <= 9){
-                ubicaciones+="0" + l.getUbicacion().getFila();
-            }else{
-                ubicaciones+=l.getUbicacion().getFila();
-            }
-
-            if(l.getUbicacion().getColumna() <= 9){
-                ubicaciones+="0" + l.getUbicacion().getColumna();
-            }else{
-                ubicaciones+=l.getUbicacion().getColumna();
-            }
-
-            ubicaciones+=", ";
+            ubicaciones+= l.getUbicacion().getUbicacionString() + ", ";
         }
         return ubicaciones.substring(0, ubicaciones.length() - 2);
     }
