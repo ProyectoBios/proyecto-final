@@ -1,4 +1,4 @@
-package proyecto.datatypes;
+package proyecto.entidades;
 
 import java.util.Date;
 

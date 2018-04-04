@@ -1,7 +1,7 @@
 package proyecto.persistencia;
 
-import proyecto.datatypes.DTCliente;
-import proyecto.datatypes.DTOrdenPedido;
+import proyecto.entidades.DTCliente;
+import proyecto.entidades.DTOrdenPedido;
 
 import java.util.ArrayList;
 

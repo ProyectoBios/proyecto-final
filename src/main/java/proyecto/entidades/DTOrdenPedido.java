@@ -1,7 +1,4 @@
-package proyecto.datatypes;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
+package proyecto.entidades;
 
 import java.util.ArrayList;
 import java.util.Date;

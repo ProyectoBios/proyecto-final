@@ -1,7 +1,7 @@
 package proyecto.controladores;
 
 import org.springframework.format.Formatter;
-import proyecto.datatypes.DTRack;
+import proyecto.entidades.DTRack;
 import proyecto.logica.FabricaLogica;
 
 import java.text.ParseException;

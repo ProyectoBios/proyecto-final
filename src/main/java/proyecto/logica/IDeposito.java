@@ -1,7 +1,6 @@
 package proyecto.logica;
-import proyecto.datatypes.*;
+import proyecto.entidades.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public interface IDeposito {
@@ -26,6 +25,7 @@ public interface IDeposito {
     public ArrayList<DTLote> obtenerLotesVencidos() throws Exception;
     public void bajaLote(DTLote lote) throws  Exception;
     public DTLote buscarLote(int id) throws Exception;
+    void moverLote(DTLote lote) throws Exception;
     public ArrayList<DTLote> listarLotesXRack(String letra) throws Exception;
     public void deshacerBajaLogicaLote(DTLote lote) throws Exception;
     public void actualizarStock(DTLote lote, int cant) throws Exception;

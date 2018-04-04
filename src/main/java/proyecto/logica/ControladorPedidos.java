@@ -1,9 +1,8 @@
 package proyecto.logica;
 
-import proyecto.datatypes.*;
+import proyecto.entidades.*;
 import proyecto.persistencia.FabricaPersistencia;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 

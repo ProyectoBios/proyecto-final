@@ -1,10 +1,8 @@
 package proyecto.logica;
 
-import javafx.scene.effect.SepiaTone;
-import proyecto.datatypes.*;
+import proyecto.entidades.*;
 import proyecto.persistencia.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 class ControladorDeposito implements  IDeposito {
@@ -194,6 +192,11 @@ class ControladorDeposito implements  IDeposito {
     @Override
     public DTLote buscarLote(int id) throws Exception {
         return FabricaPersistencia.getControladorDeposito().buscarLote(id);
+    }
+
+    @Override
+    public void moverLote(DTLote lote) throws Exception {
+        FabricaPersistencia.getControladorDeposito().moverLote(lote);
     }
 
     @Override

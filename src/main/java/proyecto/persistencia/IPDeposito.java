@@ -1,6 +1,6 @@
 package proyecto.persistencia;
 
-import proyecto.datatypes.*;
+import proyecto.entidades.*;
 
 import java.util.ArrayList;
 
@@ -24,6 +24,7 @@ public interface IPDeposito {
     public ArrayList<DTLote> obtenerLotesVencidos() throws Exception;
     public void bajaLote(DTLote lote) throws Exception;
     public DTLote buscarLote(int id) throws Exception;
+    void moverLote(DTLote lote) throws Exception;
     public ArrayList<DTLote> listarLotesXRack(String letra) throws Exception;
     public DTLote obtenerUbicacion(DTUbicacion ubicacion) throws Exception;
     public void bajaLogicaLote(DTLote lote) throws Exception;

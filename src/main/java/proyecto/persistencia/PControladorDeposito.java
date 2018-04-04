@@ -1,9 +1,8 @@
 package proyecto.persistencia;
-import proyecto.datatypes.*;
+import proyecto.entidades.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 
 class PControladorDeposito implements IPDeposito{
 
@@ -349,6 +348,28 @@ class PControladorDeposito implements IPDeposito{
                 lote = new DTLote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new DTUbicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
             }
             return lote;
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void moverLote(DTLote lote) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("UPDATE Lote SET letraRack = ?, fila = ?, columna = ? WHERE idLote = ?")){
+
+            consulta.setString(1, lote.getUbicacion().getRack().getLetra());
+            consulta.setInt(2, lote.getUbicacion().getFila());
+            consulta.setInt(3, lote.getUbicacion().getColumna());
+            consulta.setInt(4, lote.getId());
+
+
+            int filasAfectadas = consulta.executeUpdate();
+
+            if(filasAfectadas != 1){
+                throw new ExcepcionFrigorifico("¡ERROR! Ocurrió un error al mover el lote.");
+            }
+
         }catch(Exception ex){
             throw ex;
         }

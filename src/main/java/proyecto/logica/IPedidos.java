@@ -1,6 +1,6 @@
 package proyecto.logica;
 
-import proyecto.datatypes.*;
+import proyecto.entidades.*;
 
 import java.util.ArrayList;
 

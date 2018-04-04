@@ -10,25 +10,20 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import proyecto.datatypes.DTEspecificacionProducto;
-import proyecto.datatypes.DTLote;
-import proyecto.datatypes.DTRack;
-import proyecto.datatypes.ExcepcionFrigorifico;
+import proyecto.entidades.DTEspecificacionProducto;
+import proyecto.entidades.DTLote;
+import proyecto.entidades.DTRack;
+import proyecto.entidades.ExcepcionFrigorifico;
 import proyecto.logica.FabricaLogica;
 
 import java.util.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -429,6 +424,12 @@ public class ControladorDeposito {
             modelMap.addAttribute("mensaje", "¡ERROR! Ocurrió un error al dar de alta el lote.");
             return (T)"AltaLote";
         }
+    }
+
+    @RequestMapping(value="/MoverLote", method = RequestMethod.GET)
+    public String moverLote(DTLote lote) throws Exception{
+
+        return "MoverLote";
     }
 
     @RequestMapping(value = "/EstadoDeRack", method = RequestMethod.POST, params = "action=Seleccionar")

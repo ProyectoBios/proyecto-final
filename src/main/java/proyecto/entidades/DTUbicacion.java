@@ -1,4 +1,4 @@
-package proyecto.datatypes;
+package proyecto.entidades;
 
 public class DTUbicacion {
     private int fila;

@@ -5,14 +5,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
 import org.springframework.web.bind.annotation.*;
-import proyecto.datatypes.*;
+import proyecto.entidades.*;
 import proyecto.logica.FabricaLogica;
 
 import javax.servlet.http.HttpSession;
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 @Controller
 public class ControladorPedidos {

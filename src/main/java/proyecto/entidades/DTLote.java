@@ -1,8 +1,7 @@
-package proyecto.datatypes;
+package proyecto.entidades;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DTLote {

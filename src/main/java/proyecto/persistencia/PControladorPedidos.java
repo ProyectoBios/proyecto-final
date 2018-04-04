@@ -1,9 +1,9 @@
 package proyecto.persistencia;
 
-import proyecto.datatypes.DTCliente;
-import proyecto.datatypes.DTLineaPedido;
-import proyecto.datatypes.DTOrdenPedido;
-import proyecto.datatypes.ExcepcionFrigorifico;
+import proyecto.entidades.DTCliente;
+import proyecto.entidades.DTLineaPedido;
+import proyecto.entidades.DTOrdenPedido;
+import proyecto.entidades.ExcepcionFrigorifico;
 
 import java.sql.*;
 import java.util.ArrayList;

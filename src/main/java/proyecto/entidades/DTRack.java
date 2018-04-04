@@ -1,4 +1,4 @@
-package proyecto.datatypes;
+package proyecto.entidades;
 
 public class DTRack {
     private String letra;

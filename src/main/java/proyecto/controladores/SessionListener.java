@@ -6,9 +6,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
-import proyecto.datatypes.DTLote;
-import proyecto.datatypes.DTOrdenPedido;
-import proyecto.datatypes.DTPicking;
+import proyecto.entidades.DTOrdenPedido;
+import proyecto.entidades.DTPicking;
 import proyecto.logica.FabricaLogica;
 
 import javax.servlet.http.HttpSessionEvent;

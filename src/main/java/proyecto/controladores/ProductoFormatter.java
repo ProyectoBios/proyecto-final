@@ -1,8 +1,7 @@
 package proyecto.controladores;
 
 import org.springframework.format.Formatter;
-import org.springframework.stereotype.Service;
-import proyecto.datatypes.DTEspecificacionProducto;
+import proyecto.entidades.DTEspecificacionProducto;
 import proyecto.logica.FabricaLogica;
 
 import java.text.ParseException;
