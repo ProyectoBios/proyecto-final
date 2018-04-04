@@ -275,7 +275,7 @@ class PControladorPedidos implements IPPedidos{
             DTOrdenPedido pedido = null;
 
             while(resultado.next()){
-                pedido = new DTOrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                pedido = new DTOrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
                 pedidos.add(pedido);
             }
 

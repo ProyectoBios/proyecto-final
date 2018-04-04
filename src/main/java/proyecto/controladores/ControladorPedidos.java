@@ -1,9 +1,12 @@
 package proyecto.controladores;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import proyecto.datatypes.*;
 import proyecto.logica.FabricaLogica;
@@ -593,6 +596,7 @@ public class ControladorPedidos {
         try{
             ArrayList<DTOrdenPedido> pedidos = FabricaLogica.getControladorPedidos().listarPedidos();
             session.setAttribute("ListadoDePedidos", pedidos);
+            session.setAttribute("clientes", FabricaLogica.getControladorPedidos().buscarClientes(""));
             modelMap.addAttribute("listadoPedidos", pedidos);
             return "ListadoDePedidos";
         }catch (ExcepcionFrigorifico ex){
@@ -600,6 +604,105 @@ public class ControladorPedidos {
             return "ListadoDePedidos";
         }catch (Exception ex){
             modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            return "ListadoDePedidos";
+        }
+    }
+
+    @RequestMapping(value="/ListadoDePedidos", method = RequestMethod.POST, params="action=Filtrar")
+    public String filtrarPedidos(
+            @RequestParam String cliente,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaIni,
+            @RequestParam  @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin,
+            @RequestParam String importeMin,
+            @RequestParam String importeMax,
+            @RequestParam String estado,
+            ModelMap modelMap, HttpSession session) {
+        try{
+            ArrayList<DTOrdenPedido> resultado = new ArrayList<>((ArrayList<DTOrdenPedido>)session.getAttribute("ListadoDePedidos"));
+            ArrayList<DTOrdenPedido> remover = new ArrayList<>();
+
+            if(!cliente.equals("")){
+                for(DTOrdenPedido p : resultado){
+                    if(!p.getCliente().getNombre().equals(cliente)){
+                        remover.add(p);
+                    }
+                }
+                resultado.removeAll(remover);
+                remover.clear();
+            }
+
+            if(fechaIni != null){
+                for(DTOrdenPedido p : resultado){
+                    if(p.getFecha().before(fechaIni)){
+                        remover.add(p);
+                    }
+                }
+
+                resultado.removeAll(remover);
+                remover.clear();
+            }
+
+            if(fechaFin != null){
+                for(DTOrdenPedido p : resultado){
+                    if(p.getFecha().after(fechaFin)){
+                        remover.add(p);
+                    }
+                }
+                resultado.removeAll(remover);
+                remover.clear();
+            }
+
+            if(!importeMin.equals("")){
+                double min = 0;
+                try{
+                    min = Double.parseDouble(importeMin);
+                }catch (Exception ex){
+                    throw new ExcepcionFrigorifico("¡ERROR! Importe minimo inválido.");
+                }
+
+                for(DTOrdenPedido p : resultado){
+                    if(p.getTotal() < min){
+                        remover.add(p);
+                    }
+                }
+                resultado.removeAll(remover);
+                remover.clear();
+            }
+
+            if(!importeMax.equals("")){
+                double max = 0;
+                try{
+                    max = Double.parseDouble(importeMax);
+                }catch (Exception ex){
+                    throw new ExcepcionFrigorifico("¡ERROR! Importe máximo inválido.");
+                }
+
+                for(DTOrdenPedido p : resultado){
+                    if(p.getTotal() > max){
+                        remover.add(p);
+                    }
+                }
+                resultado.removeAll(remover);
+                remover.clear();
+            }
+
+            if(!estado.equals("")){
+                for(DTOrdenPedido p : resultado){
+                    if(!p.getEstado().equals(estado)){
+                        remover.add(p);
+                    }
+                }
+                resultado.removeAll(remover);
+                remover.clear();
+            }
+
+            modelMap.addAttribute("listadoPedidos", resultado);
+            return "ListadoDePedidos";
+        }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "ListadoDePedidos";
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al filtrar los pedidos.");
             return "ListadoDePedidos";
         }
     }

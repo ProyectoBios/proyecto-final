@@ -62,6 +62,69 @@
             <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
             <h3>Listado de pedidos</h3>
 
+            <form action="#" th:action="@{/ListadoDePedidos}" method="post">
+                <table>
+                    <tr>
+                        <td>Cliente: </td>
+                        <td>
+                            <select name="cliente">
+                                <option th:value="null">---</option>
+                                <option th:each="c : ${session.clientes}" th:value="${c.Nombre}" th:text="${c.Nombre}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fechas: </td>
+                        <td>Inicial: <input type="date" name="fechaIni"/></td>
+                        <td>Final: <input type="date" name="fechaFin"/></td>
+                    </tr>
+                    <tr>
+                        <td>Importe: </td>
+                        <td>Min: <input type="number" step="any" name="importeMin"/></td>
+                        <td>Max: <input type="number" step="any" name="importeMax"/></td>
+                    </tr>
+                    <tr>
+                        <td>Estado: </td>
+                        <td>
+                            <select name="estado">
+                                <option th:value="null">---</option>
+                                <option value="pendiente">pendiente</option>
+                                <option value="en preparacion" >en preparacion</option>
+                                <option value="preparado" >preparado</option>
+                                <option value="en distribucion" >en distribucion</option>
+                                <option value="entregado" >entregado</option>
+                                <option value="entrega fallida">entrega fallida</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Op. Telefonico: </td>
+                        <td>
+                            <select name="opTel">
+                                <option th:value="null">---</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Preparador: </td>
+                        <td>
+                            <select name="preparador">
+                                <option th:value="null">---</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Repartidor: </td>
+                        <td>
+                            <select name="repartidor">
+                                <option th:value="null">---</option>
+                            </select>
+                        </td>
+                        <td align="right"><input type="submit" name="action" value="Filtrar"/></td>
+                    </tr>
+
+                </table>
+            </form>
             <!-- Formulario con la Tabla -->
             <table id="tablaPedidos" width="100%">
                 <thead>
@@ -81,7 +144,7 @@
                     <form action="#" th:action="@{/EstadoDePedido}" method="post">
                         <td th:text="${p.Id}"></td>
                         <td th:text="${p.Cliente.Nombre}"></td>
-                        <td th:text="${#dates.format(p.Fecha, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${#dates.format(p.Fecha, 'dd/MM/yyyy HH:mm')}"></td>
                         <td th:text="${p.Estado}"></td>
                         <td th:text="${p.Total}"></td>
                         <td th:text="---"></td>
@@ -89,13 +152,17 @@
                         <td th:text="---"></td>
                         <td>
                             <input type="hidden" th:value="${p.Id}" name="idPedido"/>
-                            <input type="submit" name="action" value="Detalle" />
+                            <input type="submit" name="action" value="Ver" />
                         </td>
                     </form>
                 </tr>
 
                 </tbody>
             </table>
+
+            <form action="#" th:action="@{/ListadoDePedidos}" method="get">
+                <input type="submit" value="Reestablecer" />
+            </form>
 
             <label th:text="${mensaje}"></label>
         </div>
