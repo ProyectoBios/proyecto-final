@@ -1,8 +1,8 @@
 package proyecto.persistencia;
 
-import proyecto.entidades.DTCliente;
-import proyecto.entidades.DTLineaPedido;
-import proyecto.entidades.DTOrdenPedido;
+import proyecto.entidades.Cliente;
+import proyecto.entidades.LineaPedido;
+import proyecto.entidades.OrdenPedido;
 import proyecto.entidades.ExcepcionFrigorifico;
 
 import java.sql.*;
@@ -23,7 +23,7 @@ class PControladorPedidos implements IPPedidos{
 
     //region Clientes
     @Override
-    public DTCliente buscarCliente(String nombre) throws Exception{
+    public Cliente buscarCliente(String nombre) throws Exception{
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Cliente WHERE nombre = ?")){
 
@@ -31,10 +31,10 @@ class PControladorPedidos implements IPPedidos{
 
             ResultSet resultadoConsulta = consulta.executeQuery();
 
-            DTCliente cliente = null;
+            Cliente cliente = null;
 
             if(resultadoConsulta.next()){
-                cliente = new DTCliente(resultadoConsulta.getString("nombre"), resultadoConsulta.getString("telefono"), resultadoConsulta.getString("correo"));
+                cliente = new Cliente(resultadoConsulta.getString("nombre"), resultadoConsulta.getString("telefono"), resultadoConsulta.getString("correo"));
             }
 
             return cliente;
@@ -44,7 +44,7 @@ class PControladorPedidos implements IPPedidos{
     }
 
     @Override
-    public ArrayList<DTCliente> buscarClientes(String nombre) throws Exception{
+    public ArrayList<Cliente> buscarClientes(String nombre) throws Exception{
         try(Connection con = Conexion.AbrirConexion();
             CallableStatement consulta = con.prepareCall("{ CALL BuscarClientes(?)}")){
 
@@ -52,11 +52,11 @@ class PControladorPedidos implements IPPedidos{
 
             ResultSet resultadoConsulta = consulta.executeQuery();
 
-            ArrayList<DTCliente> clientes = new ArrayList<>();
-            DTCliente cliente = null;
+            ArrayList<Cliente> clientes = new ArrayList<>();
+            Cliente cliente = null;
 
             while(resultadoConsulta.next()){
-                cliente = new DTCliente(resultadoConsulta.getString("nombre"), resultadoConsulta.getString("telefono"), resultadoConsulta.getString("correo"));
+                cliente = new Cliente(resultadoConsulta.getString("nombre"), resultadoConsulta.getString("telefono"), resultadoConsulta.getString("correo"));
                 clientes.add(cliente);
             }
 
@@ -67,7 +67,7 @@ class PControladorPedidos implements IPPedidos{
     }
 
     @Override
-    public void altaCliente(DTCliente cliente) throws Exception {
+    public void altaCliente(Cliente cliente) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("INSERT INTO Cliente VALUES(?,?,?)")){
             consulta.setString(1, cliente.getNombre());
@@ -90,7 +90,7 @@ class PControladorPedidos implements IPPedidos{
 
 
     @Override
-    public DTOrdenPedido buscarOrdenPedido(int idOrden) throws Exception {
+    public OrdenPedido buscarOrdenPedido(int idOrden) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM OrdenPedido WHERE idOrden = ?")){
 
@@ -98,10 +98,10 @@ class PControladorPedidos implements IPPedidos{
 
             ResultSet resultado = consulta.executeQuery();
 
-            DTOrdenPedido orden = null;
+            OrdenPedido orden = null;
 
             if(resultado.next()){
-                orden = new DTOrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getDate("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getDate("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
             }
 
             return orden;
@@ -111,7 +111,7 @@ class PControladorPedidos implements IPPedidos{
     }
 
     @Override
-    public int altaOrdenDePedidio(DTOrdenPedido orden) throws Exception {
+    public int altaOrdenDePedidio(OrdenPedido orden) throws Exception {
         Connection con = null;
         CallableStatement consulta = null;
 
@@ -135,7 +135,7 @@ class PControladorPedidos implements IPPedidos{
             int id = consulta.getInt(8);
             orden.setId(id);
 
-            for(DTLineaPedido linea : orden.getLineas()){
+            for(LineaPedido linea : orden.getLineas()){
                 altaLineaDePedido(orden, linea, con);
             }
 
@@ -157,7 +157,7 @@ class PControladorPedidos implements IPPedidos{
         }
     }
 
-    private void altaLineaDePedido(DTOrdenPedido orden, DTLineaPedido linea, Connection con) throws Exception{
+    private void altaLineaDePedido(OrdenPedido orden, LineaPedido linea, Connection con) throws Exception{
         CallableStatement statement = null;
 
         try{
@@ -181,18 +181,18 @@ class PControladorPedidos implements IPPedidos{
     }
 
     @Override
-    public ArrayList<DTOrdenPedido> buscarOrdenesXCliente(DTCliente cliente) throws Exception {
+    public ArrayList<OrdenPedido> buscarOrdenesXCliente(Cliente cliente) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM OrdenPedido WHERE nombreCliente = ?")){
 
             consulta.setString(1, cliente.getNombre());
 
             ResultSet resultado = consulta.executeQuery();
-            ArrayList<DTOrdenPedido> ordenes = new ArrayList<>();
-            DTOrdenPedido orden = null;
+            ArrayList<OrdenPedido> ordenes = new ArrayList<>();
+            OrdenPedido orden = null;
 
             while(resultado.next()){
-                orden = new DTOrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), cliente, buscarLineasXOrden(resultado.getInt("idOrden")));
+                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), cliente, buscarLineasXOrden(resultado.getInt("idOrden")));
                 ordenes.add(orden);
             }
 
@@ -202,7 +202,7 @@ class PControladorPedidos implements IPPedidos{
         }
     }
 
-    private ArrayList<DTLineaPedido> buscarLineasXOrden(int idOrden) throws Exception{
+    private ArrayList<LineaPedido> buscarLineasXOrden(int idOrden) throws Exception{
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM LineaPedido WHERE idOrden = ?")){
 
@@ -210,11 +210,11 @@ class PControladorPedidos implements IPPedidos{
 
             ResultSet resultado = consulta.executeQuery();
 
-            ArrayList<DTLineaPedido> lineas = new ArrayList<>();
-            DTLineaPedido linea = null;
+            ArrayList<LineaPedido> lineas = new ArrayList<>();
+            LineaPedido linea = null;
 
             while(resultado.next()){
-                linea = new DTLineaPedido(resultado.getInt("numero"), resultado.getInt("cantidad"), resultado.getDouble("importe"), PControladorDeposito.getInstancia().buscarProducto(resultado.getInt("idProducto")));
+                linea = new LineaPedido(resultado.getInt("numero"), resultado.getInt("cantidad"), resultado.getDouble("importe"), PControladorDeposito.getInstancia().buscarProducto(resultado.getInt("idProducto")));
                 lineas.add(linea);
             }
 
@@ -225,7 +225,7 @@ class PControladorPedidos implements IPPedidos{
     }
 
     @Override
-    public void modificarEstadoDePedido(DTOrdenPedido orden, String estado) throws Exception {
+    public void modificarEstadoDePedido(OrdenPedido orden, String estado) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
         PreparedStatement consulta = con.prepareStatement("UPDATE OrdenPedido SET estado = ? WHERE idOrden = ?")){
 
@@ -244,18 +244,18 @@ class PControladorPedidos implements IPPedidos{
     }
 
     @Override
-    public ArrayList<DTOrdenPedido> listarPedidosXEstado(String estado) throws Exception{
+    public ArrayList<OrdenPedido> listarPedidosXEstado(String estado) throws Exception{
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM OrdenPedido WHERE estado = ?")){
 
             preparedStatement.setString(1, estado);
 
             ResultSet resultado = preparedStatement.executeQuery();
-            ArrayList<DTOrdenPedido> pedidos = new ArrayList<>();
-            DTOrdenPedido pedido = null;
+            ArrayList<OrdenPedido> pedidos = new ArrayList<>();
+            OrdenPedido pedido = null;
 
             while(resultado.next()){
-                pedido = new DTOrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getDate("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
                 pedidos.add(pedido);
             }
 
@@ -266,16 +266,16 @@ class PControladorPedidos implements IPPedidos{
     }
 
     @Override
-    public ArrayList<DTOrdenPedido> listarPedidos() throws Exception {
+    public ArrayList<OrdenPedido> listarPedidos() throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM OrdenPedido")){
 
             ResultSet resultado = preparedStatement.executeQuery();
-            ArrayList<DTOrdenPedido> pedidos = new ArrayList<>();
-            DTOrdenPedido pedido = null;
+            ArrayList<OrdenPedido> pedidos = new ArrayList<>();
+            OrdenPedido pedido = null;
 
             while(resultado.next()){
-                pedido = new DTOrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
                 pedidos.add(pedido);
             }
 

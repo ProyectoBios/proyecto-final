@@ -13,9 +13,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import proyecto.entidades.DTEspecificacionProducto;
-import proyecto.entidades.DTLote;
-import proyecto.entidades.DTRack;
+import proyecto.entidades.EspecificacionProducto;
+import proyecto.entidades.Lote;
+import proyecto.entidades.Rack;
 import proyecto.entidades.ExcepcionFrigorifico;
 import proyecto.logica.FabricaLogica;
 
@@ -37,19 +37,19 @@ public class ControladorDeposito {
     //region ABMProducto
     @RequestMapping(value="/ABMProducto", method = RequestMethod.GET)
     public String GetAbmProducto(ModelMap modelMap){
-        modelMap.addAttribute("producto", new DTEspecificacionProducto());
+        modelMap.addAttribute("producto", new EspecificacionProducto());
         botonesPorDefectoProducto(modelMap);
 
         return "ABMProducto";
     }
 
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Buscar")
-    public String buscarProducto(@ModelAttribute DTEspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
+    public String buscarProducto(@ModelAttribute EspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
         try {
             producto = FabricaLogica.getControladorDeposito().buscarProducto(producto.getCodigo());
 
             if(producto==null){
-                producto = new DTEspecificacionProducto();
+                producto = new EspecificacionProducto();
                 modelMap.addAttribute("producto", producto);
                 botonesAltaProducto(modelMap);
 
@@ -60,7 +60,7 @@ public class ControladorDeposito {
 
             return "ABMProducto";
         }catch(ExcepcionFrigorifico ex){
-            producto = new DTEspecificacionProducto();
+            producto = new EspecificacionProducto();
             modelMap.addAttribute("producto", producto);
             botonesPorDefectoProducto(modelMap);
             modelMap.addAttribute("mensaje", ex.getMessage());
@@ -75,11 +75,11 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Agregar")
-    public String agregarABMProducto(@ModelAttribute DTEspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
+    public String agregarABMProducto(@ModelAttribute EspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
         try {
             int codigo = FabricaLogica.getControladorDeposito().altaDeProducto(producto);
 
-            modelMap.addAttribute("producto", new DTEspecificacionProducto());
+            modelMap.addAttribute("producto", new EspecificacionProducto());
             botonesPorDefectoProducto(modelMap);
             modelMap.addAttribute("mensaje", "Alta exitosa. ID:  " + codigo + ".");
             return "ABMProducto";
@@ -97,11 +97,11 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Eliminar")
-    public String eliminarABMProducto(@ModelAttribute DTEspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
+    public String eliminarABMProducto(@ModelAttribute EspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
         try {
             FabricaLogica.getControladorDeposito().bajaProducto(producto);
 
-            modelMap.addAttribute("producto", new DTEspecificacionProducto());
+            modelMap.addAttribute("producto", new EspecificacionProducto());
             botonesPorDefectoProducto(modelMap);
             modelMap.addAttribute("mensaje", "Baja exitosa!");
             return "ABMProducto";
@@ -119,11 +119,11 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Modificar")
-    public String modificarABMProducto(@ModelAttribute DTEspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
+    public String modificarABMProducto(@ModelAttribute EspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
         try {
             FabricaLogica.getControladorDeposito().modificarProducto(producto);
 
-            modelMap.addAttribute("producto", new DTEspecificacionProducto());
+            modelMap.addAttribute("producto", new EspecificacionProducto());
             botonesPorDefectoProducto(modelMap);
             modelMap.addAttribute("mensaje", "Modificacion exitosa!");
             return "ABMProducto";
@@ -142,7 +142,7 @@ public class ControladorDeposito {
 
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Limpiar")
     public String limpiarABMProducto(ModelMap modelMap){
-        modelMap.addAttribute("producto", new DTEspecificacionProducto());
+        modelMap.addAttribute("producto", new EspecificacionProducto());
         botonesPorDefectoProducto(modelMap);
 
         return "ABMProducto";
@@ -176,18 +176,18 @@ public class ControladorDeposito {
     //region AltaRack
     @RequestMapping(value="/AltaRack", method = RequestMethod.GET)
     public String GetAltaRack(ModelMap modelMap){
-        modelMap.addAttribute("rack", new DTRack());
+        modelMap.addAttribute("rack", new Rack());
         botonesPorDefectoRack(modelMap);
 
         return "AltaRack";
     }
 
     @RequestMapping(value="/AltaRack", method = RequestMethod.POST, params="action=Agregar")
-    public String agregarAltaRack(@ModelAttribute DTRack rack, BindingResult bindingResult, ModelMap modelMap){
+    public String agregarAltaRack(@ModelAttribute Rack rack, BindingResult bindingResult, ModelMap modelMap){
         try {
             FabricaLogica.getControladorDeposito().altaRack(rack);
 
-            modelMap.addAttribute("rack", new DTRack());
+            modelMap.addAttribute("rack", new Rack());
             botonesPorDefectoRack(modelMap);
             modelMap.addAttribute("mensaje", "¡Alta exitosa!");
             return "AltaRack";
@@ -205,13 +205,13 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value="/AltaRack", method = RequestMethod.POST, params="action=Buscar")
-    public String buscarAltaRack(@ModelAttribute DTRack rack, BindingResult bindingResult, ModelMap modelMap){
+    public String buscarAltaRack(@ModelAttribute Rack rack, BindingResult bindingResult, ModelMap modelMap){
         String letra = rack.getLetra();
         try{
             rack = FabricaLogica.getControladorDeposito().buscarRack(letra);
 
             if(rack == null){
-                rack = new DTRack();
+                rack = new Rack();
                 rack.setLetra(letra);
                 modelMap.addAttribute("rack", rack);
                 botonesAltaRack(modelMap);
@@ -222,12 +222,12 @@ public class ControladorDeposito {
 
             return "AltaRack";
         }catch(ExcepcionFrigorifico ex){
-            modelMap.addAttribute("rack", new DTRack());
+            modelMap.addAttribute("rack", new Rack());
             botonesPorDefectoRack(modelMap);
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "AltaRack";
         }catch(Exception ex){
-            modelMap.addAttribute("rack", new DTRack());
+            modelMap.addAttribute("rack", new Rack());
             botonesPorDefectoRack(modelMap);
             modelMap.addAttribute("mensaje", "¡ERROR! No se pudo buscar el rack");
             return "AltaRack";
@@ -235,11 +235,11 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value="/AltaRack", method = RequestMethod.POST, params="action=Eliminar")
-    public String bajaRack(@ModelAttribute DTRack rack, BindingResult bindingResult, ModelMap modelMap){
+    public String bajaRack(@ModelAttribute Rack rack, BindingResult bindingResult, ModelMap modelMap){
         try{
             FabricaLogica.getControladorDeposito().bajaRack(rack);
 
-            modelMap.addAttribute("rack", new DTRack());
+            modelMap.addAttribute("rack", new Rack());
             modelMap.addAttribute("mensaje", "Baja exitosa.");
             botonesPorDefectoRack(modelMap);
             return "AltaRack";
@@ -259,7 +259,7 @@ public class ControladorDeposito {
     @RequestMapping(value="/EstadoDeRack", method = RequestMethod.GET)
     public String getListarRacks(ModelMap modelMap, HttpSession session) throws Exception {
         try{
-            ArrayList<DTRack> listaRacks = FabricaLogica.getControladorDeposito().listarRacks();
+            ArrayList<Rack> listaRacks = FabricaLogica.getControladorDeposito().listarRacks();
             if(listaRacks.size() == 0) {
                 modelMap.addAttribute("mensaje", "No se encontraron Racks");
             }
@@ -295,7 +295,7 @@ public class ControladorDeposito {
 
     @RequestMapping(value="/AltaRack", method = RequestMethod.POST, params="action=Limpiar")
     public String limpiarAltaRack(ModelMap modelMap){
-        modelMap.addAttribute("rack", new DTRack());
+        modelMap.addAttribute("rack", new Rack());
         botonesPorDefectoRack(modelMap);
 
         return "AltaRack";
@@ -307,7 +307,7 @@ public class ControladorDeposito {
     @RequestMapping(value="/BajaLoteXVencimiento", method = RequestMethod.GET)
     public String getBajaLoteXVencimiento(ModelMap modelMap){
         try{
-            ArrayList<DTLote> lotes = FabricaLogica.getControladorDeposito().obtenerLotesVencidos();
+            ArrayList<Lote> lotes = FabricaLogica.getControladorDeposito().obtenerLotesVencidos();
             modelMap.addAttribute("lotes", lotes);
 
             return "BajaLoteXVencimiento";
@@ -323,7 +323,7 @@ public class ControladorDeposito {
     @RequestMapping(value="/BajaLoteXVencimiento", method = RequestMethod.POST)
     public String eliminarLote(@RequestParam(value="IdLote", required = false) String idLote, ModelMap modelMap){
         try{
-            DTLote lote = FabricaLogica.getControladorDeposito().buscarLote(Integer.valueOf(idLote));
+            Lote lote = FabricaLogica.getControladorDeposito().buscarLote(Integer.valueOf(idLote));
             FabricaLogica.getControladorDeposito().bajaLote(lote);
             modelMap.addAttribute("lotes", FabricaLogica.getControladorDeposito().obtenerLotesVencidos());
             modelMap.addAttribute("mensaje", "Baja de lote exitosa.");
@@ -340,23 +340,23 @@ public class ControladorDeposito {
 
     @RequestMapping(value="/AltaLote", method = RequestMethod.GET)
     public String getAltaLote(ModelMap modelMap){
-        ArrayList<DTEspecificacionProducto> prods = new ArrayList<DTEspecificacionProducto>();
-        ArrayList<DTRack> racks = new ArrayList<DTRack>();
+        ArrayList<EspecificacionProducto> prods = new ArrayList<EspecificacionProducto>();
+        ArrayList<Rack> racks = new ArrayList<Rack>();
         try {
             prods=FabricaLogica.getControladorDeposito().listarProductos();
             racks=FabricaLogica.getControladorDeposito().listarRacks();
-            modelMap.addAttribute("lote", new DTLote());
+            modelMap.addAttribute("lote", new Lote());
             modelMap.addAttribute("productos",prods);
             modelMap.addAttribute("racks", racks);
             return "AltaLote";
         }catch (ExcepcionFrigorifico ex){
-            modelMap.addAttribute("lote", new DTLote());
+            modelMap.addAttribute("lote", new Lote());
             modelMap.addAttribute("productos", prods);
             modelMap.addAttribute("racks", racks);
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "AltaLote";
         }catch (Exception ex){
-            modelMap.addAttribute("lote", new DTLote());
+            modelMap.addAttribute("lote", new Lote());
             modelMap.addAttribute("productos", prods);
             modelMap.addAttribute("racks", racks);
             modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al obtener el formulario.");
@@ -365,9 +365,9 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value="/AltaLote", method = RequestMethod.POST,  params="action=Agregar")
-    public <T> T altaLote(@ModelAttribute @Valid DTLote lote, BindingResult bindingResult, ModelMap modelMap){
-        ArrayList<DTEspecificacionProducto> prods = new ArrayList<>();
-        ArrayList<DTRack> racks = new ArrayList<>();
+    public <T> T altaLote(@ModelAttribute @Valid Lote lote, BindingResult bindingResult, ModelMap modelMap){
+        ArrayList<EspecificacionProducto> prods = new ArrayList<>();
+        ArrayList<Rack> racks = new ArrayList<>();
         try{
             prods=FabricaLogica.getControladorDeposito().listarProductos();
             racks=FabricaLogica.getControladorDeposito().listarRacks();
@@ -406,7 +406,7 @@ public class ControladorDeposito {
 
 
 
-            /*modelMap.addAttribute("lote", new DTLote());
+            /*modelMap.addAttribute("lote", new Lote());
             modelMap.addAttribute("productos", prods);
             modelMap.addAttribute("racks", racks);
             modelMap.addAttribute("mensaje", "Alta exitosa. ID: " + codigo);
@@ -427,7 +427,7 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value="/MoverLote", method = RequestMethod.GET)
-    public String moverLote(DTLote lote) throws Exception{
+    public String moverLote(Lote lote) throws Exception{
 
         return "MoverLote";
     }
@@ -438,7 +438,7 @@ public class ControladorDeposito {
             if(letraRack.isEmpty()) {
                 modelMap.addAttribute("mensaje", "Debe seleccionar un rack de la lista");
             } else {
-                ArrayList<ArrayList<DTLote>> lotes = FabricaLogica.getControladorDeposito().obtenerRack(FabricaLogica.getControladorDeposito().buscarRack(letraRack));
+                ArrayList<ArrayList<Lote>> lotes = FabricaLogica.getControladorDeposito().obtenerRack(FabricaLogica.getControladorDeposito().buscarRack(letraRack));
                 session.setAttribute("lotes", lotes);
                 modelMap.addAttribute("tablaRack", true);
             }
@@ -451,7 +451,7 @@ public class ControladorDeposito {
     @RequestMapping(value="/AltaLote", method = RequestMethod.POST, params="action=Limpiar")
     public String limpiarAltaLote(ModelMap modelMap){
         try {
-            modelMap.addAttribute("lote", new DTLote());
+            modelMap.addAttribute("lote", new Lote());
             modelMap.addAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
             modelMap.addAttribute("racks", FabricaLogica.getControladorDeposito().listarRacks());
             return "AltaLote";

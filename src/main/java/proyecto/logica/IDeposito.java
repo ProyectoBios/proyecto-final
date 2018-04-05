@@ -1,34 +1,35 @@
 package proyecto.logica;
 import proyecto.entidades.*;
+import proyecto.entidades.EspecificacionProducto;
 
 import java.util.ArrayList;
 
 public interface IDeposito {
     //region Productos
-    public int altaDeProducto(DTEspecificacionProducto ep) throws Exception;
-    public void bajaProducto(DTEspecificacionProducto ep) throws Exception;
-    public void modificarProducto(DTEspecificacionProducto ep) throws Exception;
-    public DTEspecificacionProducto buscarProducto(int codigo) throws Exception;
-    public ArrayList<DTLote> buscarStock(DTEspecificacionProducto ep) throws Exception;
-    public ArrayList<DTEspecificacionProducto> listarProductos() throws Exception;
+    public int altaDeProducto(EspecificacionProducto ep) throws Exception;
+    public void bajaProducto(EspecificacionProducto ep) throws Exception;
+    public void modificarProducto(EspecificacionProducto ep) throws Exception;
+    public EspecificacionProducto buscarProducto(int codigo) throws Exception;
+    public ArrayList<Lote> buscarStock(EspecificacionProducto ep) throws Exception;
+    public ArrayList<EspecificacionProducto> listarProductos() throws Exception;
     //endregion
     //region Rack
-    public DTRack buscarRack(String letra) throws Exception;
-    public void altaRack(DTRack rack) throws Exception;
-    public boolean esUbicacionVacia(DTUbicacion ubicacion) throws Exception;
-    public void bajaRack(DTRack rack) throws Exception;
-    public ArrayList<DTRack> listarRacks() throws Exception;
-    ArrayList<ArrayList<DTLote>> obtenerRack(DTRack rack) throws Exception;
+    public Rack buscarRack(String letra) throws Exception;
+    public void altaRack(Rack rack) throws Exception;
+    public boolean esUbicacionVacia(Ubicacion ubicacion) throws Exception;
+    public void bajaRack(Rack rack) throws Exception;
+    public ArrayList<Rack> listarRacks() throws Exception;
+    ArrayList<ArrayList<Lote>> obtenerRack(Rack rack) throws Exception;
     //endregion
     //region Lote
-    public int altaLote(DTLote lote) throws Exception;
-    public ArrayList<DTLote> obtenerLotesVencidos() throws Exception;
-    public void bajaLote(DTLote lote) throws  Exception;
-    public DTLote buscarLote(int id) throws Exception;
-    void moverLote(DTLote lote) throws Exception;
-    public ArrayList<DTLote> listarLotesXRack(String letra) throws Exception;
-    public void deshacerBajaLogicaLote(DTLote lote) throws Exception;
-    public void actualizarStock(DTLote lote, int cant) throws Exception;
+    public int altaLote(Lote lote) throws Exception;
+    public ArrayList<Lote> obtenerLotesVencidos() throws Exception;
+    public void bajaLote(Lote lote) throws  Exception;
+    public Lote buscarLote(int id) throws Exception;
+    void moverLote(Lote lote) throws Exception;
+    public ArrayList<Lote> listarLotesXRack(String letra) throws Exception;
+    public void deshacerBajaLogicaLote(Lote lote) throws Exception;
+    public void actualizarStock(Lote lote, int cant) throws Exception;
     //endregion
 
 }

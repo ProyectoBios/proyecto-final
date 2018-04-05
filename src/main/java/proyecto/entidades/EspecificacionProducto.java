@@ -3,14 +3,14 @@ package proyecto.entidades;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DTEspecificacionProducto {
+public class EspecificacionProducto {
     private int codigo;
     private String nombre;
     private int minStock;
     private int stockCritico;
     private int maxStock;
 
-    private ArrayList<DTPrecio> historicoPrecios;
+    private ArrayList<Precio> historicoPrecios;
 
 
     public int getCodigo() {
@@ -53,11 +53,11 @@ public class DTEspecificacionProducto {
         this.maxStock = maxStock;
     }
 
-    public ArrayList<DTPrecio> getHistoricoPrecios() {
+    public ArrayList<Precio> getHistoricoPrecios() {
         return historicoPrecios;
     }
 
-    public void setHistoricoPrecios(ArrayList<DTPrecio> historicoPrecios) {
+    public void setHistoricoPrecios(ArrayList<Precio> historicoPrecios) {
         this.historicoPrecios = historicoPrecios;
     }
 
@@ -70,7 +70,7 @@ public class DTEspecificacionProducto {
     }
 
     public void setPrecioActual(double precio){
-        DTPrecio p = new DTPrecio(precio, new Date());
+        Precio p = new Precio(precio, new Date());
         if (historicoPrecios.size() > 0){
             historicoPrecios.get(0).setFechaFin(new Date());
         }
@@ -78,7 +78,7 @@ public class DTEspecificacionProducto {
         historicoPrecios.add(p);
     }
 
-    public DTEspecificacionProducto(int codigo, String nombre, int minStock, int stockCritico, int maxStock, ArrayList<DTPrecio> historico) {
+    public EspecificacionProducto(int codigo, String nombre, int minStock, int stockCritico, int maxStock, ArrayList<Precio> historico) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.minStock = minStock;
@@ -87,7 +87,7 @@ public class DTEspecificacionProducto {
         this.historicoPrecios = historico;
     }
 
-    public DTEspecificacionProducto() {
-        this(0, "N/D", 0, 0, 0, new ArrayList<DTPrecio>());
+    public EspecificacionProducto() {
+        this(0, "N/D", 0, 0, 0, new ArrayList<Precio>());
     }
 }

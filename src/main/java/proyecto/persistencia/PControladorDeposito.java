@@ -20,7 +20,7 @@ class PControladorDeposito implements IPDeposito{
 
     //region Productos
     @Override
-    public int altaDeProducto(DTEspecificacionProducto ep) throws Exception{
+    public int altaDeProducto(EspecificacionProducto ep) throws Exception{
 
         try(Connection con = Conexion.AbrirConexion();
             CallableStatement consulta = con.prepareCall("{ CALL AltaEspProducto(?,?,?,?,?,?) }")) {
@@ -50,7 +50,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public void bajaProducto(DTEspecificacionProducto ep) throws Exception{
+    public void bajaProducto(EspecificacionProducto ep) throws Exception{
 
         try (Connection con = Conexion.AbrirConexion();
              CallableStatement consulta = con.prepareCall("{ CALL BajaEspProducto(?) }")){
@@ -72,7 +72,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public void modificarProducto(DTEspecificacionProducto ep) throws Exception{
+    public void modificarProducto(EspecificacionProducto ep) throws Exception{
         try (Connection con = Conexion.AbrirConexion();
              CallableStatement consulta = con.prepareCall("{ CALL ModificarProducto(?,?,?,?,?,?) }")){
 
@@ -98,8 +98,8 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public DTEspecificacionProducto buscarProducto(int codigo) throws Exception{
-        DTEspecificacionProducto productoEncontrado = null;
+    public EspecificacionProducto buscarProducto(int codigo) throws Exception{
+        EspecificacionProducto productoEncontrado = null;
 
         try (Connection con = Conexion.AbrirConexion();
              PreparedStatement consulta = con.prepareStatement("SELECT * FROM EspecificacionProducto WHERE ID = ? AND Eliminado = 0;");){
@@ -109,7 +109,7 @@ class PControladorDeposito implements IPDeposito{
             ResultSet resultadoConsulta = consulta.executeQuery();
 
             if (resultadoConsulta.next()) {
-                productoEncontrado = new DTEspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), buscarHistorico(codigo));
+                productoEncontrado = new EspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), buscarHistorico(codigo));
             }
 
         } catch (SQLException ex) {
@@ -123,8 +123,8 @@ class PControladorDeposito implements IPDeposito{
 
     //devuelve el histórico de precio del producto especificado
     //ordenados por fecha inicial decreciente, el precio actual siempre está en la primera posicion.
-    public ArrayList<DTPrecio> buscarHistorico(int codigoProducto) throws Exception{
-        ArrayList<DTPrecio> historico = new ArrayList<DTPrecio>();
+    public ArrayList<Precio> buscarHistorico(int codigoProducto) throws Exception{
+        ArrayList<Precio> historico = new ArrayList<Precio>();
 
         try (Connection con = Conexion.AbrirConexion();
              PreparedStatement consulta = con.prepareStatement("SELECT * FROM PrecioProducto WHERE IDproducto = ? ORDER BY fechaIni DESC;");){
@@ -132,9 +132,9 @@ class PControladorDeposito implements IPDeposito{
             consulta.setInt(1, codigoProducto);
 
             ResultSet resultadoConsulta = consulta.executeQuery();
-            DTPrecio precio = null;
+            Precio precio = null;
             while (resultadoConsulta.next()) {
-                precio = new DTPrecio(resultadoConsulta.getDouble("precio"), resultadoConsulta.getTimestamp("fechaIni"), resultadoConsulta.getTimestamp("fechaFin"));
+                precio = new Precio(resultadoConsulta.getDouble("precio"), resultadoConsulta.getTimestamp("fechaIni"), resultadoConsulta.getTimestamp("fechaFin"));
                 historico.add(precio);
             }
 
@@ -149,8 +149,8 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public ArrayList<DTLote> buscarStock(DTEspecificacionProducto ep) throws Exception {
-        ArrayList<DTLote> stock = new ArrayList<DTLote>();
+    public ArrayList<Lote> buscarStock(EspecificacionProducto ep) throws Exception {
+        ArrayList<Lote> stock = new ArrayList<Lote>();
 
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE IDProducto = ? AND fechaVencimiento > NOW() AND eliminado = 0 ORDER BY fechaVencimiento ASC")){
@@ -158,9 +158,9 @@ class PControladorDeposito implements IPDeposito{
             consulta.setInt(1, ep.getCodigo());
 
             ResultSet resultadoConsulta = consulta.executeQuery();
-            DTLote lote = null;
+            Lote lote = null;
             while(resultadoConsulta.next()){
-                lote = new DTLote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), ep, new DTUbicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), ep, new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
                 stock.add(lote);
             }
 
@@ -172,15 +172,15 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public ArrayList<DTEspecificacionProducto> listarProductos() throws Exception {
+    public ArrayList<EspecificacionProducto> listarProductos() throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM EspecificacionProducto")){
 
             ResultSet resultadoConsulta = consulta.executeQuery();
-            ArrayList<DTEspecificacionProducto> productos = new ArrayList<DTEspecificacionProducto>();
-            DTEspecificacionProducto prod = null;
+            ArrayList<EspecificacionProducto> productos = new ArrayList<EspecificacionProducto>();
+            EspecificacionProducto prod = null;
             while(resultadoConsulta.next()){
-                prod = new DTEspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), buscarHistorico(resultadoConsulta.getInt("ID")));
+                prod = new EspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), buscarHistorico(resultadoConsulta.getInt("ID")));
                 productos.add(prod);
             }
             return productos;
@@ -194,8 +194,8 @@ class PControladorDeposito implements IPDeposito{
     //region Rack
 
     @Override
-    public DTRack buscarRack(String letra) throws Exception {
-        DTRack rackEncontrado = null;
+    public Rack buscarRack(String letra) throws Exception {
+        Rack rackEncontrado = null;
 
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Rack WHERE letra = ?;")){
@@ -205,7 +205,7 @@ class PControladorDeposito implements IPDeposito{
             ResultSet resultadoConsulta = consulta.executeQuery();
 
             if (resultadoConsulta.next()){
-                rackEncontrado = new DTRack(resultadoConsulta.getString("letra"), resultadoConsulta.getInt("dimAlto"), resultadoConsulta.getInt("dimAncho"));
+                rackEncontrado = new Rack(resultadoConsulta.getString("letra"), resultadoConsulta.getInt("dimAlto"), resultadoConsulta.getInt("dimAncho"));
             }
         }catch(Exception ex){
             throw ex;
@@ -214,7 +214,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public void altaRack(DTRack rack) throws Exception {
+    public void altaRack(Rack rack) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             CallableStatement consulta = con.prepareCall("{ CALL AltaRack(?,?,?) }");){
             consulta.setString(1, rack.getLetra());
@@ -233,7 +233,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public void bajaRack(DTRack rack) throws Exception {
+    public void bajaRack(Rack rack) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             CallableStatement consulta = con.prepareCall("{ CALL BajaRack(?) }");){
 
@@ -251,16 +251,16 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public ArrayList<DTRack> listarRacks() throws Exception {
+    public ArrayList<Rack> listarRacks() throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Rack")){
 
             ResultSet resultadoConsulta = consulta.executeQuery();
 
-            ArrayList<DTRack> racks = new ArrayList<DTRack>();
-            DTRack rack = null;
+            ArrayList<Rack> racks = new ArrayList<Rack>();
+            Rack rack = null;
             while(resultadoConsulta.next()){
-                rack = new DTRack(resultadoConsulta.getString("letra"), resultadoConsulta.getInt("dimAlto"), resultadoConsulta.getInt("dimAncho"));
+                rack = new Rack(resultadoConsulta.getString("letra"), resultadoConsulta.getInt("dimAlto"), resultadoConsulta.getInt("dimAncho"));
                 racks.add(rack);
             }
             return racks;
@@ -274,7 +274,7 @@ class PControladorDeposito implements IPDeposito{
     //region Lote
 
     @Override
-    public int altaLote(DTLote lote) throws Exception {
+    public int altaLote(Lote lote) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             CallableStatement consulta = con.prepareCall("{ CALL AltaLote(?, ?, ?, ?, ?, ?, ?)}")){
 
@@ -300,16 +300,16 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public ArrayList<DTLote> obtenerLotesVencidos() throws Exception {
-        ArrayList<DTLote> lotes = new ArrayList<DTLote>();
+    public ArrayList<Lote> obtenerLotesVencidos() throws Exception {
+        ArrayList<Lote> lotes = new ArrayList<Lote>();
 
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE fechaVencimiento < NOW()")){
 
             ResultSet resultadoConsulta = consulta.executeQuery();
-            DTLote lote = null;
+            Lote lote = null;
             while(resultadoConsulta.next()){
-                lote = new DTLote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new DTUbicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
                 lotes.add(lote);
             }
 
@@ -320,7 +320,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public void bajaLote(DTLote lote) throws Exception {
+    public void bajaLote(Lote lote) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             CallableStatement consulta = con.prepareCall("{ CALL BajaLote(?) }")){
 
@@ -336,16 +336,16 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public DTLote buscarLote(int id) throws Exception {
+    public Lote buscarLote(int id) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE idLote = ?")){
 
             consulta.setInt(1, id);
 
             ResultSet resultadoConsulta = consulta.executeQuery();
-            DTLote lote = null;
+            Lote lote = null;
             if(resultadoConsulta.next()){
-                lote = new DTLote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new DTUbicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
             }
             return lote;
         }catch(Exception ex){
@@ -354,7 +354,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public void moverLote(DTLote lote) throws Exception {
+    public void moverLote(Lote lote) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("UPDATE Lote SET letraRack = ?, fila = ?, columna = ? WHERE idLote = ?")){
 
@@ -376,17 +376,17 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public ArrayList<DTLote> listarLotesXRack(String letra) throws Exception {
+    public ArrayList<Lote> listarLotesXRack(String letra) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE letraRack = ? order by fila ASC, columna ASC;")){
-            ArrayList<DTLote> lotes = new ArrayList<>();
+            ArrayList<Lote> lotes = new ArrayList<>();
 
             consulta.setString(1, letra);
-            DTLote lote = null;
+            Lote lote = null;
 
             ResultSet resultadoConsulta = consulta.executeQuery();
             while(resultadoConsulta.next()) {
-                lote = new DTLote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new DTUbicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
                 lotes.add(lote);
             }
             return lotes;
@@ -397,7 +397,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public DTLote obtenerUbicacion(DTUbicacion ubicacion) throws Exception {
+    public Lote obtenerUbicacion(Ubicacion ubicacion) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Lote WHERE letraRack = ? AND fila = ? AND columna = ?")){
 
@@ -406,9 +406,9 @@ class PControladorDeposito implements IPDeposito{
             consulta.setInt(3, ubicacion.getColumna());
 
             ResultSet resultadoConsulta = consulta.executeQuery();
-            DTLote lote = null;
+            Lote lote = null;
             if(resultadoConsulta.next()){
-                lote = new DTLote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new DTUbicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
             }
 
             return lote;
@@ -419,7 +419,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public void bajaLogicaLote(DTLote lote) throws Exception {
+    public void bajaLogicaLote(Lote lote) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("UPDATE Lote SET eliminado = 1 WHERE idLote = ?")){
 
@@ -432,7 +432,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public void deshacerBajaLogicaLote(DTLote lote) throws Exception {
+    public void deshacerBajaLogicaLote(Lote lote) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("UPDATE Lote SET eliminado = 0 WHERE idLote = ?")){
 
@@ -445,7 +445,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public void actualizarStock(DTLote lote, int cant) throws Exception {
+    public void actualizarStock(Lote lote, int cant) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("UPDATE Lote SET cantUnidades = cantUnidades + ? WHERE idLote = ?")){
 

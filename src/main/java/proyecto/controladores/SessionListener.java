@@ -6,8 +6,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
-import proyecto.entidades.DTOrdenPedido;
-import proyecto.entidades.DTPicking;
+import proyecto.entidades.OrdenPedido;
+import proyecto.entidades.Picking;
 import proyecto.logica.FabricaLogica;
 
 import javax.servlet.http.HttpSessionEvent;
@@ -27,8 +27,8 @@ public class SessionListener implements HttpSessionListener, ApplicationContextA
             //Codigo defensivo de rollback que se ejecutará cuando un funcionario no finalice su picking y se cierre su sesión.
             //Devolver los pedidos a su estado 'pendiente'.
             try {
-                ArrayList<DTOrdenPedido> ordenes = (ArrayList<DTOrdenPedido>) se.getSession().getAttribute("pedidosPicking");
-                for (DTOrdenPedido ordenPedido : ordenes) {
+                ArrayList<OrdenPedido> ordenes = (ArrayList<OrdenPedido>) se.getSession().getAttribute("pedidosPicking");
+                for (OrdenPedido ordenPedido : ordenes) {
                     FabricaLogica.getControladorPedidos().modificarEstadoDePedido(ordenPedido, "pendiente");
                 }
                 se.getSession().removeAttribute("pedidosPicking");
@@ -39,8 +39,8 @@ public class SessionListener implements HttpSessionListener, ApplicationContextA
 
         if(se.getSession().getAttribute("listaPicking") != null){
             try {
-                ArrayList<DTPicking> picking = (ArrayList<DTPicking>) se.getSession().getAttribute("listaPicking");
-                for(DTPicking p : picking){
+                ArrayList<Picking> picking = (ArrayList<Picking>) se.getSession().getAttribute("listaPicking");
+                for(Picking p : picking){
                     for(int i=0; i<p.getLotes().size(); i++){
                         if(i!=p.getLotes().size()-1) {
                             FabricaLogica.getControladorDeposito().deshacerBajaLogicaLote(p.getLotes().get(i)); //deshacer la baja logica temporal sobre el lote

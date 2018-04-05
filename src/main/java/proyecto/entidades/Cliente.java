@@ -1,6 +1,6 @@
 package proyecto.entidades;
 
-public class DTCliente {
+public class Cliente {
     private String nombre;
     private String telefono;
     private String correo;
@@ -29,13 +29,13 @@ public class DTCliente {
         this.correo = correo;
     }
 
-    public DTCliente(String nombre, String telefono, String correo) {
+    public Cliente(String nombre, String telefono, String correo) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.correo = correo;
     }
 
-    public DTCliente() {
+    public Cliente() {
         this("N/D", "-", "N/D");
     }
 }

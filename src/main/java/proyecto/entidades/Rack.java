@@ -1,6 +1,6 @@
 package proyecto.entidades;
 
-public class DTRack {
+public class Rack {
     private String letra;
     private int dimAlto;
     private int dimAncho;
@@ -29,13 +29,13 @@ public class DTRack {
         this.dimAncho = dimAncho;
     }
 
-    public DTRack(String letra, int dimAlto, int dimAncho) {
+    public Rack(String letra, int dimAlto, int dimAncho) {
         this.letra = letra;
         this.dimAlto = dimAlto;
         this.dimAncho = dimAncho;
     }
 
-    public DTRack() {
+    public Rack() {
         this("-", 0, 0);
     }
 }

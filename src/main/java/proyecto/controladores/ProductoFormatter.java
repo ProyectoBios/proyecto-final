@@ -1,16 +1,16 @@
 package proyecto.controladores;
 
 import org.springframework.format.Formatter;
-import proyecto.entidades.DTEspecificacionProducto;
+import proyecto.entidades.EspecificacionProducto;
 import proyecto.logica.FabricaLogica;
 
 import java.text.ParseException;
 import java.util.Locale;
 
 
-public class ProductoFormatter implements Formatter<DTEspecificacionProducto>{
+public class ProductoFormatter implements Formatter<EspecificacionProducto>{
     @Override
-    public DTEspecificacionProducto parse(String codigo, Locale locale) throws ParseException {
+    public EspecificacionProducto parse(String codigo, Locale locale) throws ParseException {
         try {
             return FabricaLogica.getControladorDeposito().buscarProducto(Integer.valueOf(codigo));
         }catch (Exception ex){
@@ -19,7 +19,7 @@ public class ProductoFormatter implements Formatter<DTEspecificacionProducto>{
     }
 
     @Override
-    public String print(DTEspecificacionProducto producto, Locale locale) {
+    public String print(EspecificacionProducto producto, Locale locale) {
         return String.valueOf(producto.getCodigo());
     }
 }

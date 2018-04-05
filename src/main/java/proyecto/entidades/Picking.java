@@ -2,16 +2,16 @@ package proyecto.entidades;
 
 import java.util.ArrayList;
 
-public class DTPicking {
-    private DTEspecificacionProducto producto;
+public class Picking {
+    private EspecificacionProducto producto;
     private int cantidad;
-    private ArrayList<DTLote> lotes;
+    private ArrayList<Lote> lotes;
 
-    public DTEspecificacionProducto getProducto() {
+    public EspecificacionProducto getProducto() {
         return producto;
     }
 
-    public void setProducto(DTEspecificacionProducto producto) {
+    public void setProducto(EspecificacionProducto producto) {
         this.producto = producto;
     }
 
@@ -23,17 +23,17 @@ public class DTPicking {
         this.cantidad = cantidad;
     }
 
-    public ArrayList<DTLote> getLotes() {
+    public ArrayList<Lote> getLotes() {
         return lotes;
     }
 
-    public void setLotes(ArrayList<DTUbicacion> ubicaciones) {
+    public void setLotes(ArrayList<Ubicacion> ubicaciones) {
         this.lotes = lotes;
     }
 
     public int getCantidadUnidadesTotal(){
         int cantidades = 0;
-        for(DTLote l : this.lotes){
+        for(Lote l : this.lotes){
             cantidades += l.getCantUnidades();
         }
         return cantidades;
@@ -41,19 +41,19 @@ public class DTPicking {
 
     public String getUbicacionesString(){
         String ubicaciones = "";
-        for(DTLote l : this.lotes){
+        for(Lote l : this.lotes){
             ubicaciones+= l.getUbicacion().getUbicacionString() + ", ";
         }
         return ubicaciones.substring(0, ubicaciones.length() - 2);
     }
 
-    public DTPicking(DTEspecificacionProducto producto, int cantidad, ArrayList<DTLote> lotes) {
+    public Picking(EspecificacionProducto producto, int cantidad, ArrayList<Lote> lotes) {
         this.producto = producto;
         this.cantidad = cantidad;
         this.lotes = lotes;
     }
 
-    public DTPicking() {
-        this(new DTEspecificacionProducto(), 0, new ArrayList<>());
+    public Picking() {
+        this(new EspecificacionProducto(), 0, new ArrayList<>());
     }
 }

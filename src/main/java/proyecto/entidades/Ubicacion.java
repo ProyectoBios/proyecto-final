@@ -1,10 +1,10 @@
 package proyecto.entidades;
 
-public class DTUbicacion {
+public class Ubicacion {
     private int fila;
     private int columna;
 
-    private DTRack rack;
+    private Rack rack;
 
     public int getFila() {
         return fila;
@@ -22,11 +22,11 @@ public class DTUbicacion {
         this.columna = columna;
     }
 
-    public DTRack getRack() {
+    public Rack getRack() {
         return rack;
     }
 
-    public void setRack(DTRack rack) {
+    public void setRack(Rack rack) {
         this.rack = rack;
     }
 
@@ -49,13 +49,13 @@ public class DTUbicacion {
         return ubicacion;
     }
 
-    public DTUbicacion(int fila, int columna, DTRack rack) {
+    public Ubicacion(int fila, int columna, Rack rack) {
         this.fila = fila;
         this.columna = columna;
         this.rack = rack;
     }
 
-    public DTUbicacion() {
-        this(0,0, new DTRack());
+    public Ubicacion() {
+        this(0,0, new Rack());
     }
 }

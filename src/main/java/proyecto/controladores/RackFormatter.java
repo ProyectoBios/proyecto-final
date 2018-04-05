@@ -1,15 +1,15 @@
 package proyecto.controladores;
 
 import org.springframework.format.Formatter;
-import proyecto.entidades.DTRack;
+import proyecto.entidades.Rack;
 import proyecto.logica.FabricaLogica;
 
 import java.text.ParseException;
 import java.util.Locale;
 
-public class RackFormatter implements Formatter<DTRack> {
+public class RackFormatter implements Formatter<Rack> {
     @Override
-    public DTRack parse(String text, Locale locale) throws ParseException {
+    public Rack parse(String text, Locale locale) throws ParseException {
         try {
             return FabricaLogica.getControladorDeposito().buscarRack(text);
         }catch (Exception ex){
@@ -18,7 +18,7 @@ public class RackFormatter implements Formatter<DTRack> {
     }
 
     @Override
-    public String print(DTRack object, Locale locale) {
+    public String print(Rack object, Locale locale) {
         return object.getLetra();
     }
 }

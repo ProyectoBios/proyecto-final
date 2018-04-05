@@ -3,7 +3,7 @@ package proyecto.entidades;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DTOrdenPedido {
+public class OrdenPedido {
     private int id;
     private Date fecha;
     private String estado;
@@ -16,8 +16,8 @@ public class DTOrdenPedido {
     private double impuestos;
     private double total;
 
-    private DTCliente cliente;
-    private ArrayList<DTLineaPedido> lineas;
+    private Cliente cliente;
+    private ArrayList<LineaPedido> lineas;
 
     public int getId() {
         return id;
@@ -93,23 +93,23 @@ public class DTOrdenPedido {
         this.total = total;
     }
 
-    public DTCliente getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(DTCliente cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
-    public ArrayList<DTLineaPedido> getLineas() {
+    public ArrayList<LineaPedido> getLineas() {
         return lineas;
     }
 
-    public void setLineas(ArrayList<DTLineaPedido> lineas) {
+    public void setLineas(ArrayList<LineaPedido> lineas) {
         this.lineas = lineas;
     }
 
-    public DTOrdenPedido(int id, Date fecha, String estado, Date ultimaActEst, String direccionEnvio, String contacto, double subtotal, double impuestos, double total, DTCliente cliente, ArrayList<DTLineaPedido> lineas) {
+    public OrdenPedido(int id, Date fecha, String estado, Date ultimaActEst, String direccionEnvio, String contacto, double subtotal, double impuestos, double total, Cliente cliente, ArrayList<LineaPedido> lineas) {
         this.id = id;
         this.fecha = fecha;
         this.estado = estado;
@@ -123,7 +123,7 @@ public class DTOrdenPedido {
         this.lineas = lineas;
     }
 
-    public DTOrdenPedido() {
-        this(0, new Date(), "N/D", new Date(), "N/D", "N/D", 0, 0, 0, null, new ArrayList<DTLineaPedido>());
+    public OrdenPedido() {
+        this(0, new Date(), "N/D", new Date(), "N/D", "N/D", 0, 0, 0, null, new ArrayList<LineaPedido>());
     }
 }

@@ -1,26 +1,27 @@
 package proyecto.logica;
 
 import proyecto.entidades.*;
+import proyecto.entidades.EspecificacionProducto;
 import proyecto.persistencia.FabricaPersistencia;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class ControladorPedidos implements IPedidos {
-    private static ControladorPedidos instancia = null;
+class LControladorPedidos implements IPedidos {
+    private static LControladorPedidos instancia = null;
 
-    private ControladorPedidos(){}
+    private LControladorPedidos(){}
 
-    public static ControladorPedidos getInstancia(){
+    public static LControladorPedidos getInstancia(){
         if(instancia == null){
-            instancia = new ControladorPedidos();
+            instancia = new LControladorPedidos();
         }
 
         return instancia;
     }
 
     //region Clientes
-    private void validarCliente(DTCliente cliente) throws ExcepcionFrigorifico{
+    private void validarCliente(Cliente cliente) throws ExcepcionFrigorifico{
         if (cliente == null){
             throw new ExcepcionFrigorifico("¡ERROR! El cliente no puede ser nulo.");
         }
@@ -57,25 +58,25 @@ class ControladorPedidos implements IPedidos {
     }
 
     @Override
-    public ArrayList<DTCliente> buscarClientes(String nombre) throws Exception{
+    public ArrayList<Cliente> buscarClientes(String nombre) throws Exception{
         return FabricaPersistencia.getControladorPedidos().buscarClientes(nombre);
     }
 
     @Override
-    public void altaCliente(DTCliente cliente) throws Exception {
+    public void altaCliente(Cliente cliente) throws Exception {
         validarCliente(cliente);
         FabricaPersistencia.getControladorPedidos().altaCliente(cliente);
     }
 
     @Override
-    public DTCliente buscarCliente(String nombre) throws Exception{
+    public Cliente buscarCliente(String nombre) throws Exception{
         return FabricaPersistencia.getControladorPedidos().buscarCliente(nombre);
     }
 
     //endregion
 
     //region OrdenDePedido
-    public void validarLineaDePedido(DTLineaPedido linea) throws ExcepcionFrigorifico{
+    public void validarLineaDePedido(LineaPedido linea) throws ExcepcionFrigorifico{
         if(linea == null){
             throw new ExcepcionFrigorifico("¡ERROR! La linea no puede ser nula.");
         }
@@ -92,10 +93,10 @@ class ControladorPedidos implements IPedidos {
             throw new ExcepcionFrigorifico("¡ERROR! El numero de linea no puede ser menor o igual que 0");
         }
 
-        ControladorDeposito.getInstancia().ValidarEspecificacionProducto(linea.getProducto());
+        LControladorDeposito.getInstancia().ValidarEspecificacionProducto(linea.getProducto());
     }
 
-    public void validarOrdenDePedido(DTOrdenPedido orden) throws ExcepcionFrigorifico{
+    public void validarOrdenDePedido(OrdenPedido orden) throws ExcepcionFrigorifico{
         if(orden == null){
             throw new ExcepcionFrigorifico("¡ERROR! La orden no puede ser nula.");
         }
@@ -127,7 +128,7 @@ class ControladorPedidos implements IPedidos {
         }
 
         validarCliente(orden.getCliente());
-        for(DTLineaPedido linea : orden.getLineas()){
+        for(LineaPedido linea : orden.getLineas()){
             validarLineaDePedido(linea);
         }
     }
@@ -139,22 +140,22 @@ class ControladorPedidos implements IPedidos {
     }
 
     @Override
-    public DTOrdenPedido buscarOrdenPedido(int idOrden) throws Exception {
+    public OrdenPedido buscarOrdenPedido(int idOrden) throws Exception {
         return FabricaPersistencia.getControladorPedidos().buscarOrdenPedido(idOrden);
     }
 
     @Override
-    public int altaOrdenDePedido(DTOrdenPedido ordenPedido) throws Exception{
+    public int altaOrdenDePedido(OrdenPedido ordenPedido) throws Exception{
         return FabricaPersistencia.getControladorPedidos().altaOrdenDePedidio(ordenPedido);
     }
 
     @Override
-    public ArrayList<DTOrdenPedido> buscarOrdenesXCliente(DTCliente cliente) throws Exception {
+    public ArrayList<OrdenPedido> buscarOrdenesXCliente(Cliente cliente) throws Exception {
         return FabricaPersistencia.getControladorPedidos().buscarOrdenesXCliente(cliente);
     }
 
     @Override
-    public void cancelarPedido(DTOrdenPedido orden) throws Exception {
+    public void cancelarPedido(OrdenPedido orden) throws Exception {
         if(!orden.getEstado().equals("pendiente")){
             throw new ExcepcionFrigorifico("¡ERROR! Solo se pueden cancelar pedidos cuyo estado sea pendiente");
         }
@@ -162,10 +163,10 @@ class ControladorPedidos implements IPedidos {
         modificarEstadoDePedido(orden, "cancelado");
     }
 
-    public void agregarLineaDePedido(DTOrdenPedido orden, DTEspecificacionProducto producto, int cantidad){
+    public void agregarLineaDePedido(OrdenPedido orden, EspecificacionProducto producto, int cantidad){
         Boolean encontrado = false;
-        DTLineaPedido linea = null;
-        for(DTLineaPedido l : orden.getLineas()){
+        LineaPedido linea = null;
+        for(LineaPedido l : orden.getLineas()){
             if(l.getProducto().getCodigo() == producto.getCodigo()){
                 encontrado = true;
                 linea = l;
@@ -179,7 +180,7 @@ class ControladorPedidos implements IPedidos {
             orden.setSubtotal(orden.getSubtotal() + producto.getPrecioActual()*cantidad);
         }else {
             int numero = orden.getLineas().size() + 1;
-            linea = new DTLineaPedido(numero, cantidad, cantidad * producto.getPrecioActual(), producto);
+            linea = new LineaPedido(numero, cantidad, cantidad * producto.getPrecioActual(), producto);
 
             orden.getLineas().add(linea);
             orden.setSubtotal(orden.getSubtotal() + linea.getImporte());
@@ -187,8 +188,8 @@ class ControladorPedidos implements IPedidos {
     }
 
     @Override
-    public void eliminarLinea(DTOrdenPedido orden, int numero) throws Exception {
-        DTLineaPedido linea = orden.getLineas().get(numero-1);
+    public void eliminarLinea(OrdenPedido orden, int numero) throws Exception {
+        LineaPedido linea = orden.getLineas().get(numero-1);
         orden.getLineas().remove(numero-1);
 
         orden.setSubtotal(orden.getSubtotal() - linea.getImporte());
@@ -200,25 +201,25 @@ class ControladorPedidos implements IPedidos {
     }
 
     @Override
-    public ArrayList<DTOrdenPedido> listarPedidosXEstado(String estado) throws Exception {
+    public ArrayList<OrdenPedido> listarPedidosXEstado(String estado) throws Exception {
         validarEstadoPedido(estado);
         return FabricaPersistencia.getControladorPedidos().listarPedidosXEstado(estado);
     }
 
     @Override
-    public ArrayList<DTPicking> obtenerPicking(ArrayList<DTOrdenPedido> ordenes) throws Exception {
-        HashMap<Integer, DTPicking> pickingHashMap = new HashMap<Integer, DTPicking>();
-        HashMap<Integer, ArrayList<DTLote>> stocks = new HashMap<Integer, ArrayList<DTLote>>();
+    public ArrayList<Picking> obtenerPicking(ArrayList<OrdenPedido> ordenes) throws Exception {
+        HashMap<Integer, Picking> pickingHashMap = new HashMap<Integer, Picking>();
+        HashMap<Integer, ArrayList<Lote>> stocks = new HashMap<Integer, ArrayList<Lote>>();
 
-        for(DTOrdenPedido orden : ordenes){
-            for(DTLineaPedido linea : orden.getLineas()){
+        for(OrdenPedido orden : ordenes){
+            for(LineaPedido linea : orden.getLineas()){
                 if(!stocks.containsKey(linea.getProducto().getCodigo())){
                     stocks.put(linea.getProducto().getCodigo(), FabricaLogica.getControladorDeposito().buscarStock(linea.getProducto()));
                 }
 
-                DTPicking p;
+                Picking p;
                 if(!pickingHashMap.containsKey(linea.getProducto().getCodigo())){
-                    p = new DTPicking(linea.getProducto(), linea.getCantidad(), new ArrayList<DTLote>());
+                    p = new Picking(linea.getProducto(), linea.getCantidad(), new ArrayList<Lote>());
                     pickingHashMap.put(linea.getProducto().getCodigo(), p);
                 }else{
                     p = pickingHashMap.get(linea.getProducto().getCodigo());
@@ -235,9 +236,9 @@ class ControladorPedidos implements IPedidos {
             }
         }
 
-        ArrayList<DTPicking> picking = new ArrayList<>(pickingHashMap.values());
+        ArrayList<Picking> picking = new ArrayList<>(pickingHashMap.values());
 
-        for(DTPicking p : picking){
+        for(Picking p : picking){
             for(int i=0; i<p.getLotes().size(); i++){
                 if(i!=p.getLotes().size()-1) {
                     FabricaPersistencia.getControladorDeposito().bajaLogicaLote(p.getLotes().get(i)); //Baja logica del lote a remover.
@@ -255,14 +256,14 @@ class ControladorPedidos implements IPedidos {
     }
 
     @Override
-    public void modificarEstadoDePedido(DTOrdenPedido ordenPedido, String estado) throws Exception {
+    public void modificarEstadoDePedido(OrdenPedido ordenPedido, String estado) throws Exception {
         validarEstadoPedido(estado);
         ordenPedido.setEstado(estado);
         FabricaPersistencia.getControladorPedidos().modificarEstadoDePedido(ordenPedido, estado);
     }
 
     @Override
-    public ArrayList<DTOrdenPedido> listarPedidos() throws Exception {
+    public ArrayList<OrdenPedido> listarPedidos() throws Exception {
         return FabricaPersistencia.getControladorPedidos().listarPedidos();
     }
 

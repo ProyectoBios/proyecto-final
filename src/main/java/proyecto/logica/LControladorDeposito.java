@@ -1,26 +1,27 @@
 package proyecto.logica;
 
 import proyecto.entidades.*;
+import proyecto.entidades.EspecificacionProducto;
 import proyecto.persistencia.*;
 
 import java.util.ArrayList;
 
-class ControladorDeposito implements  IDeposito {
-    private static ControladorDeposito instancia = null;
+class LControladorDeposito implements  IDeposito {
+    private static LControladorDeposito instancia = null;
 
-    public static ControladorDeposito getInstancia(){
+    public static LControladorDeposito getInstancia(){
         if(instancia == null){
-            instancia = new ControladorDeposito();
+            instancia = new LControladorDeposito();
         }
 
         return instancia;
     }
 
-    private ControladorDeposito(){}
+    private LControladorDeposito(){}
 
     //region Productos
 
-    void ValidarEspecificacionProducto(DTEspecificacionProducto ep) throws ExcepcionFrigorifico{
+    void ValidarEspecificacionProducto(EspecificacionProducto ep) throws ExcepcionFrigorifico{
         if(ep == null){
             throw new ExcepcionFrigorifico("¡ERROR! Producto nulo");
         }
@@ -45,12 +46,12 @@ class ControladorDeposito implements  IDeposito {
             throw new ExcepcionFrigorifico("¡ERROR! El nombre no puede tener más de 40 caracteres");
         }
 
-        for(DTPrecio p : ep.getHistoricoPrecios()){
+        for(Precio p : ep.getHistoricoPrecios()){
             ValidarPrecio(p);
         }
     }
 
-    private void ValidarPrecio(DTPrecio p) throws ExcepcionFrigorifico {
+    private void ValidarPrecio(Precio p) throws ExcepcionFrigorifico {
         if(p==null){
             throw new ExcepcionFrigorifico("¡ERROR! Precio nulo");
         }
@@ -61,35 +62,35 @@ class ControladorDeposito implements  IDeposito {
     }
 
     @Override
-    public int altaDeProducto(DTEspecificacionProducto ep) throws Exception{
+    public int altaDeProducto(EspecificacionProducto ep) throws Exception{
         ValidarEspecificacionProducto(ep);
         return FabricaPersistencia.getControladorDeposito().altaDeProducto(ep);
     }
 
     @Override
-    public void bajaProducto(DTEspecificacionProducto ep) throws Exception{
+    public void bajaProducto(EspecificacionProducto ep) throws Exception{
         FabricaPersistencia.getControladorDeposito().bajaProducto(ep);
     }
 
     @Override
-    public void modificarProducto(DTEspecificacionProducto ep) throws Exception{
+    public void modificarProducto(EspecificacionProducto ep) throws Exception{
         ValidarEspecificacionProducto(ep);
         FabricaPersistencia.getControladorDeposito().modificarProducto(ep);
     }
 
     @Override
-    public DTEspecificacionProducto buscarProducto(int codigo) throws Exception{
+    public EspecificacionProducto buscarProducto(int codigo) throws Exception{
         return FabricaPersistencia.getControladorDeposito().buscarProducto(codigo);
     }
 
     @Override
-    public ArrayList<DTLote> buscarStock(DTEspecificacionProducto ep) throws Exception {
+    public ArrayList<Lote> buscarStock(EspecificacionProducto ep) throws Exception {
         ValidarEspecificacionProducto(ep);
         return FabricaPersistencia.getControladorDeposito().buscarStock(ep);
     }
 
     @Override
-    public ArrayList<DTEspecificacionProducto> listarProductos() throws Exception {
+    public ArrayList<EspecificacionProducto> listarProductos() throws Exception {
         return FabricaPersistencia.getControladorDeposito().listarProductos();
     }
 
@@ -97,7 +98,7 @@ class ControladorDeposito implements  IDeposito {
 
     //region Rack
 
-    private void ValidarRack(DTRack rack) throws ExcepcionFrigorifico{
+    private void ValidarRack(Rack rack) throws ExcepcionFrigorifico{
         if(rack == null){
             throw new ExcepcionFrigorifico("¡ERROR! El rack no puede ser nulo.");
         }
@@ -120,28 +121,28 @@ class ControladorDeposito implements  IDeposito {
     }
 
     @Override
-    public DTRack buscarRack(String letra) throws Exception {
+    public Rack buscarRack(String letra) throws Exception {
         return FabricaPersistencia.getControladorDeposito().buscarRack(letra);
     }
 
     @Override
-    public void altaRack(DTRack rack) throws Exception {
+    public void altaRack(Rack rack) throws Exception {
         ValidarRack(rack);
         FabricaPersistencia.getControladorDeposito().altaRack(rack);
     }
 
     @Override
-    public boolean esUbicacionVacia(DTUbicacion ubicacion) throws Exception{
+    public boolean esUbicacionVacia(Ubicacion ubicacion) throws Exception{
         return FabricaPersistencia.getControladorDeposito().obtenerUbicacion(ubicacion) == null;
     }
 
     @Override
-    public void bajaRack(DTRack rack) throws Exception {
+    public void bajaRack(Rack rack) throws Exception {
         FabricaPersistencia.getControladorDeposito().bajaRack(rack);
     }
 
     @Override
-    public ArrayList<DTRack> listarRacks() throws Exception {
+    public ArrayList<Rack> listarRacks() throws Exception {
         return FabricaPersistencia.getControladorDeposito().listarRacks();
     }
 
@@ -149,7 +150,7 @@ class ControladorDeposito implements  IDeposito {
 
     //region Lote
 
-    private void ValidarLote(DTLote lote) throws ExcepcionFrigorifico{
+    private void ValidarLote(Lote lote) throws ExcepcionFrigorifico{
         if(lote == null){
             throw new ExcepcionFrigorifico("¡ERROR! El lote no puede ser nulo.");
         }
@@ -171,7 +172,7 @@ class ControladorDeposito implements  IDeposito {
     }
 
     @Override
-    public int altaLote(DTLote lote) throws Exception {
+    public int altaLote(Lote lote) throws Exception {
         ValidarLote(lote);
         if(!esUbicacionVacia(lote.getUbicacion())){
             throw new ExcepcionFrigorifico("¡ERROR! La ubicacion está ocupada");
@@ -180,42 +181,42 @@ class ControladorDeposito implements  IDeposito {
     }
 
     @Override
-    public ArrayList<DTLote> obtenerLotesVencidos() throws Exception {
+    public ArrayList<Lote> obtenerLotesVencidos() throws Exception {
         return FabricaPersistencia.getControladorDeposito().obtenerLotesVencidos();
     }
 
     @Override
-    public void bajaLote(DTLote lote) throws Exception {
+    public void bajaLote(Lote lote) throws Exception {
         FabricaPersistencia.getControladorDeposito().bajaLote(lote);
     }
 
     @Override
-    public DTLote buscarLote(int id) throws Exception {
+    public Lote buscarLote(int id) throws Exception {
         return FabricaPersistencia.getControladorDeposito().buscarLote(id);
     }
 
     @Override
-    public void moverLote(DTLote lote) throws Exception {
+    public void moverLote(Lote lote) throws Exception {
         FabricaPersistencia.getControladorDeposito().moverLote(lote);
     }
 
     @Override
-    public ArrayList<DTLote> listarLotesXRack(String letra) throws Exception {
+    public ArrayList<Lote> listarLotesXRack(String letra) throws Exception {
         return FabricaPersistencia.getControladorDeposito().listarLotesXRack(letra);
     }
 
     @Override
-    public ArrayList<ArrayList<DTLote>> obtenerRack(DTRack rack) throws Exception{
-        ArrayList<ArrayList<DTLote>> rackResultado = new ArrayList<ArrayList<DTLote>>();
+    public ArrayList<ArrayList<Lote>> obtenerRack(Rack rack) throws Exception{
+        ArrayList<ArrayList<Lote>> rackResultado = new ArrayList<ArrayList<Lote>>();
 
-        ArrayList<DTLote> lotes = listarLotesXRack(rack.getLetra());
+        ArrayList<Lote> lotes = listarLotesXRack(rack.getLetra());
 
         for(int i = 1; i<=rack.getDimAlto();i++){
-            ArrayList<DTLote> fila = new ArrayList<>();
+            ArrayList<Lote> fila = new ArrayList<>();
             for(int j = 1; j<=rack.getDimAncho();j++){
-                DTLote lote = new DTLote();
-                lote.setUbicacion(new DTUbicacion(i, j, rack));
-                for (DTLote l : lotes) {
+                Lote lote = new Lote();
+                lote.setUbicacion(new Ubicacion(i, j, rack));
+                for (Lote l : lotes) {
                     if(l.getUbicacion().getFila()>i || (l.getUbicacion().getFila()==i && l.getUbicacion().getColumna()>j)){
                         break;
                     }
@@ -232,12 +233,12 @@ class ControladorDeposito implements  IDeposito {
     }
 
     @Override
-    public void deshacerBajaLogicaLote(DTLote lote) throws Exception {
+    public void deshacerBajaLogicaLote(Lote lote) throws Exception {
         FabricaPersistencia.getControladorDeposito().deshacerBajaLogicaLote(lote);
     }
 
     @Override
-    public void actualizarStock(DTLote lote, int cant) throws Exception {
+    public void actualizarStock(Lote lote, int cant) throws Exception {
         FabricaPersistencia.getControladorDeposito().actualizarStock(lote,cant);
     }
 

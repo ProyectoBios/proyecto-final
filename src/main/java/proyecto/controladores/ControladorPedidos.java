@@ -1,12 +1,10 @@
 package proyecto.controladores;
 
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import proyecto.entidades.*;
 import proyecto.logica.FabricaLogica;
@@ -27,7 +25,7 @@ public class ControladorPedidos {
     @RequestMapping(value="/EstadoDePedido", method = RequestMethod.POST, params="action=Buscar")
     public String buscarPedidoOClientes(@RequestParam(value="idPedido", required = false) String idPedido, @RequestParam(value="nombreCliente", required = false) String nombreCliente, ModelMap modelMap){
         try{
-            DTOrdenPedido ordenPedido = null;
+            OrdenPedido ordenPedido = null;
             if(idPedido!="") {
                 int id;
                 try {
@@ -44,7 +42,7 @@ public class ControladorPedidos {
                     throw new ExcepcionFrigorifico("No hay coincidencias con los parámetros de búsqueda.");
                 }
 
-                ArrayList<DTCliente> clientes = FabricaLogica.getControladorPedidos().buscarClientes(nombreCliente);
+                ArrayList<Cliente> clientes = FabricaLogica.getControladorPedidos().buscarClientes(nombreCliente);
                 modelMap.addAttribute("clientes", clientes);
                 modelMap.addAttribute("tablaClientes", true);
                 modelMap.addAttribute("tablaPedidos", false);
@@ -69,8 +67,8 @@ public class ControladorPedidos {
     @RequestMapping(value="/EstadoDePedido", method = RequestMethod.POST, params="action=Seleccionar")
     public String seleccionarCliente(@RequestParam(value="nombre", required = true) String nombreCliente, ModelMap modelMap){
         try{
-            DTCliente cliente = FabricaLogica.getControladorPedidos().buscarCliente(nombreCliente);
-            ArrayList<DTOrdenPedido> ordenes = FabricaLogica.getControladorPedidos().buscarOrdenesXCliente(cliente);
+            Cliente cliente = FabricaLogica.getControladorPedidos().buscarCliente(nombreCliente);
+            ArrayList<OrdenPedido> ordenes = FabricaLogica.getControladorPedidos().buscarOrdenesXCliente(cliente);
             modelMap.addAttribute("tablaPedidos", true);
             modelMap.addAttribute("ordenes", ordenes);
             return "EstadoDePedido";
@@ -93,7 +91,7 @@ public class ControladorPedidos {
                 throw new ExcepcionFrigorifico("¡ERROR! Ocurrio un error al recibir el id del pedido.");
             }
 
-            DTOrdenPedido ordenPedido = FabricaLogica.getControladorPedidos().buscarOrdenPedido(id);
+            OrdenPedido ordenPedido = FabricaLogica.getControladorPedidos().buscarOrdenPedido(id);
             modelMap.addAttribute("ordenPedido", ordenPedido);
             modelMap.addAttribute("detallePedido", true);
             return "EstadoDePedido";
@@ -116,7 +114,7 @@ public class ControladorPedidos {
                 throw new ExcepcionFrigorifico("¡ERROR! Ocurrio un error al recibir el id del pedido.");
             }
 
-            DTOrdenPedido ordenPedido = FabricaLogica.getControladorPedidos().buscarOrdenPedido(id);
+            OrdenPedido ordenPedido = FabricaLogica.getControladorPedidos().buscarOrdenPedido(id);
             FabricaLogica.getControladorPedidos().cancelarPedido(ordenPedido);
             modelMap.addAttribute("mensaje", "Pedido número " + id + " cancelado con éxito.");
             return "EstadoDePedido";
@@ -153,7 +151,7 @@ public class ControladorPedidos {
     @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params="action=Buscar")
     public String buscarClientes(@RequestParam(value="nombreCliente", required = false) String nombreCliente, ModelMap modelMap){
         try{
-            ArrayList<DTCliente> clientes = null;
+            ArrayList<Cliente> clientes = null;
             if(!nombreCliente.equals("")) {
                 clientes = FabricaLogica.getControladorPedidos().buscarClientes(nombreCliente);
             }else{
@@ -177,10 +175,10 @@ public class ControladorPedidos {
     @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params="action=Seleccionar")
     public String seleccionarClienteOrdenPedido(@RequestParam(value="nombre", required = true) String nombreCliente, ModelMap modelMap, HttpSession session){
         try{
-            DTCliente cliente = FabricaLogica.getControladorPedidos().buscarCliente(nombreCliente);
+            Cliente cliente = FabricaLogica.getControladorPedidos().buscarCliente(nombreCliente);
 
             session.setAttribute("cliente", cliente);
-            DTOrdenPedido orden = new DTOrdenPedido();
+            OrdenPedido orden = new OrdenPedido();
             orden.setEstado("pendiente");
             orden.setCliente(cliente);
             session.setAttribute("orden", orden);
@@ -201,7 +199,7 @@ public class ControladorPedidos {
         try {
             modelMap.addAttribute("tablaAltaCliente", true);
             modelMap.addAttribute("tablaProducto", false);
-            modelMap.addAttribute("cliente", new DTCliente());
+            modelMap.addAttribute("cliente", new Cliente());
             return "AltaOrdenDePedido";
         }catch (Exception ex){
             modelMap.addAttribute("mensaje", "Ocurrió un error al dar de alta el cliente.");
@@ -210,12 +208,12 @@ public class ControladorPedidos {
     }
 
     @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params = "action=Agregar Cliente")
-    public String altaCliente(@ModelAttribute DTCliente cliente, BindingResult bindingResult, ModelMap modelMap, HttpSession session){
+    public String altaCliente(@ModelAttribute Cliente cliente, BindingResult bindingResult, ModelMap modelMap, HttpSession session){
         try{
             FabricaLogica.getControladorPedidos().altaCliente(cliente);
 
             session.setAttribute("cliente", cliente);
-            DTOrdenPedido orden = new DTOrdenPedido();
+            OrdenPedido orden = new OrdenPedido();
             orden.setEstado("pendiente");
             orden.setCliente(cliente);
             session.setAttribute("orden", orden);
@@ -248,7 +246,7 @@ public class ControladorPedidos {
                 modelMap.addAttribute("tablaProducto", true);
                 throw new ExcepcionFrigorifico("ERROR! Debe seleccionar un producto");
             }
-            DTEspecificacionProducto producto = FabricaLogica.getControladorDeposito().buscarProducto(id);
+            EspecificacionProducto producto = FabricaLogica.getControladorDeposito().buscarProducto(id);
 
             int cantidadUnidades;
             try{
@@ -258,19 +256,19 @@ public class ControladorPedidos {
                 throw new ExcepcionFrigorifico("ERROR! Ingrese una cantidad correcta");
             }
 
-            FabricaLogica.getControladorPedidos().agregarLineaDePedido((DTOrdenPedido)session.getAttribute("orden"), producto, cantidadUnidades);
+            FabricaLogica.getControladorPedidos().agregarLineaDePedido((OrdenPedido)session.getAttribute("orden"), producto, cantidadUnidades);
 
-            DTLineaPedido linea = null;
-            for(DTLineaPedido l : ((DTOrdenPedido)session.getAttribute("orden")).getLineas()){
+            LineaPedido linea = null;
+            for(LineaPedido l : ((OrdenPedido)session.getAttribute("orden")).getLineas()){
                 if(l.getProducto().getCodigo() == producto.getCodigo()){
                     linea = l;
                     break;
                 }
             }
 
-            ArrayList<DTLote> stock = FabricaLogica.getControladorDeposito().buscarStock(producto);
+            ArrayList<Lote> stock = FabricaLogica.getControladorDeposito().buscarStock(producto);
             int cantidad = 0;
-            for(DTLote l : stock){
+            for(Lote l : stock){
                 cantidad+=l.getCantUnidades();
             }
 
@@ -294,7 +292,7 @@ public class ControladorPedidos {
     public String eliminarLinea(@RequestParam(value="numeroLinea") String numero, ModelMap modelMap, HttpSession session){
         try{
             int nro = Integer.parseInt(numero);
-            FabricaLogica.getControladorPedidos().eliminarLinea((DTOrdenPedido)session.getAttribute("orden"), nro);
+            FabricaLogica.getControladorPedidos().eliminarLinea((OrdenPedido)session.getAttribute("orden"), nro);
 
             modelMap.addAttribute("tablaProducto", true);
 
@@ -321,7 +319,7 @@ public class ControladorPedidos {
                 throw new ExcepcionFrigorifico("¡ERROR! Especifique una direccion de envio.");
             }
 
-            DTOrdenPedido orden = (DTOrdenPedido)session.getAttribute("orden");
+            OrdenPedido orden = (OrdenPedido)session.getAttribute("orden");
 
             orden.setContacto(contacto);
             orden.setDireccionEnvio(direccion);
@@ -380,9 +378,9 @@ public class ControladorPedidos {
     @RequestMapping(value="/RealizarPicking", method = RequestMethod.POST, params = "action=Seleccionar")
     public String seleccionarPedidosPicking(@RequestParam(value="pedidos", required = false)int[] pedidos, ModelMap modelMap, HttpSession session){
         try {
-            ArrayList<DTOrdenPedido> ordenesPedido = new ArrayList<>();
+            ArrayList<OrdenPedido> ordenesPedido = new ArrayList<>();
             for(int i=0; i<pedidos.length; i++){
-                DTOrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
+                OrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
                 FabricaLogica.getControladorPedidos().modificarEstadoDePedido(orden, "en preparacion");
                 ordenesPedido.add(orden);
             }
@@ -395,7 +393,7 @@ public class ControladorPedidos {
         }catch (ExcepcionFrigorifico ex){
             try{
                 for(int i=0; i<pedidos.length; i++){
-                    DTOrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
+                    OrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
                     FabricaLogica.getControladorPedidos().modificarEstadoDePedido(orden, "pendiente");
                 }
                 modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
@@ -407,7 +405,7 @@ public class ControladorPedidos {
         }catch (Exception ex){
             try{
                 for(int i=0; i<pedidos.length; i++){
-                    DTOrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
+                    OrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
                     FabricaLogica.getControladorPedidos().modificarEstadoDePedido(orden, "pendiente");
                 }
                 modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
@@ -423,16 +421,16 @@ public class ControladorPedidos {
     public String cancelarPicking(ModelMap modelMap, HttpSession session){
         try{
             if(session.getAttribute("pedidosPicking") != null){
-                ArrayList<DTOrdenPedido> ordenes = (ArrayList<DTOrdenPedido>) session.getAttribute("pedidosPicking");
-                for (DTOrdenPedido ordenPedido : ordenes) {
+                ArrayList<OrdenPedido> ordenes = (ArrayList<OrdenPedido>) session.getAttribute("pedidosPicking");
+                for (OrdenPedido ordenPedido : ordenes) {
                     FabricaLogica.getControladorPedidos().modificarEstadoDePedido(ordenPedido, "pendiente");
                 }
                 session.removeAttribute("pedidosPicking");
             }
 
             if(session.getAttribute("listaPicking") != null){
-                ArrayList<DTPicking> picking = (ArrayList<DTPicking>)session.getAttribute("listaPicking");
-                for(DTPicking p : picking){
+                ArrayList<Picking> picking = (ArrayList<Picking>)session.getAttribute("listaPicking");
+                for(Picking p : picking){
                     for(int i=0; i<p.getLotes().size(); i++){
                         if(i!=p.getLotes().size()-1) {
                             FabricaLogica.getControladorDeposito().deshacerBajaLogicaLote(p.getLotes().get(i)); //deshacer la baja logica temporal sobre el lote
@@ -481,7 +479,7 @@ public class ControladorPedidos {
     public String seleccionarPedidoPreparacion(@RequestParam(value="idPedido", required = true) String  idPedido, ModelMap modelMap, HttpSession session){
         try{
             int id = Integer.parseInt(idPedido);
-            for(DTOrdenPedido orden : (ArrayList<DTOrdenPedido>)session.getAttribute("pedidosPicking")){
+            for(OrdenPedido orden : (ArrayList<OrdenPedido>)session.getAttribute("pedidosPicking")){
                 if(orden.getId() == id){
                     modelMap.addAttribute("ordenPedido", orden);
                     break;
@@ -502,16 +500,16 @@ public class ControladorPedidos {
     public String cancelarPreparacionPedidos(ModelMap modelMap, HttpSession session){
         try{
             if(session.getAttribute("pedidosPicking") != null){
-                ArrayList<DTOrdenPedido> ordenes = (ArrayList<DTOrdenPedido>) session.getAttribute("pedidosPicking");
-                for (DTOrdenPedido ordenPedido : ordenes) {
+                ArrayList<OrdenPedido> ordenes = (ArrayList<OrdenPedido>) session.getAttribute("pedidosPicking");
+                for (OrdenPedido ordenPedido : ordenes) {
                     FabricaLogica.getControladorPedidos().modificarEstadoDePedido(ordenPedido, "pendiente");
                 }
                 session.removeAttribute("pedidosPicking");
             }
 
             if(session.getAttribute("listaPicking") != null){
-                ArrayList<DTPicking> picking = (ArrayList<DTPicking>)session.getAttribute("listaPicking");
-                for(DTPicking p : picking){
+                ArrayList<Picking> picking = (ArrayList<Picking>)session.getAttribute("listaPicking");
+                for(Picking p : picking){
                     for(int i=0; i<p.getLotes().size(); i++){
                         if(i!=p.getLotes().size()-1) {
                             FabricaLogica.getControladorDeposito().deshacerBajaLogicaLote(p.getLotes().get(i)); //deshacer la baja logica temporal sobre el lote
@@ -540,19 +538,19 @@ public class ControladorPedidos {
     public String pedidoListo(@RequestParam(value="idPedido", required = true) String  idPedido, ModelMap modelMap, HttpSession session){
         try{
             int id = Integer.parseInt(idPedido);
-            DTOrdenPedido ordenPedido = null;
-            for(DTOrdenPedido orden : (ArrayList<DTOrdenPedido>)session.getAttribute("pedidosPicking")){
+            OrdenPedido ordenPedido = null;
+            for(OrdenPedido orden : (ArrayList<OrdenPedido>)session.getAttribute("pedidosPicking")){
                 if(orden.getId() == id){
                     ordenPedido=orden;
                     break;
                 }
             }
 
-            ((ArrayList<DTOrdenPedido>)session.getAttribute("pedidosPicking")).remove(ordenPedido);
+            ((ArrayList<OrdenPedido>)session.getAttribute("pedidosPicking")).remove(ordenPedido);
             FabricaLogica.getControladorPedidos().modificarEstadoDePedido(ordenPedido, "preparado");
 
-            for(DTLineaPedido linea : ordenPedido.getLineas()){
-                for(DTPicking p : (ArrayList<DTPicking>)session.getAttribute("listaPicking")){
+            for(LineaPedido linea : ordenPedido.getLineas()){
+                for(Picking p : (ArrayList<Picking>)session.getAttribute("listaPicking")){
                     if(p.getProducto().getCodigo() == linea.getProducto().getCodigo()){
                         int cantidadARestar = linea.getCantidad();
                         p.setCantidad(p.getCantidad() - cantidadARestar);
@@ -571,7 +569,7 @@ public class ControladorPedidos {
                 }
             }
 
-            if(((ArrayList<DTOrdenPedido>) session.getAttribute("pedidosPicking")).size() == 0){
+            if(((ArrayList<OrdenPedido>) session.getAttribute("pedidosPicking")).size() == 0){
                 session.removeAttribute("pedidosPicking");
                 modelMap.addAttribute("mensaje", "Pedidos preparados con éxito.");
                 return "index";
@@ -592,7 +590,7 @@ public class ControladorPedidos {
     @RequestMapping(value="/ListadoDePedidos", method = RequestMethod.GET)
     public String getListadoDePedidos(ModelMap modelMap, HttpSession session){
         try{
-            ArrayList<DTOrdenPedido> pedidos = FabricaLogica.getControladorPedidos().listarPedidos();
+            ArrayList<OrdenPedido> pedidos = FabricaLogica.getControladorPedidos().listarPedidos();
             session.setAttribute("ListadoDePedidos", pedidos);
             session.setAttribute("clientes", FabricaLogica.getControladorPedidos().buscarClientes(""));
             modelMap.addAttribute("listadoPedidos", pedidos);
@@ -616,11 +614,11 @@ public class ControladorPedidos {
             @RequestParam String estado,
             ModelMap modelMap, HttpSession session) {
         try{
-            ArrayList<DTOrdenPedido> resultado = new ArrayList<>((ArrayList<DTOrdenPedido>)session.getAttribute("ListadoDePedidos"));
-            ArrayList<DTOrdenPedido> remover = new ArrayList<>();
+            ArrayList<OrdenPedido> resultado = new ArrayList<>((ArrayList<OrdenPedido>)session.getAttribute("ListadoDePedidos"));
+            ArrayList<OrdenPedido> remover = new ArrayList<>();
 
             if(!cliente.equals("")){
-                for(DTOrdenPedido p : resultado){
+                for(OrdenPedido p : resultado){
                     if(!p.getCliente().getNombre().equals(cliente)){
                         remover.add(p);
                     }
@@ -630,7 +628,7 @@ public class ControladorPedidos {
             }
 
             if(fechaIni != null){
-                for(DTOrdenPedido p : resultado){
+                for(OrdenPedido p : resultado){
                     if(p.getFecha().before(fechaIni)){
                         remover.add(p);
                     }
@@ -641,7 +639,7 @@ public class ControladorPedidos {
             }
 
             if(fechaFin != null){
-                for(DTOrdenPedido p : resultado){
+                for(OrdenPedido p : resultado){
                     if(p.getFecha().after(fechaFin)){
                         remover.add(p);
                     }
@@ -658,7 +656,7 @@ public class ControladorPedidos {
                     throw new ExcepcionFrigorifico("¡ERROR! Importe minimo inválido.");
                 }
 
-                for(DTOrdenPedido p : resultado){
+                for(OrdenPedido p : resultado){
                     if(p.getTotal() < min){
                         remover.add(p);
                     }
@@ -675,7 +673,7 @@ public class ControladorPedidos {
                     throw new ExcepcionFrigorifico("¡ERROR! Importe máximo inválido.");
                 }
 
-                for(DTOrdenPedido p : resultado){
+                for(OrdenPedido p : resultado){
                     if(p.getTotal() > max){
                         remover.add(p);
                     }
@@ -685,7 +683,7 @@ public class ControladorPedidos {
             }
 
             if(!estado.equals("")){
-                for(DTOrdenPedido p : resultado){
+                for(OrdenPedido p : resultado){
                     if(!p.getEstado().equals(estado)){
                         remover.add(p);
                     }

@@ -4,7 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class DTLote {
+public class Lote {
     private int id;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -16,8 +16,8 @@ public class DTLote {
 
     private int cantUnidades;
 
-    private DTEspecificacionProducto producto;
-    private DTUbicacion ubicacion;
+    private EspecificacionProducto producto;
+    private Ubicacion ubicacion;
 
     public int getId() {
         return id;
@@ -51,23 +51,23 @@ public class DTLote {
         this.cantUnidades = cantUnidades;
     }
 
-    public DTEspecificacionProducto getProducto() {
+    public EspecificacionProducto getProducto() {
         return producto;
     }
 
-    public void setProducto(DTEspecificacionProducto producto) {
+    public void setProducto(EspecificacionProducto producto) {
         this.producto = producto;
     }
 
-    public DTUbicacion getUbicacion() {
+    public Ubicacion getUbicacion() {
         return ubicacion;
     }
 
-    public void setUbicacion(DTUbicacion ubicacion) {
+    public void setUbicacion(Ubicacion ubicacion) {
         this.ubicacion = ubicacion;
     }
 
-    public DTLote(int id, Date fechaIngreso, Date fechaVencimiento, int cantUnidades, DTEspecificacionProducto producto, DTUbicacion ubicacion) {
+    public Lote(int id, Date fechaIngreso, Date fechaVencimiento, int cantUnidades, EspecificacionProducto producto, Ubicacion ubicacion) {
         this.id = id;
         this.fechaIngreso = fechaIngreso;
         this.fechaVencimiento = fechaVencimiento;
@@ -76,7 +76,7 @@ public class DTLote {
         this.ubicacion = ubicacion;
     }
 
-    public DTLote() {
-        this(0, new Date(), new Date(), 0, new DTEspecificacionProducto(), new DTUbicacion());
+    public Lote() {
+        this(0, new Date(), new Date(), 0, new EspecificacionProducto(), new Ubicacion());
     }
 }

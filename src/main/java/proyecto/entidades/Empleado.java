@@ -2,7 +2,7 @@ package proyecto.entidades;
 
 import java.util.Date;
 
-public class DTEmpleado {
+public class Empleado {
     private String ci;
     private String nombre;
     private int edad;
@@ -59,7 +59,7 @@ public class DTEmpleado {
         this.rol = rol;
     }
 
-    public DTEmpleado(String ci, String nombre, int edad, Date fechaContratacion, String telefono, String rol) {
+    public Empleado(String ci, String nombre, int edad, Date fechaContratacion, String telefono, String rol) {
         this.ci = ci;
         this.nombre = nombre;
         this.edad = edad;
@@ -68,7 +68,7 @@ public class DTEmpleado {
         this.rol = rol;
     }
 
-    public DTEmpleado() {
+    public Empleado() {
         this("", "", 0, new Date(), "", "");
     }
 }
