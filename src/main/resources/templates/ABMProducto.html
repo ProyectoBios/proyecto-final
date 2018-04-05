@@ -77,8 +77,8 @@
 	<tr>
 		<td>Precio:</td>
 		<td>
-		  <input th:if="*{PrecioActual != 0}"  th:field="*{PrecioActual}" size="1" style="width: 20%" type="number"/>
-		  <input th:if="*{PrecioActual == 0}" name="precioActual" placeholder="" size="1" style="width: 20%" type="number"/>
+		  <input th:if="*{PrecioActual != 0}"  step="any" th:field="*{PrecioActual}" size="1" style="width: 20%" type="number"/>
+		  <input th:if="*{PrecioActual == 0}" step="any" name="precioActual" placeholder="" size="1" style="width: 20%" type="number"/>
 		</td>
 	</tr>
     <tr>
