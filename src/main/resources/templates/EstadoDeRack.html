@@ -13,7 +13,9 @@
             .grilla tbody tr:nth-child(2n + 1) {
                 background-color: rgba(144, 144, 144, 0.075);
             }
-            .linea
+            .bordes tbody tr td {
+                border: 1px solid;
+            }
     </style>
     </head>
     <body>
@@ -80,18 +82,18 @@
                                     </tbody>
                                 </table>
 
-                                <table th:if="${tablaRack}" class="linea" id="rack" style="display: table; text-align: center">
+                                <table th:if="${tablaRack}" class="bordes" id="rack" style="display: table; text-align: center">
                                     <tbody>
                                     <tr th:each="fila, iter1 : ${session.lotes}">
                                         <th:block th:each="l, iter2 : ${fila}"> <!--Renderizar la salida como link clickeable y pasar el lote a la func. de JavaScript -->
-                                            <td th:if="${l.cantUnidades != 0}" th:onclick="|VerDatosLote(${iter1.index}, ${iter2.index})|" th:text="${l.id + ' ' + l.ubicacion.ubicacionString}" style="background-color: aqua; ">ID Lote</td>
+                                            <td th:if="${l.cantUnidades != 0}" th:onclick="|VerDatosLote(${iter1.index}, ${iter2.index})|" th:text="${l.id + ' ' + l.ubicacion.ubicacionString}" style="background-color: aqua; cursor: pointer;">ID Lote</td>
                                             <td th:if="${l.cantUnidades == 0}" th:text="${'vacío ' + l.ubicacion.ubicacionString}">vacío</td>
                                         </th:block>
                                    </tr>
                                    </tbody>
                                </table>
 
-                               <table id="espLote" style="display: table">
+                               <table id="espLote" style="display: none">
                                    <thead>
                                        <th style="width: 15%">Ubicación</th>
                                        <th># ID</th>
@@ -134,7 +136,9 @@
                 var lote = lotes[i][j];
 
                 var tabla = document.getElementById("espLote");
+                tabla.style.display = "table";
                 tabla.deleteRow(1);
+
                 var fila = tabla.insertRow(1);
 
                 var x = fila.insertCell(0);
