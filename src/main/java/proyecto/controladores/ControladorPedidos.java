@@ -370,7 +370,7 @@ public class ControladorPedidos {
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "realizarPicking";
         }catch (Exception ex){
-            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar la pagina.");
             return "realizarPicking";
         }
     }
@@ -412,7 +412,7 @@ public class ControladorPedidos {
             }catch (Exception e){}
 
             modelMap.addAttribute("tablaPedidos", true);
-            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            modelMap.addAttribute("mensaje", "Ocurrió un error al seleccionar los pedidos para el picking.");
             return "realizarPicking";
         }
     }
@@ -427,6 +427,7 @@ public class ControladorPedidos {
                 }
                 session.removeAttribute("pedidosPicking");
             }
+            modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
 
             if(session.getAttribute("listaPicking") != null){
                 ArrayList<Picking> picking = (ArrayList<Picking>)session.getAttribute("listaPicking");
@@ -445,7 +446,6 @@ public class ControladorPedidos {
                 }
                 session.removeAttribute("listaPicking");
             }
-            modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
             modelMap.addAttribute("tablaPedidos", true);
             modelMap.addAttribute("mensaje", "Picking cancelado con exito.");
             return "realizarPicking";
@@ -453,7 +453,7 @@ public class ControladorPedidos {
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "realizarPicking";
         }catch (Exception ex){
-            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cancelar el picking.");
             return "realizarPicking";
         }
     }
@@ -464,13 +464,14 @@ public class ControladorPedidos {
             if(session.getAttribute("pedidosPicking") != null){
                 return "PreparacionPedidos";
             }else{
-                throw new ExcepcionFrigorifico("");
+                modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
+                throw new ExcepcionFrigorifico("Ocurrió un error al finalizar el picking.");
             }
         }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "realizarPicking";
         }catch (Exception ex){
-            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            modelMap.addAttribute("mensaje", "Ocurrió un error al finalizar el picking.");
             return "realizarPicking";
         }
     }
@@ -491,7 +492,7 @@ public class ControladorPedidos {
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "realizarPicking";
         }*/catch (Exception ex){
-            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            modelMap.addAttribute("mensaje", "Ocurrió un error al seleccionar el pedido a preparar.");
             return "realizarPicking";
         }
     }
@@ -523,13 +524,13 @@ public class ControladorPedidos {
                 }
                 session.removeAttribute("listaPicking");
             }
-
+            modelMap.addAttribute("mensaje", "Preparación de pedidos interrumpida con éxito.");
             return "index";
-        }/*catch (ExcepcionFrigorifico ex){
+        }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "realizarPicking";
-        }*/catch (Exception ex){
-            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cancelar la preparacion de los pedidos.");
             return "realizarPicking";
         }
     }
@@ -580,10 +581,10 @@ public class ControladorPedidos {
 
         }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
-            return "realizarPicking";
+            return "PreparacionPedidos";
         }catch (Exception ex){
-            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
-            return "realizarPicking";
+            modelMap.addAttribute("mensaje", "Ocurrió un error finalizar el pedido.");
+            return "PreparacionPedidos";
         }
     }
 
@@ -599,7 +600,7 @@ public class ControladorPedidos {
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "ListadoDePedidos";
         }catch (Exception ex){
-            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar el formulario.");
+            modelMap.addAttribute("mensaje", "Ocurrió un error al cargar la pagina.");
             return "ListadoDePedidos";
         }
     }
