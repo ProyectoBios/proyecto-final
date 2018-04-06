@@ -26,7 +26,7 @@ public interface IDeposito {
     public ArrayList<Lote> obtenerLotesVencidos() throws Exception;
     public void bajaLote(Lote lote) throws  Exception;
     public Lote buscarLote(int id) throws Exception;
-    void moverLote(Lote lote) throws Exception;
+    void moverLote(int idLote, String ubicacion) throws Exception;
     public ArrayList<Lote> listarLotesXRack(String letra) throws Exception;
     public void deshacerBajaLogicaLote(Lote lote) throws Exception;
     public void actualizarStock(Lote lote, int cant) throws Exception;

@@ -5,6 +5,7 @@ import proyecto.entidades.EspecificacionProducto;
 import proyecto.persistencia.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 class LControladorDeposito implements  IDeposito {
     private static LControladorDeposito instancia = null;
@@ -196,8 +197,20 @@ class LControladorDeposito implements  IDeposito {
     }
 
     @Override
-    public void moverLote(Lote lote) throws Exception {
-        FabricaPersistencia.getControladorDeposito().moverLote(lote);
+    public void moverLote(int idLote, String ubicacion) throws Exception {
+        try {
+            String letraRack = ubicacion.substring(0,1);
+            int fila = Integer.parseInt(ubicacion.substring(1,3));
+            int columna = Integer.parseInt(ubicacion.substring(3,5));
+
+            Ubicacion nuevaUbicacion = new Ubicacion(fila, columna, new Rack(letraRack, 0, 0));
+            Lote lote = new Lote(idLote, new Date(), new Date(), 0, new EspecificacionProducto(), nuevaUbicacion);
+
+            FabricaPersistencia.getControladorDeposito().moverLote(lote);
+
+        }catch(Exception ex){
+            throw ex;
+        }
     }
 
     @Override

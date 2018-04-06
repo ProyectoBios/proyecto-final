@@ -13,6 +13,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 import proyecto.entidades.EspecificacionProducto;
 import proyecto.entidades.Lote;
 import proyecto.entidades.Rack;
@@ -256,19 +258,22 @@ public class ControladorDeposito {
         }
     }
 
-    @RequestMapping(value="/EstadoDeRack", method = RequestMethod.GET)
+    @RequestMapping(value = {"/EstadoDeRack", "/MoverLote"}, method = RequestMethod.GET)
     public String getListarRacks(ModelMap modelMap, HttpSession session) throws Exception {
         try{
+            //Obtengo la url del Request.
+            UriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest();
+            String requestedValue = builder.buildAndExpand().getPath();
+
             ArrayList<Rack> listaRacks = FabricaLogica.getControladorDeposito().listarRacks();
             if(listaRacks.size() == 0) {
                 modelMap.addAttribute("mensaje", "No se encontraron Racks");
             }
             session.setAttribute("racks", listaRacks);
-            return "EstadoDeRack";
+            return requestedValue;
 
         }catch(Exception ex) {
-            modelMap.addAttribute("mensaje", "Error al listar los Racks");
-            return "EstadoDeRack";
+            throw ex;
         }
     }
 
@@ -405,7 +410,6 @@ public class ControladorDeposito {
             return (T)response;
 
 
-
             /*modelMap.addAttribute("lote", new Lote());
             modelMap.addAttribute("productos", prods);
             modelMap.addAttribute("racks", racks);
@@ -426,15 +430,28 @@ public class ControladorDeposito {
         }
     }
 
-    @RequestMapping(value="/MoverLote", method = RequestMethod.GET)
-    public String moverLote(Lote lote) throws Exception{
+    @RequestMapping(value="/MoverLote", method = RequestMethod.POST, params = "action=Mover")
+    public String moverLote(@RequestParam(value="idLote") int idLote,
+                            @RequestParam(value="ubicacion") String ubicacion, ModelMap modelMap) throws Exception{
+        try {
+            FabricaLogica.getControladorDeposito().moverLote(idLote, ubicacion);
+            modelMap.addAttribute("mensaje", "Lote movido con éxito.");
 
-        return "MoverLote";
+            return "MoverLote";
+
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrió un error al mover el lote.");
+            return "MoverLote";
+        }
     }
 
-    @RequestMapping(value = "/EstadoDeRack", method = RequestMethod.POST, params = "action=Seleccionar")
+    @RequestMapping(value = {"/EstadoDeRack", "/MoverLote"}, method = RequestMethod.POST, params = "action=Seleccionar")
     public String listarLotesXRack(@RequestParam(value="letraRacks", required = false) String letraRack, ModelMap modelMap, HttpSession session) throws Exception {
         try{
+            //Obtengo la url del Request.
+            UriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest();
+            String requestedValue = builder.buildAndExpand().getPath();
+
             if(letraRack.isEmpty()) {
                 modelMap.addAttribute("mensaje", "Debe seleccionar un rack de la lista");
             } else {
@@ -442,7 +459,7 @@ public class ControladorDeposito {
                 session.setAttribute("lotes", lotes);
                 modelMap.addAttribute("tablaRack", true);
             }
-            return "EstadoDeRack";
+            return requestedValue;
         }catch (Exception ex){
             throw ex;
         }
