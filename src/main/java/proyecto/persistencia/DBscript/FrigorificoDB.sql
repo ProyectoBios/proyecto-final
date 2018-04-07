@@ -87,6 +87,37 @@ Create Table Empleado(
     rol varchar(15) not null
 );
 
+Create Table Repartidor(
+	ci varchar(8) primary key,
+    vencLibreta date not null,
+    foreign key (ci) references Empleado(ci)
+);
+
+Create Table Vehiculo(
+	matricula varchar(7) primary key,
+    marca varchar(20) not null,
+    modelo varchar(20) not null,
+    cargaMax int not null
+);
+
+Create Table Viaje(
+	id int primary key,
+    ciRepartidor varchar(8) not null,
+    matriculaVehiculo varchar(7) not null,
+    fechaHora datetime not null,
+    
+    foreign key (ciRepartidor) references Repartidor(ci),
+    foreign key (matriculaVehiculo) references Vehiculo(matricula)
+);
+
+Create Table PedidosViaje(
+	idViaje int not null,
+    idPedido int not null,
+    foreign key (idViaje) references Viaje(id),
+    foreign key (idPedido) references OrdenPedido(idOrden),
+    primary key (idViaje, idPedido)
+);
+
 INSERT INTO EspecificacionProducto VALUES(NULL, 'Mortadela', 20, 10, 100, 0);
 INSERT INTO EspecificacionProducto VALUES(NULL, 'Chorizo', 100, 50, 500, 0);
 INSERT INTO EspecificacionProducto VALUES(NULL, 'Longaniza', 140, 60, 650, 0);
