@@ -8,4 +8,8 @@ public class FabricaLogica {
     public static IPedidos getControladorPedidos(){
         return LControladorPedidos.getInstancia();
     }
+
+    public static IEmpleados getControladorEmpleados(){return LControladorEmpleados.getInstancia();}
+
+    public static IEntregas getControladorEntregas(){return LControladorEntregas.getInstancia();}
 }

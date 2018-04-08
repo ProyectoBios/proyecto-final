@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Productos</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
+    <link rel="stylesheet" th:href="@{assets/css/main.css}" />
+    <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+    <h1 id="logo"><a th:href="@{/}">Centenario</a></h1>
+    <nav id="nav">
+        <ul>
+            <li><a th:href="@{/}">Inicio</a></li>
+            <li>
+                <a href="#" class="submenu">Menú</a>
+                <ul>
+                    <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
+                    <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
+                    <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
+                    <li><a th:href="@{/AltaOrdenDePedido}">Alta orden de pedido</a></li>
+                    <li><a th:href="@{/EstadoDePedido}">Estado de pedidos</a></li>
+                    <li>
+                        <a href="#">Submenu</a>
+                        <ul>
+                            <li><a href="#">Opción uno</a></li>
+                            <li><a href="#">Opción dos</a></li>
+                            <li><a href="#">Opción tres</a></li>
+                            <li><a href="#">Opción cuatro</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main -->
+<section id="main" class="wrapper">
+    <div class="inner">
+        <header class="major">
+            <h2>Generar viaje</h2>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
+            <form action="#" th:action="@{/GenerarViaje}" method="post">
+                <table>
+                    <tr>
+                        <td>Repartidor: </td>
+                        <td>
+                            <select name="repartidor">
+                                <option th:value="NULL">Seleccione Repartidor</option>
+                                <option th:each="rep : ${repartidores}" th:value="${rep.Ci}" th:text="${rep.Nombre}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Vehiculo: </td>
+                        <td>
+                            <select name="vehiculo">
+                                <option th:value="NULL">Seleccione Vehiculo</option>
+                                <option th:each="v : ${vehiculos}" th:value="${v.Matricula}" th:text="${v.Matricula + ', ' + v.Marca + ' ' + v.Modelo}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+
+
+
+                <table>
+                    <thead>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Total</th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pedido : ${pedidos}">
+                        <td th:text="${pedido.Id}"></td>
+                        <td th:text="${#dates.format(pedido.Fecha, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${pedido.Cliente.Nombre}"></td>
+                        <td th:text="${'$' + pedido.Total}"></td>
+                        <td><input class="pedido" type="checkbox" name="pedidos" th:value="${pedido.Id}"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" align="right"><input type="submit" name="action" value="Generar viaje"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+
+
+            <label th:text="${mensaje}"></label>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+
+    <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
+        <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+</footer>
+
+<script>
+        $('.pedido').on('change', function() {
+           if($('.pedido:checked').length > 5) {
+               this.checked = false;
+           }
+        });
+</script>
+
+<!-- Scripts -->
+<script th:src="@{assets/js/jquery.min.js}"> </script>
+<script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
+<script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{assets/js/skel.min.js}"></script>
+<script th:src="@{assets/js/util.js}"></script>
+<!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
+<script th:src="@{assets/js/main.js}"></script>
+
+</body>
+</html>

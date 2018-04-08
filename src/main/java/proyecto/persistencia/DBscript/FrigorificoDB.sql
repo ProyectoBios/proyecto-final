@@ -94,17 +94,18 @@ Create Table Repartidor(
 );
 
 Create Table Vehiculo(
-	matricula varchar(7) primary key,
+	matricula varchar(8) primary key,
     marca varchar(20) not null,
     modelo varchar(20) not null,
     cargaMax int not null
 );
 
 Create Table Viaje(
-	id int primary key,
+	id int primary key AUTO_INCREMENT,
     ciRepartidor varchar(8) not null,
     matriculaVehiculo varchar(7) not null,
     fechaHora datetime not null,
+    finalizado bit not null,
     
     foreign key (ciRepartidor) references Repartidor(ci),
     foreign key (matriculaVehiculo) references Vehiculo(matricula)
@@ -151,6 +152,15 @@ INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', NOW(), 'Solomeo Paredes
 INSERT INTO LineaPedido VALUES(1, 1, 200, 2000.0, 1);
 INSERT INTO LineaPedido VALUES(1, 2, 45, 1125.0, 2);
 INSERT INTO LineaPedido VALUES(1, 3, 65, 1950.0, 3);
+
+INSERT INTO Empleado VALUES('12345678', 'Pedro Rodriguez', 34, '20171009', '091789456', 'repartidor');
+INSERT INTO Empleado VALUES('32165498', 'Pepe Martin', 28, '20160520', '092879654', 'repartidor');
+
+INSERT INTO Repartidor VALUES('12345678', '20220814');
+INSERT INTO Repartidor VALUES('32165498', '20200622');
+
+INSERT INTO Vehiculo VALUES('SBU 3940', 'Volkswagen', 'Worker', 9000);
+INSERT INTO Vehiculo VALUES('SAF 4589', 'Hyundai', 'Hd45', 2500);
 
 
 DELIMITER //
@@ -250,6 +260,13 @@ BEGIN
  Create Procedure AltaLineaPedido(pOrden int, pNumero int, pCantidad int, pImporte double, pProducto int)
  BEGIN
 	INSERT INTO LineaPedido VALUES(pOrden, pNumero, pCantidad, pImporte, pProducto);
+ END//
+ 
+ Create Procedure AltaViaje(pCiRep varchar(8), pMatricula varchar(8), out id int)
+ BEGIN
+	INSERT INTO Viaje VALUES(NULL, pCiRep, pMatricula, NOW(), 0);
+    
+    Set id = LAST_INSERT_ID();
  END
  
  
