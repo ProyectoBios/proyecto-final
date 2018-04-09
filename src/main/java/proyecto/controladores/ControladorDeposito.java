@@ -431,22 +431,24 @@ public class ControladorDeposito {
     }
 
     @RequestMapping(value="/MoverLote", method = RequestMethod.POST, params = "action=Mover")
-    public String moverLote(@RequestParam(value="idLote") int idLote,
-                            @RequestParam(value="ubicacion") String ubicacion, ModelMap modelMap) throws Exception{
+    public String moverLote(@RequestParam(value="idLoteHidden") String idLote,
+                            @RequestParam(value="idUbicacionHidden") String ubicacion, ModelMap modelMap) throws Exception{
         try {
-            FabricaLogica.getControladorDeposito().moverLote(idLote, ubicacion);
-            modelMap.addAttribute("mensaje", "Lote movido con éxito.");
+            int loteId = Integer.valueOf(idLote);
+            FabricaLogica.getControladorDeposito().moverLote(loteId, ubicacion);
+            modelMap.addAttribute("mensaje2", "Lote movido con éxito.");
 
             return "MoverLote";
 
         }catch (Exception ex){
-            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrió un error al mover el lote.");
+            modelMap.addAttribute("mensaje2", "¡ERROR! Ocurrió un error al mover el lote.");
             return "MoverLote";
         }
     }
 
     @RequestMapping(value = {"/EstadoDeRack", "/MoverLote"}, method = RequestMethod.POST, params = "action=Seleccionar")
-    public String listarLotesXRack(@RequestParam(value="letraRacks", required = false) String letraRack, ModelMap modelMap, HttpSession session) throws Exception {
+    public String listarLotesXRack(@RequestParam(value="letraRacks", required = false) String letraRack,
+                                   ModelMap modelMap, HttpSession session) throws Exception {
         try{
             //Obtengo la url del Request.
             UriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest();
@@ -456,14 +458,73 @@ public class ControladorDeposito {
                 modelMap.addAttribute("mensaje", "Debe seleccionar un rack de la lista");
             } else {
                 ArrayList<ArrayList<Lote>> lotes = FabricaLogica.getControladorDeposito().obtenerRack(FabricaLogica.getControladorDeposito().buscarRack(letraRack));
-                session.setAttribute("lotes", lotes);
-                modelMap.addAttribute("tablaRack", true);
+
+                if(requestedValue.equals("/MoverLote")) {
+                    boolean loteEncontrado = false;
+
+                    for (ArrayList<Lote> lote : lotes){
+                        for (Lote l : lote ){
+                            if (l.getCantUnidades() > 0){
+                                loteEncontrado = true;
+                                session.setAttribute("lotes", lotes);
+                                modelMap.addAttribute("tablaRackOrigen", true);
+                                break;
+                            }
+                        }
+                        if(loteEncontrado) {
+                            break;
+                        }
+                    }
+                    if (!loteEncontrado) {
+                        modelMap.addAttribute("mensaje", "No hay lotes disponibles para el rack seleccionado" );
+                    }
+
+                } else {
+                    modelMap.addAttribute("tablaRack", true);
+                    session.setAttribute("lotes", lotes);
+                }
             }
             return requestedValue;
         }catch (Exception ex){
             throw ex;
         }
     }
+
+    @RequestMapping(value = "/MoverLote", method = RequestMethod.POST, params = "action=Seleccionar Destino")
+    public String listarLotesXRackDestino(@RequestParam(value="letraRacks2", required = false) String letraRack,
+                                   ModelMap modelMap, HttpSession session) throws Exception {
+        try {
+
+            if(letraRack.isEmpty()) {
+                modelMap.addAttribute("mensaje2", "Debe seleccionar un rack de la lista");
+            } else {
+                ArrayList<ArrayList<Lote>> lotes = FabricaLogica.getControladorDeposito().obtenerRack(FabricaLogica.getControladorDeposito().buscarRack(letraRack));
+
+                boolean loteVacio = false;
+
+                for (ArrayList<Lote> lote : lotes){
+                    for (Lote l : lote ){
+                        if (l.getCantUnidades() == 0){
+                            loteVacio = true;
+                            session.setAttribute("lotes", lotes);
+                            modelMap.addAttribute("tablaRackDestino", true);
+                            break;
+
+                        }
+                    }
+                }
+                if (!loteVacio) {
+                    modelMap.addAttribute("mensaje2", "No hay ubicaciones disponibles para el rack seleccionado" );
+                }
+            }
+
+        } catch (Exception ex){
+            throw ex;
+        }
+
+        return "MoverLote";
+    }
+
 
     @RequestMapping(value="/AltaLote", method = RequestMethod.POST, params="action=Limpiar")
     public String limpiarAltaLote(ModelMap modelMap){

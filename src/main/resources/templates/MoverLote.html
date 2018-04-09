@@ -13,6 +13,9 @@
             .grilla tbody tr:nth-child(2n + 1) {
                 background-color: rgba(144, 144, 144, 0.075);
             }
+            .bordes tbody tr td {
+                border: 1px solid;
+            }
         </style>
     </head>
     <body>
@@ -27,8 +30,9 @@
                         <ul>
                             <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
                             <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
-                            <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
                             <li><a th:href="@{/EstadoDeRack}">Estado de Rack</a></li>
+                            <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
+                            <li><a th:href="@{/MoverLote}">Mover Lote</a></li>
                             <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
                             <li><a th:href="@{/AltaOrdenDePedido}">Alta orden de pedido</a></li>
                             <li><a th:href="@{/EstadoDePedido}">Estado de pedidos</a></li>
@@ -60,106 +64,102 @@
                 <div class="content">
                     <h3>Movimiento de Lotes</h3>
                     <!-- Formulario con la Tabla -->
-                    <form action="ControladorDeposito" name="MoverLote" method="post">
+                    <form action="#" th:action="@{/MoverLote}" name="MoverLote" method="post">
 
                         <table id="rackOrigen">
                             <tbody>
                             <tr>
                                 <td style="width: 25%"><label>Seleccione rack Origen: </label></td>
                                 <td>
-                                    <select name="productos">
-                                        <option value="1">Rack 1</option>
-                                        <option value="2">Rack 2</option>
-                                        <option value="3">Rack 3</option>
+                                    <select name="letraRacks">
+                                        <option th:value="null">Rack</option>
+                                        <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}"></option>
                                     </select>
                                 </td>
                                 <td style="width: 60%">
-                                    <input type="submit" name="action" value="Seleccionar" />
+                                    <input id="seleccionar" type="submit" name="action" value="Seleccionar" />
                                 </td>
                             </tr>
                             </tbody>
                         </table>
 
-                        <table class="linea" id="rack1" style="display: table; text-align: center"> <!-- none -->
+                        <table th:if="${tablaRackOrigen}" class="bordes" id="rack1" style="display: table; text-align: center">
                             <tbody>
-                            <tr>
-                                <td style="background-color: aqua; ">ID Lote</td>
-                                <td style="background-color: aqua">ID Lote</td>
-                                <td style="background-color: aqua">ID Lote</td>
-                                <td style="background-color: aqua">ID Lote</td>
-                                <td style="background-color: aqua">ID Lote</td>
-                            </tr>
-                            <tr>
-                                <td style="background-color: aqua">ID Lote</td>
-                                <td style="background-color: aqua">ID Lote</td>
-                                <td style="background-color: aqua">ID Lote</td>
-                                <td style="background-color: aqua">ID Lote</td>
+                            <tr th:each="fila, iter1 : ${session.lotes}">
+                                <th:block th:each="l, iter2 : ${fila}">
+                                    <td th:if="${l.cantUnidades != 0}" th:onclick="|VerDatosLote(${iter1.index}, ${iter2.index})|" th:text="${l.id + ' ' + l.ubicacion.ubicacionString}" style="background-color: aqua; cursor: pointer;">ID Lote</td>
+                                </th:block> <!--TODO-am: chequear que para el lote seleccionado hayan al menos un lote disponible para mover y mostrar de a 10 columnas-->
                             </tr>
                             </tbody>
                         </table>
 
-                        <table id="espLoteA" style="display: table"> <!-- display: none -->
+                        <table id="espLote1" style="display: none">
                             <thead>
-                            <th style="width: 15%"># ID</th>
+                            <th style="width: 15%">Ubicación</th>
+                            <th># ID</th>
                             <th style="width: 40%">Producto</th>
                             <th style="width: 10%">Cantidad</th>
                             <th>Vence</th>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>ID Lote</td>
-                                <td>Chorelos</td>
-                                <td>200</td>
-                                <td>18/04/2019</td>
+                            <tr id="datosLote">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             </tbody>
+
                         </table>
+                        <label th:text="${mensaje}">Mensaje</label>
 
                         <table id="rackDestino">
                             <tbody>
                             <tr>
                                 <td style="width: 25%"><label>Seleccione rack Destino: </label></td>
                                 <td>
-                                    <select name="productos">
-                                        <option value="2">Rack 2</option>
-                                        <option value="1">Rack 1</option>
-                                        <option value="3">Rack 3</option>
+                                    <select name="letraRacks2">
+                                        <option th:value="null">Rack</option>
+                                        <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}"></option>
                                     </select>
                                 </td>
                                 <td style="width: 60%">
-                                    <input type="submit" name="action" value="Seleccionar" />
+                                    <input id="seleccionar2" type="submit" name="action" value="Seleccionar Destino" />
                                 </td>
                             </tr>
                             </tbody>
                         </table>
 
-                        <table class="linea" id="rack" style="display: table; text-align: center"> <!-- none -->
+                        <table th:if="${tablaRackDestino}" class="bordes" id="rack2" style="display: table; text-align: center">
                             <tbody>
-                            <tr>
-                                <td>ID Ubicación</td>
-                                <td>ID Ubicación</td>
-                                <td>ID Ubicación</td>
-                                <td>ID Ubicación</td>
-                                <td>ID Ubicación</td>
-                            </tr>
-                            <tr>
-                                <td>ID Ubicación</td>
-                                <td>ID Ubicación</td>
-                                <td>ID Ubicación</td>
+                            <tr th:each="fila, iter1 : ${session.lotes}">
+                                <th:block th:each="l, iter2 : ${fila}">
+                                    <td th:if="${l.cantUnidades == 0}" th:onclick="|SeleccionarUbicacion(${iter1.index}, ${iter2.index})|" th:text="${'vacío ' + l.ubicacion.ubicacionString}" style="cursor: pointer;">vacío</td>
+                                </th:block> <!--TODO-am: chequear que para el lote seleccionado hayan al menos una Ubicación disponible para mover el lote y listar de a 10 columnas-->
                             </tr>
                             </tbody>
                         </table>
 
-                        <label>Ubicación seleccionada: ID Lote</label>
+                        <table id="espUbicacion" style="display: none;">
+                            <tr>
+                                <td>datos Ubicación</td>
+                            </tr>
 
-                        <table id="espLote" style="display: table">
+                        </table>
+
+                        <table id="botones" style="display: table">
                             <tbody>
                             <tr style="text-align: right">
-                                <td><input type="submit" name="action" value="Mover" /> &nbsp;<input type="submit" name="action" value="Cancelar" /></td>
-
+                                <td><input type="submit" onclick="EnviarDatos()" name="action" value="Mover" /> &nbsp;<input type="submit" name="action" value="Cancelar" /></td>
+                                <td>
+                                    <input id="idLoteHidden" name="idLoteHidden" th:type="hidden" value="" /> <!-- key: loteAMover-->
+                                    <input id="idUbicacionHidden" name="idUbicacionHidden" th:type="hidden" value="" /> <!-- key: ubicacionAMover-->
+                                </td>
                             </tr>
                             </tbody>
                         </table>
+                        <label th:text="${mensaje2}">Mensaje</label>
 
                     </form>
 
@@ -174,6 +174,71 @@
             <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
                 <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
         </footer>
+
+        <script th:inline="javascript">
+            function VerDatosLote(i,j) {
+                /*<![CDATA[*/
+                var lotes = [[${session.lotes}]];
+                var lote = lotes[i][j];
+                sessionStorage.setItem('loteAMover', lote.id);
+
+                var tabla = document.getElementById("espLote1");
+                tabla.style.display = "table";
+                tabla.deleteRow(1);
+
+                var fila = tabla.insertRow(1);
+
+                var x = fila.insertCell(0);
+                x.innerHTML = lote.ubicacion.ubicacionString;
+
+                x = fila.insertCell(1);
+                x.innerHTML = lote.id;
+
+                x = fila.insertCell(2);
+                x.innerHTML = lote.producto.nombre;
+
+                x = fila.insertCell(3);
+                x.innerHTML = lote.cantUnidades;
+
+                x = fila.insertCell(4);
+                var fechaVenc = new Date(lote.fechaVencimiento);
+                x.innerHTML = fechaVenc.getDate() + "/" + fechaVenc.getMonth() + "/" + fechaVenc.getFullYear();
+
+                /*]]>*/
+            }
+        </script>
+
+        <script th:inline="javascript">
+            function SeleccionarUbicacion(i,j) {
+                /*<![CDATA[*/
+                var lotes = [[${session.lotes}]];
+                var lote = lotes[i][j];
+                sessionStorage.setItem('ubicacionAMover', lote.ubicacion.ubicacionString);
+
+                var tabla = document.getElementById("espUbicacion");
+                tabla.style.display = "table";
+                tabla.deleteRow(0);
+
+                var fila = tabla.insertRow(0);
+
+                var x = fila.insertCell(0);
+                x.innerHTML = lote.ubicacion.ubicacionString;
+
+                /*]]>*/
+            }
+        </script>
+
+        <script th:inline="javascript">
+            function EnviarDatos() {
+                /*<![CDATA[*/
+
+                document.getElementById("idLoteHidden").value = sessionStorage.getItem("loteAMover");
+                document.getElementById("idUbicacionHidden").value = sessionStorage.getItem("ubicacionAMover");
+                /*]]>*/
+            }
+        </script>
+
+        <!-- TODO-am: Faltan funciones JS para mostrar las ubicaciones disponibles (vacías) y poner en los input hidden idLote y ubicación (submit de "Mover"). -->
 
         <!-- Scripts -->
         <script th:src="@{assets/js/jquery.min.js}"> </script>
