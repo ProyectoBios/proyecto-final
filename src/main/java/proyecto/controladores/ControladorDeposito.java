@@ -270,8 +270,13 @@ public class ControladorDeposito {
                 modelMap.addAttribute("mensaje", "No se encontraron Racks");
             }
             session.setAttribute("racks", listaRacks);
-            return requestedValue;
-
+            if(requestedValue.contains("MoverLote")){
+                return "MoverLote";
+            }else if(requestedValue.contains("EstadoDeRack")){
+                return "EstadoDeRack";
+            }else{
+                return "";
+            }
         }catch(Exception ex) {
             throw ex;
         }
@@ -435,6 +440,15 @@ public class ControladorDeposito {
                             @RequestParam(value="idUbicacionHidden") String ubicacion, ModelMap modelMap) throws Exception{
         try {
             int loteId = Integer.valueOf(idLote);
+
+            if (loteId <= 0){
+                modelMap.addAttribute("mensaje", "Debe seleccionar el lote a mover");
+                return "MoverLote";
+            } else if (ubicacion.isEmpty()){
+                modelMap.addAttribute("mensaje2", "Debe seleccionar la ubicación de destino");
+                return "MoverLote";
+            }
+
             FabricaLogica.getControladorDeposito().moverLote(loteId, ubicacion);
             modelMap.addAttribute("mensaje2", "Lote movido con éxito.");
 
@@ -459,7 +473,7 @@ public class ControladorDeposito {
             } else {
                 ArrayList<ArrayList<Lote>> lotes = FabricaLogica.getControladorDeposito().obtenerRack(FabricaLogica.getControladorDeposito().buscarRack(letraRack));
 
-                if(requestedValue.equals("/MoverLote")) {
+                if(requestedValue.contains("MoverLote")) {
                     boolean loteEncontrado = false;
 
                     for (ArrayList<Lote> lote : lotes){
@@ -478,13 +492,15 @@ public class ControladorDeposito {
                     if (!loteEncontrado) {
                         modelMap.addAttribute("mensaje", "No hay lotes disponibles para el rack seleccionado" );
                     }
+                    return "MoverLote";
 
-                } else {
+                } else if(requestedValue.contains("EstadoDeRack")){
                     modelMap.addAttribute("tablaRack", true);
                     session.setAttribute("lotes", lotes);
+                    return "EstadoDeRack";
                 }
             }
-            return requestedValue;
+            return "index";
         }catch (Exception ex){
             throw ex;
         }
@@ -545,6 +561,23 @@ public class ControladorDeposito {
     public void initDateBinder(final WebDataBinder binder) {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd/MM/yyyy"), true));
         binder.registerCustomEditor(Date.class, "fechaVencimiento", new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
+    }
+
+    @RequestMapping(value="/MoverLote", method = RequestMethod.POST, params = "action=Cancelar")
+    public String cancelarMoverLote(ModelMap modelMap, HttpSession session){
+        try{
+            ArrayList<Rack> listaRacks = FabricaLogica.getControladorDeposito().listarRacks();
+            if(listaRacks.size() == 0) {
+                modelMap.addAttribute("mensaje", "No se encontraron Racks");
+            }
+            session.setAttribute("racks", listaRacks);
+            return "MoverLote";
+        }
+        catch (ExcepcionFrigorifico ex){
+            return "error";
+        }catch (Exception ex){
+            return "error";
+        }
     }
 
     //endregion

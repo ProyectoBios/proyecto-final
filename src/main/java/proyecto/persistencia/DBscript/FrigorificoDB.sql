@@ -55,6 +55,7 @@ Create Table OrdenPedido(
 	idOrden int primary key AUTO_INCREMENT,
 	fecha datetime not null,
     estado varchar(20) not null,
+    descripcionEntrega varchar(150),
     ultimaActEst datetime not null,
     direccionEnvio varchar(40) not null,
     contacto varchar(40) not null,
@@ -147,7 +148,7 @@ INSERT INTO Lote VALUES(NULL, NOW(), '20180427', 10, 3, 'A', 2, 2, 0);
 INSERT INTO Cliente VALUES('Disco', '1234567890', 'disco@disco.com');
 INSERT INTO Cliente VALUES('Carniceria Pepe', '0987654321', 'pepe@gmail.com');
 
-INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', NOW(), 'Solomeo Paredes 2020', 'Peteco', 5075, 1116.5, 6191.5, 'Carniceria Pepe'); 
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Solomeo Paredes 2020', 'Peteco', 5075, 1116.5, 6191.5, 'Carniceria Pepe'); 
 
 INSERT INTO LineaPedido VALUES(1, 1, 200, 2000.0, 1);
 INSERT INTO LineaPedido VALUES(1, 2, 45, 1125.0, 2);
@@ -267,6 +268,16 @@ BEGIN
 	INSERT INTO Viaje VALUES(NULL, pCiRep, pMatricula, NOW(), 0);
     
     Set id = LAST_INSERT_ID();
+ END//
+ 
+ Create Procedure ListarIdViajeYVehiculoXRepartidor(pCiRepartidor varchar(8))
+ BEGIN
+	SELECT Viajes.id, Viaje.matriculaVehiculo, Vehiculo.marca, Vehiculo.modelo, Vehiculo.cargaMax
+    FROM Viaje
+    INNER JOIN PedidosViaje
+    ON Viaje.id = PedidosViaje.idViaje
+    WHERE Viaje.finalizado = 0 AND Viaje.ciRepartidor = pCiRepartidor;
+ 
  END
  
  

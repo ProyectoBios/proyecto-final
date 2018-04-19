@@ -59,61 +59,82 @@
 <!-- Main -->
 <section id="main" class="wrapper">
     <div class="inner">
-        <header class="major">
-            <h2>Generar viaje</h2>
+        <header >
+            <h2>Sección Repartidores</h2>
         </header>
-
         <!-- Content -->
         <div class="content">
-            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
-            <form action="#" th:action="@{/GenerarViaje}" method="post">
-                <table>
-                    <tr>
-                        <td>Repartidor: </td>
-                        <td>
-                            <select name="repartidor">
-                                <option th:value="NULL">Seleccione Repartidor</option>
-                                <option th:each="rep : ${repartidores}" th:value="${rep.Ci}" th:text="${rep.Nombre}"></option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Vehiculo: </td>
-                        <td>
-                            <select name="vehiculo">
-                                <option th:value="NULL">Seleccione Vehiculo</option>
-                                <option th:each="v : ${vehiculos}" th:value="${v.Matricula}" th:text="${v.Matricula + ', ' + v.Marca + ' ' + v.Modelo}"></option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-
-
-                <table>
-                    <thead>
-                    <th>ID</th>
-                    <th>Fecha</th>
-                    <th>Cliente</th>
-                    <th>Total</th>
-                    <th></th>
-                    </thead>
+            <h3>Entrega de Pedidos</h3>
+            <!-- Formulario con la Tabla -->
+            <form action="#" th:action="@{ControladorEntregas}" name="EntregaDePedidos" method="post">
+                <table id="viajes">
                     <tbody>
-                    <tr th:each="pedido : ${pedidos}">
-                        <td th:text="${pedido.Id}"></td>
-                        <td th:text="${#dates.format(pedido.Fecha, 'dd/MM/yyyy')}"></td>
-                        <td th:text="${pedido.Cliente.Nombre}"></td>
-                        <td th:text="${'$' + pedido.Total}"></td>
-                        <td><input class="pedido" type="checkbox" name="pedidos" th:value="${pedido.Id}"/></td>
-                    </tr>
                     <tr>
-                        <td colspan="4" align="right"><input type="submit" name="action" value="Generar viaje"/></td>
+                        <td style="width: 10%; font-weight: bold">Viajes:</td>
+                        <td>
+                            <select name="viajes">
+                                <option th:value="NULL">Seleccione viaje</option>
+                                <option th:each=" v : ${viajes}" th:value="${v.id}" th:text="${v.id}"></option>
+                            </select>
+                        </td>
+                        <td style="width: 50%">
+                            <input type="submit" name="action" value="Seleccionar" />
+                        </td>
                     </tr>
                     </tbody>
                 </table>
+
+                <table id="pedidos">
+                    <tbody>
+                        <tr>
+                            <td style="width: 10%; font-weight: bold">Pedidos:</td>
+                            <td>
+                                <select name="pedidos">
+                                    <option th:value="NULL">Seleccione Pedido</option>
+                                    <option th:each="p : ${pedidos}" th:value="${p.id}" th:text="${p.id}"></option>
+                                </select>
+                            </td>
+                            <td style="width: 50%">
+                                <input type="submit" name="action" value="Seleccionar" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table id="VerPedido" th:if="${tablaPedido}" style="display: table"> <!-- display: none -->
+                    <tbody>
+                        <tr>
+                            <td style="width: 10%; font-weight: bold"># ID</td>
+                            <td style="font-weight: bold">Dirección de Envío</td>
+                        </tr>
+                        <tr>
+                            <td th:text="${pedido.id}">01</td>
+                            <td>Tomás Orín de la Fuente 2020</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">Contacto</td>
+                            <td>Peteco</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">Precio total</td>
+                            <td>$19850</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">Vehículo</td>
+                            <td>Lamborghini Aventador lol</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"> <textarea rows="2" maxlength="250" style="width: 80%"></textarea> <br>
+                                <p style="text-align: center; width: 80%"><input type="submit" name="action" value="Entregado" /> &nbsp; &nbsp;
+                                    <input type="submit" name="action" value="Cancelado" /> </p>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
             </form>
 
-
-            <label th:text="${mensaje}"></label>
         </div>
 
     </div>
@@ -125,14 +146,6 @@
     <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
         <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
 </footer>
-
-<script>
-        $('.pedido').on('change', function() {
-           if($('.pedido:checked').length > 5) {
-               this.checked = false;
-           }
-        });
-</script>
 
 <!-- Scripts -->
 <script th:src="@{assets/js/jquery.min.js}"> </script>

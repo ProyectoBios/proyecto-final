@@ -101,7 +101,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido orden = null;
 
             if(resultado.next()){
-                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
             }
 
             return orden;
@@ -119,20 +119,21 @@ class PControladorPedidos implements IPPedidos{
             con = Conexion.AbrirConexion();
             con.setAutoCommit(false);
 
-            consulta = con.prepareCall("{ CALL AltaOrdenDePedido(?, ?, ?, ? ,? ,? ,? ,?)}");
+            consulta = con.prepareCall("{ CALL AltaOrdenDePedido(?, ?, ?, ?, ? ,? ,? ,? ,?)}");
 
             consulta.setString(1, orden.getEstado());
-            consulta.setString(2, orden.getDireccionEnvio());
-            consulta.setString(3, orden.getContacto());
-            consulta.setDouble(4, orden.getSubtotal());
-            consulta.setDouble(5, orden.getImpuestos());
-            consulta.setDouble(6, orden.getTotal());
-            consulta.setString(7, orden.getCliente().getNombre());
-            consulta.registerOutParameter(8, Types.INTEGER);
+            consulta.setString(2, orden.getEstadoEntrega());
+            consulta.setString(3, orden.getDireccionEnvio());
+            consulta.setString(4, orden.getContacto());
+            consulta.setDouble(5, orden.getSubtotal());
+            consulta.setDouble(6, orden.getImpuestos());
+            consulta.setDouble(7, orden.getTotal());
+            consulta.setString(8, orden.getCliente().getNombre());
+            consulta.registerOutParameter(9, Types.INTEGER);
 
             consulta.executeUpdate();
 
-            int id = consulta.getInt(8);
+            int id = consulta.getInt(9);
             orden.setId(id);
 
             for(LineaPedido linea : orden.getLineas()){
@@ -192,7 +193,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido orden = null;
 
             while(resultado.next()){
-                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), cliente, buscarLineasXOrden(resultado.getInt("idOrden")));
+                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), cliente, buscarLineasXOrden(resultado.getInt("idOrden")));
                 ordenes.add(orden);
             }
 
@@ -255,7 +256,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido pedido = null;
 
             while(resultado.next()){
-                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
                 pedidos.add(pedido);
             }
 
@@ -275,7 +276,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido pedido = null;
 
             while(resultado.next()){
-                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), resultado.getDouble("impuestos"), resultado.getDouble("total"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
                 pedidos.add(pedido);
             }
 

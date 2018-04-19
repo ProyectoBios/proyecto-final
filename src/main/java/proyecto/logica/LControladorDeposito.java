@@ -160,8 +160,13 @@ class LControladorDeposito implements  IDeposito {
             throw new ExcepcionFrigorifico("¡ERROR! El id no puede ser menor que 0.");
         }
 
-        if(lote.getCantUnidades() < 0){
-            throw new ExcepcionFrigorifico("¡ERROR! La cantidad de unidades no puede ser menor que 0.");
+        if(lote.getCantUnidades() <= 0) {
+            throw new ExcepcionFrigorifico("¡ERROR! La cantidad de unidades no puede ser menor o igual que 0.");
+        }
+
+        int c = lote.getFechaVencimiento().compareTo(lote.getFechaIngreso());
+        if(c <= 0){
+            throw new ExcepcionFrigorifico("¡ERROR! La fecha de vencimiento debe ser posterior a la fecha de hoy");
         }
 
         ValidarEspecificacionProducto(lote.getProducto());
@@ -169,6 +174,10 @@ class LControladorDeposito implements  IDeposito {
 
         if(lote.getUbicacion().getFila() < 0 || lote.getUbicacion().getColumna() < 0){
             throw new ExcepcionFrigorifico("¡ERROR! La ubicación del lote no es válida.");
+        }
+
+        if(lote.getUbicacion().getFila() > lote.getUbicacion().getRack().getDimAlto() || lote.getUbicacion().getColumna() > lote.getUbicacion().getRack().getDimAncho()){
+            throw new ExcepcionFrigorifico("¡ERROR! La fila y columna de la ubicacion debe estar dentro de las dimensiones del rack: " + lote.getUbicacion().getRack().getDimAlto() + "x" + lote.getUbicacion().getRack().getDimAncho());
         }
     }
 
@@ -213,8 +222,8 @@ class LControladorDeposito implements  IDeposito {
         }
     }
 
-    @Override
-    public ArrayList<Lote> listarLotesXRack(String letra) throws Exception {
+
+    private ArrayList<Lote> listarLotesXRack(String letra) throws Exception {
         return FabricaPersistencia.getControladorDeposito().listarLotesXRack(letra);
     }
 

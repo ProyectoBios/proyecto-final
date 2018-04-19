@@ -27,19 +27,31 @@
                 <a href="#" class="submenu">Menú</a>
                 <ul>
                     <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
-                    <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
-                    <li><a th:href="@{/EstadoDeRack}">Estado de Rack</a></li>
-                    <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
-                    <li><a th:href="@{/MoverLote}">Mover Lote</a></li>
-                    <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
-                    <li><a th:href="@{/EstadoDePedido}">Estado de pedidos</a></li>
-                    <li>
-                        <a href="#">Submenu</a>
+                    <li><a href="#">Rack</a>
                         <ul>
-                            <li><a href="#">Opción uno</a></li>
-                            <li><a href="#">Opción dos</a></li>
-                            <li><a href="#">Opción tres</a></li>
-                            <li><a href="#">Opción cuatro</a></li>
+                            <li><a th:href="@{/AltaRack}">Mantenimiento de Rack</a></li>
+                            <li><a th:href="@{/EstadoDeRack}">Estado de Rack</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Lote</a>
+                        <ul>
+                            <li><a th:href="@{/AltaLote}">Alta de Lote</a></li>
+                            <li><a th:href="@{/MoverLote}">Mover Lote</a></li>
+                            <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Pedido</a>
+                        <ul>
+                            <li><a th:href="@{/AltaOrdenDePedido}">Alta Orden de Pedido</a></li>
+                            <li><a th:href="@{/RealizarPicking}">Realizar Picking</a></li>
+                            <li><a th:href="@{/PreparacionPedidos}">Preparar Pedidos</a></li>
+                            <li><a th:href="@{/EstadoDePedido}">Estado de Pedidos</a></li>
+                            <li><a th:href="@{/ListadoDePedidos}">Listado de Pedidos</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Entregas</a>
+                        <ul>
+                            <li><a th:href="@{/GenerarViaje}">Generar Viaje</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -113,7 +125,7 @@
                                 <td>Nombre: </td>
                                 <td><input type="text" th:field="*{Nombre}"/></td>
                                 <td>Teléfono: </td>
-                                <td><input type="text" th:field="*{Telefono}"/></td>
+                                <td><input type="number" th:field="*{Telefono}"/></td>
                             </tr>
                             <tr>
                                 <td>E-mail: </td>
@@ -147,7 +159,7 @@
                                 </td>
 
                                 <td style="width: 15%">Cantidad Unidades: </td>
-                                <td style="width: 15%"> <input type="text" size="1" name="cantUnidades"/> </td>
+                                <td style="width: 15%"> <input type="number" size="1" name="cantUnidades"/> </td>
                                 <td style="width: 10%"> <input type="submit" name="action" value="Agregar" /> </td>
                             </tr>
                         </tbody>

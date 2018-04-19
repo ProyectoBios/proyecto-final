@@ -9,6 +9,7 @@ import proyecto.entidades.*;
 import proyecto.logica.FabricaLogica;
 
 import javax.jws.WebParam;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 @Controller
@@ -52,7 +53,7 @@ public class ControladorEntregas {
 
             if(vehiculo.equals("")){
                 modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("preparado"));
-                throw new ExcepcionFrigorifico("Debe seleccionar un vehiculo");
+                throw new ExcepcionFrigorifico("Debe seleccionar un vehículo");
             }
             Vehiculo v = FabricaLogica.getControladorEmpleados().buscarVehiculo(vehiculo);
 
@@ -67,8 +68,21 @@ public class ControladorEntregas {
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "GenerarViaje";
         }catch(Exception ex){
-            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al cargar la pagina");
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrió un error al cargar la página");
             return "GenerarViaje";
+        }
+    }
+
+    @RequestMapping(value = "/EntregaDePedidos", method = RequestMethod.GET)
+    public String getEntregaDePedidos (HttpSession session, ModelMap modelMap){
+        try {
+            //TODO: am- Listar los Viajes y cargarlos a la session.
+
+            return "EntregaDePedido";
+
+        } catch (Exception ex){
+            modelMap.addAttribute("mensaje", "¡ERROR! Hubo un error al cargar la página");
+            return "EntregaDePedidos";
         }
     }
 }

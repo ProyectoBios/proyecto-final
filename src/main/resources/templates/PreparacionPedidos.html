@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Estado de Pedido</title>
+    <title>Preparación de Pedidos</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
@@ -30,19 +30,31 @@
                 <a href="#" class="submenu">Menú</a>
                 <ul>
                     <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
-                    <li><a th:href="@{/AltaRack}">Alta Rack</a></li>
-                    <li><a th:href="@{/EstadoDeRack}">Estado de Rack</a></li>
-                    <li><a th:href="@{/AltaLote}">Alta Lote</a></li>
-                    <li><a th:href="@{/MoverLote}">Mover Lote</a></li>
-                    <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
-                    <li><a th:href="@{/AltaOrdenDePedido}">Alta orden de pedido</a></li>
-                    <li>
-                        <a href="#">Submenu</a>
+                    <li><a href="#">Rack</a>
                         <ul>
-                            <li><a href="#">Opción uno</a></li>
-                            <li><a href="#">Opción dos</a></li>
-                            <li><a href="#">Opción tres</a></li>
-                            <li><a href="#">Opción cuatro</a></li>
+                            <li><a th:href="@{/AltaRack}">Mantenimiento de Rack</a></li>
+                            <li><a th:href="@{/EstadoDeRack}">Estado de Rack</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Lote</a>
+                        <ul>
+                            <li><a th:href="@{/AltaLote}">Alta de Lote</a></li>
+                            <li><a th:href="@{/MoverLote}">Mover Lote</a></li>
+                            <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Pedido</a>
+                        <ul>
+                            <li><a th:href="@{/AltaOrdenDePedido}">Alta Orden de Pedido</a></li>
+                            <li><a th:href="@{/RealizarPicking}">Realizar Picking</a></li>
+                            <li><a th:href="@{/PreparacionPedidos}">Preparar Pedidos</a></li>
+                            <li><a th:href="@{/EstadoDePedido}">Estado de Pedidos</a></li>
+                            <li><a th:href="@{/ListadoDePedidos}">Listado de Pedidos</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Entregas</a>
+                        <ul>
+                            <li><a th:href="@{/GenerarViaje}">Generar Viaje</a></li>
                         </ul>
                     </li>
                 </ul>

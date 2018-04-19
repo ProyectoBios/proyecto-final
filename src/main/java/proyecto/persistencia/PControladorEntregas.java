@@ -2,9 +2,12 @@ package proyecto.persistencia;
 
 import jdk.nashorn.internal.codegen.CompilerConstants;
 import proyecto.entidades.OrdenPedido;
+import proyecto.entidades.Vehiculo;
 import proyecto.entidades.Viaje;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PControladorEntregas implements IPEntregas{
     private static PControladorEntregas instacia = null;
@@ -62,6 +65,60 @@ public class PControladorEntregas implements IPEntregas{
             statement.setInt(2, p.getId());
 
             statement.executeUpdate();
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    public ArrayList<Viaje> listarViajesPendientes (String ciRepartidor) throws Exception{
+        try (Connection con = Conexion.AbrirConexion();
+             CallableStatement consulta = con.prepareCall("{CALL ListarIdViajeYVehiculoXRepartidor(?)}")){
+
+            consulta.setString(1, ciRepartidor);
+
+            ArrayList<Viaje> listaViajes = new ArrayList<>();
+            Viaje viaje = new Viaje();
+
+            Vehiculo vehiculo = new Vehiculo();
+
+            ArrayList<OrdenPedido> ordenes = new ArrayList<>();
+            OrdenPedido pedido = new OrdenPedido();
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+
+            while (resultadoConsulta.next()){
+            //TODO-am: Traerme los viajes del repartidor y su vehículo.
+            //TODO-am: Luego para cada viaje, recorrer los id de Pedidos y traérmelos para crear la lista de pedidos
+            //TODO-am: Agregar el vehículo y la lista de pedidos al viaje. Retornar la lista de Viajes.
+
+            }
+
+
+        } catch (Exception ex){
+            throw ex;
+        }
+
+        return null;
+    }
+
+    public ArrayList<Integer> obtenerIdPedidosXViaje (int idViaje) throws Exception{
+
+        try (Connection con = Conexion.AbrirConexion();
+             PreparedStatement consulta = con.prepareStatement("SELECT idPedidos FROM PedidosViaje WHERE idViaje = ?")){
+
+            consulta.setInt(1, idViaje);
+
+            ResultSet resultadoConsulta = consulta.executeQuery();
+
+            ArrayList<Integer> idPedidos = new ArrayList<>();
+
+            while (resultadoConsulta.next()){
+                int idPedido = resultadoConsulta.getInt("idOrden");
+                idPedidos.add(idPedido);
+            }
+
+            return idPedidos;
+
         }catch (Exception ex){
             throw ex;
         }
