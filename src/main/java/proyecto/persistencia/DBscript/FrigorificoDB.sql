@@ -253,7 +253,7 @@ BEGIN
  
  Create Procedure AltaOrdenDePedido(pEstado varchar(20), pDireccion varchar(40), pContacto varchar(40), pSubtotal double, pImpuestos double, pTotal double, pCliente varchar(30), out id int)
  BEGIN
-	INSERT INTO OrdenPedido VALUES(NULL, NOW(), pEstado, NOW(), pDireccion, pContacto, pSubtotal, pImpuestos, pTotal, pCliente);
+	INSERT INTO OrdenPedido VALUES(NULL, NOW(), pEstado, '', NOW(), pDireccion, pContacto, pSubtotal, pImpuestos, pTotal, pCliente);
     
     SET id = LAST_INSERT_ID();
  END//
@@ -272,10 +272,8 @@ BEGIN
  
  Create Procedure ListarIdViajeYVehiculoXRepartidor(pCiRepartidor varchar(8))
  BEGIN
-	SELECT Viajes.id, Viaje.matriculaVehiculo, Vehiculo.marca, Vehiculo.modelo, Vehiculo.cargaMax
+	SELECT Viajes.id, Viaje.matriculaVehiculo
     FROM Viaje
-    INNER JOIN PedidosViaje
-    ON Viaje.id = PedidosViaje.idViaje
     WHERE Viaje.finalizado = 0 AND Viaje.ciRepartidor = pCiRepartidor;
  
  END

@@ -11,6 +11,7 @@ import proyecto.logica.FabricaLogica;
 import javax.jws.WebParam;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Controller
 public class ControladorEntregas {
@@ -57,7 +58,7 @@ public class ControladorEntregas {
             }
             Vehiculo v = FabricaLogica.getControladorEmpleados().buscarVehiculo(vehiculo);
 
-            Viaje viaje = new Viaje(0, (Repartidor)rep, v, listaPedidos);
+            Viaje viaje = new Viaje(0, (Repartidor)rep, v, listaPedidos, new Date());
 
             FabricaLogica.getControladorEntregas().generarViaje(viaje);
 

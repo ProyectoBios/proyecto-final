@@ -119,21 +119,20 @@ class PControladorPedidos implements IPPedidos{
             con = Conexion.AbrirConexion();
             con.setAutoCommit(false);
 
-            consulta = con.prepareCall("{ CALL AltaOrdenDePedido(?, ?, ?, ?, ? ,? ,? ,? ,?)}");
+            consulta = con.prepareCall("{ CALL AltaOrdenDePedido(?, ?, ?, ? ,? ,? ,? ,?)}");
 
             consulta.setString(1, orden.getEstado());
-            consulta.setString(2, orden.getEstadoEntrega());
-            consulta.setString(3, orden.getDireccionEnvio());
-            consulta.setString(4, orden.getContacto());
-            consulta.setDouble(5, orden.getSubtotal());
-            consulta.setDouble(6, orden.getImpuestos());
-            consulta.setDouble(7, orden.getTotal());
-            consulta.setString(8, orden.getCliente().getNombre());
-            consulta.registerOutParameter(9, Types.INTEGER);
+            consulta.setString(2, orden.getDireccionEnvio());
+            consulta.setString(3, orden.getContacto());
+            consulta.setDouble(4, orden.getSubtotal());
+            consulta.setDouble(5, orden.getImpuestos());
+            consulta.setDouble(6, orden.getTotal());
+            consulta.setString(7, orden.getCliente().getNombre());
+            consulta.registerOutParameter(8, Types.INTEGER);
 
             consulta.executeUpdate();
 
-            int id = consulta.getInt(9);
+            int id = consulta.getInt(8);
             orden.setId(id);
 
             for(LineaPedido linea : orden.getLineas()){

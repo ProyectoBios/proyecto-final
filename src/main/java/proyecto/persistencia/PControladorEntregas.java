@@ -2,6 +2,7 @@ package proyecto.persistencia;
 
 import jdk.nashorn.internal.codegen.CompilerConstants;
 import proyecto.entidades.OrdenPedido;
+import proyecto.entidades.Repartidor;
 import proyecto.entidades.Vehiculo;
 import proyecto.entidades.Viaje;
 
@@ -70,29 +71,29 @@ public class PControladorEntregas implements IPEntregas{
         }
     }
 
-    public ArrayList<Viaje> listarViajesPendientes (String ciRepartidor) throws Exception{
+    public ArrayList<Viaje> listarViajesPendientes (Repartidor repartidor) throws Exception{
         try (Connection con = Conexion.AbrirConexion();
              CallableStatement consulta = con.prepareCall("{CALL ListarIdViajeYVehiculoXRepartidor(?)}")){
 
-            consulta.setString(1, ciRepartidor);
+            consulta.setString(1, repartidor.getCi());
 
             ArrayList<Viaje> listaViajes = new ArrayList<>();
-            Viaje viaje = new Viaje();
+            Viaje viaje = null;
 
-            Vehiculo vehiculo = new Vehiculo();
+            Vehiculo vehiculo = null;
 
-            ArrayList<OrdenPedido> ordenes = new ArrayList<>();
-            OrdenPedido pedido = new OrdenPedido();
+            ArrayList<OrdenPedido> ordenes = null;
+            OrdenPedido pedido = null;
 
             ResultSet resultadoConsulta = consulta.executeQuery();
 
             while (resultadoConsulta.next()){
-            //TODO-am: Traerme los viajes del repartidor y su vehículo.
-            //TODO-am: Luego para cada viaje, recorrer los id de Pedidos y traérmelos para crear la lista de pedidos
-            //TODO-am: Agregar el vehículo y la lista de pedidos al viaje. Retornar la lista de Viajes.
 
+                vehiculo = FabricaPersistencia.getControladorEmpleados().buscarVehiculo(resultadoConsulta.getString("matriculaVehiculo"));
+                ordenes = obtenerPedidosXViaje(resultadoConsulta.getInt("id"));
+                viaje = new Viaje(resultadoConsulta.getInt("id"), repartidor, vehiculo, ordenes, resultadoConsulta.getTimestamp("fechaHora"));
+                listaViajes.add(viaje);
             }
-
 
         } catch (Exception ex){
             throw ex;
@@ -101,23 +102,22 @@ public class PControladorEntregas implements IPEntregas{
         return null;
     }
 
-    public ArrayList<Integer> obtenerIdPedidosXViaje (int idViaje) throws Exception{
+    public ArrayList<OrdenPedido> obtenerPedidosXViaje (int idViaje) throws Exception{
 
         try (Connection con = Conexion.AbrirConexion();
-             PreparedStatement consulta = con.prepareStatement("SELECT idPedidos FROM PedidosViaje WHERE idViaje = ?")){
+             PreparedStatement consulta = con.prepareStatement("SELECT idPedido FROM PedidosViaje WHERE idViaje = ?")){
 
             consulta.setInt(1, idViaje);
 
             ResultSet resultadoConsulta = consulta.executeQuery();
 
-            ArrayList<Integer> idPedidos = new ArrayList<>();
+            ArrayList<OrdenPedido> pedidos = new ArrayList<>();
 
             while (resultadoConsulta.next()){
-                int idPedido = resultadoConsulta.getInt("idOrden");
-                idPedidos.add(idPedido);
+                OrdenPedido pedido = FabricaPersistencia.getControladorPedidos().buscarOrdenPedido(resultadoConsulta.getInt("idPedido"));
+                pedidos.add(pedido);
             }
-
-            return idPedidos;
+            return pedidos;
 
         }catch (Exception ex){
             throw ex;

@@ -337,7 +337,7 @@ public class ControladorPedidos {
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "AltaOrdenDePedido";
         }catch (Exception ex){
-            modelMap.addAttribute("mensaje", "Ocurrió un error al dar de alta el cliente.");
+            modelMap.addAttribute("mensaje", "Ocurrió un error al dar de alta el pedido.");
             return "AltaOrdenDePedido";
         }
     }

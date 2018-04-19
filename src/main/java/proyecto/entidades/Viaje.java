@@ -1,6 +1,7 @@
 package proyecto.entidades;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Viaje {
     private int id;
@@ -8,6 +9,7 @@ public class Viaje {
     private Repartidor repartidor;
     private Vehiculo vehiculo;
     private ArrayList<OrdenPedido> pedidos;
+    private Date fechaHora;
 
     public int getId() {
         return id;
@@ -41,14 +43,23 @@ public class Viaje {
         this.pedidos = pedidos;
     }
 
-    public Viaje(int id, Repartidor repartidor, Vehiculo vehiculo, ArrayList<OrdenPedido> pedidos) {
+    public Date getFechaHora() {
+        return fechaHora;
+    }
+
+    public void setFechaHora(Date fechaHora) {
+        this.fechaHora = fechaHora;
+    }
+
+    public Viaje(int id, Repartidor repartidor, Vehiculo vehiculo, ArrayList<OrdenPedido> pedidos, Date fechaHora) {
         this.id = id;
         this.repartidor = repartidor;
         this.vehiculo = vehiculo;
         this.pedidos = pedidos;
+        this.fechaHora = fechaHora;
     }
 
     public Viaje() {
-        this(0, new Repartidor(), new Vehiculo(), new ArrayList<>());
+        this(0, new Repartidor(), new Vehiculo(), new ArrayList<>(), new Date());
     }
 }
