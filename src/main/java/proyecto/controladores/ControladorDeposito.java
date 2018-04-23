@@ -21,6 +21,8 @@ import proyecto.entidades.Rack;
 import proyecto.entidades.ExcepcionFrigorifico;
 import proyecto.logica.FabricaLogica;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 import javax.servlet.http.HttpSession;
@@ -439,8 +441,12 @@ public class ControladorDeposito {
     public String moverLote(@RequestParam(value="idLoteHidden") String idLote,
                             @RequestParam(value="idUbicacionHidden") String ubicacion, ModelMap modelMap) throws Exception{
         try {
-            int loteId = Integer.valueOf(idLote);
-
+            int loteId = 0;
+            try {
+                loteId = Integer.valueOf(idLote);
+            }catch(Exception ex){
+                throw new ExcepcionFrigorifico("Debe seleccionar el lote a mover");
+            }
             if (loteId <= 0){
                 modelMap.addAttribute("mensaje", "Debe seleccionar el lote a mover");
                 return "MoverLote";
@@ -454,10 +460,14 @@ public class ControladorDeposito {
 
             return "MoverLote";
 
+        }catch(ExcepcionFrigorifico ex){
+            modelMap.addAttribute("mensaje2", ex.getMessage());
+            return "MoverLote";
         }catch (Exception ex){
             modelMap.addAttribute("mensaje2", "¡ERROR! Ocurrió un error al mover el lote.");
             return "MoverLote";
         }
+
     }
 
     @RequestMapping(value = {"/EstadoDeRack", "/MoverLote"}, method = RequestMethod.POST, params = "action=Seleccionar")
@@ -508,6 +518,7 @@ public class ControladorDeposito {
 
     @RequestMapping(value = "/MoverLote", method = RequestMethod.POST, params = "action=Seleccionar Destino")
     public String listarLotesXRackDestino(@RequestParam(value="letraRacks2", required = false) String letraRack,
+                                   @RequestParam(value = "idLoteHidden", required = false) String idLoteOculto,
                                    ModelMap modelMap, HttpSession session) throws Exception {
         try {
 
@@ -515,6 +526,9 @@ public class ControladorDeposito {
                 modelMap.addAttribute("mensaje2", "Debe seleccionar un rack de la lista");
             } else {
                 ArrayList<ArrayList<Lote>> lotes = FabricaLogica.getControladorDeposito().obtenerRack(FabricaLogica.getControladorDeposito().buscarRack(letraRack));
+                Lote loteAMover = FabricaLogica.getControladorDeposito().buscarLote(Integer.parseInt(idLoteOculto));
+                LocalDate fecha = loteAMover.getFechaVencimiento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                modelMap.addAttribute("mensaje", String.format("Lote a mover: #ID %d,  ubicación: %s,  producto: %s,  cantidad: %d,  vencimiento: %d/%d/%d", loteAMover.getId(), loteAMover.getUbicacion().getUbicacionString(), loteAMover.getProducto().getNombre(), loteAMover.getCantUnidades(), fecha.getDayOfMonth(), fecha.getMonthValue(), fecha.getYear()));
 
                 boolean loteVacio = false;
 
@@ -525,7 +539,6 @@ public class ControladorDeposito {
                             session.setAttribute("lotes", lotes);
                             modelMap.addAttribute("tablaRackDestino", true);
                             break;
-
                         }
                     }
                 }

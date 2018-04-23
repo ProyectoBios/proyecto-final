@@ -93,6 +93,7 @@
                                     </tbody>
                                 </table>
 
+                                <div style="overflow-x : auto;">
                                 <table th:if="${tablaRack}" class="bordes" id="rack" style="display: table; text-align: center">
                                     <tbody>
                                     <tr th:each="fila, iter1 : ${session.lotes}">
@@ -104,6 +105,7 @@
                                    </tbody>
                                </table>
 
+                                </div>
                                <table id="espLote" style="display: none">
                                    <thead>
                                        <th style="width: 15%">Ubicación</th>

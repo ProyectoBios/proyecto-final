@@ -77,7 +77,28 @@
                             <input type="text" th:field="*{fechaIngreso}" readonly="readonly" style="width: 30%"/>
                         </td>
                     </tr>
+
                     <tr>
+                        <td>Producto: </td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" onclick="desplegarDDL()" class="dropbtn">Seleccionar</button>
+                                <div id="myDropdown" class="dropdown-content">
+                                    <input type="text" placeholder="Buscar.." id="myInput" onkeyup="filtrarDDL()" />
+                                    <a href="#about">About</a>
+                                    <a href="#base">Base</a>
+                                    <a href="#blog">Blog</a>
+                                    <a href="#contact">Contact</a>
+                                    <a href="#custom">Custom</a>
+                                    <a href="#support">Support</a>
+                                    <a href="#tools">Tools</a>
+                                </div>
+                            </div>
+                            <input type="hidden" id="idDropdown" th:field="*{Producto}"/>
+                        </td>
+                    </tr>
+
+                    <!-- <tr>
                         <td>Producto:</td>
                         <td>
                             <select th:field="*{Producto}" style="width: 50%">
@@ -86,7 +107,7 @@
                             </select>
 
                         </td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <td>Cantidad Unidades:</td>
                         <td>
@@ -110,13 +131,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
+                        <td>Filas (alto)</td>
                         <td>
                             <input type="number" th:field="*{Ubicacion.Fila}" style="width: 20%"/>
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
+                        <td>Columnas (largo)</td>
                         <td>
                             <input type="number" th:field="*{Ubicacion.Columna}" style="width: 20%"/>
                         </td>
@@ -153,6 +174,7 @@
 <script th:src="@{assets/js/util.js}"></script>
 <!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
 <script th:src="@{assets/js/main.js}"></script>
+<script th:src="@{assets/js/ddlFiltrable.js}"></script>
 
 </body>
 </html>

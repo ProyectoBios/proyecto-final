@@ -7,7 +7,7 @@ public class OrdenPedido {
     private int id;
     private Date fecha;
     private String estado;
-    private String estadoEntrega;
+    private String descripcionEntrega;
 
     private Date ultimaActEst;
 
@@ -44,12 +44,12 @@ public class OrdenPedido {
         this.estado = estado;
     }
 
-    public String getEstadoEntrega() {
-        return estadoEntrega;
+    public String getDescripcionEntrega() {
+        return descripcionEntrega;
     }
 
-    public void setEstadoEntrega(String estadoEntrega) {
-        this.estadoEntrega = estadoEntrega;
+    public void setDescripcionEntrega(String descripcionEntrega) {
+        this.descripcionEntrega = descripcionEntrega;
     }
 
     public Date getUltimaActEst() {
@@ -118,11 +118,11 @@ public class OrdenPedido {
         this.lineas = lineas;
     }
 
-    public OrdenPedido(int id, Date fecha, String estado, String estadoEntrega, Date ultimaActEst, String direccionEnvio, String contacto, double subtotal, double impuestos, double total, Cliente cliente, ArrayList<LineaPedido> lineas) {
+    public OrdenPedido(int id, Date fecha, String estado, String descripcionEntrega, Date ultimaActEst, String direccionEnvio, String contacto, double subtotal, double impuestos, double total, Cliente cliente, ArrayList<LineaPedido> lineas) {
         this.id = id;
         this.fecha = fecha;
         this.estado = estado;
-        this.estadoEntrega = estadoEntrega;
+        this.descripcionEntrega = descripcionEntrega;
         this.ultimaActEst = ultimaActEst;
         this.direccionEnvio = direccionEnvio;
         this.contacto = contacto;

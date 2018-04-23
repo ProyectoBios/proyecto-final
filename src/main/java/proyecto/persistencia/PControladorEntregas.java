@@ -95,11 +95,11 @@ public class PControladorEntregas implements IPEntregas{
                 listaViajes.add(viaje);
             }
 
+            return listaViajes;
+
         } catch (Exception ex){
             throw ex;
         }
-
-        return null;
     }
 
     public ArrayList<OrdenPedido> obtenerPedidosXViaje (int idViaje) throws Exception{

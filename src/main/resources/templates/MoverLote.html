@@ -93,16 +93,19 @@
                             </tbody>
                         </table>
 
+                        <div style="overflow-x : auto;">
                         <table th:if="${tablaRackOrigen}" class="bordes" id="rack1" style="display: table; text-align: center">
                             <tbody>
                             <tr th:each="fila, iter1 : ${session.lotes}">
                                 <th:block th:each="l, iter2 : ${fila}">
                                     <td th:if="${l.cantUnidades != 0}" th:onclick="|VerDatosLote(${iter1.index}, ${iter2.index})|" th:text="${l.id + ' ' + l.ubicacion.ubicacionString}" style="background-color: aqua; cursor: pointer;">ID Lote</td>
-                                </th:block> <!--TODO-am: chequear que para el lote seleccionado hayan al menos un lote disponible para mover y mostrar de a 10 columnas-->
+                                </th:block>
                             </tr>
                             </tbody>
                         </table>
+                        </div>
 
+                        <div style="overflow-x: auto">
                         <table id="espLote1" style="display: none">
                             <thead>
                             <th style="width: 15%">Ubicación</th>
@@ -122,6 +125,8 @@
                             </tbody>
 
                         </table>
+                        </div>
+
                         <label th:text="${mensaje}">Mensaje</label>
 
                         <table id="rackDestino">
@@ -141,15 +146,17 @@
                             </tbody>
                         </table>
 
+                        <div style="overflow-x: auto">
                         <table th:if="${tablaRackDestino}" class="bordes" id="rack2" style="display: table; text-align: center">
                             <tbody>
                             <tr th:each="fila, iter1 : ${session.lotes}">
                                 <th:block th:each="l, iter2 : ${fila}">
                                     <td th:if="${l.cantUnidades == 0}" th:onclick="|SeleccionarUbicacion(${iter1.index}, ${iter2.index})|" th:text="${'vacío ' + l.ubicacion.ubicacionString}" style="cursor: pointer;">vacío</td>
-                                </th:block> <!--TODO-am: chequear que para el lote seleccionado hayan al menos una Ubicación disponible para mover el lote y listar de a 10 columnas-->
+                                </th:block>
                             </tr>
                             </tbody>
                         </table>
+                        </div>
 
                         <table id="espUbicacion" style="display: none;">
                             <tr>
@@ -161,7 +168,7 @@
                         <table id="botones" style="display: table">
                             <tbody>
                             <tr style="text-align: right">
-                                <td><input type="submit" onclick="EnviarDatos()" name="action" value="Mover" /> &nbsp;<input type="submit" name="action" value="Cancelar" /></td>
+                                <td><input type="submit" onclick="EnviarDatos()" name="action" value="Mover" /> &nbsp;<input type="submit" name="action" onclick="limpiarSesion()" value="Cancelar" /></td>
                                 <td>
                                     <input id="idLoteHidden" name="idLoteHidden" th:type="hidden" value="" /> <!-- key: loteAMover-->
                                     <input id="idUbicacionHidden" name="idUbicacionHidden" th:type="hidden" value="" /> <!-- key: ubicacionAMover-->
@@ -214,6 +221,7 @@
                 var fechaVenc = new Date(lote.fechaVencimiento);
                 x.innerHTML = fechaVenc.getDate() + "/" + (fechaVenc.getMonth() + 1)+ "/" + fechaVenc.getFullYear();
 
+                document.getElementById("idLoteHidden").value = sessionStorage.getItem("loteAMover");
                 /*]]>*/
             }
         </script>
@@ -244,6 +252,14 @@
 
                 document.getElementById("idLoteHidden").value = sessionStorage.getItem("loteAMover");
                 document.getElementById("idUbicacionHidden").value = sessionStorage.getItem("ubicacionAMover");
+                /*]]>*/
+            }
+        </script>
+
+        <script th:inline="javascript">
+            function limpiarSesion() {
+                /*<![CDATA[*/
+                sessionStorage.clear();
                 /*]]>*/
             }
         </script>
