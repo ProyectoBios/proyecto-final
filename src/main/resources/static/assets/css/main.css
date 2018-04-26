@@ -3900,10 +3900,10 @@
 			}
 
 			#header h1:before {
-				background: #ffffff;
+				background-color: rgba(0,0,0,0);
 				border-radius: 100%;
 				color: #54d3cf;
-				content: '\f06c'; /*este es el logito de mierda (Font-Awesome icon)*/
+				content: '\f107'; /*este es el logito de mierda (Font-Awesome icon '\f06c' )*/
 				display: inline-block;
 				font-size: 0.9em;
 				height: 2em;
@@ -4758,24 +4758,46 @@
 		}
 
 
-
 /* Dropdown Button */
 .dropbtn {
-	background-color: #4CAF50;
+	background-color: #1fafa6;
 	color: white;
+	font-family: FontAwesome;
+	text-align: center;
 	padding: 16px;
 	font-size: 16px;
 	border: none;
 	cursor: pointer;
 }
 
+.dropbtn:after {
+	background-color: rgba(0,0,0,0);
+	border-radius: 100%;
+	color: #54d3cf;
+	display: inline-block;
+	font-size: 0.9em;
+	height: 2em;
+	line-height: 2em;
+	margin-left: 1em;
+	text-align: center;
+	width: 2em;
+}
+
+.flechaArriba:after{
+	content: '\f106';
+}
+
+.flechaAbajo:after{
+	content: '\f107';
+}
+
 /* Dropdown button on hover & focus */
 .dropbtn:hover, .dropbtn:focus {
-	background-color: #3e8e41;
+	background-color: #4c8a8e;
 }
 
 /* The search field */
-#myInput {
+#entrada {
 	border-box: box-sizing;
 	/*background-image: url('searchicon.png'); */
 	background-position: 14px 12px;
@@ -4787,10 +4809,10 @@
 }
 
 /* The search field when it gets focus/clicked on */
-#myInput:focus {outline: 3px solid #ddd;}
+#entrada:focus {outline: 3px solid #ddd;}
 
 /* The container <div> - needed to position the dropdown content */
-.dropdown {
+.desplegable {
 	position: relative;
 	display: inline-block;
 }
