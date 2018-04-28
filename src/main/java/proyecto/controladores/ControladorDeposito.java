@@ -352,7 +352,7 @@ public class ControladorDeposito {
 
     @RequestMapping(value="/AltaLote", method = RequestMethod.GET)
     public String getAltaLote(ModelMap modelMap){
-        ArrayList<EspecificacionProducto> prods = new ArrayList<EspecificacionProducto>();
+        ArrayList<EspecificacionProducto> prods = new ArrayList<>();
         ArrayList<Rack> racks = new ArrayList<Rack>();
         try {
             prods=FabricaLogica.getControladorDeposito().listarProductos();
@@ -510,8 +510,20 @@ public class ControladorDeposito {
                     return "EstadoDeRack";
                 }
             }
-            return "index";
+            return redireccionar(requestedValue);
         }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    private String redireccionar(String url) {
+        try {
+            if (url.contains("MoverLote")) {
+                return "MoverLote";
+            } else {
+                return "EstadoDeRack";
+            }
+        } catch (Exception ex){
             throw ex;
         }
     }
@@ -524,7 +536,9 @@ public class ControladorDeposito {
 
             if(letraRack.isEmpty()) {
                 modelMap.addAttribute("mensaje2", "Debe seleccionar un rack de la lista");
-            } else {
+            } else if (idLoteOculto.isEmpty()){
+                modelMap.addAttribute("mensaje2", "Primero debe seleccionar el lote a mover");
+            }else {
                 ArrayList<ArrayList<Lote>> lotes = FabricaLogica.getControladorDeposito().obtenerRack(FabricaLogica.getControladorDeposito().buscarRack(letraRack));
                 Lote loteAMover = FabricaLogica.getControladorDeposito().buscarLote(Integer.parseInt(idLoteOculto));
                 LocalDate fecha = loteAMover.getFechaVencimiento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

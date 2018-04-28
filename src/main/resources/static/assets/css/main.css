@@ -3903,7 +3903,7 @@
 				background-color: rgba(0,0,0,0);
 				border-radius: 100%;
 				color: #54d3cf;
-				content: '\f107'; /*este es el logito de mierda (Font-Awesome icon '\f06c' )*/
+				content: '\f06c'; /*este es el logito de mierda (Font-Awesome icon '\f06c' )*/
 				display: inline-block;
 				font-size: 0.9em;
 				height: 2em;
@@ -4760,27 +4760,16 @@
 
 /* Dropdown Button */
 .dropbtn {
-	background-color: #1fafa6;
-	color: white;
-	font-family: FontAwesome;
-	text-align: center;
-	padding: 16px;
-	font-size: 16px;
-	border: none;
-	cursor: pointer;
+	background-color: rgba(144, 144, 144, 0.075);
 }
 
 .dropbtn:after {
 	background-color: rgba(0,0,0,0);
-	border-radius: 100%;
-	color: #54d3cf;
+	color: #000000;
+	font-family: FontAwesome;
 	display: inline-block;
-	font-size: 0.9em;
-	height: 2em;
-	line-height: 2em;
-	margin-left: 1em;
-	text-align: center;
-	width: 2em;
+	font-size: 1.5em;
+	margin-left: 0.5em;
 }
 
 .flechaArriba:after{
@@ -4792,8 +4781,8 @@
 }
 
 /* Dropdown button on hover & focus */
-.dropbtn:hover, .dropbtn:focus {
-	background-color: #4c8a8e;
+.dropbtn:hover {
+	background-color: #6cc3c8;
 }
 
 /* The search field */
