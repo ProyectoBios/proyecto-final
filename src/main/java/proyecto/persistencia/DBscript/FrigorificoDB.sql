@@ -104,7 +104,7 @@ Create Table Vehiculo(
 Create Table Viaje(
 	id int primary key AUTO_INCREMENT,
     ciRepartidor varchar(8) not null,
-    matriculaVehiculo varchar(7) not null,
+    matriculaVehiculo varchar(8) not null,
     fechaHora datetime not null,
     finalizado bit not null,
     
@@ -137,13 +137,13 @@ INSERT INTO Rack VALUES('B', 10, 20);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 50, 1, 'A', 1,1, 0);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180322', 30, 1, 'A', 3, 5, 0);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180111', 10, 1, 'A', 4, 4, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180424', 1000, 1, 'A', 1, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180524', 1000, 1, 'A', 1, 2, 0);
 
 INSERT INTO Lote VALUES(NULL, NOW(), '20180422', 30, 2, 'A', 1, 3, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180429', 150, 2, 'A', 1, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180530', 150, 2, 'A', 1, 4, 0);
 
-INSERT INTO Lote VALUES(NULL, NOW(), '20180425', 60, 3, 'A', 2, 1, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180427', 10, 3, 'A', 2, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180530', 60, 3, 'A', 2, 1, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180530', 10, 3, 'A', 2, 2, 0);
 
 INSERT INTO Cliente VALUES('Disco', '1234567890', 'disco@disco.com');
 INSERT INTO Cliente VALUES('Carniceria Pepe', '0987654321', 'pepe@gmail.com');
@@ -272,9 +272,10 @@ BEGIN
  
  Create Procedure ListarIdViajeYVehiculoXRepartidor(pCiRepartidor varchar(8))
  BEGIN
-	SELECT Viajes.id, Viaje.matriculaVehiculo
+	SELECT Viaje.id, Viaje.matriculaVehiculo, Viaje.fechaHora
     FROM Viaje
-    WHERE Viaje.finalizado = 0 AND Viaje.ciRepartidor = pCiRepartidor;
+    WHERE Viaje.finalizado = 0 AND Viaje.ciRepartidor = pCiRepartidor
+    ORDER BY fechaHora asc;
  
  END
  

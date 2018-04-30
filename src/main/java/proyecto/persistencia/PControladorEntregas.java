@@ -71,6 +71,7 @@ public class PControladorEntregas implements IPEntregas{
         }
     }
 
+    @Override
     public ArrayList<Viaje> listarViajesPendientes (Repartidor repartidor) throws Exception{
         try (Connection con = Conexion.AbrirConexion();
              CallableStatement consulta = con.prepareCall("{CALL ListarIdViajeYVehiculoXRepartidor(?)}")){

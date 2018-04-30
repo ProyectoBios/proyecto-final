@@ -85,21 +85,12 @@ public class OrdenPedido {
         this.impuestos = subtotal*0.22;
         this.total = subtotal+impuestos;
     }
-
     public double getImpuestos() {
         return impuestos;
     }
 
-    public void setImpuestos(double impuestos) {
-        this.impuestos = impuestos;
-    }
-
     public double getTotal() {
         return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
     }
 
     public Cliente getCliente() {
@@ -118,7 +109,7 @@ public class OrdenPedido {
         this.lineas = lineas;
     }
 
-    public OrdenPedido(int id, Date fecha, String estado, String descripcionEntrega, Date ultimaActEst, String direccionEnvio, String contacto, double subtotal, double impuestos, double total, Cliente cliente, ArrayList<LineaPedido> lineas) {
+    public OrdenPedido(int id, Date fecha, String estado, String descripcionEntrega, Date ultimaActEst, String direccionEnvio, String contacto, double subtotal, Cliente cliente, ArrayList<LineaPedido> lineas) {
         this.id = id;
         this.fecha = fecha;
         this.estado = estado;
@@ -126,14 +117,12 @@ public class OrdenPedido {
         this.ultimaActEst = ultimaActEst;
         this.direccionEnvio = direccionEnvio;
         this.contacto = contacto;
-        this.subtotal = subtotal;
-        this.impuestos = impuestos;
-        this.total = total;
+        this.setSubtotal(subtotal);
         this.cliente = cliente;
         this.lineas = lineas;
     }
 
     public OrdenPedido() {
-        this(0, new Date(), "N/D", "", new Date(), "N/D", "N/D", 0, 0, 0, null, new ArrayList<LineaPedido>());
+        this(0, new Date(), "N/D", "", new Date(), "N/D", "N/D", 0, null, new ArrayList<LineaPedido>());
     }
 }

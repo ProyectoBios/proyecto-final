@@ -74,7 +74,7 @@
                         <td>
                             <select name="viajes">
                                 <option th:value="NULL">Seleccione viaje</option>
-                                <option th:each=" v : ${viajes}" th:value="${v.id}" th:text="${v.id}"></option>
+                                <option th:each=" v : ${session.viajes}" th:value="${v.id}" th:text="${v.id}"></option>
                             </select>
                         </td>
                         <td style="width: 50%">
@@ -124,9 +124,18 @@
                             <td>Lamborghini Aventador lol</td>
                         </tr>
                         <tr>
-                            <td colspan="2"> <textarea rows="2" maxlength="250" style="width: 80%"></textarea> <br>
-                                <p style="text-align: center; width: 80%"><input type="submit" name="action" value="Entregado" /> &nbsp; &nbsp;
-                                    <input type="submit" name="action" value="Cancelado" /> </p>
+                            <td colspan="2"> <textarea rows="2" maxlength="250" style="width: 80%"></textarea> <br />
+                                <p style="text-align: center; width: 80%">
+                                    <button class="btnEntrga" type="submit" name="action">
+                                        <img th:src="@{assets/css/images/entregado.svg}" heigh="50px" width="50px" alt="Entregado"/>
+                                    </button> &nbsp;&nbsp;
+
+                                    <button class="btnEntrga" type="submit" name="action">
+                                        <img th:src="@{assets/css/images/cancelado.svg}" heigh="50px" width="50px" alt="Cancelado"/>
+                                    </button>
+
+                                    <!-- <img src="entregado.png" alt="botón entregado" srcset="entregado.svg"> srcset para navegadores recientes
+                                    el src con el .png para navegadores viejos como IE 8 o anterior que no soportan .svg--></p>
                             </td>
 
                         </tr>
@@ -134,6 +143,7 @@
                 </table>
 
             </form>
+            <label th:text="${mensaje}"></label>
 
         </div>
 

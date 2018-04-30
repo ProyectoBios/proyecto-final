@@ -1,8 +1,11 @@
 package proyecto.logica;
 
 import proyecto.entidades.OrdenPedido;
+import proyecto.entidades.Repartidor;
 import proyecto.entidades.Viaje;
 import proyecto.persistencia.FabricaPersistencia;
+
+import java.util.ArrayList;
 
 public class LControladorEntregas implements IEntregas{
     private static LControladorEntregas instancia = null;
@@ -22,5 +25,10 @@ public class LControladorEntregas implements IEntregas{
         for(OrdenPedido p : viaje.getPedidos()) {
             FabricaPersistencia.getControladorPedidos().modificarEstadoDePedido(p, "en distribucion");
         }
+    }
+
+    @Override
+    public ArrayList<Viaje> listarViajesPendientes(Repartidor repartidor) throws Exception {
+        return FabricaPersistencia.getControladorEntregas().listarViajesPendientes(repartidor);
     }
 }

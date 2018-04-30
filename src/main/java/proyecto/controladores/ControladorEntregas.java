@@ -30,7 +30,7 @@ public class ControladorEntregas {
     }
 
     @RequestMapping(value="/GenerarViaje", method = RequestMethod.POST, params = "action=Generar viaje")
-    public String generarViaje(@RequestParam int[] pedidos, @RequestParam String vehiculo, @RequestParam String repartidor, ModelMap modelMap){
+    public String generarViaje(@RequestParam(value = "pedidos", required = false) int[] pedidos, @RequestParam String vehiculo, @RequestParam String repartidor, ModelMap modelMap){
         try{
             modelMap.addAttribute("repartidores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("repartidor"));
             modelMap.addAttribute("vehiculos", FabricaLogica.getControladorEmpleados().listarVehiculos());
@@ -78,8 +78,11 @@ public class ControladorEntregas {
     public String getEntregaDePedidos (HttpSession session, ModelMap modelMap){
         try {
             //TODO: am- Listar los Viajes y cargarlos a la session.
+            Repartidor repartidor = (Repartidor) FabricaLogica.getControladorEmpleados().buscarEmpleado("12345678");
+            ArrayList<Viaje> viajes = FabricaLogica.getControladorEntregas().listarViajesPendientes(repartidor);
 
-            return "EntregaDePedido";
+            session.setAttribute("viajes", viajes);
+            return "EntregaDePedidos";
 
         } catch (Exception ex){
             modelMap.addAttribute("mensaje", "¡ERROR! Hubo un error al cargar la página");

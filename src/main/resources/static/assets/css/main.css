@@ -4829,3 +4829,27 @@
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display:block;}
+
+.btnEntrga {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	-ms-appearance: none;
+	appearance: none;
+	-moz-transition: background-color ;
+	-webkit-transition: background-color 0;
+	-ms-transition: background-color 0;
+	transition: background-color 0;
+	border-radius: 100%;
+	border: 0;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 0;
+	font-weight: normal;
+	height: 0;
+	line-height: 0;
+	padding: 0;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+	background-color: transparent;
+}
