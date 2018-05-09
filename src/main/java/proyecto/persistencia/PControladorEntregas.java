@@ -72,7 +72,7 @@ public class PControladorEntregas implements IPEntregas{
     }
 
     @Override
-    public ArrayList<Viaje> listarViajesPendientes (Repartidor repartidor) throws Exception{
+    public ArrayList<Viaje> listarViajesPendientesXRepartidor(Repartidor repartidor) throws Exception{
         try (Connection con = Conexion.AbrirConexion();
              CallableStatement consulta = con.prepareCall("{CALL ListarIdViajeYVehiculoXRepartidor(?)}")){
 
@@ -119,6 +119,37 @@ public class PControladorEntregas implements IPEntregas{
                 pedidos.add(pedido);
             }
             return pedidos;
+
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void entregaFallidaPedido(OrdenPedido pedido, String detalleCancelacion) throws Exception {
+        try (Connection con = Conexion.AbrirConexion();
+             PreparedStatement statement = con.prepareStatement("UPDATE OrdenPedido SET estado = ?, descripcionEntrega = ? WHERE idOrden = ?")){
+
+            statement.setString(1, "entrega fallida");
+            statement.setString(2, detalleCancelacion);
+            statement.setInt(3, pedido.getId());
+
+            statement.executeUpdate();
+
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void finalizarViaje(Viaje viaje) throws Exception {
+        try (Connection con = Conexion.AbrirConexion();
+             PreparedStatement statement = con.prepareStatement("UPDATE Viaje SET finalizado = ? WHERE id = ?")){
+
+            statement.setInt(1, 1);
+            statement.setInt(2, viaje.getId());
+
+            statement.executeUpdate();
 
         }catch (Exception ex){
             throw ex;

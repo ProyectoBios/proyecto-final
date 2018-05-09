@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import proyecto.entidades.*;
 import proyecto.logica.FabricaLogica;
 
-import javax.jws.WebParam;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,10 +76,10 @@ public class ControladorEntregas {
     @RequestMapping(value = "/EntregaDePedidos", method = RequestMethod.GET)
     public String getEntregaDePedidos (HttpSession session, ModelMap modelMap){
         try {
-            //TODO: am- Listar los Viajes y cargarlos a la session.
             Repartidor repartidor = (Repartidor) FabricaLogica.getControladorEmpleados().buscarEmpleado("12345678");
-            ArrayList<Viaje> viajes = FabricaLogica.getControladorEntregas().listarViajesPendientes(repartidor);
+            ArrayList<Viaje> viajes = FabricaLogica.getControladorEntregas().listarViajesPendientesXRepartidor(repartidor);
 
+            session.removeAttribute("viaje");
             session.setAttribute("viajes", viajes);
             return "EntregaDePedidos";
 
@@ -88,5 +87,136 @@ public class ControladorEntregas {
             modelMap.addAttribute("mensaje", "¡ERROR! Hubo un error al cargar la página");
             return "EntregaDePedidos";
         }
+    }
+
+    @RequestMapping(value = "/EntregaDePedidos", method = RequestMethod.POST, params="action=Seleccionar Viaje")
+    public String seleccionarViaje (@RequestParam(value = "viajes", required = false) int idViaje, ModelMap modelMap, HttpSession session){
+        try {
+
+            if (idViaje == -1) {
+                throw new ExcepcionFrigorifico("Debe seleccionar un viaje de la lista.");
+            }
+
+            ArrayList<Viaje> viajes = (ArrayList<Viaje>) session.getAttribute("viajes");
+
+            Viaje viaje = null;
+
+            for(Viaje v : viajes){
+                if (v.getId() == idViaje){
+                    viaje = v;
+                    break;
+                }
+            }
+
+            session.setAttribute("viaje", viaje);
+            modelMap.addAttribute("mostrarDdlPedidos", "true");
+        } catch (ExcepcionFrigorifico exF){
+            modelMap.addAttribute("mensaje", exF.getMessage());
+        } catch (Exception ex){
+            modelMap.addAttribute("mensaje", "ERROR!, ocurrió un error al mostrar los pedidos del viaje");
+        }
+
+        return "EntregaDePedidos";
+    }
+
+    @RequestMapping(value = "/EntregaDePedidos", method = RequestMethod.POST, params="action=Seleccionar Pedido")
+    public String seleccionarPedido (@RequestParam(value = "pedidos", required = false) int idPedido, ModelMap modelMap, HttpSession session){
+        try {
+            if(idPedido == -1){
+                throw new ExcepcionFrigorifico("Debe seleccionar un pedido de la lista.");
+            }
+
+
+            Viaje v = (Viaje)session.getAttribute("viaje");
+            OrdenPedido pedido = null;
+
+            for(OrdenPedido p : v.getPedidos()){
+                if(p.getId()==idPedido){
+                    pedido=p;
+                    break;
+                }
+            }
+
+            session.setAttribute("pedido", pedido);
+            modelMap.addAttribute("tablaPedido", "true");
+            modelMap.addAttribute("mostrarDdlPedidos", "true");
+
+        } catch (ExcepcionFrigorifico exF){
+            modelMap.addAttribute("mensaje", exF.getMessage());
+        } catch (Exception ex){
+            modelMap.addAttribute("mensaje", "ERROR!, ocurrió un error al mostrar el pedido seleccionado.");
+        }
+
+        return "EntregaDePedidos";
+    }
+
+    @RequestMapping(value = "/EntregaDePedidos", method = RequestMethod.POST, params="action=Entregado")
+    public String entregarPedido (ModelMap modelMap, HttpSession session){
+
+        try {
+
+            OrdenPedido pedido = (OrdenPedido)session.getAttribute("pedido");
+            FabricaLogica.getControladorPedidos().modificarEstadoDePedido(pedido, "entregado");
+
+            modelMap.addAttribute("mensaje", "Pedido entregado con éxito.");
+            session.removeAttribute("Pedido");
+
+            ((Viaje)session.getAttribute("viaje")).getPedidos().remove(pedido);
+
+            Viaje viaje = ((Viaje)session.getAttribute("viaje"));
+
+            for (OrdenPedido p : viaje.getPedidos()){
+                if (!p.getEstado().contains("en distribucion")){
+                    FabricaLogica.getControladorEntregas().finalizarViaje(viaje);
+                    //TODO-am: Talvez no es necesario removerlo manualmente porque con cada get se actualizan los viajes en la session.
+                    ((ArrayList<Viaje>)session.getAttribute("viajes")).remove(viaje);
+                    break;
+                }
+            }
+
+        } catch (ExcepcionFrigorifico exF){
+            modelMap.addAttribute("mensaje", exF.getMessage());
+        } catch (Exception ex){
+            modelMap.addAttribute("mensaje", "ERROR!, ocurrió un error al mostrar el pedido seleccionado.");
+        }
+
+        return "EntregaDePedidos";
+    }
+
+    @RequestMapping(value = "/EntregaDePedidos", method = RequestMethod.POST, params="action=Cancelado")
+    public String entregaFallidaPedido (@RequestParam(value = "Descripcion Entrega", required = false) String detalleEntrega, ModelMap modelMap, HttpSession session){
+
+        try {
+                if (detalleEntrega.isEmpty()){
+                    modelMap.addAttribute("tablaPedido", "true");
+                    throw new ExcepcionFrigorifico("Debe especificar los detalles de la cancelación.");
+                }
+
+            OrdenPedido pedido = (OrdenPedido)session.getAttribute("pedido");
+            FabricaLogica.getControladorEntregas().entregaFallidaPedido(pedido, detalleEntrega);
+
+            modelMap.addAttribute("mensaje", "Pedido cancelado con éxito.");
+            session.removeAttribute("pedido");
+
+            ((Viaje)session.getAttribute("viaje")).getPedidos().remove(pedido);
+
+            Viaje viaje = ((Viaje)session.getAttribute("viaje"));
+
+            for (OrdenPedido p : viaje.getPedidos()){
+                if (!p.getEstado().contains("en distribucion")){
+                    FabricaLogica.getControladorEntregas().finalizarViaje(viaje);
+                    //TODO-am: Talvez no es necesario removerlo manualmente porque con cada get se actualizan los viajes en la session.
+                    ((ArrayList<Viaje>)session.getAttribute("viajes")).remove(viaje);
+                    break;
+                }
+            }
+
+        } catch (ExcepcionFrigorifico exF){
+            modelMap.addAttribute("mensaje", exF.getMessage());
+        } catch (Exception ex){
+            modelMap.addAttribute("mensaje", "ERROR!, ocurrió un error al cancelar el pedido.");
+        }
+
+        return "EntregaDePedidos";
     }
 }

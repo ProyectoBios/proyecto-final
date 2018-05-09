@@ -28,7 +28,17 @@ public class LControladorEntregas implements IEntregas{
     }
 
     @Override
-    public ArrayList<Viaje> listarViajesPendientes(Repartidor repartidor) throws Exception {
-        return FabricaPersistencia.getControladorEntregas().listarViajesPendientes(repartidor);
+    public ArrayList<Viaje> listarViajesPendientesXRepartidor(Repartidor repartidor) throws Exception {
+        return FabricaPersistencia.getControladorEntregas().listarViajesPendientesXRepartidor(repartidor);
+    }
+
+    @Override
+    public void entregaFallidaPedido(OrdenPedido pedido, String detalleCancelacion) throws Exception {
+        FabricaPersistencia.getControladorEntregas().entregaFallidaPedido(pedido, detalleCancelacion);
+    }
+
+    @Override
+    public void finalizarViaje(Viaje viaje) throws Exception {
+        FabricaPersistencia.getControladorEntregas().finalizarViaje(viaje);
     }
 }

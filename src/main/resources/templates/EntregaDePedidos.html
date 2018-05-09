@@ -42,6 +42,7 @@
                             <li><a th:href="@{/PreparacionPedidos}">Preparar Pedidos</a></li>
                             <li><a th:href="@{/EstadoDePedido}">Estado de Pedidos</a></li>
                             <li><a th:href="@{/ListadoDePedidos}">Listado de Pedidos</a></li>
+                            <li><a th:href="@{/EntregaDePedidos}">Entrega de Pedidos</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Entregas</a>
@@ -66,36 +67,40 @@
         <div class="content">
             <h3>Entrega de Pedidos</h3>
             <!-- Formulario con la Tabla -->
-            <form action="#" th:action="@{ControladorEntregas}" name="EntregaDePedidos" method="post">
+            <form action="#" th:action="@{/EntregaDePedidos}" name="EntregaDePedidos" method="post">
                 <table id="viajes">
                     <tbody>
                     <tr>
                         <td style="width: 10%; font-weight: bold">Viajes:</td>
                         <td>
                             <select name="viajes">
-                                <option th:value="NULL">Seleccione viaje</option>
-                                <option th:each=" v : ${session.viajes}" th:value="${v.id}" th:text="${v.id}"></option>
+                                <option th:value="-1">Seleccione viaje</option>
+                                <option th:each=" v : ${session.viajes}" th:value="${v.id}" th:text="${v.id}" th:selected="${v.id == session?.viaje?.id}"></option>
                             </select>
                         </td>
                         <td style="width: 50%">
-                            <input type="submit" name="action" value="Seleccionar" />
+                            <!-- <input type="submit" name="action" value="Seleccionar Viaje" /> -->
+                            <button type="submit" name="action" value="Seleccionar Viaje">Seleccionar</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
-                <table id="pedidos">
+                <label th:if="${session.viaje != null}" th:text="${'Vehiculo: ' + session.viaje.vehiculo.marca + ' ' + session.viaje.vehiculo.modelo + ' ' + session.viaje.vehiculo.matricula}"></label>
+
+                <table th:if="${mostrarDdlPedidos}" id="pedidos">
                     <tbody>
                         <tr>
                             <td style="width: 10%; font-weight: bold">Pedidos:</td>
                             <td>
                                 <select name="pedidos">
-                                    <option th:value="NULL">Seleccione Pedido</option>
-                                    <option th:each="p : ${pedidos}" th:value="${p.id}" th:text="${p.id}"></option>
+                                    <option th:value="-1">Seleccione Pedido</option>
+                                    <option th:each="p : ${session.viaje.pedidos}" th:value="${p.id}" th:text="${p.id}" th:selected="${p.id == session?.pedido?.id}"></option>
                                 </select>
                             </td>
                             <td style="width: 50%">
-                                <input type="submit" name="action" value="Seleccionar" />
+                                <!--<input type="submit" name="action" value="Seleccionar Pedido" /> -->
+                                <button type="submit" name="action" value="Seleccionar Pedido">Seleccionar</button>
                             </td>
                         </tr>
                     </tbody>
@@ -108,29 +113,25 @@
                             <td style="font-weight: bold">Dirección de Envío</td>
                         </tr>
                         <tr>
-                            <td th:text="${pedido.id}">01</td>
-                            <td>Tomás Orín de la Fuente 2020</td>
+                            <td th:text="${session.pedido.id}">01</td>
+                            <td th:text="${session.pedido.direccionEnvio}"></td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold">Contacto</td>
-                            <td>Peteco</td>
+                            <td th:text="${session.pedido.contacto}"></td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold">Precio total</td>
-                            <td>$19850</td>
+                            <td th:text="${'$' + session.pedido.total}"></td>
                         </tr>
                         <tr>
-                            <td style="font-weight: bold">Vehículo</td>
-                            <td>Lamborghini Aventador lol</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"> <textarea rows="2" maxlength="250" style="width: 80%"></textarea> <br />
+                            <td colspan="2"> <textarea rows="2" maxlength="250" style="width: 80%" name="Descripcion Entrega"></textarea> <br />
                                 <p style="text-align: center; width: 80%">
-                                    <button class="btnEntrga" type="submit" name="action">
+                                    <button class="btnEntrga" type="submit" name="action" value="Entregado">
                                         <img th:src="@{assets/css/images/entregado.svg}" heigh="50px" width="50px" alt="Entregado"/>
-                                    </button> &nbsp;&nbsp;
+                                    </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                    <button class="btnEntrga" type="submit" name="action">
+                                    <button class="btnEntrga" type="submit" name="action" value="Cancelado">
                                         <img th:src="@{assets/css/images/cancelado.svg}" heigh="50px" width="50px" alt="Cancelado"/>
                                     </button>
 
