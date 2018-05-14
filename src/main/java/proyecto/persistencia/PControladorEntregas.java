@@ -116,7 +116,9 @@ public class PControladorEntregas implements IPEntregas{
 
             while (resultadoConsulta.next()){
                 OrdenPedido pedido = FabricaPersistencia.getControladorPedidos().buscarOrdenPedido(resultadoConsulta.getInt("idPedido"));
-                pedidos.add(pedido);
+                if (pedido.getEstado().contains("en distribucion")){
+                    pedidos.add(pedido);
+                }
             }
             return pedidos;
 

@@ -76,7 +76,7 @@ public class ControladorEntregas {
     @RequestMapping(value = "/EntregaDePedidos", method = RequestMethod.GET)
     public String getEntregaDePedidos (HttpSession session, ModelMap modelMap){
         try {
-            Repartidor repartidor = (Repartidor) FabricaLogica.getControladorEmpleados().buscarEmpleado("12345678");
+            Repartidor repartidor = (Repartidor) FabricaLogica.getControladorEmpleados().buscarEmpleado("12345678"); // Pedro Rodriguez
             ArrayList<Viaje> viajes = FabricaLogica.getControladorEntregas().listarViajesPendientesXRepartidor(repartidor);
 
             session.removeAttribute("viaje");
@@ -158,20 +158,19 @@ public class ControladorEntregas {
             OrdenPedido pedido = (OrdenPedido)session.getAttribute("pedido");
             FabricaLogica.getControladorPedidos().modificarEstadoDePedido(pedido, "entregado");
 
-            modelMap.addAttribute("mensaje", "Pedido entregado con éxito.");
             session.removeAttribute("Pedido");
+            modelMap.addAttribute("mensaje", "Pedido entregado con éxito.");
 
             ((Viaje)session.getAttribute("viaje")).getPedidos().remove(pedido);
 
             Viaje viaje = ((Viaje)session.getAttribute("viaje"));
 
-            for (OrdenPedido p : viaje.getPedidos()){
-                if (!p.getEstado().contains("en distribucion")){
-                    FabricaLogica.getControladorEntregas().finalizarViaje(viaje);
-                    //TODO-am: Talvez no es necesario removerlo manualmente porque con cada get se actualizan los viajes en la session.
-                    ((ArrayList<Viaje>)session.getAttribute("viajes")).remove(viaje);
-                    break;
-                }
+            if (viaje.getPedidos().size() == 0){
+                FabricaLogica.getControladorEntregas().finalizarViaje(viaje);
+                session.removeAttribute("viaje");
+                ((ArrayList<Viaje>)session.getAttribute("viajes")).remove(viaje);
+            } else {
+                modelMap.addAttribute("mostrarDdlPedidos", "true");
             }
 
         } catch (ExcepcionFrigorifico exF){
@@ -189,26 +188,26 @@ public class ControladorEntregas {
         try {
                 if (detalleEntrega.isEmpty()){
                     modelMap.addAttribute("tablaPedido", "true");
+                    modelMap.addAttribute("mostrarDdlPedidos", "true");
                     throw new ExcepcionFrigorifico("Debe especificar los detalles de la cancelación.");
                 }
 
             OrdenPedido pedido = (OrdenPedido)session.getAttribute("pedido");
             FabricaLogica.getControladorEntregas().entregaFallidaPedido(pedido, detalleEntrega);
 
-            modelMap.addAttribute("mensaje", "Pedido cancelado con éxito.");
             session.removeAttribute("pedido");
+            modelMap.addAttribute("mensaje", "Pedido cancelado con éxito.");
 
             ((Viaje)session.getAttribute("viaje")).getPedidos().remove(pedido);
 
             Viaje viaje = ((Viaje)session.getAttribute("viaje"));
 
-            for (OrdenPedido p : viaje.getPedidos()){
-                if (!p.getEstado().contains("en distribucion")){
-                    FabricaLogica.getControladorEntregas().finalizarViaje(viaje);
-                    //TODO-am: Talvez no es necesario removerlo manualmente porque con cada get se actualizan los viajes en la session.
-                    ((ArrayList<Viaje>)session.getAttribute("viajes")).remove(viaje);
-                    break;
-                }
+            if (viaje.getPedidos().size() == 0){
+                FabricaLogica.getControladorEntregas().finalizarViaje(viaje);
+                session.removeAttribute("viaje");
+                ((ArrayList<Viaje>)session.getAttribute("viajes")).remove(viaje);
+            } else {
+                modelMap.addAttribute("mostrarDdlPedidos", "true");
             }
 
         } catch (ExcepcionFrigorifico exF){

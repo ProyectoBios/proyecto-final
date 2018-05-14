@@ -258,6 +258,8 @@ public class ControladorPedidos {
 
             FabricaLogica.getControladorPedidos().agregarLineaDePedido((OrdenPedido)session.getAttribute("orden"), producto, cantidadUnidades);
 
+
+            //TODO: -DS Pasar este codigo hacia LControladorPedidos.agregarLineaDePedido
             LineaPedido linea = null;
             for(LineaPedido l : ((OrdenPedido)session.getAttribute("orden")).getLineas()){
                 if(l.getProducto().getCodigo() == producto.getCodigo()){
