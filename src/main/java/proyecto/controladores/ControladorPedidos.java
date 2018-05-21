@@ -236,7 +236,8 @@ public class ControladorPedidos {
         try{
             if(cantUnidades.equals("")){
                 modelMap.addAttribute("tablaProducto", true);
-                throw new ExcepcionFrigorifico("La cantidad de unidades no puede quedar vacía");
+                modelMap.addAttribute("mensajeStock", "La cantidad de unidades no puede quedar vacía");
+                return "AltaOrdenDePedido";
             }
 
             int id;
@@ -244,7 +245,8 @@ public class ControladorPedidos {
                 id = Integer.parseInt(idProducto);
             }catch (Exception ex){
                 modelMap.addAttribute("tablaProducto", true);
-                throw new ExcepcionFrigorifico("ERROR! Debe seleccionar un producto");
+                modelMap.addAttribute("mensajeStock", "ERROR! Debe seleccionar un producto");
+                return "AltaOrdenDePedido";
             }
             EspecificacionProducto producto = FabricaLogica.getControladorDeposito().buscarProducto(id);
 
@@ -538,7 +540,7 @@ public class ControladorPedidos {
     }
 
     @RequestMapping(value="/PreparacionPedidos", method = RequestMethod.POST, params="action=Listo")
-    public String pedidoListo(@RequestParam(value="idPedido", required = true) String  idPedido, ModelMap modelMap, HttpSession session){
+    public String confirmarPreparacion(@RequestParam(value="idPedido", required = true) String  idPedido, ModelMap modelMap, HttpSession session){
         try{
             int id = Integer.parseInt(idPedido);
             OrdenPedido ordenPedido = null;

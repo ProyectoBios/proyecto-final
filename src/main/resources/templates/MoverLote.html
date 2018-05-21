@@ -152,7 +152,7 @@
                             <tbody>
                             <tr th:each="fila, iter1 : ${session.lotes}">
                                 <th:block th:each="l, iter2 : ${fila}">
-                                    <td th:if="${l.cantUnidades == 0}" th:onclick="|SeleccionarUbicacion(${iter1.index}, ${iter2.index})|" th:text="${'vacío ' + l.ubicacion.ubicacionString}" style="cursor: pointer;">vacío</td>
+                                    <td th:id="${iter1.index + '-' + iter2.index}" th:if="${l.cantUnidades == 0}" th:onclick="|SeleccionarUbicacion(${iter1.index}, ${iter2.index})|" th:text="${'vacío ' + l.ubicacion.ubicacionString}" style="cursor: pointer;">vacío</td>
                                 </th:block>
                             </tr>
                             </tbody>
@@ -233,6 +233,16 @@
                 var lotes = [[${session.lotes}]];
                 var lote = lotes[i][j];
                 sessionStorage.setItem('ubicacionAMover', lote.ubicacion.ubicacionString);
+
+                var celda = sessionStorage.getItem('ubicacionDestino');
+                if(celda != null){
+                    document.getElementById(celda).style.backgroundColor = 'white';
+                }
+
+                var id = i + '-' + j;
+                celda = document.getElementById(id);
+                celda.style.backgroundColor = "yellow";
+                sessionStorage.setItem('ubicacionDestino', id);
 
                 var tabla = document.getElementById("espUbicacion");
                 tabla.style.display = "table";

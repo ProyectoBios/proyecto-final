@@ -145,7 +145,7 @@
                     </tbody>
                 </table>
 
-
+            <div style="overflow-x: auto">
                 <table th:if="${tablaProducto}" id="tablaProducto">
                     <form action="#" th:action="@{/AltaOrdenDePedido}" method="post">
                         <tbody>
@@ -170,6 +170,7 @@
                         </tbody>
                     </form>
                 </table>
+            </div>
 
                 <!--<table th:if="${tablaProducto and (#lists.size(session.orden.Lineas)>0)}" class="grilla" id="desplegarLineas">-->
                 <table th:if="${tablaProducto}" class="grilla" id="desplegarLineas">
