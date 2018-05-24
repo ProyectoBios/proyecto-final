@@ -1,5 +1,6 @@
 package proyecto.logica;
 
+import proyecto.controladores.ControladorDeposito;
 import proyecto.entidades.*;
 import proyecto.entidades.EspecificacionProducto;
 import proyecto.persistencia.FabricaPersistencia;
@@ -163,7 +164,7 @@ class LControladorPedidos implements IPedidos {
         modificarEstadoDePedido(orden, "cancelado");
     }
 
-    public void agregarLineaDePedido(OrdenPedido orden, EspecificacionProducto producto, int cantidad){
+    public String agregarLineaDePedido(OrdenPedido orden, EspecificacionProducto producto, int cant) throws Exception{
         Boolean encontrado = false;
         LineaPedido linea = null;
         for(LineaPedido l : orden.getLineas()){
@@ -175,15 +176,27 @@ class LControladorPedidos implements IPedidos {
         }
 
         if(encontrado){
-            linea.setCantidad(linea.getCantidad() + cantidad);
-            linea.setImporte(linea.getImporte() + producto.getPrecioActual()*cantidad);
-            orden.setSubtotal(orden.getSubtotal() + producto.getPrecioActual()*cantidad);
+            linea.setCantidad(linea.getCantidad() + cant);
+            linea.setImporte(linea.getImporte() + producto.getPrecioActual()*cant);
+            orden.setSubtotal(orden.getSubtotal() + producto.getPrecioActual()*cant);
         }else {
             int numero = orden.getLineas().size() + 1;
-            linea = new LineaPedido(numero, cantidad, cantidad * producto.getPrecioActual(), producto);
+            linea = new LineaPedido(numero, cant, cant * producto.getPrecioActual(), producto);
 
             orden.getLineas().add(linea);
             orden.setSubtotal(orden.getSubtotal() + linea.getImporte());
+        }
+
+        ArrayList<Lote> stock = LControladorDeposito.getInstancia().buscarStock(producto);
+        int cantidad = 0;
+        for(Lote l : stock){
+            cantidad+=l.getCantUnidades();
+        }
+
+        if(cantidad < linea.getCantidad()){
+            return "AVISO: No hay suficiente stock actualmente para satisfacer " + linea.getCantidad() + " unidades de " + linea.getProducto().getNombre() + ". Stock actual: " + cantidad + " unidades.";
+        }else{
+            return "";
         }
     }
 

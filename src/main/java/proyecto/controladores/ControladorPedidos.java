@@ -258,27 +258,9 @@ public class ControladorPedidos {
                 throw new ExcepcionFrigorifico("ERROR! Ingrese una cantidad correcta");
             }
 
-            FabricaLogica.getControladorPedidos().agregarLineaDePedido((OrdenPedido)session.getAttribute("orden"), producto, cantidadUnidades);
+            String resultado = FabricaLogica.getControladorPedidos().agregarLineaDePedido((OrdenPedido)session.getAttribute("orden"), producto, cantidadUnidades);
 
-
-            //TODO: -DS Pasar este codigo hacia LControladorPedidos.agregarLineaDePedido
-            LineaPedido linea = null;
-            for(LineaPedido l : ((OrdenPedido)session.getAttribute("orden")).getLineas()){
-                if(l.getProducto().getCodigo() == producto.getCodigo()){
-                    linea = l;
-                    break;
-                }
-            }
-
-            ArrayList<Lote> stock = FabricaLogica.getControladorDeposito().buscarStock(producto);
-            int cantidad = 0;
-            for(Lote l : stock){
-                cantidad+=l.getCantUnidades();
-            }
-
-            if(cantidad < linea.getCantidad()){
-                modelMap.addAttribute("mensajeStock", "AVISO: No hay suficiente stock actualmente para satisfacer " + linea.getCantidad() + " unidades de " + linea.getProducto().getNombre() + ". Stock actual: " + cantidad + " unidades.");
-            }
+            modelMap.addAttribute("mensajeStock", resultado);
 
             modelMap.addAttribute("tablaProducto", true);
 

@@ -17,7 +17,7 @@ public interface IPedidos {
     public int altaOrdenDePedido(OrdenPedido ordenPedido) throws Exception;
     public ArrayList<OrdenPedido> buscarOrdenesXCliente(Cliente cliente) throws Exception;
     public void cancelarPedido(OrdenPedido orden) throws Exception;
-    void agregarLineaDePedido(OrdenPedido orden, EspecificacionProducto producto, int cantidad) throws Exception;
+    String agregarLineaDePedido(OrdenPedido orden, EspecificacionProducto producto, int cantidad) throws Exception;
     void eliminarLinea(OrdenPedido orden, int numero) throws Exception;
     public ArrayList<OrdenPedido> listarPedidosXEstado(String estado) throws Exception;
     public ArrayList<Picking> obtenerPicking(ArrayList<OrdenPedido> ordenes) throws Exception;

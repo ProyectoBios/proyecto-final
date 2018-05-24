@@ -12,7 +12,7 @@
 	<body>
 
 		<!-- Header -->
-			<header id="header">
+		<!--	<header id="header">
 				<h1 id="logo"><a th:href="@{/}">Centenario</a></h1>
 				<nav id="nav">
 					<ul>
@@ -54,7 +54,13 @@
 						<li><a href="#">Salir</a></li>
 					</ul>
 				</nav>
-			</header>
+			</header> -->
+		<!-- <header th:if="${session.usuario.rol == 'gerente'}" th:replace="fragments/header :: menuGerente">
+
+		</header> -->
+		<header th:replace="fragments/header :: menu">
+
+		</header>
 
 		<!-- Main -->
 			<section id="main" class="wrapper">
