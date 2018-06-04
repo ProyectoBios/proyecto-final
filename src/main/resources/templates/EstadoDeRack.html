@@ -107,7 +107,11 @@
                                </table>
 
                                 </div>
-                               <table id="espLote" style="display: none">
+                            </form>
+
+                            <form action="#" th:action="@{/VerLote}" name="VerLote" method="post">
+
+                                <table id="espLote" style="display: none">
                                    <thead>
                                        <th style="width: 15%">Ubicación</th>
                                        <th># ID</th>
@@ -115,21 +119,15 @@
                                        <th style="width: 10%">Cantidad</th>
                                        <th>Vence</th>
                                    </thead>
-                                   <tbody> <!-- Rellear mediante JavaScript las celdas con las propiedades del lote de la Session -->
-                                  <tr id="datosLote">
-                                       <td></td>
-                                       <td></td>
-                                       <td></td>
-                                       <td></td>
-                                       <td></td>
-                                   </tr>
+                                   <tbody>
                                    </tbody>
 
-                               </table>
+                                </table>
 
-                               <label th:text="${mensaje}">Mensaje</label>
+                                <input type="hidden" id="idVerLote" name="idVerLote" value=""/>
 
-                           </form>
+                                <label th:text="${mensaje}">Mensaje</label>
+                            </form>
 
                        </div>
 
@@ -151,8 +149,11 @@
 
                 var tabla = document.getElementById("espLote");
                 tabla.style.display = "table";
-                tabla.deleteRow(1);
+                if(tabla.rows.length>=3) {
 
+                    tabla.deleteRow(2);
+                    tabla.deleteRow(1);
+                }
                 var fila = tabla.insertRow(1);
 
                 var x = fila.insertCell(0);
@@ -171,6 +172,11 @@
                 var fechaVenc = new Date(lote.fechaVencimiento);
                 x.innerHTML = fechaVenc.getDate() + "/" + (fechaVenc.getMonth() + 1) + "/" + fechaVenc.getFullYear();
 
+                var fila2 = tabla.insertRow(2);
+                var y = fila2.insertCell(0);
+                y.insertAdjacentHTML('afterbegin', '<input type="submit" name="action" value="Ver Lote" />');
+
+                document.getElementById("idVerLote").value = lote.id;
                 /*]]>*/
             }
         </script>

@@ -82,7 +82,7 @@ Create Table LineaPedido(
 Create Table Empleado(
 	ci varchar(8) primary key,
     nombre varchar(30) not null,
-    edad int not null,
+    fechaNac date not null,
     fechaContratacion date not null,
     telefono varchar(10) not null,
     rol varchar(15) not null
@@ -154,15 +154,14 @@ INSERT INTO LineaPedido VALUES(1, 1, 200, 2000.0, 1);
 INSERT INTO LineaPedido VALUES(1, 2, 45, 1125.0, 2);
 INSERT INTO LineaPedido VALUES(1, 3, 65, 1950.0, 3);
 
-INSERT INTO Empleado VALUES('12345678', 'Pedro Rodriguez', 34, '20171009', '091789456', 'repartidor');
-INSERT INTO Empleado VALUES('32165498', 'Pepe Martin', 28, '20160520', '092879654', 'repartidor');
+INSERT INTO Empleado VALUES('12345678', 'Pedro Rodriguez', '19840324', '20171009', '091789456', 'repartidor');
+INSERT INTO Empleado VALUES('32165498', 'Pepe Martin', '19800515', '20160520', '092879654', 'repartidor');
 
 INSERT INTO Repartidor VALUES('12345678', '20220814');
 INSERT INTO Repartidor VALUES('32165498', '20200622');
 
 INSERT INTO Vehiculo VALUES('SBU 3940', 'Volkswagen', 'Worker', 9000);
 INSERT INTO Vehiculo VALUES('SAF 4589', 'Hyundai', 'Hd45', 2500);
-
 
 DELIMITER //
 
@@ -277,6 +276,6 @@ BEGIN
     WHERE Viaje.finalizado = 0 AND Viaje.ciRepartidor = pCiRepartidor
     ORDER BY fechaHora asc;
  
- END
+ END//
  
  

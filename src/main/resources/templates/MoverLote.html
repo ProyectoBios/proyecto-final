@@ -222,10 +222,6 @@
                 var fechaVenc = new Date(lote.fechaVencimiento);
                 x.innerHTML = fechaVenc.getDate() + "/" + (fechaVenc.getMonth() + 1)+ "/" + fechaVenc.getFullYear();
 
-                var fila2 = tabla.insertRow(2);
-                var y = fila2.insertCell(0);
-                y.insertAdjacentHTML('afterbegin', '<input type="submit" name="action" value="Ver Lote" />');
-
                 document.getElementById("idLoteHidden").value = sessionStorage.getItem("loteAMover");
                 /*]]>*/
             }

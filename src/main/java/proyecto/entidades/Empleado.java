@@ -5,7 +5,7 @@ import java.util.Date;
 public class Empleado {
     private String ci;
     private String nombre;
-    private int edad;
+    private Date fechaDeNacimiento;
     private Date fechaContratacion;
     private String telefono;
 
@@ -27,12 +27,12 @@ public class Empleado {
         this.nombre = nombre;
     }
 
-    public int getEdad() {
-        return edad;
+    public Date getFechaDeNacimiento() {
+        return fechaDeNacimiento;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setFechaDeNacimiento(Date fechaDeNacimiento) {
+        this.fechaDeNacimiento = fechaDeNacimiento;
     }
 
     public Date getFechaContratacion() {
@@ -59,17 +59,17 @@ public class Empleado {
         this.rol = rol;
     }
 
-    public Empleado(String ci, String nombre, int edad, Date fechaContratacion, String telefono, String rol) {
+    public Empleado(String ci, String nombre, Date fechaDeNacimiento, Date fechaContratacion, String telefono, String rol) {
         this.ci = ci;
         this.nombre = nombre;
-        this.edad = edad;
+        this.fechaDeNacimiento = fechaDeNacimiento;
         this.fechaContratacion = fechaContratacion;
         this.telefono = telefono;
         this.rol = rol;
     }
 
     public Empleado() {
-        this("", "", 0, new Date(), "", "");
+        this("", "", new Date(), new Date(), "", "");
     }
 }
 
