@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Login</title>
+</head>
+<body>
+    <form action="#" th:action="@{/Login}" method="post">
+        <table>
+            <tr>
+                <td>CI (Sin puntos ni guiones, sin digito verificador): </td>
+                <td><input type="text" name="cedula"/> </td>
+            </tr>
+            <tr>
+                <td>Contraseña: </td>
+                <td><input type="password" name="contrasenia"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="action" value="Ingresar"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="${mensaje}"></label>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

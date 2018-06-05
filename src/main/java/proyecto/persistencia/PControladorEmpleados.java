@@ -1,8 +1,6 @@
 package proyecto.persistencia;
 
-import com.sun.org.apache.regexp.internal.RE;
 import proyecto.entidades.Empleado;
-import proyecto.entidades.OrdenPedido;
 import proyecto.entidades.Repartidor;
 import proyecto.entidades.Vehiculo;
 
