@@ -13,8 +13,8 @@ public class Repartidor extends Empleado{
         this.vencLibreta = vencLibreta;
     }
 
-    public Repartidor(String ci, String nombre, Date fechaNacimiento, Date fechaContratacion, String telefono, String rol, Date vencLibreta) {
-        super(ci, nombre, fechaNacimiento, fechaContratacion, telefono, rol);
+    public Repartidor(String ci, String nombre, String contrasenia, Date fechaNacimiento, Date fechaContratacion, String telefono, String rol, Date vencLibreta) {
+        super(ci, nombre, contrasenia, fechaNacimiento, fechaContratacion, telefono, rol);
         this.vencLibreta = vencLibreta;
     }
 

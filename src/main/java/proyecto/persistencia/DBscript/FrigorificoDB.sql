@@ -82,6 +82,7 @@ Create Table LineaPedido(
 Create Table Empleado(
 	ci varchar(8) primary key,
     nombre varchar(30) not null,
+    contrasenia varchar(30) not null,
     fechaNac date not null,
     fechaContratacion date not null,
     telefono varchar(10) not null,

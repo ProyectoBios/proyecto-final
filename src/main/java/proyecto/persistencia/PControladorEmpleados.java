@@ -32,7 +32,7 @@ class PControladorEmpleados implements IPEmpleados{
 
             Empleado empleado = null;
             if(resultado.next()) {
-                empleado = new Empleado(resultado.getString("ci"), resultado.getString("nombre"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"));
+                empleado = new Empleado(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"));
             }
 
             return empleado;
@@ -52,7 +52,7 @@ class PControladorEmpleados implements IPEmpleados{
 
             Repartidor repartidor = null;
             if(resultado.next()) {
-                repartidor = new Repartidor(resultado.getString("ci"), resultado.getString("nombre"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"), resultado.getDate("vencLibreta"));
+                repartidor = new Repartidor(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"), resultado.getDate("vencLibreta"));
             }
 
             return repartidor;
@@ -77,9 +77,9 @@ class PControladorEmpleados implements IPEmpleados{
                 Empleado empleado = null;
                 while (resultado.next()) {
                     if (resultado.getString("rol").equals("repartidor")) {
-                        empleado = new Repartidor(resultado.getString("ci"), resultado.getString("nombre"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"), resultado.getDate("vencLibreta"));
+                        empleado = new Repartidor(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"), resultado.getDate("vencLibreta"));
                     } else {
-                        empleado = new Empleado(resultado.getString("ci"), resultado.getString("nombre"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"));
+                        empleado = new Empleado(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"));
                     }
                     empleados.add(empleado);
                 }
@@ -101,7 +101,7 @@ class PControladorEmpleados implements IPEmpleados{
             Empleado repartidor = null;
             ArrayList<Empleado> repartidores = new ArrayList<>();
             while(resultado.next()) {
-                repartidor = new Repartidor(resultado.getString("ci"), resultado.getString("nombre"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"), resultado.getDate("vencLibreta"));
+                repartidor = new Repartidor(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"), resultado.getDate("vencLibreta"));
                 repartidores.add(repartidor);
             }
 

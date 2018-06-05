@@ -5,6 +5,7 @@ import java.util.Date;
 public class Empleado {
     private String ci;
     private String nombre;
+    private String contrasenia;
     private Date fechaDeNacimiento;
     private Date fechaContratacion;
     private String telefono;
@@ -25,6 +26,14 @@ public class Empleado {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 
     public Date getFechaDeNacimiento() {
@@ -59,9 +68,10 @@ public class Empleado {
         this.rol = rol;
     }
 
-    public Empleado(String ci, String nombre, Date fechaDeNacimiento, Date fechaContratacion, String telefono, String rol) {
+    public Empleado(String ci, String nombre, String contrasenia, Date fechaDeNacimiento, Date fechaContratacion, String telefono, String rol) {
         this.ci = ci;
         this.nombre = nombre;
+        this.contrasenia = contrasenia;
         this.fechaDeNacimiento = fechaDeNacimiento;
         this.fechaContratacion = fechaContratacion;
         this.telefono = telefono;
@@ -69,7 +79,7 @@ public class Empleado {
     }
 
     public Empleado() {
-        this("", "", new Date(), new Date(), "", "");
+        this("", "", "", new Date(), new Date(), "", "");
     }
 }
 
