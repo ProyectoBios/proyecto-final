@@ -9,6 +9,7 @@ import proyecto.entidades.Empleado;
 import proyecto.entidades.ExcepcionFrigorifico;
 import proyecto.logica.FabricaLogica;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -19,7 +20,7 @@ public class ControladorEmpleado {
     }
 
     @RequestMapping(value="/Login", method = RequestMethod.POST, params = "action=Ingresar")
-    public String login(@RequestParam(value="cedula") String cedula, @RequestParam(value = "contrasenia")String contrasenia, ModelMap modelMap, HttpSession session){
+    public String login(@RequestParam(value="cedula") String cedula, @RequestParam(value = "contrasenia")String contrasenia, ModelMap modelMap, HttpSession session, HttpServletResponse response){
         try{
             if(cedula.equals("") || contrasenia.equals("")){
                 throw new ExcepcionFrigorifico("Credenciales inválidas, inténtelo denuevo.");
@@ -28,14 +29,13 @@ public class ControladorEmpleado {
             Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula);
             if(e==null){
                 throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");
-            }else if(contrasenia.equals("1234")){//TODO: Reemplazar por e.getContrasenia()
+            }else if(contrasenia.equals(e.getContrasenia())){
                 session.setAttribute("usuarioLogueado", e);
+                response.sendRedirect("/"); //TODO: Reemplazar por la página de bienvenida correspondiente al rol del usuario.
                 return "index";
             }else{
                 throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");
             }
-
-
         }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "login";
