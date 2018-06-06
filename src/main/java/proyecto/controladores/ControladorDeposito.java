@@ -607,5 +607,17 @@ public class ControladorDeposito {
         }
     }
 
+    @RequestMapping(value="/VerLote", method = RequestMethod.GET)
+    public String getVerLote(ModelMap modelmap){
+
+        return "VerLote";
+    }
+
+    @RequestMapping(value = "/VerLote", method = RequestMethod.POST)
+    public String verLote(ModelMap modelmap, HttpSession session){
+
+        return "VerLote";
+    }
+
     //endregion
 }

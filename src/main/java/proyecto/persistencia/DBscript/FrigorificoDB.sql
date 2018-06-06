@@ -157,6 +157,7 @@ INSERT INTO LineaPedido VALUES(1, 3, 65, 1950.0, 3);
 
 INSERT INTO Empleado VALUES('12345678', 'Pedro Rodriguez','1234' , '19840324', '20171009', '091789456', 'repartidor');
 INSERT INTO Empleado VALUES('32165498', 'Pepe Martin','abcd' ,'19800515', '20160520', '092879654', 'repartidor');
+INSERT INTO Empleado VALUES('36328662', 'Alvaro Martinez','1234' ,'19840329', '20160520', '092879654', 'gerente');
 
 INSERT INTO Repartidor VALUES('12345678', '20220814');
 INSERT INTO Repartidor VALUES('32165498', '20200622');

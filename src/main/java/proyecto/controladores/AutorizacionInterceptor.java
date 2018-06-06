@@ -17,7 +17,7 @@ public class AutorizacionInterceptor extends HandlerInterceptorAdapter {
                 return false;
             }
 
-            //TODO: Si hay un usuario logueado, chequear si tiene permiso para acceder la URI del request.
+            //TODO: Si hay un usuario logueado, chequear si tiene permiso para acceder a la URI del request.
         }
         return true;
     }
