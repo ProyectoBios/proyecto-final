@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Funcionarios</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
+		<link rel="stylesheet" th:href="@{assets/css/main.css}" />
+		<!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+	</head>
+	<body>
+		<!-- <header th:if="${session.usuario.rol == 'gerente'}" th:replace="fragments/header :: menuGerente"
+					 th:if="${session.usuario.rol == 'funcionario'}" th:replace="fragments/header :: menuFuncionario">
+
+		</header> -->
+		<header th:replace="fragments/header :: menu">
+
+		</header>
+
+		<!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="inner">
+					<header class="major">
+						<h2>Sección Usuarios</h2>
+						<p>Bienvenido : (nombreUsuario)</p>
+					</header>
+
+					<!-- Content -->
+						<div class="content">
+							<img src="images/pic10.jpg" alt="" />
+							<p>Alguna imagen de bienvenida para llenar un poco y darle presentación</p>
+							<p>Contenido de presentación y bienvenida</p>
+						</div>
+
+					<label th:text="${mensaje}"></label>
+
+				</div>
+			</section>
+
+		<div th:replace="fragments/footer :: footer">
+
+		</div>
+
+	</body>
+</html>

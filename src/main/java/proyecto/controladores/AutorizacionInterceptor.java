@@ -10,10 +10,10 @@ public class AutorizacionInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(!request.getRequestURI().contains("/Login")) {
+        if(!request.getRequestURI().equals("/")) {
             Empleado e = (Empleado) request.getSession().getAttribute("usuarioLogueado");
             if (e == null) {
-                response.sendRedirect("/Login");
+                response.sendRedirect("/");
                 return false;
             }
 

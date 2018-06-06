@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import proyecto.entidades.*;
 import proyecto.logica.FabricaLogica;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
@@ -522,7 +524,7 @@ public class ControladorPedidos {
     }
 
     @RequestMapping(value="/PreparacionPedidos", method = RequestMethod.POST, params="action=Listo")
-    public String confirmarPreparacion(@RequestParam(value="idPedido", required = true) String  idPedido, ModelMap modelMap, HttpSession session){
+    public String confirmarPreparacion(@RequestParam(value="idPedido", required = true) String  idPedido, ModelMap modelMap, HttpSession session, HttpServletResponse response){
         try{
             int id = Integer.parseInt(idPedido);
             OrdenPedido ordenPedido = null;
@@ -558,8 +560,9 @@ public class ControladorPedidos {
 
             if(((ArrayList<OrdenPedido>) session.getAttribute("pedidosPicking")).size() == 0){
                 session.removeAttribute("pedidosPicking");
-                modelMap.addAttribute("mensaje", "Pedidos preparados con éxito.");
-                return "index";
+                session.setAttribute("mensaje", "Pedidos preparados con éxito.");
+                response.sendRedirect("/Bienvenida");
+                return "Bienvenida";
             }else{
                 modelMap.addAttribute("mensaje", "Pedido preparado con éxito.");
                 return "PreparacionPedidos";

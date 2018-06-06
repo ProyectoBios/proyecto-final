@@ -21,48 +21,8 @@
 <body>
 
 <!-- Header -->
-<header id="header">
-    <h1 id="logo"><a th:href="@{/}">Centenario</a></h1>
-    <nav id="nav">
-        <ul>
-            <li><a th:href="@{/}">Inicio</a></li>
-            <li>
-                <a href="#" class="submenu">Menú</a>
-                <ul>
-                    <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
-                    <li><a href="#">Rack</a>
-                        <ul>
-                            <li><a th:href="@{/AltaRack}">Mantenimiento de Rack</a></li>
-                            <li><a th:href="@{/EstadoDeRack}">Estado de Rack</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Lote</a>
-                        <ul>
-                            <li><a th:href="@{/AltaLote}">Alta de Lote</a></li>
-                            <li><a th:href="@{/MoverLote}">Mover Lote</a></li>
-                            <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Pedido</a>
-                        <ul>
-                            <li><a th:href="@{/AltaOrdenDePedido}">Alta Orden de Pedido</a></li>
-                            <li><a th:href="@{/RealizarPicking}">Realizar Picking</a></li>
-                            <li><a th:href="@{/PreparacionPedidos}">Preparar Pedidos</a></li>
-                            <li><a th:href="@{/EstadoDePedido}">Estado de Pedidos</a></li>
-                            <li><a th:href="@{/ListadoDePedidos}">Listado de Pedidos</a></li>
-                            <li><a th:href="@{/EntregaDePedidos}">Entrega de Pedidos</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Entregas</a>
-                        <ul>
-                            <li><a th:href="@{/GenerarViaje}">Generar Viaje</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="#">Salir</a></li>
-        </ul>
-    </nav>
+<header th:replace="fragments/header :: menu">
+
 </header>
 
 <!-- Main -->

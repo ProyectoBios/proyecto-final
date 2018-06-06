@@ -14,12 +14,12 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class ControladorEmpleado {
-    @RequestMapping(value = "/Login", method = RequestMethod.GET)
-    public String getLogin(ModelMap modelMap){
-        return "login";
+    @RequestMapping("/")
+    public String index(){
+        return "index";
     }
 
-    @RequestMapping(value="/Login", method = RequestMethod.POST, params = "action=Ingresar")
+    @RequestMapping(value="/", method = RequestMethod.POST, params = "action=Ingresar")
     public String login(@RequestParam(value="cedula") String cedula, @RequestParam(value = "contrasenia")String contrasenia, ModelMap modelMap, HttpSession session, HttpServletResponse response){
         try{
             if(cedula.equals("") || contrasenia.equals("")){
@@ -31,17 +31,27 @@ public class ControladorEmpleado {
                 throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");
             }else if(contrasenia.equals(e.getContrasenia())){
                 session.setAttribute("usuarioLogueado", e);
-                response.sendRedirect("/"); //TODO: Reemplazar por la página de bienvenida correspondiente al rol del usuario.
+                response.sendRedirect("/Bienvenida");
                 return "index";
             }else{
                 throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");
             }
         }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
-            return "login";
+            return "index";
         }catch (Exception ex){
             modelMap.addAttribute("mensaje", "Ocurrió un error al procesar la autenticación.");
-            return "login";
+            return "index";
         }
+    }
+
+    @RequestMapping(value="/Bienvenida", method = RequestMethod.GET)
+    public String bienvenida(HttpSession session, ModelMap modelMap){
+        if(session.getAttribute("mensaje")!=null){
+            modelMap.addAttribute("mensaje", session.getAttribute("mensaje"));
+            session.removeAttribute("mensaje");
+        }
+
+        return "Bienvenida";
     }
 }

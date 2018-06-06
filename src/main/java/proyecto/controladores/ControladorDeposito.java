@@ -33,10 +33,7 @@ import java.util.ArrayList;
 
 @Controller
 public class ControladorDeposito {
-    @RequestMapping("/")
-    public String index(){
-        return "index";
-    }
+
 
     //region ABMProducto
     @RequestMapping(value="/ABMProducto", method = RequestMethod.GET)

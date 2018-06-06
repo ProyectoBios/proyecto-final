@@ -1,100 +1,81 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>Funcionarios</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
-		<link rel="stylesheet" th:href="@{assets/css/main.css}" />
-		<!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
-		<!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
-	</head>
-	<body>
+<head>
+    <title>Login</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
+    <link rel="stylesheet" th:href="@{assets/css/main.css}" />
+    <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+</head>
+<body>
 
-		<!-- Header -->
-		<!--	<header id="header">
-				<h1 id="logo"><a th:href="@{/}">Centenario</a></h1>
-				<nav id="nav">
-					<ul>
-						<li><a th:href="@{/}">Inicio</a></li>
-						<li>
-							<a href="#" class="submenu">Menú</a>
-							<ul>
-								<li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
-								<li><a href="#">Rack</a>
-									<ul>
-										<li><a th:href="@{/AltaRack}">Mantenimiento de Rack</a></li>
-										<li><a th:href="@{/EstadoDeRack}">Estado de Rack</a></li>
-									</ul>
-								</li>
-								<li><a href="#">Lote</a>
-									<ul>
-										<li><a th:href="@{/AltaLote}">Alta de Lote</a></li>
-										<li><a th:href="@{/MoverLote}">Mover Lote</a></li>
-										<li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
-									</ul>
-								</li>
-								<li><a href="#">Pedido</a>
-									<ul>
-										<li><a th:href="@{/AltaOrdenDePedido}">Alta Orden de Pedido</a></li>
-										<li><a th:href="@{/RealizarPicking}">Realizar Picking</a></li>
-										<li><a th:href="@{/PreparacionPedidos}">Preparar Pedidos</a></li>
-										<li><a th:href="@{/EstadoDePedido}">Estado de Pedidos</a></li>
-										<li><a th:href="@{/ListadoDePedidos}">Listado de Pedidos</a></li>
-										<li><a th:href="@{/EntregaDePedidos}">Entrega de Pedidos</a></li>
-									</ul>
-								</li>
-								<li><a href="#">Entregas</a>
-									<ul>
-										<li><a th:href="@{/GenerarViaje}">Generar Viaje</a></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li><a href="#">Salir</a></li>
-					</ul>
-				</nav>
-			</header> -->
-		<!-- <header th:if="${session.usuario.rol == 'gerente'}" th:replace="fragments/header :: menuGerente">
+<!-- Header -->
+<header th:replace="fragments/header :: menu">
 
-		</header> -->
-		<header th:replace="fragments/header :: menu">
+</header>
 
-		</header>
+<!-- Main -->
+<section id="main" class="wrapper">
+    <div class="inner">
+        <header >
+            <h2>Sección Usuarios</h2>
+        </header>
 
-		<!-- Main -->
-			<section id="main" class="wrapper">
-				<div class="inner">
-					<header class="major">
-						<h2>Sección Usuarios</h2>
-						<p>Bienvenido : (nombreUsuario)</p>
-					</header>
+        <!-- Content -->
+        <div class="content">
+            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
+            <h3>Ingreso al sistema mediante login.</h3>
+            <!-- Formulario con la Tabla -->
+            <form action="#" th:action="@{/}" method="post">
+                <table>
+                    <tr>
+                        <td style="width: 30%">C.I. (Sin puntos ni guiones): </td>
+                        <td><input type="text" name="cedula" placeholder="Cédula" style="width: 45%"/> </td>
+                    </tr>
+                    <tr>
+                        <td>Contraseña: </td>
+                        <td><input type="password" name="contrasenia" placeholder="Contraseña" style="width: 45%"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p style="text-align: right; width: 62%">
+                                <input type="submit" name="action" value="Ingresar"/>
+                                <input type="reset" name="action" value="cancelar"/>
+                            </p>
+                        </td>
 
-					<!-- Content -->
-						<div class="content">
-							<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>
-							<p>Alguna imagen de bienvenida para llenar un poco y darle presentación</p>
-							<p>Contenido de presentación y bienvenida</p>
-						</div>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label th:text="${mensaje}"></label>
+                        </td>
+                    </tr>
+                </table>
+            </form>
 
-				</div>
-			</section>
+        </div>
 
-		<!-- Footer -->
-			<footer id="footer">
-				
-				<p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
-				<a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
-			</footer>
+    </div>
+</section>
 
-		<!-- Scripts -->
-			<script th:src="@{assets/js/jquery.min.js}"> </script>
-			<script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
-			<script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
-			<script th:src="@{assets/js/skel.min.js}"></script>
-			<script th:src="@{assets/js/util.js}"></script>
-			<!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
-		    <script th:src="@{assets/js/main.js}"></script>
+<!-- Footer -->
+<footer id="footer">
 
-	</body>
+    <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
+        <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+</footer>
+
+<!-- Scripts -->
+<script th:src="@{assets/js/jquery.min.js}"> </script>
+<script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
+<script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{assets/js/skel.min.js}"></script>
+<script th:src="@{assets/js/util.js}"></script>
+<!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
+<script th:src="@{assets/js/main.js}"></script>
+<script th:src="@{assets/js/ddlFiltrable.js}"></script>
+
+</body>
 </html>

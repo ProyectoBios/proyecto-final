@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+
 </head>
 <body>
+    <div th:fragment="footer">
+        <footer id="footer">
 
+        <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
+            <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+        </footer>
+
+        <script th:src="@{assets/js/jquery.min.js}"> </script>
+        <script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
+        <script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
+        <script th:src="@{assets/js/skel.min.js}"></script>
+        <script th:src="@{assets/js/util.js}"></script>
+        <!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
+        <script th:src="@{assets/js/main.js}"></script>
+        <script th:src="@{assets/js/ddlFiltrable.js}"></script>
+    </div>
 </body>
 </html>
