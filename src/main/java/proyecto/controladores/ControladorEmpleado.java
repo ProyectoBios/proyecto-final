@@ -14,8 +14,15 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class ControladorEmpleado {
-    @RequestMapping("/")
-    public String index(){
+    @RequestMapping(value="/", method = RequestMethod.GET)
+    public String index(HttpSession session, ModelMap modelMap){
+        try {
+            if (session.getAttribute("usuarioLogueado") != null){
+                session.removeAttribute("usuarioLogueado");
+            }
+        }catch (Exception ex){
+            modelMap.addAttribute("mensaje", "hubo un error al cargar la página");
+        }
         return "index";
     }
 

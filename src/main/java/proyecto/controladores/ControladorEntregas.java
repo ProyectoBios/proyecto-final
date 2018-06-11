@@ -76,12 +76,21 @@ public class ControladorEntregas {
     @RequestMapping(value = "/EntregaDePedidos", method = RequestMethod.GET)
     public String getEntregaDePedidos (HttpSession session, ModelMap modelMap){
         try {
-            Repartidor repartidor = (Repartidor) FabricaLogica.getControladorEmpleados().buscarEmpleado("12345678"); // Pedro Rodriguez
+            Repartidor repartidor = (Repartidor) session.getAttribute("usuarioLogueado"); //Todo: se supone que es un Repartidor logueado.
+
+            //Repartidor repartidor = (Repartidor) FabricaLogica.getControladorEmpleados().buscarEmpleado((String)session.getAttribute("usuarioLogueado"));
             ArrayList<Viaje> viajes = FabricaLogica.getControladorEntregas().listarViajesPendientesXRepartidor(repartidor);
 
-            session.removeAttribute("viaje");
-            session.setAttribute("viajes", viajes);
-            return "EntregaDePedidos";
+            if (viajes.size() > 0) {
+
+                session.removeAttribute("viaje");
+                session.setAttribute("viajes", viajes);
+                return "EntregaDePedidos";
+            }else {
+                session.removeAttribute("viaje");
+                modelMap.addAttribute("mensaje", "No tiene viajes pendientes");
+                return "EntregaDePedidos";
+            }
 
         } catch (Exception ex){
             modelMap.addAttribute("mensaje", "¡ERROR! Hubo un error al cargar la página");

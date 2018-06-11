@@ -92,14 +92,7 @@
                        </div>
 
                    </div>
-               </section>
-
-       <!-- Footer -->
-        <footer id="footer">
-
-                <p class="copyright">&copy; Dieguin y Alvarin corporation. All rights reserved.<br />
-                    <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
-            </footer>
+        </section>
 
         <script th:inline="javascript">
             function VerDatosLote(i,j) {
@@ -141,14 +134,10 @@
             }
         </script>
 
-    <!-- Scripts -->
-    <script th:src="@{assets/js/jquery.min.js}"> </script>
-    <script th:src="@{assets/js/jquery.dropotron.min.js}"> </script>
-    <script th:src="@{assets/js/jquery.scrollex.min.js}"></script>
-    <script th:src="@{assets/js/skel.min.js}"></script>
-    <script th:src="@{assets/js/util.js}"></script>
-    <!--[if lte IE 8]><script th:src="@{assets/js/ie/respond.min.js}"></script><![endif]-->
-    <script th:src="@{assets/js/main.js}"></script>
+        <!-- Footer -->
+        <div th:replace="fragments/footer :: footer">
+
+        </div>
 
     </body>
 </html>
