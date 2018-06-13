@@ -73,8 +73,8 @@
       <td>Stock Máximo</td>
       <td>
 		  <input th:if="*{MaxStock != 0}" type="number" th:field ="*{MaxStock}" size="1" style="width: 30%"/>
-		  <input th:if="*{MaxStock == 0}" type="number" name="maxStock" placeholder="" size="1" style="width: 30%"/>
-	  </td>
+		<input th:if="*{MaxStock == 0}" type="number" name="maxStock" placeholder="" size="1" style="width: 30%"/>
+		</td>
     </tr>
     <tr>
       <td colspan="2" style="text-align: center">
@@ -97,8 +97,7 @@
   </tbody>
 </table>
 
-                            	
-                            </form>
+							</form>
                       <label th:text="${mensaje}"></label>
 						</div>
 

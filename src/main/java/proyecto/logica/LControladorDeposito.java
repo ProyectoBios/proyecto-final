@@ -1,9 +1,13 @@
 package proyecto.logica;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BarcodeQRCode;
+import com.itextpdf.text.pdf.PdfWriter;
 import proyecto.entidades.*;
 import proyecto.entidades.EspecificacionProducto;
 import proyecto.persistencia.*;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -262,6 +266,31 @@ class LControladorDeposito implements  IDeposito {
     @Override
     public void actualizarStock(Lote lote, int cant) throws Exception {
         FabricaPersistencia.getControladorDeposito().actualizarStock(lote,cant);
+    }
+
+    @Override
+    public byte[] generarCodigoQRLote(int codigo) throws Exception{
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        Document qrCode = new Document(PageSize.A4);
+        PdfWriter writer = PdfWriter.getInstance(qrCode, byteArrayOutputStream);
+        qrCode.open();
+        Paragraph parrafo = new Paragraph(new Phrase(10f, "ID: " + codigo, FontFactory.getFont(FontFactory.COURIER, 34))); //remplazar el string de esta linea por http://IP_SERVIDOR:8080/Centenario/VerLote/codigoDelLote
+        parrafo.setAlignment(Element.ALIGN_CENTER);
+        qrCode.add(parrafo);
+        qrCode.add(Chunk.NEWLINE);
+        qrCode.add(Chunk.NEWLINE);
+        qrCode.add(Chunk.NEWLINE);
+        qrCode.add(Chunk.NEWLINE);
+        qrCode.add(Chunk.NEWLINE);
+        qrCode.add(Chunk.NEWLINE);
+
+        BarcodeQRCode codigoQR = new BarcodeQRCode(String.valueOf(codigo), 300, 300, null);
+        Image qrImagen = codigoQR.getImage();
+        qrImagen.setAlignment(Element.ALIGN_CENTER);
+        qrCode.add(qrImagen);
+        qrCode.close();
+
+        return byteArrayOutputStream.toByteArray();
     }
 
     //endregion

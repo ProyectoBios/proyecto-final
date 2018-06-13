@@ -15,7 +15,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="inicializarDoc()">
 
 <!-- Header -->
 <!-- <header id="header">
@@ -78,72 +78,92 @@
             <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
             <h3>Mantenimiento de Empleados</h3>
             <!-- Formulario con la Tabla -->
-            <form action="#" th:action="@{/ABMEmpleado}" name="ABMEmpleado" method="post">
+            <form action="#" th:action="@{/MantenimientoEmpleados}" th:object="${empleado}" name="ABMEmpleado" method="post">
 
                 <table width="100%">
                     <tbody>
                     <tr>
                         <td style="width: 20%">C.I.:</td>
-                        <td style="width: 70%"><input type="number" id="id" size="1" style="width: 30%"/></td>
+                        <td style="width: 70%"><input type="number" id="id" size="1" style="width: 30%" th:field="*{Ci}" th:readonly="${ciSoloLectura}"/></td>
                     </tr>
                     <tr>
                         <td>Nombre:</td>
-                        <td><input type="text" id="nombre" size="1" style="width: 60%"/></td>
+                        <td><input type="text" id="nombre" size="1" style="width: 60%" th:field="*{Nombre}"/></td>
                     </tr>
                     <tr>
                         <td>Contraseña:</td>
-                        <td><input type="password" id="contrasenia" size="1" style="width: 60%"/></td>
+                        <td><input type="password" id="contrasenia" size="1" style="width: 60%" th:field="*{Contrasenia}"/></td>
                     </tr>
                     <tr>
                         <td>Fecha de nacimiento</td>
                         <!--  -->
-                        <td><input type="date" id="precio" size="1" style="width: 20%"/></td>
+                        <td><input type="date" id="fechaNac" size="1" style="width: 20%" th:field="*{{FechaDeNacimiento}}"/></td>
                     </tr>
                     <tr>
                         <td>Fecha de contratación:</td>
-                        <td><input type= "date" id="stockMinimo" size="1" style="width: 30%"/></td>
+                        <td><input type= "date" id="fechaContr" size="1" style="width: 30%" th:field="*{{FechaContratacion}}"/></td>
                     </tr>
                     <tr>
                         <td>Teléfono:</td>
-                        <td><input type="tel" id="stockCritico" size="1" style="width: 30%"/></td>
+                        <td><input type="tel" id="telefono" size="1" style="width: 30%" th:field="*{{Telefono}}"/></td>
                     </tr>
                     <tr>
                         <td>Rol:</td> <!-- Va un select -->
-                        <td ><select name="productos" style="width: 30%">
+                        <td ><select onChange="cambiarRol()" id="selectRol" name="productos" style="width: 30%" th:field="*{Rol}">
                             <option value="null">Rol</option>
-                            <option value="1">Gerente</option>
-                            <option value="2">Funcionario</option>
-                            <option value="2">Operador</option>
-                            <option value="2">Repartidor</option>
+                            <option value="gerente">Gerente</option>
+                            <option value="funcionario">Funcionario</option>
+                            <option value="operador">Operador</option>
+                            <option value="repartidor">Repartidor</option>
                         </select></td>
 
                         <!-- El único que puede dar de alta, eliminar Empleados y asignar roles es el Gerente -->
                     </tr>
-                    <tr>
-                        <td>Vencimiento Libreta:</td> <!-- Va un select -->
-                        <td><input type="date" id="vencLibreta" size="1" style="width: 30%"/></td>
+                    <tr id="filaLibreta">
+                        <td>Vencimiento Libreta:</td>
+                        <td><input type="date" id="vencLibreta" name="vencLibreta" size="1" style="width: 30%" th:value="${vencLibreta!=null}? ${#dates.format(vencLibreta, 'yyyy-MM-dd')} : ''"/></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center">
-                            <input type="submit" name="action" value="Agregar" />
-                            <input type="submit" name="action" value="Eliminar" />
-                            <input type="submit" name="action" value="Modificar" />
-                            <input type="submit" name="action" value="buscar" />
-                            <input type="reset" value="Limpiar" />
+                            <input type="submit" name="action" value="Agregar" th:disabled="${!botonAgregar}"/>
+                            <input type="submit" name="action" value="Eliminar" th:disabled="${!botonEliminar}"/>
+                            <input type="submit" name="action" value="Modificar" th:disabled="${!botonModificar}"/>
+                            <input type="submit" name="action" value="Buscar" th:disabled="${!botonBuscar}"/>
+                            <input type="submit" name="action" value="Limpiar" />
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
-
             </form>
 
-            </form>
+            <th:block th:each="m : ${mensajes}">
+                <label th:text="${m}"></label>
+            </th:block>
 
         </div>
 
     </div>
 </section>
+
+<script th:inline="javascript">
+            function inicializarDoc() {
+                /*<![CDATA[*/
+                var rol = [[${empleado.rol}]];
+                if(rol!='repartidor'){
+                    document.getElementById("filaLibreta").style.display="none";
+                }
+                /*]]>*/
+            }
+
+            function cambiarRol(){
+                if(document.getElementById("selectRol").selectedIndex != 4){
+                    document.getElementById("filaLibreta").style.display="none";
+                }else{
+                    document.getElementById("filaLibreta").style.display="table-row";
+                }
+            }
+</script>
 
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer">

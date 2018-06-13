@@ -13,12 +13,12 @@ public class Repartidor extends Empleado{
         this.vencLibreta = vencLibreta;
     }
 
-    public Repartidor(String ci, String nombre, String contrasenia, Date fechaNacimiento, Date fechaContratacion, String telefono, String rol, Date vencLibreta) {
+    public Repartidor(String ci, String nombre, String contrasenia, Date fechaNacimiento, Date fechaContratacion, String telefono, String rol, Date vencLibreta) throws ExcepcionFrigorifico{
         super(ci, nombre, contrasenia, fechaNacimiento, fechaContratacion, telefono, rol);
         this.vencLibreta = vencLibreta;
     }
 
-    public Repartidor(){
+    public Repartidor() throws ExcepcionFrigorifico{
         super();
         this.vencLibreta = new Date();
     }

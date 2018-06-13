@@ -21,10 +21,25 @@ public class LControladorEmpleados implements IEmpleados{
     @Override
     public Empleado buscarEmpleado(String ci) throws Exception {
         Empleado empleado = FabricaPersistencia.getControladorEmpleados().buscarEmpleado(ci);
-        if(empleado.getRol().equals("repartidor")){
+        if(empleado != null && empleado.getRol().equals("repartidor")){
             empleado = FabricaPersistencia.getControladorEmpleados().buscarRepartidor(ci);
         }
         return empleado;
+    }
+
+    @Override
+    public void altaEmpleado(Empleado e) throws Exception {
+        FabricaPersistencia.getControladorEmpleados().altaEmpleado(e);
+    }
+
+    @Override
+    public void bajaEmpleado(Empleado e) throws Exception {
+        FabricaPersistencia.getControladorEmpleados().bajaEmpleado(e);
+    }
+
+    @Override
+    public void modificarEmpleado(Empleado e) throws Exception {
+        FabricaPersistencia.getControladorEmpleados().modificarEmpleado(e);
     }
 
     @Override

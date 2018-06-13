@@ -4,6 +4,7 @@ import proyecto.entidades.Empleado;
 import proyecto.entidades.Repartidor;
 import proyecto.entidades.Vehiculo;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -106,6 +107,94 @@ class PControladorEmpleados implements IPEmpleados{
             }
 
             return repartidores;
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    public void altaEmpleado(Empleado e) throws Exception{
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement statement = con.prepareStatement("INSERT INTO Empleado VALUES (?, ?, ?, ?, ?, ?, ?)")){
+
+            if(e instanceof Repartidor){
+                altaRepartidor((Repartidor)e, con);
+            }else{
+                statement.setString(1, e.getCi());
+                statement.setString(2, e.getNombre());
+                statement.setString(3, e.getContrasenia());
+                statement.setDate(4, new java.sql.Date(e.getFechaDeNacimiento().getTime()));
+                statement.setDate(5, new java.sql.Date(e.getFechaContratacion().getTime()));
+                statement.setString(6, e.getTelefono());
+                statement.setString(7, e.getRol());
+
+                int filasAfectadas = statement.executeUpdate();
+            }
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    private void altaRepartidor(Repartidor r, Connection con) throws Exception{
+        try(CallableStatement statement = con.prepareCall("{CALL AltaRepartidor(?, ?, ?, ?, ?, ?, ?)}")){
+            statement.setString(1, r.getCi());
+            statement.setString(2, r.getNombre());
+            statement.setString(3, r.getContrasenia());
+            statement.setDate(4, new java.sql.Date(r.getFechaDeNacimiento().getTime()));
+            statement.setDate(5, new java.sql.Date(r.getFechaContratacion().getTime()));
+            statement.setDate(6, new java.sql.Date(r.getVencLibreta().getTime()));
+            statement.setString(7, r.getTelefono());
+
+            statement.executeUpdate();
+        }catch (Exception ex){
+            throw ex;
+        }
+
+    }
+
+    @Override
+    public void bajaEmpleado(Empleado e) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            CallableStatement statement = con.prepareCall("{CALL BajaEmpleado(?)}")){
+            statement.setString(1, e.getCi());
+
+            statement.executeUpdate();
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void modificarEmpleado(Empleado e) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement statement = con.prepareStatement("UPDATE Empleado SET nombre = ?, contrasenia=?, fechaNac = ?, telefono = ? WHERE ci = ?")){
+            if(e instanceof Repartidor){
+                modificarRepartidor((Repartidor)e, con);
+            }else{
+                statement.setString(1, e.getNombre());
+                statement.setString(2, e.getContrasenia());
+                statement.setDate(3, new java.sql.Date(e.getFechaDeNacimiento().getTime()));
+                statement.setDate(4, new java.sql.Date(e.getFechaContratacion().getTime()));
+                statement.setString(5, e.getTelefono());
+                statement.setString(6, e.getCi());
+
+                statement.executeUpdate();
+            }
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    private void modificarRepartidor(Repartidor e, Connection con) throws Exception{
+        try(CallableStatement statement = con.prepareCall("{CALL ModificarRepartidor(?, ?, ?, ?, ?, ?, ?)}")){
+            statement.setString(2, e.getNombre());
+            statement.setString(3, e.getContrasenia());
+            statement.setDate(4, new java.sql.Date(e.getFechaDeNacimiento().getTime()));
+            statement.setDate(5, new java.sql.Date(e.getFechaContratacion().getTime()));
+            statement.setDate(6, new java.sql.Date(e.getVencLibreta().getTime()));
+            statement.setString(7, e.getTelefono());
+            statement.setString(1, e.getCi());
+
+            statement.executeUpdate();
         }catch (Exception ex){
             throw ex;
         }

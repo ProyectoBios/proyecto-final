@@ -382,27 +382,7 @@ public class ControladorDeposito {
             racks=FabricaLogica.getControladorDeposito().listarRacks();
             int codigo = FabricaLogica.getControladorDeposito().altaLote(lote);
 
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            Document qrCode = new Document(PageSize.A4);
-            PdfWriter writer = PdfWriter.getInstance(qrCode, byteArrayOutputStream);
-            qrCode.open();
-            Paragraph parrafo = new Paragraph(new Phrase(10f, "ID: " + codigo, FontFactory.getFont(FontFactory.COURIER, 34)));
-            parrafo.setAlignment(Element.ALIGN_CENTER);
-            qrCode.add(parrafo);
-            qrCode.add(Chunk.NEWLINE);
-            qrCode.add(Chunk.NEWLINE);
-            qrCode.add(Chunk.NEWLINE);
-            qrCode.add(Chunk.NEWLINE);
-            qrCode.add(Chunk.NEWLINE);
-            qrCode.add(Chunk.NEWLINE);
-
-            BarcodeQRCode codigoQR = new BarcodeQRCode(String.valueOf(codigo), 300, 300, null);
-            Image qrImagen = codigoQR.getImage();
-            qrImagen.setAlignment(Element.ALIGN_CENTER);
-            qrCode.add(qrImagen);
-            qrCode.close();
-
-            byte[] pdfBytes = byteArrayOutputStream.toByteArray();
+            byte[] pdfBytes = FabricaLogica.getControladorDeposito().generarCodigoQRLote(codigo);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/pdf"));

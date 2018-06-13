@@ -4,6 +4,8 @@ Create Database FrigorificoDB;
 
 use FrigorificoDB;
 
+SET SQL_SAFE_UPDATES = 0;
+
 Create Table EspecificacionProducto(
 	ID int primary key AUTO_INCREMENT,
 	nombre varchar(40) not null,
@@ -279,5 +281,65 @@ BEGIN
     ORDER BY fechaHora asc;
  
  END//
+ 
+ Create Procedure AltaRepartidor(pCi varchar(8), pNombre varchar(30), pContrasenia varchar(30), pFechaNac date, pFechaCont date, pFechaVencLib date, pTel varchar(10))
+ BEGIN
+	DECLARE transaccionActiva BIT;
+
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+	BEGIN
+		IF transaccionActiva THEN
+			ROLLBACK;
+        END IF;
+	END;
+    
+    SET transaccionActiva = 1;
+    START transaction;
+    
+    INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaContratacion, pTel, 'repartidor');
+    INSERT INTO Repartidor VALUES(pCi, pFechaVencLib);
+    
+    COMMIT;
+ END//
+ 
+ Create Procedure BajaEmpleado(pCi varchar(8))
+ BEGIN
+	DECLARE transaccionActiva BIT;
+
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+	BEGIN
+		IF transaccionActiva THEN
+			ROLLBACK;
+        END IF;
+	END;
+    
+    SET transaccionActiva = 1;
+    START transaction;    
+    
+    DELETE FROM Repartidor WHERE ci = pCi;
+    DELETE FROM Empleado WHERE ci = pCi;
+    
+    COMMIT;
+ END//
+ 
+ Create Procedure ModificarRepartidor(pCi varchar(8), pNombre varchar(30), pContrasenia varchar(30), pFechaNac date, pFechaContratacion date, pFechaVencLib date, pTel varchar(10))
+ BEGIN
+	DECLARE transaccionActiva BIT;
+
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+	BEGIN
+		IF transaccionActiva THEN
+			ROLLBACK;
+        END IF;
+	END;
+    
+    SET transaccionActiva = 1;
+    START transaction;
+    
+    UPDATE Empleado SET nombre = pNombre, contrasenia=pContrasenia, fechaNac = pFechaNac, fechaContratacion=pFechaContratacion, telefono = pTel WHERE ci = pCi;
+    UPDATE Repartidor SET vencLibreta = pFechaVencLib WHERE ci = pCi;
+    
+    COMMIT;
+ END
  
  

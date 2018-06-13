@@ -59,7 +59,7 @@ public class Viaje {
         this.fechaHora = fechaHora;
     }
 
-    public Viaje() {
+    public Viaje() throws Exception{
         this(0, new Repartidor(), new Vehiculo(), new ArrayList<>(), new Date());
     }
 }

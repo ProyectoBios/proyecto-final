@@ -8,11 +8,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
-//@EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter {
-
-    /*@Autowired
-    private ProductoFormatter productoFormatter;*/
 
     @Override
     public void addFormatters(FormatterRegistry registry){

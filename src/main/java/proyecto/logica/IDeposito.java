@@ -29,6 +29,7 @@ public interface IDeposito {
     void moverLote(int idLote, String ubicacion) throws Exception;
     public void deshacerBajaLogicaLote(Lote lote) throws Exception;
     public void actualizarStock(Lote lote, int cant) throws Exception;
+    byte[] generarCodigoQRLote(int codigo) throws Exception;
     //endregion
 
 }
