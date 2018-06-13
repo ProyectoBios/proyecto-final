@@ -20,9 +20,13 @@
     </head>
     <body>
         <!-- Header -->
-        <header th:replace="fragments/header :: menu">
+        <th:block th:if="${session.usuarioLogueado.rol == 'gerente'}">
+            <header th:replace="fragments/header :: menu"> </header>
+        </th:block>
 
-        </header>
+        <th:block th:if="${session.usuarioLogueado.rol == 'funcionario'}">
+            <header th:replace="fragments/header :: menuFuncionario"> </header>
+        </th:block>
 
         <!-- Main -->
         <section id="main" class="wrapper">
@@ -39,84 +43,83 @@
 
                         <table id="rackOrigen">
                             <tbody>
-                            <tr>
-                                <td style="width: 25%"><label>Seleccione rack Origen: </label></td>
-                                <td>
-                                    <select name="letraRacks">
-                                        <option th:value="null">Rack</option>
-                                        <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}"></option>
-                                    </select>
-                                </td>
-                                <td style="width: 60%">
-                                    <input id="seleccionar" type="submit" name="action" value="Seleccionar" />
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td style="width: 25%"><label>Seleccione rack Origen: </label></td>
+                                    <td>
+                                        <select name="letraRacks">
+                                            <option th:value="null">Rack</option>
+                                            <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}"></option>
+                                        </select>
+                                    </td>
+                                    <td style="width: 60%">
+                                        <input id="seleccionar" type="submit" name="action" value="Seleccionar" />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
 
                         <div style="overflow-x : auto;">
-                        <table th:if="${tablaRackOrigen}" class="bordes" id="rack1" style="display: table; text-align: center">
-                            <tbody>
-                            <tr th:each="fila, iter1 : ${session.lotes}">
-                                <th:block th:each="l, iter2 : ${fila}">
-                                    <td th:if="${l.cantUnidades != 0}" th:onclick="|VerDatosLote(${iter1.index}, ${iter2.index})|" th:text="${l.id + ' ' + l.ubicacion.ubicacionString}" style="background-color: aqua; cursor: pointer;">ID Lote</td>
-                                </th:block>
-                            </tr>
-                            </tbody>
-                        </table>
+                            <table th:if="${tablaRackOrigen}" class="bordes" id="rack1" style="display: table; text-align: center">
+                                <tbody>
+                                    <tr th:each="fila, iter1 : ${session.lotes}">
+                                        <th:block th:each="l, iter2 : ${fila}">
+                                            <td th:if="${l.cantUnidades != 0}" th:onclick="|VerDatosLote(${iter1.index}, ${iter2.index})|" th:text="${l.id + ' ' + l.ubicacion.ubicacionString}" style="background-color: aqua; cursor: pointer;">ID Lote</td>
+                                        </th:block>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
 
                         <div style="overflow-x: auto">
-                        <table id="espLote1" style="display: none">
-                            <thead>
-                            <th style="width: 15%">Ubicación</th>
-                            <th># ID</th>
-                            <th style="width: 40%">Producto</th>
-                            <th style="width: 10%">Cantidad</th>
-                            <th>Vence</th>
-                            </thead>
-                            <tbody>
-                            <tr id="datosLote">
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            </tbody>
-
-                        </table>
+                            <table id="espLote1" style="display: none">
+                                <thead>
+                                    <th style="width: 15%">Ubicación</th>
+                                    <th># ID</th>
+                                    <th style="width: 40%">Producto</th>
+                                    <th style="width: 10%">Cantidad</th>
+                                    <th>Vence</th>
+                                </thead>
+                                <tbody>
+                                    <tr id="datosLote">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
 
                         <label th:text="${mensaje}">Mensaje</label>
 
                         <table id="rackDestino">
                             <tbody>
-                            <tr>
-                                <td style="width: 25%"><label>Seleccione rack Destino: </label></td>
-                                <td>
-                                    <select name="letraRacks2">
-                                        <option th:value="null">Rack</option>
-                                        <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}"></option>
-                                    </select>
-                                </td>
-                                <td style="width: 60%">
-                                    <input id="seleccionar2" type="submit" name="action" value="Seleccionar Destino" />
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td style="width: 25%"><label>Seleccione rack Destino: </label></td>
+                                    <td>
+                                        <select name="letraRacks2">
+                                            <option th:value="null">Rack</option>
+                                            <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}"></option>
+                                        </select>
+                                    </td>
+                                    <td style="width: 60%">
+                                        <input id="seleccionar2" type="submit" name="action" value="Seleccionar Destino" />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
 
                         <div style="overflow-x: auto">
-                        <table th:if="${tablaRackDestino}" class="bordes" id="rack2" style="display: table; text-align: center">
-                            <tbody>
-                            <tr th:each="fila, iter1 : ${session.lotes}">
-                                <th:block th:each="l, iter2 : ${fila}">
-                                    <td th:id="${iter1.index + '-' + iter2.index}" th:if="${l.cantUnidades == 0}" th:onclick="|SeleccionarUbicacion(${iter1.index}, ${iter2.index})|" th:text="${'vacío ' + l.ubicacion.ubicacionString}" style="cursor: pointer;">vacío</td>
-                                </th:block>
-                            </tr>
-                            </tbody>
-                        </table>
+                            <table th:if="${tablaRackDestino}" class="bordes" id="rack2" style="display: table; text-align: center">
+                                <tbody>
+                                    <tr th:each="fila, iter1 : ${session.lotes}">
+                                        <th:block th:each="l, iter2 : ${fila}">
+                                            <td th:id="${iter1.index + '-' + iter2.index}" th:if="${l.cantUnidades == 0}" th:onclick="|SeleccionarUbicacion(${iter1.index}, ${iter2.index})|" th:text="${'vacío ' + l.ubicacion.ubicacionString}" style="cursor: pointer;">vacío</td>
+                                        </th:block>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
 
                         <table id="espUbicacion" style="display: none;">
@@ -128,13 +131,13 @@
 
                         <table id="botones" style="display: table">
                             <tbody>
-                            <tr style="text-align: right">
-                                <td><input type="submit" onclick="EnviarDatos()" name="action" value="Mover" /> &nbsp;<input type="submit" name="action" onclick="limpiarSesion()" value="Cancelar" /></td>
-                                <td>
-                                    <input id="idLoteHidden" name="idLoteHidden" th:type="hidden" value="" /> <!-- key: loteAMover-->
-                                    <input id="idUbicacionHidden" name="idUbicacionHidden" th:type="hidden" value="" /> <!-- key: ubicacionAMover-->
-                                </td>
-                            </tr>
+                                <tr style="text-align: right">
+                                    <td><input type="submit" onclick="EnviarDatos()" name="action" value="Mover" /> &nbsp;<input type="submit" name="action" onclick="limpiarSesion()" value="Cancelar" /></td>
+                                    <td>
+                                        <input id="idLoteHidden" name="idLoteHidden" th:type="hidden" value="" /> <!-- key: loteAMover-->
+                                        <input id="idUbicacionHidden" name="idUbicacionHidden" th:type="hidden" value="" /> <!-- key: ubicacionAMover-->
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         <label th:text="${mensaje2}">Mensaje</label>

@@ -13,6 +13,7 @@ import proyecto.entidades.ExcepcionFrigorifico;
 import proyecto.entidades.Repartidor;
 import proyecto.logica.FabricaLogica;
 import javax.jws.WebParam;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -36,7 +37,7 @@ public class ControladorEmpleado {
     }
 
     @RequestMapping(value="/", method = RequestMethod.POST, params = "action=Ingresar")
-    public String login(@RequestParam(value="cedula") String cedula, @RequestParam(value = "contrasenia")String contrasenia, ModelMap modelMap, HttpSession session, HttpServletResponse response){
+    public String login(@RequestParam(value="cedula") String cedula, @RequestParam(value = "contrasenia")String contrasenia, ModelMap modelMap, HttpSession session, HttpServletRequest request, HttpServletResponse response){
         try{
             if(cedula.equals("") || contrasenia.equals("")){
                 throw new ExcepcionFrigorifico("Credenciales inválidas, inténtelo denuevo.");
@@ -47,7 +48,7 @@ public class ControladorEmpleado {
                 throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");
             }else if(contrasenia.equals(e.getContrasenia())){
                 session.setAttribute("usuarioLogueado", e);
-                response.sendRedirect("/Bienvenida");
+                response.sendRedirect(request.getContextPath() + "/Bienvenida");
                 return "index";
             }else{
                 throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");

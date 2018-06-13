@@ -21,9 +21,9 @@
 <body>
 
 <!-- Header -->
-<header th:replace="fragments/header :: menu">
-
-</header>
+<th:block th:if="${session.usuarioLogueado.rol == 'funcionario'}">
+    <header th:replace="fragments/header :: menuFuncionario"> </header>
+</th:block>
 
 <!-- Main -->
 <section id="main" class="wrapper">
@@ -39,60 +39,58 @@
 
             <table class="grilla" style="display: table" id="hiddenPedidos">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Fecha</th>
-                    <th>Cliente</th>
-                    <th>Total</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Total</th>
+                    </tr>
                 </thead>
 
                 <tbody>
-                <tr th:each="pedido : ${session.pedidosPicking}">
-                    <form action="#" th:action="@{/PreparacionPedidos}" method="post">
-                        <td th:text="${pedido.Id}"></td>
-                        <td th:text="${#dates.format(pedido.Fecha, 'dd/MM/yyyy')}"></td>
-                        <td th:text="${pedido.Cliente.Nombre}"></td>
-                        <td th:text="${'$' + pedido.Total}"></td>
-                        <td>
-                            <input type="hidden" th:value="${pedido.Id}" name="idPedido"/>
-                            <input type="submit" name="action" value="Seleccionar"/>
-                        </td>
-                    </form>
-                </tr>
+                    <tr th:each="pedido : ${session.pedidosPicking}">
+                        <form action="#" th:action="@{/PreparacionPedidos}" method="post">
+                            <td th:text="${pedido.Id}"></td>
+                            <td th:text="${#dates.format(pedido.Fecha, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${pedido.Cliente.Nombre}"></td>
+                            <td th:text="${'$' + pedido.Total}"></td>
+                            <td>
+                                <input type="hidden" th:value="${pedido.Id}" name="idPedido"/>
+                                <input type="submit" name="action" value="Seleccionar"/>
+                            </td>
+                        </form>
+                    </tr>
                 </tbody>
 
             </table>
 
-            <!-- Tabla con Contacto, Dirección de envío, Fecha ingreso -->
-
             <table class="grilla" th:if="${detallePedido}" id="lineasPedido">
                 <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Importe</th>
-                </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Importe</th>
+                    </tr>
                 </thead>
 
                 <tbody>
-                <tr th:each="linea : ${ordenPedido.Lineas}">
-                    <td th:text="${linea.Numero}"></td>
-                    <td th:text="${linea.Producto.Nombre}"></td>
-                    <td th:text="${linea.Cantidad}"></td>
-                    <td th:text="${linea.Importe}"></td>
-                </tr>
+                    <tr th:each="linea : ${ordenPedido.Lineas}">
+                        <td th:text="${linea.Numero}"></td>
+                        <td th:text="${linea.Producto.Nombre}"></td>
+                        <td th:text="${linea.Cantidad}"></td>
+                        <td th:text="${linea.Importe}"></td>
+                    </tr>
                 </tbody>
                 <tfoot>
-                <tr>
-                    <td colspan="4" style="text-align: right" th:text="${'Subtotal: ' + ordenPedido.Subtotal + ', Impuestos: ' + ordenPedido.Impuestos + ', Total: ' + ordenPedido.Total}"> </td>
-                </tr>
-                <tr>
-                    <form action="#" th:action="@{/PreparacionPedidos}" method="post">
-                        <td colspan="4"><input type="hidden" th:value="${ordenPedido.Id}" name="idPedido"/><input type="submit" name="action" value="Listo"/> </td>
-                    </form>
-                </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: right" th:text="${'Subtotal: ' + ordenPedido.Subtotal + ', Impuestos: ' + ordenPedido.Impuestos + ', Total: ' + ordenPedido.Total}"> </td>
+                    </tr>
+                    <tr>
+                        <form action="#" th:action="@{/PreparacionPedidos}" method="post">
+                            <td colspan="4"><input type="hidden" th:value="${ordenPedido.Id}" name="idPedido"/><input type="submit" name="action" value="Listo"/> </td>
+                        </form>
+                    </tr>
                 </tfoot>
 
             </table>

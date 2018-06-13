@@ -10,12 +10,23 @@
 		<!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
 	</head>
 	<body>
-		<!-- <header th:if="${session.usuario.rol == 'gerente'}" th:replace="fragments/header :: menuGerente"
-					 th:if="${session.usuario.rol == 'funcionario'}" th:replace="fragments/header :: menuFuncionario">
+		<!--Header -->
+		<header>
+            <th:block th:if="${session.usuarioLogueado.rol == 'gerente'}">
+                <header th:replace="fragments/header :: menu"> </header>
+            </th:block>
 
-		</header> -->
-		<header th:replace="fragments/header :: menu">
+            <th:block th:if="${session.usuarioLogueado.rol == 'funcionario'}">
+                <header th:replace="fragments/header :: menuFuncionario"> </header>
+            </th:block>
 
+            <th:block th:if="${session.usuarioLogueado.rol == 'operador'}">
+                <header th:replace="fragments/header :: menuOperador">	</header>
+            </th:block>
+
+            <th:block th:if="${session.usuarioLogueado.rol == 'repartidor'}">
+                <header th:replace="fragments/header :: menuRepartidor"> </header>
+            </th:block>
 		</header>
 
 		<!-- Main -->
@@ -23,12 +34,12 @@
 				<div class="inner">
 					<header class="major">
 						<h2>Sección Usuarios</h2>
-						<p>Bienvenido : (nombreUsuario)</p>
+						<p th:text="${'Bienvenido: ' + session.usuarioLogueado.getNombre()}" style="color: green;"> </p>
 					</header>
 
 					<!-- Content -->
 						<div class="content">
-							<img src="images/centenario.png" alt="" />
+							<img style="display: block; margin: auto;" src="images/centenario2.png" alt="logo Centenario" />
 							<p>Alguna imagen de bienvenida para llenar un poco y darle presentación</p>
 							<p>Contenido de presentación y bienvenida</p>
 						</div>

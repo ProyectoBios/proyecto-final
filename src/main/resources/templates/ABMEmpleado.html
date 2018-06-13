@@ -17,61 +17,19 @@
 </head>
 <body onload="inicializarDoc()">
 
-<!-- Header -->
-<!-- <header id="header">
-    <h1 id="logo"><a th:href="@{/Bienvenida}">Centenario</a></h1>
-    <nav id="nav">
-        <ul>
-            <li><a th:href="@{/Bienvenida}">Inicio</a></li>
-            <li>
-                <a href="#" class="submenu">Menú</a>
-                <ul>
-                    <li><a th:href="@{/ABMProducto}">Mantenimiento de Productos</a></li>
-                    <li><a href="#">Rack</a>
-                        <ul>
-                            <li><a th:href="@{/AltaRack}">Mantenimiento de Rack</a></li>
-                            <li><a th:href="@{/EstadoDeRack}">Estado de Rack</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Lote</a>
-                        <ul>
-                            <li><a th:href="@{/AltaLote}">Alta de Lote</a></li>
-                            <li><a th:href="@{/MoverLote}">Mover Lote</a></li>
-                            <li><a th:href="@{/BajaLoteXVencimiento}">Baja de Lote por Vencimiento</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Pedido</a>
-                        <ul>
-                            <li><a th:href="@{/AltaOrdenDePedido}">Alta Orden de Pedido</a></li>
-                            <li><a th:href="@{/RealizarPicking}">Realizar Picking</a></li>
-                            <li><a th:href="@{/PreparacionPedidos}">Preparar Pedidos</a></li>
-                            <li><a th:href="@{/EstadoDePedido}">Estado de Pedidos</a></li>
-                            <li><a th:href="@{/ListadoDePedidos}">Listado de Pedidos</a></li>
-                            <li><a th:href="@{/EntregaDePedidos}">Entrega de Pedidos</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Entregas</a>
-                        <ul>
-                            <li><a th:href="@{/GenerarViaje}">Generar Viaje</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="#">Salir</a></li>
-        </ul>
-    </nav>
-</header> -->
+    <!-- Header -->
+    <header>
+        <th:block th:if="${session.usuarioLogueado.rol == 'gerente'}">
+            <header th:replace="fragments/header :: menu"> </header>
+        </th:block>
+    </header>
 
-<header th:replace="fragments/header :: menu">
-
-</header>
-
-<!-- Main -->
-<section id="main" class="wrapper">
-    <div class="inner">
-        <header >
-            <h2>Sección Usuarios</h2>
-        </header>
+    <!-- Main -->
+    <section id="main" class="wrapper">
+        <div class="inner">
+            <header >
+                <h2>Sección Usuarios</h2>
+            </header>
 
         <!-- Content -->
         <div class="content">
@@ -141,31 +99,31 @@
                 <label th:text="${m}"></label>
             </th:block>
 
+            </div>
+
         </div>
+    </section>
 
-    </div>
-</section>
-
+    <!-- Footer -->
 <script th:inline="javascript">
-            function inicializarDoc() {
-                /*<![CDATA[*/
-                var rol = [[${empleado.rol}]];
-                if(rol!='repartidor'){
-                    document.getElementById("filaLibreta").style.display="none";
-                }
-                /*]]>*/
-            }
+    function inicializarDoc() {
+        /*<![CDATA[*/
+        var rol = [[${empleado.rol}]];
+        if(rol!='repartidor'){
+            document.getElementById("filaLibreta").style.display="none";
+        }
+        /*]]>*/
+    }
 
-            function cambiarRol(){
-                if(document.getElementById("selectRol").selectedIndex != 4){
-                    document.getElementById("filaLibreta").style.display="none";
-                }else{
-                    document.getElementById("filaLibreta").style.display="table-row";
-                }
-            }
+    function cambiarRol(){
+        if(document.getElementById("selectRol").selectedIndex != 4){
+            document.getElementById("filaLibreta").style.display="none";
+        }else{
+            document.getElementById("filaLibreta").style.display="table-row";
+        }
+    }
 </script>
 
-<!-- Footer -->
 <div th:replace="fragments/footer :: footer">
 
 </div>

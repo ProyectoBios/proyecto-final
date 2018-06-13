@@ -13,9 +13,13 @@
 <body>
 
 <!-- Header -->
-<header th:replace="fragments/header :: menu">
+<th:block th:if="${session.usuarioLogueado.rol == 'gerente'}">
+    <header th:replace="fragments/header :: menu"> </header>
+</th:block>
 
-</header>
+<th:block th:if="${session.usuarioLogueado.rol == 'funcionario'}">
+    <header th:replace="fragments/header :: menuFuncionario"> </header>
+</th:block>
 
 <!-- Main -->
 <section id="main" class="wrapper">
@@ -49,30 +53,28 @@
                     </tr>
                 </table>
 
-
                 <table>
                     <thead>
-                    <th>ID</th>
-                    <th>Fecha</th>
-                    <th>Cliente</th>
-                    <th>Total</th>
-                    <th></th>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Total</th>
+                        <th></th>
                     </thead>
                     <tbody>
-                    <tr th:each="pedido : ${pedidos}">
-                        <td th:text="${pedido.Id}"></td>
-                        <td th:text="${#dates.format(pedido.Fecha, 'dd/MM/yyyy')}"></td>
-                        <td th:text="${pedido.Cliente.Nombre}"></td>
-                        <td th:text="${'$' + pedido.Total}"></td>
-                        <td><input class="pedido" type="checkbox" name="pedidos" th:value="${pedido.Id}"/></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" align="right"><input type="submit" name="action" value="Generar viaje"/></td>
-                    </tr>
+                        <tr th:each="pedido : ${pedidos}">
+                            <td th:text="${pedido.Id}"></td>
+                            <td th:text="${#dates.format(pedido.Fecha, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${pedido.Cliente.Nombre}"></td>
+                            <td th:text="${'$' + pedido.Total}"></td>
+                            <td><input class="pedido" type="checkbox" name="pedidos" th:value="${pedido.Id}"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" align="right"><input type="submit" name="action" value="Generar viaje"/></td>
+                        </tr>
                     </tbody>
                 </table>
             </form>
-
 
             <label th:text="${mensaje}"></label>
         </div>
@@ -81,11 +83,11 @@
 </section>
 
 <script>
-        $('.pedido').on('change', function() {
-           if($('.pedido:checked').length > 5) {
-               this.checked = false;
-           }
-        });
+    $('.pedido').on('change', function() {
+       if($('.pedido:checked').length > 5) {
+           this.checked = false;
+       }
+    });
 </script>
 
 <!-- Footer -->

@@ -33,7 +33,7 @@
                     </li>
                 </ul>
             </li>
-            <li><a href="#">Salir</a></li>
+            <li><a th:href="@{/}">Salir</a></li>
         </ul>
     </nav>
 </header>
@@ -42,7 +42,7 @@
         <h1 id="logo"><a th:href="@{/Bienvenida}">Centenario</a></h1>
         <nav id="nav">
             <ul>
-                <li><a href="#">Salir</a></li>
+
             </ul>
         </nav>
     </header>
@@ -77,7 +77,7 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="#">Salir</a></li>
+                <li><a th:href="@{/}">Salir</a></li>
             </ul>
         </nav>
     </header>
@@ -97,12 +97,12 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="#">Salir</a></li>
+                <li><a th:href="@{/}">Salir</a></li>
             </ul>
         </nav>
     </header>
 
-    <header id="header" th:fragment="menuOperario">
+    <header id="header" th:fragment="menuOperador">
         <h1 id="logo"><a th:href="@{/Bienvenida}">Centenario</a></h1>
         <nav id="nav">
             <ul>
@@ -118,10 +118,9 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="#">Salir</a></li>
+                <li><a th:href="@{/}">Salir</a></li>
             </ul>
         </nav>
     </header>
-
 </body>
 </html>

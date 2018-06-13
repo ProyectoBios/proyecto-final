@@ -76,9 +76,8 @@ public class ControladorEntregas {
     @RequestMapping(value = "/EntregaDePedidos", method = RequestMethod.GET)
     public String getEntregaDePedidos (HttpSession session, ModelMap modelMap){
         try {
-            Repartidor repartidor = (Repartidor) session.getAttribute("usuarioLogueado"); //Todo: se supone que es un Repartidor logueado.
+            Repartidor repartidor = (Repartidor) session.getAttribute("usuarioLogueado");
 
-            //Repartidor repartidor = (Repartidor) FabricaLogica.getControladorEmpleados().buscarEmpleado((String)session.getAttribute("usuarioLogueado"));
             ArrayList<Viaje> viajes = FabricaLogica.getControladorEntregas().listarViajesPendientesXRepartidor(repartidor);
 
             if (viajes.size() > 0) {

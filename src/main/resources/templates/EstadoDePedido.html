@@ -21,9 +21,9 @@
 <body>
 
 <!-- Header -->
-<header th:replace="fragments/header :: menu">
-
-</header>
+<th:block th:if="${session.usuarioLogueado.rol == 'operador'}">
+    <header th:replace="fragments/header :: menuOperador">	</header>
+</th:block>
 
 <!-- Main -->
 <section id="main" class="wrapper">

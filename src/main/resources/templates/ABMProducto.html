@@ -1,113 +1,113 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>Productos</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
-		<link rel="stylesheet" th:href="@{assets/css/main.css}" />
-		<!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
-		<!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
-	</head>
-	<body>
+<head>
+	<title>Productos</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
+	<link rel="stylesheet" th:href="@{assets/css/main.css}" />
+	<!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
+	<!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+</head>
+<body>
 
-		<!-- Header -->
-		<header th:replace="fragments/header :: menu">
+	<!-- Header -->
+	<th:block th:if="${session.usuarioLogueado.rol == 'gerente'}">
+		<header th:replace="fragments/header :: menu"> </header>
+	</th:block>
 
-		</header>
+	<!-- Main -->
+		<section id="main" class="wrapper">
+			<div class="inner">
+				<header class="major">
+					<h2>Sección Usuarios</h2>
+				</header>
 
-		<!-- Main -->
-			<section id="main" class="wrapper">
-				<div class="inner">
-					<header class="major">
-						<h2>Sección Usuarios</h2>
-					</header>
+				<!-- Content -->
+					<div class="content">
+						<!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
+						<h3>Mantenimiento de Productos</h3>
 
-					<!-- Content -->
-						<div class="content">
-							<!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
-							<h3>Mantenimiento de Productos</h3>
-                            
-                            <!-- Formulario con la Tabla -->
-                            <form action="#" th:action="@{/ABMProducto}" th:object="${producto}" method="post">
-                            	<table width="100%">
-  <tbody>
-    <tr>
-      <td style="width: 20%">ID:</td>
-      <td>
-		  <input th:if="${producto.Codigo != 0 and codigoBloqueado}"  type="number" th:field ="*{Codigo}" readonly="readonly" id="id" size="1" style="width: 30%; cursor: not-allowed"/>
-		  <input th:if="${producto.Codigo != 0 and !codigoBloqueado}" type="number" th:field ="*{Codigo}" size="1" style="width: 30%"/>
-		  <input th:if="${producto.Codigo == 0 and codigoBloqueado}"  type="number" name="Codigo" placeholder="" readonly="readonly" size="1" style="width: 30%; cursor: not-allowed"/>
-		  <input th:if="${producto.Codigo == 0 and !codigoBloqueado}" type="number" name="Codigo" placeholder="" size="1" style="width: 30%" />
-	  </td>
-	</tr>
-    <tr>
-      <td>Nombre:</td>
-		<td style="text-align: left">
-		  <input th:if="*{Nombre != 'N/D'}" type="text" th:field ="*{Nombre}" style="width: 60%" />
-		  <input th:if="*{Nombre == 'N/D'}" type="text" name="nombre" placeholder="" style="width: 60%" />
-	  	</td>
-    </tr>
-	<tr>
-		<td>Precio:</td>
-		<td>
-		  <input th:if="*{PrecioActual != 0}"  step="any" th:field="*{PrecioActual}" size="1" style="width: 30%" type="number"/>
-		  <input th:if="*{PrecioActual == 0}" step="any" name="precioActual" placeholder="" size="1" style="width: 30%" type="number"/>
-		</td>
-	</tr>
-    <tr>
-      <td>Stock mínimo</td>
-      <td>
-		  <input th:if="*{MinStock != 0}"  type="number" th:field ="*{MinStock}" size="1" style="width: 30%"/>
-		  <input th:if="*{MinStock == 0}"  type="number" name="minStock" placeholder="" size="1" style="width: 30%"/>
-	  </td>
-    </tr>
-    <tr>
-      <td>Stock Crítico</td>
-      <td>
-		  <input th:if="*{StockCritico != 0}" type="number" th:field ="*{StockCritico}" size="1" style="width: 30%"/>
-		  <input th:if="*{StockCritico == 0}" type="number" name="stockCritico" placeholder="" size="1" style="width: 30%"/>
-	  </td>
-    </tr>
-    <tr>
-      <td>Stock Máximo</td>
-      <td>
-		  <input th:if="*{MaxStock != 0}" type="number" th:field ="*{MaxStock}" size="1" style="width: 30%"/>
-		<input th:if="*{MaxStock == 0}" type="number" name="maxStock" placeholder="" size="1" style="width: 30%"/>
-		</td>
-    </tr>
-    <tr>
-      <td colspan="2" style="text-align: center">
-		  <input th:if="${agregarHabilitado}" type="submit" name="action" value="Agregar" />
-		  <input th:if="${!agregarHabilitado}" type="submit" name="action" value="Agregar" disabled="disabled" />
+						<!-- Formulario con la Tabla -->
+						<form action="#" th:action="@{/ABMProducto}" th:object="${producto}" method="post">
+							<table width="100%">
+							  <tbody>
+								<tr>
+								  <td style="width: 20%">ID:</td>
+								  <td>
+									  <input th:if="${producto.Codigo != 0 and codigoBloqueado}"  type="number" th:field ="*{Codigo}" readonly="readonly" id="id" size="1" style="width: 30%; cursor: not-allowed"/>
+									  <input th:if="${producto.Codigo != 0 and !codigoBloqueado}" type="number" th:field ="*{Codigo}" size="1" style="width: 30%"/>
+									  <input th:if="${producto.Codigo == 0 and codigoBloqueado}"  type="number" name="Codigo" placeholder="" readonly="readonly" size="1" style="width: 30%; cursor: not-allowed"/>
+									  <input th:if="${producto.Codigo == 0 and !codigoBloqueado}" type="number" name="Codigo" placeholder="" size="1" style="width: 30%" />
+								  </td>
+								</tr>
+								<tr>
+								  <td>Nombre:</td>
+									<td style="text-align: left">
+									  <input th:if="*{Nombre != 'N/D'}" type="text" th:field ="*{Nombre}" style="width: 60%" />
+									  <input th:if="*{Nombre == 'N/D'}" type="text" name="nombre" placeholder="" style="width: 60%" />
+									</td>
+								</tr>
+								<tr>
+									<td>Precio:</td>
+									<td>
+									  <input th:if="*{PrecioActual != 0}"  step="any" th:field="*{PrecioActual}" size="1" style="width: 30%" type="number"/>
+									  <input th:if="*{PrecioActual == 0}" step="any" name="precioActual" placeholder="" size="1" style="width: 30%" type="number"/>
+									</td>
+								</tr>
+								<tr>
+								  <td>Stock mínimo</td>
+								  <td>
+									  <input th:if="*{MinStock != 0}"  type="number" th:field ="*{MinStock}" size="1" style="width: 30%"/>
+									  <input th:if="*{MinStock == 0}"  type="number" name="minStock" placeholder="" size="1" style="width: 30%"/>
+								  </td>
+								</tr>
+								<tr>
+								  <td>Stock Crítico</td>
+								  <td>
+									  <input th:if="*{StockCritico != 0}" type="number" th:field ="*{StockCritico}" size="1" style="width: 30%"/>
+									  <input th:if="*{StockCritico == 0}" type="number" name="stockCritico" placeholder="" size="1" style="width: 30%"/>
+								  </td>
+								</tr>
+								<tr>
+								  <td>Stock Máximo</td>
+								  <td>
+									  <input th:if="*{MaxStock != 0}" type="number" th:field ="*{MaxStock}" size="1" style="width: 30%"/>
+									  <input th:if="*{MaxStock == 0}" type="number" name="maxStock" placeholder="" size="1" style="width: 30%"/>
+								  </td>
+								</tr>
+								<tr>
+								  <td colspan="2" style="text-align: center">
+									  <input th:if="${agregarHabilitado}" type="submit" name="action" value="Agregar" />
+									  <input th:if="${!agregarHabilitado}" type="submit" name="action" value="Agregar" disabled="disabled" />
 
-		  <input th:if="${eliminarHabilitado}" type="submit" name="action" value="Eliminar" />
-		  <input th:if="${!eliminarHabilitado}" type="submit" name="action" value="Eliminar" disabled="disabled" />
+									  <input th:if="${eliminarHabilitado}" type="submit" name="action" value="Eliminar" />
+									  <input th:if="${!eliminarHabilitado}" type="submit" name="action" value="Eliminar" disabled="disabled" />
 
-		  <input th:if="${modificarHabilitado}" type="submit" name="action" value="Modificar" />
-		  <input th:if="${!modificarHabilitado}" type="submit" name="action" value="Modificar" disabled="disabled" />
+									  <input th:if="${modificarHabilitado}" type="submit" name="action" value="Modificar" />
+									  <input th:if="${!modificarHabilitado}" type="submit" name="action" value="Modificar" disabled="disabled" />
 
-		  <input th:if="${buscarHabilitado}" type="submit" name="action" value="Buscar" />
-		  <input th:if="${!buscarHabilitado}" type="submit" name="action" value="Buscar" disabled="disabled" />
+									  <input th:if="${buscarHabilitado}" type="submit" name="action" value="Buscar" />
+									  <input th:if="${!buscarHabilitado}" type="submit" name="action" value="Buscar" disabled="disabled" />
 
 
-		  <input type="submit" name="action" value="Limpiar" />
-		</td>
-    </tr>
-  </tbody>
-</table>
+									  <input type="submit" name="action" value="Limpiar" />
+									</td>
+								</tr>
+							  </tbody>
+							</table>
 
-							</form>
-                      <label th:text="${mensaje}"></label>
-						</div>
+						</form>
+					<label th:text="${mensaje}"></label>
+					</div>
 
-				</div>
-			</section>
+			</div>
+		</section>
 
-		<!-- Footer -->
-		<div th:replace="fragments/footer :: footer">
+	<!-- Footer -->
+	<div th:replace="fragments/footer :: footer">
 
-		</div>
+	</div>
 
-	</body>
+</body>
 </html>

@@ -18,9 +18,13 @@
 <body>
 
 <!-- Header -->
-<header th:replace="fragments/header :: menu">
+<th:block th:if="${session.usuarioLogueado.rol == 'gerente'}">
+    <header th:replace="fragments/header :: menu"> </header>
+</th:block>
 
-</header>
+<th:block th:if="${session.usuarioLogueado.rol == 'funcionario'}">
+    <header th:replace="fragments/header :: menuFuncionario"> </header>
+</th:block>
 
 <!-- Main -->
 <section id="main" class="wrapper">
@@ -35,36 +39,35 @@
             <h3>Datos de lote</h3>
             <!-- Formulario con la Tabla -->
             <form action="#" th:action="@{/VerLote}" name="VerLote" method="post">
-
                 <table>
                     <tbody>
-                    <tr>
-                        <td style="width: 25%"><label>ID del lote: </label></td>
-                        <td>
-                            <input type="number" id="idLote" size="2" style="display: inline-block" />
-                        </td>
-                        <td style="width: 60%">
-                            <input type="submit" name="action" value="Ver lote" />
-                        </td>
-                    </tr>
+                        <tr>
+                            <td style="width: 25%"><label>ID del lote: </label></td>
+                            <td>
+                                <input type="number" id="idLote" size="2" style="display: inline-block" />
+                            </td>
+                            <td style="width: 60%">
+                                <input type="submit" name="action" value="Ver lote" />
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <table id="espLote" style="display: table"> <!-- display: none -->
                     <thead>
-                    <th style="width: 15%">Ubicación</th>
-                    <th># ID</th>
-                    <th style="width: 40%">Producto</th>
-                    <th style="width: 10%">Cantidad</th>
-                    <th>Vence</th>
+                        <th style="width: 15%">Ubicación</th>
+                        <th># ID</th>
+                        <th style="width: 40%">Producto</th>
+                        <th style="width: 10%">Cantidad</th>
+                        <th>Vence</th>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>A0101</td>
-                        <td>ID Lote</td>
-                        <td>Chorelos</td>
-                        <td>200</td>
-                        <td>18/04/2019</td>
-                    </tr>
+                        <tr>
+                            <td>A0101</td>
+                            <td>ID Lote</td>
+                            <td>Chorelos</td>
+                            <td>200</td>
+                            <td>18/04/2019</td>
+                        </tr>
                     </tbody>
                 </table>
 
