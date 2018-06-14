@@ -18,40 +18,45 @@ public class AutorizacionInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        boolean autorizado = true;
         if(!request.getRequestURI().equals("/Centenario/")) {
             Empleado e = (Empleado) request.getSession().getAttribute("usuarioLogueado");
             if (e == null) {
                 response.sendRedirect(request.getContextPath() + "/");
-                return false;
-            }
-
-            switch(e.getRol()){
-                case "gerente":
-                    if(!paginasGerente.contains(request.getRequestURI().split(request.getContextPath())[1])) {
-                        response.sendRedirect(request.getContextPath() + "/Bienvenida");
-                        return false;
-                    }
-                case "funcionario":
-                    if(!paginasFuncionario.contains(request.getRequestURI().split(request.getContextPath())[1])) {
-                        response.sendRedirect(request.getContextPath() + "/Bienvenida");
-                        return false;
-                    }
-                case "operador":
-                    if(!paginasOperador.contains(request.getRequestURI().split(request.getContextPath())[1])) {
-                        response.sendRedirect(request.getContextPath() + "/Bienvenida");
-                        return false;
-                    }
-                case "repartidor":
-                    if(!paginasRepartidor.contains(request.getRequestURI().split(request.getContextPath())[1])) {
-                        response.sendRedirect(request.getContextPath() + "/Bienvenida");
-                        return false;
-                    }
-                default:
-                    break;
+                autorizado = false;
+            }else {
+                switch (e.getRol()) {
+                    case "gerente":
+                        if (!paginasGerente.contains(request.getRequestURI().split(request.getContextPath())[1])) {
+                            response.sendRedirect(request.getContextPath() + "/Bienvenida");
+                            autorizado = false;
+                        }
+                        break;
+                    case "funcionario":
+                        if (!paginasFuncionario.contains(request.getRequestURI().split(request.getContextPath())[1])) {
+                            response.sendRedirect(request.getContextPath() + "/Bienvenida");
+                            autorizado = false;
+                        }
+                        break;
+                    case "operador":
+                        if (!paginasOperador.contains(request.getRequestURI().split(request.getContextPath())[1])) {
+                            response.sendRedirect(request.getContextPath() + "/Bienvenida");
+                            autorizado = false;
+                        }
+                        break;
+                    case "repartidor":
+                        if (!paginasRepartidor.contains(request.getRequestURI().split(request.getContextPath())[1])) {
+                            response.sendRedirect(request.getContextPath() + "/Bienvenida");
+                            autorizado = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
 
         }
-        return true;
+        return autorizado;
     }
 }
 
