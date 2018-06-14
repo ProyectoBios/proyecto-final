@@ -34,9 +34,9 @@
             <form action="#" th:action="@{/GenerarViaje}" method="post">
                 <table>
                     <tr>
-                        <td>Repartidor: </td>
+                        <td style="width: 20%">Repartidor: </td>
                         <td>
-                            <select name="repartidor">
+                            <select style="width: 40%" name="repartidor">
                                 <option th:value="NULL">Seleccione Repartidor</option>
                                 <option th:each="rep : ${repartidores}" th:value="${rep.Ci}" th:text="${rep.Nombre}"></option>
                             </select>
@@ -45,7 +45,7 @@
                     <tr>
                         <td>Vehiculo: </td>
                         <td>
-                            <select name="vehiculo">
+                            <select style="width: 40%" name="vehiculo">
                                 <option th:value="NULL">Seleccione Vehiculo</option>
                                 <option th:each="v : ${vehiculos}" th:value="${v.Matricula}" th:text="${v.Matricula + ', ' + v.Marca + ' ' + v.Modelo}"></option>
                             </select>
@@ -53,6 +53,7 @@
                     </tr>
                 </table>
 
+                <div style="overflow-x : auto;">
                 <table>
                     <thead>
                         <th>ID</th>
@@ -74,6 +75,7 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
             </form>
 
             <label th:text="${mensaje}"></label>

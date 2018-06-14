@@ -237,7 +237,6 @@ public class ControladorEmpleado {
     }
 
 
-
     private ArrayList<String> cargarErrores(BindingResult bindingResult){
         ArrayList<String> mensajes = new ArrayList<>();
         for(Object obj : bindingResult.getAllErrors()){

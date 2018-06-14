@@ -31,8 +31,10 @@
             <form action="#" th:action="@{/}" method="post">
                 <table>
                     <tr>
-                        <td style="width: 30%">C.I. (Sin puntos ni guiones): </td>
-                        <td><input type="text" name="cedula" placeholder="Cédula" style="width: 45%"/> </td>
+                        <td style="width: 20%">C.I.: (Sin puntos ni guiones)</td>
+                        <td>
+                            <input type="text" name="cedula" placeholder="Cédula" style="width: 45%"/>
+                        </td>
                     </tr>
                     <tr>
                         <td>Contraseña: </td>
@@ -40,9 +42,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <p style="text-align: right; width: 62%">
+                            <p style="text-align: right; width: 56%">
                                 <input type="submit" name="action" value="Ingresar"/>
-                                <input type="reset" name="action" value="cancelar"/>
                             </p>
                         </td>
 
