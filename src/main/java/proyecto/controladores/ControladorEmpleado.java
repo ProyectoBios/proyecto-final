@@ -90,7 +90,7 @@ public class ControladorEmpleado {
     public String buscarEmpleado(@ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap){
         try{
             if(bindingResult.hasErrors()){
-                modelMap.addAttribute(new Empleado());
+                modelMap.addAttribute("empleado", new Empleado());
                 modelMap.addAttribute("vencLibreta", new Date());
                 modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
                 return "ABMEmpleado";

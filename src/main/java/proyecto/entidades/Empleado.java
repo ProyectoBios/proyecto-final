@@ -92,7 +92,7 @@ public class Empleado {
     }
 
     public void setRol(String rol) throws ExcepcionFrigorifico{
-        if(!rol.equals("gerente") && !rol.equals("funcionario") && !rol.equals("operador") && !rol.equals("repartidor")){
+        if(!rol.equals("gerente") && !rol.equals("funcionario") && !rol.equals("operador") && !rol.equals("repartidor") && !rol.equals("")){
             throw new ExcepcionFrigorifico("El rol no es válido.");
         }
 
