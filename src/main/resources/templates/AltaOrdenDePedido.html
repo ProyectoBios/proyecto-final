@@ -46,6 +46,7 @@
                 </form>
             </table>
 
+            <div style="overflow-x: auto">
             <table th:if="${tablaClientes}" class="grilla" style="display: table" id="hiddenClienteTable">
                 <thead>
                 <tr>
@@ -74,6 +75,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
 
             <table th:if="${tablaAltaCliente}" id="altaCliente">
                 <form action="#" th:action="@{/AltaOrdenDePedido}" method="post" th:object="${cliente}">
