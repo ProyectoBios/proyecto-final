@@ -10,7 +10,7 @@ public class Conexion {
     public static Connection AbrirConexion() throws Exception {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://LocalHost:3306/FrigorificoDB", "root", "1234");
+            con = DriverManager.getConnection("jdbc:mysql://LocalHost:3306/FrigorificoDB", "root", "pass");
 
         } catch (Exception ex) {
             throw new Exception(ex);

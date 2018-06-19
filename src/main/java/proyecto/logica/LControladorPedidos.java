@@ -280,6 +280,11 @@ class LControladorPedidos implements IPedidos {
         return FabricaPersistencia.getControladorPedidos().listarPedidos();
     }
 
+    @Override
+    public void prepararPedido(OrdenPedido orden) throws Exception{
+        FabricaPersistencia.getControladorPedidos().prepararPedido(orden);
+    }
+
     //endregion
 
 

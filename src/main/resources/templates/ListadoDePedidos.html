@@ -76,6 +76,7 @@
                         <td>
                             <select name="opTel">
                                 <option th:value="null">---</option>
+                                <option th:each="op : ${session.operadores}" th:value="${op.Ci}" th:text="${op.Nombre}"></option>
                             </select>
                         </td>
                     </tr>
@@ -84,6 +85,7 @@
                         <td>
                             <select name="preparador">
                                 <option th:value="null">---</option>
+                                <option th:each="f : ${session.funcionarios}" th:value="${f.Ci}" th:text="${f.Nombre}"></option>
                             </select>
                         </td>
                     </tr>
@@ -121,8 +123,8 @@
                         <td th:text="${#dates.format(p.Fecha, 'dd/MM/yyyy HH:mm')}"></td>
                         <td th:text="${p.Estado}"></td>
                         <td th:text="${p.Total}"></td>
-                        <td th:text="---"></td>
-                        <td th:text="---"></td>
+                        <td th:text="${p.Operador.Nombre}"></td>
+                        <td th:text="${p.Funcionario == null}? ${'---'} : ${p.Funcionario.Nombre}"></td>
                         <td th:text="---"></td>
                         <td>
                             <input type="hidden" th:value="${p.Id}" name="idPedido"/>
@@ -143,6 +145,8 @@
 
     </div>
 </section>
+
+<script th:src="@{assets/js/tablesort.js}"> </script>
 
 <script>
   new Tablesort(document.getElementById('tablaPedidos'));

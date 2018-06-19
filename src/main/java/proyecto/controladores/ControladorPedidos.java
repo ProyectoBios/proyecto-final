@@ -181,6 +181,7 @@ public class ControladorPedidos {
 
             session.setAttribute("cliente", cliente);
             OrdenPedido orden = new OrdenPedido();
+            orden.setOperador((Empleado)session.getAttribute("usuarioLogueado"));
             orden.setEstado("pendiente");
             orden.setCliente(cliente);
             session.setAttribute("orden", orden);
@@ -524,7 +525,7 @@ public class ControladorPedidos {
     }
 
     @RequestMapping(value="/PreparacionPedidos", method = RequestMethod.POST, params="action=Listo")
-    public String confirmarPreparacion(@RequestParam(value="idPedido", required = true) String  idPedido, ModelMap modelMap, HttpSession session, HttpServletResponse response){
+    public String confirmarPreparacion(@RequestParam(value="idPedido", required = true) String  idPedido, ModelMap modelMap, HttpSession session, HttpServletRequest request, HttpServletResponse response){
         try{
             int id = Integer.parseInt(idPedido);
             OrdenPedido ordenPedido = null;
@@ -537,6 +538,8 @@ public class ControladorPedidos {
 
             ((ArrayList<OrdenPedido>)session.getAttribute("pedidosPicking")).remove(ordenPedido);
             FabricaLogica.getControladorPedidos().modificarEstadoDePedido(ordenPedido, "preparado");
+            ordenPedido.setFuncionario((Empleado)session.getAttribute("usuarioLogueado"));
+            FabricaLogica.getControladorPedidos().prepararPedido(ordenPedido);
 
             for(LineaPedido linea : ordenPedido.getLineas()){
                 for(Picking p : (ArrayList<Picking>)session.getAttribute("listaPicking")){
@@ -561,7 +564,7 @@ public class ControladorPedidos {
             if(((ArrayList<OrdenPedido>) session.getAttribute("pedidosPicking")).size() == 0){
                 session.removeAttribute("pedidosPicking");
                 session.setAttribute("mensaje", "Pedidos preparados con éxito.");
-                response.sendRedirect("/Bienvenida");
+                response.sendRedirect(request.getContextPath() + "/Bienvenida");
                 return "Bienvenida";
             }else{
                 modelMap.addAttribute("mensaje", "Pedido preparado con éxito.");
@@ -583,6 +586,8 @@ public class ControladorPedidos {
             ArrayList<OrdenPedido> pedidos = FabricaLogica.getControladorPedidos().listarPedidos();
             session.setAttribute("ListadoDePedidos", pedidos);
             session.setAttribute("clientes", FabricaLogica.getControladorPedidos().buscarClientes(""));
+            session.setAttribute("operadores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("operador"));
+            session.setAttribute("funcionarios", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("funcionario"));
             modelMap.addAttribute("listadoPedidos", pedidos);
             return "ListadoDePedidos";
         }catch (ExcepcionFrigorifico ex){
@@ -602,6 +607,8 @@ public class ControladorPedidos {
             @RequestParam String importeMin,
             @RequestParam String importeMax,
             @RequestParam String estado,
+            @RequestParam String opTel,
+            @RequestParam String preparador,
             ModelMap modelMap, HttpSession session) {
         try{
             ArrayList<OrdenPedido> resultado = new ArrayList<>((ArrayList<OrdenPedido>)session.getAttribute("ListadoDePedidos"));
@@ -675,6 +682,26 @@ public class ControladorPedidos {
             if(!estado.equals("")){
                 for(OrdenPedido p : resultado){
                     if(!p.getEstado().equals(estado)){
+                        remover.add(p);
+                    }
+                }
+                resultado.removeAll(remover);
+                remover.clear();
+            }
+
+            if(!opTel.equals("")){
+                for(OrdenPedido p : resultado){
+                    if(!p.getOperador().getCi().equals(opTel)){
+                        remover.add(p);
+                    }
+                }
+                resultado.removeAll(remover);
+                remover.clear();
+            }
+
+            if(!preparador.equals("")){
+                for(OrdenPedido p : resultado){
+                    if(p.getFuncionario()== null || !p.getFuncionario().getCi().equals(preparador)){
                         remover.add(p);
                     }
                 }

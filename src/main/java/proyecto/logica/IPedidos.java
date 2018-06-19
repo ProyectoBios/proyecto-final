@@ -23,5 +23,6 @@ public interface IPedidos {
     public ArrayList<Picking> obtenerPicking(ArrayList<OrdenPedido> ordenes) throws Exception;
     public void modificarEstadoDePedido(OrdenPedido ordenPedido, String estado) throws Exception;
     public ArrayList<OrdenPedido> listarPedidos() throws Exception;
+    void prepararPedido(OrdenPedido orden) throws Exception;
     //endregion
 }

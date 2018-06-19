@@ -101,7 +101,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido orden = null;
 
             if(resultado.next()){
-                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")), buscarLineasXOrden(resultado.getInt("idOrden")));
             }
 
             return orden;
@@ -119,7 +119,7 @@ class PControladorPedidos implements IPPedidos{
             con = Conexion.AbrirConexion();
             con.setAutoCommit(false);
 
-            consulta = con.prepareCall("{ CALL AltaOrdenDePedido(?, ?, ?, ? ,? ,? ,? ,?)}");
+            consulta = con.prepareCall("{ CALL AltaOrdenDePedido(?, ?, ?, ? ,? ,? ,? , ?, ?)}");
 
             consulta.setString(1, orden.getEstado());
             consulta.setString(2, orden.getDireccionEnvio());
@@ -128,11 +128,12 @@ class PControladorPedidos implements IPPedidos{
             consulta.setDouble(5, orden.getImpuestos());
             consulta.setDouble(6, orden.getTotal());
             consulta.setString(7, orden.getCliente().getNombre());
-            consulta.registerOutParameter(8, Types.INTEGER);
+            consulta.setString(8, orden.getOperador().getCi());
+            consulta.registerOutParameter(9, Types.INTEGER);
 
             consulta.executeUpdate();
 
-            int id = consulta.getInt(8);
+            int id = consulta.getInt(9);
             orden.setId(id);
 
             for(LineaPedido linea : orden.getLineas()){
@@ -192,7 +193,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido orden = null;
 
             while(resultado.next()){
-                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), cliente, buscarLineasXOrden(resultado.getInt("idOrden")));
+                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), cliente, PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")),buscarLineasXOrden(resultado.getInt("idOrden")));
                 ordenes.add(orden);
             }
 
@@ -244,6 +245,25 @@ class PControladorPedidos implements IPPedidos{
     }
 
     @Override
+    public void prepararPedido(OrdenPedido orden) throws Exception{
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("UPDATE OrdenPedido SET funcionario = ? WHERE idOrden = ?")){
+
+            consulta.setString(1, orden.getFuncionario().getCi());
+            consulta.setInt(2, orden.getId());
+
+            int filasAfectadas = consulta.executeUpdate();
+
+            if(filasAfectadas != 1){
+                throw new ExcepcionFrigorifico("¡ERROR! No se pudo asignar el preparador del pedido");
+            }
+
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
     public ArrayList<OrdenPedido> listarPedidosXEstado(String estado) throws Exception{
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM OrdenPedido WHERE estado = ?")){
@@ -255,7 +275,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido pedido = null;
 
             while(resultado.next()){
-                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")),buscarLineasXOrden(resultado.getInt("idOrden")));
                 pedidos.add(pedido);
             }
 
@@ -275,7 +295,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido pedido = null;
 
             while(resultado.next()){
-                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")), buscarLineasXOrden(resultado.getInt("idOrden")));
                 pedidos.add(pedido);
             }
 

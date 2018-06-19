@@ -18,6 +18,10 @@ public class OrdenPedido {
     private double total;
 
     private Cliente cliente;
+
+    private Empleado operador;
+    private Empleado funcionario;
+
     private ArrayList<LineaPedido> lineas;
 
     public int getId() {
@@ -109,7 +113,23 @@ public class OrdenPedido {
         this.lineas = lineas;
     }
 
-    public OrdenPedido(int id, Date fecha, String estado, String descripcionEntrega, Date ultimaActEst, String direccionEnvio, String contacto, double subtotal, Cliente cliente, ArrayList<LineaPedido> lineas) {
+    public Empleado getOperador() {
+        return operador;
+    }
+
+    public void setOperador(Empleado operador) {
+        this.operador = operador;
+    }
+
+    public Empleado getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Empleado funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    public OrdenPedido(int id, Date fecha, String estado, String descripcionEntrega, Date ultimaActEst, String direccionEnvio, String contacto, double subtotal, Cliente cliente, Empleado operador, Empleado funcionario, ArrayList<LineaPedido> lineas) {
         this.id = id;
         this.fecha = fecha;
         this.estado = estado;
@@ -119,10 +139,12 @@ public class OrdenPedido {
         this.contacto = contacto;
         this.setSubtotal(subtotal);
         this.cliente = cliente;
+        this.operador = operador;
+        this.funcionario = funcionario;
         this.lineas = lineas;
     }
 
     public OrdenPedido() {
-        this(0, new Date(), "N/D", "", new Date(), "N/D", "N/D", 0, null, new ArrayList<LineaPedido>());
+        this(0, new Date(), "N/D", "", new Date(), "N/D", "N/D", 0, null, null, null, new ArrayList<LineaPedido>());
     }
 }

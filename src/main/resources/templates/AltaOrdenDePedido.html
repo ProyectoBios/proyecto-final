@@ -18,7 +18,7 @@
 <body>
 
 <!-- Header -->
-<th:block th:if="${session.usuarioLogueado.rol == 'operario'}">
+<th:block th:if="${session.usuarioLogueado.rol == 'operador'}">
     <header th:replace="fragments/header :: menuOperador"> </header>
 </th:block>
 

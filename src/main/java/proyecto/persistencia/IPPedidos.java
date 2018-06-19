@@ -19,6 +19,7 @@ public interface IPPedidos {
     public void modificarEstadoDePedido(OrdenPedido orden, String estado) throws Exception;
     public ArrayList<OrdenPedido> listarPedidosXEstado(String estado) throws Exception;
     public ArrayList<OrdenPedido> listarPedidos() throws Exception;
+    void prepararPedido(OrdenPedido orden) throws Exception;
 
     //endregion
 }

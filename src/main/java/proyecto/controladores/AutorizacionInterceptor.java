@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class AutorizacionInterceptor extends HandlerInterceptorAdapter {
 
-    private static ArrayList<String> paginasGerente = new ArrayList<>(Arrays.asList("/", "/Bienvenida", "/ABMProducto", "/AltaRack", "/EstadoDeRack", "/AltaLote", "/MoverLote", "/BajaLoteXVencimiento", "/GenerarViaje", "/MantenimientoEmpleados", "/VerLote", "/ABVehiculo"));
+    private static ArrayList<String> paginasGerente = new ArrayList<>(Arrays.asList("/", "/Bienvenida", "/ABMProducto", "/AltaRack", "/EstadoDeRack", "/AltaLote", "/MoverLote", "/BajaLoteXVencimiento", "/GenerarViaje", "/MantenimientoEmpleados", "/VerLote", "/ABVehiculo", "/ListadoDePedidos"));
     private static ArrayList<String> paginasFuncionario = new ArrayList<>(Arrays.asList("/", "/Bienvenida", "/VerLote", "/MoverLote", "/EstadoDeRack", "/GenerarViaje", "/RealizarPicking", "/PreparacionPedidos", "/ListadoDePedidos"));
     private static ArrayList<String> paginasOperador = new ArrayList<>(Arrays.asList("/", "/Bienvenida", "/AltaOrdenDePedido", "/EstadoDePedido"));
     private static ArrayList<String> paginasRepartidor = new ArrayList<>(Arrays.asList("/", "/Bienvenida", "/EntregaDePedidos"));
@@ -19,7 +19,7 @@ public class AutorizacionInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean autorizado = true;
-        if(!request.getRequestURI().equals("/Centenario/")) {
+        if(!request.getRequestURI().equals("/Centenario/") && !request.getRequestURI().contains("jsessionid")) {
             Empleado e = (Empleado) request.getSession().getAttribute("usuarioLogueado");
             if (e == null) {
                 response.sendRedirect(request.getContextPath() + "/");
