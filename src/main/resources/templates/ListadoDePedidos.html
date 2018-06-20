@@ -94,6 +94,7 @@
                         <td>
                             <select name="repartidor">
                                 <option th:value="null">---</option>
+                                <option th:each="r : ${session.repartidores}" th:value="${r.Ci}" th:text="${r.Nombre}"></option>
                             </select>
                         </td>
                         <td align="right"><input type="submit" name="action" value="Filtrar"/></td>
@@ -125,7 +126,7 @@
                         <td th:text="${p.Total}"></td>
                         <td th:text="${p.Operador.Nombre}"></td>
                         <td th:text="${p.Funcionario == null}? ${'---'} : ${p.Funcionario.Nombre}"></td>
-                        <td th:text="---"></td>
+                        <td th:text="${p.Repartidor == null}? ${'---'} : ${p.Repartidor.Nombre}"></td>
                         <td>
                             <input type="hidden" th:value="${p.Id}" name="idPedido"/>
                             <input type="submit" name="action" value="Ver" />

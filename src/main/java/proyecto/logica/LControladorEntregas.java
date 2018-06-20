@@ -41,4 +41,9 @@ public class LControladorEntregas implements IEntregas{
     public void finalizarViaje(Viaje viaje) throws Exception {
         FabricaPersistencia.getControladorEntregas().finalizarViaje(viaje);
     }
+
+    @Override
+    public void entregarPedido(OrdenPedido pedido) throws Exception {
+        FabricaPersistencia.getControladorEntregas().entregarPedido(pedido);
+    }
 }

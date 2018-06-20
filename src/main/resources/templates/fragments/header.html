@@ -26,6 +26,12 @@
                             <li><a th:href="@{/BajaLoteXVencimiento}">Baja Lote por Vencimiento</a></li>
                         </ul>
                     </li>
+                    <li><a href="#">Pedido</a>
+                        <ul>
+                            <li><a th:href="@{/ListadoDePedidos}">Listado de Pedidos</a></li>
+                            <li><a th:href="@{/EstadoDePedido}">Estado de Pedidos</a></li>
+                        </ul>
+                    </li>
                     <li><a href="#">Entregas</a>
                         <ul>
                             <li><a th:href="@{/GenerarViaje}">Generar Viaje</a></li>
@@ -68,11 +74,6 @@
                         <li><a href="#">Pedido</a>
                             <ul>
                                 <li><a th:href="@{/RealizarPicking}">Realizar Picking</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Entregas</a>
-                            <ul>
-                                <li><a th:href="@{/GenerarViaje}">Generar Viaje</a></li>
                             </ul>
                         </li>
                     </ul>

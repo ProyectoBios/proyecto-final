@@ -101,7 +101,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido orden = null;
 
             if(resultado.next()){
-                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")), PControladorEmpleados.getInstancia().buscarRepartidor(resultado.getString("repartidor")), buscarLineasXOrden(resultado.getInt("idOrden")));
             }
 
             return orden;
@@ -193,7 +193,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido orden = null;
 
             while(resultado.next()){
-                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), cliente, PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")),buscarLineasXOrden(resultado.getInt("idOrden")));
+                orden = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), cliente, PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")), PControladorEmpleados.getInstancia().buscarRepartidor(resultado.getString("repartidor")),buscarLineasXOrden(resultado.getInt("idOrden")));
                 ordenes.add(orden);
             }
 
@@ -275,7 +275,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido pedido = null;
 
             while(resultado.next()){
-                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")),buscarLineasXOrden(resultado.getInt("idOrden")));
+                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")), PControladorEmpleados.getInstancia().buscarRepartidor(resultado.getString("repartidor")), buscarLineasXOrden(resultado.getInt("idOrden")));
                 pedidos.add(pedido);
             }
 
@@ -295,7 +295,7 @@ class PControladorPedidos implements IPPedidos{
             OrdenPedido pedido = null;
 
             while(resultado.next()){
-                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")), buscarLineasXOrden(resultado.getInt("idOrden")));
+                pedido = new OrdenPedido(resultado.getInt("idOrden"), resultado.getTimestamp("fecha"), resultado.getString("estado"), resultado.getString("descripcionEntrega"), resultado.getTimestamp("ultimaActEst"), resultado.getString("direccionEnvio"), resultado.getString("contacto"), resultado.getDouble("subtotal"), buscarCliente(resultado.getString("nombreCliente")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("operador")), PControladorEmpleados.getInstancia().buscarEmpleado(resultado.getString("funcionario")), PControladorEmpleados.getInstancia().buscarRepartidor(resultado.getString("repartidor")), buscarLineasXOrden(resultado.getInt("idOrden")));
                 pedidos.add(pedido);
             }
 

@@ -165,6 +165,8 @@ public class ControladorEntregas {
 
             OrdenPedido pedido = (OrdenPedido)session.getAttribute("pedido");
             FabricaLogica.getControladorPedidos().modificarEstadoDePedido(pedido, "entregado");
+            pedido.setRepartidor((Empleado)session.getAttribute("usuarioLogueado"));
+            FabricaLogica.getControladorEntregas().entregarPedido(pedido);
 
             session.removeAttribute("Pedido");
             modelMap.addAttribute("mensaje", "Pedido entregado con éxito.");

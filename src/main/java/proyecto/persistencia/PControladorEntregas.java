@@ -1,10 +1,7 @@
 package proyecto.persistencia;
 
 import jdk.nashorn.internal.codegen.CompilerConstants;
-import proyecto.entidades.OrdenPedido;
-import proyecto.entidades.Repartidor;
-import proyecto.entidades.Vehiculo;
-import proyecto.entidades.Viaje;
+import proyecto.entidades.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -152,6 +149,25 @@ public class PControladorEntregas implements IPEntregas{
             statement.setInt(2, viaje.getId());
 
             statement.executeUpdate();
+
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
+    @Override
+    public void entregarPedido(OrdenPedido pedido) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement consulta = con.prepareStatement("UPDATE OrdenPedido SET repartidor = ? WHERE idOrden = ?")){
+
+            consulta.setString(1, pedido.getRepartidor().getCi());
+            consulta.setInt(2, pedido.getId());
+
+            int filasAfectadas = consulta.executeUpdate();
+
+            if(filasAfectadas != 1){
+                throw new ExcepcionFrigorifico("¡ERROR! No se pudo asignar el repartidor del pedido");
+            }
 
         }catch (Exception ex){
             throw ex;

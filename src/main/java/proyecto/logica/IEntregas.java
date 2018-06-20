@@ -11,4 +11,5 @@ public interface IEntregas {
     ArrayList<Viaje> listarViajesPendientesXRepartidor(Repartidor repartidor) throws Exception;
     void entregaFallidaPedido(OrdenPedido pedido, String detalleCancelacion) throws Exception;
     void finalizarViaje(Viaje viaje) throws Exception;
+    void entregarPedido(OrdenPedido pedido) throws Exception;
 }

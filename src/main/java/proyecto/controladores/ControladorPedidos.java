@@ -588,6 +588,7 @@ public class ControladorPedidos {
             session.setAttribute("clientes", FabricaLogica.getControladorPedidos().buscarClientes(""));
             session.setAttribute("operadores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("operador"));
             session.setAttribute("funcionarios", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("funcionario"));
+            session.setAttribute("repartidores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("repartidor"));
             modelMap.addAttribute("listadoPedidos", pedidos);
             return "ListadoDePedidos";
         }catch (ExcepcionFrigorifico ex){
