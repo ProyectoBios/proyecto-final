@@ -5,8 +5,8 @@
 </head>
 <body>
     <header id="header" th:fragment="menu">
-    <h1 id="logo"><a th:href="@{/Bienvenida}">Centenario</a></h1>
-    <nav id="nav">
+        <h1 id="logo"><a th:href="@{/Bienvenida}">Centenario</a></h1>
+        <nav id="nav">
         <ul>
             <li><a th:href="@{/Bienvenida}">Inicio</a></li>
             <li>
@@ -24,6 +24,7 @@
                             <li><a th:href="@{/AltaLote}">Alta de Lote</a></li>
                             <li><a th:href="@{/MoverLote}">Mover Lote</a></li>
                             <li><a th:href="@{/BajaLoteXVencimiento}">Baja Lote por Vencimiento</a></li>
+                            <li><a th:href="@{/VerLote}">Ver Lote</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Pedido</a>
@@ -42,7 +43,7 @@
             <li><a th:href="@{/}">Salir</a></li>
         </ul>
     </nav>
-</header>
+    </header>
 
     <header id="header" th:fragment="menuIndex">
         <h1 id="logo"><a th:href="@{/Bienvenida}">Centenario</a></h1>
@@ -69,6 +70,7 @@
                         <li><a href="#">Lote</a>
                             <ul>
                                 <li><a th:href="@{/MoverLote}">Mover Lote</a></li>
+                                <li><a th:href="@{/VerLote}">Ver Lote</a></li>
                             </ul>
                         </li>
                         <li><a href="#">Pedido</a>

@@ -4853,3 +4853,17 @@
 	white-space: nowrap;
 	background-color: transparent;
 }
+
+@media screen and (min-width: 980px) {
+
+	#idDelLote {
+		width: 12% !important;
+	}
+	#cantidadLote {
+		width: 12% !important;
+	}
+	#btnVerLote {
+		width: 40% !important;
+	}
+
+}

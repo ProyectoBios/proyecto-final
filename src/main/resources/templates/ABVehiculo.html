@@ -13,6 +13,11 @@
         .grilla tbody tr:nth-child(2n + 1) {
             background-color: rgba(144, 144, 144, 0.075);
         }
+        @media screen and (min-width: 1280px){
+            #botonera{
+                text-align: center !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -49,7 +54,7 @@
                     <tr>
                         <td>Modelo:</td>
                         <!--  -->
-                        <td><input type="text" id="modelo" size="1" style="width: 30%"/></td>
+                        <td><input type="text" id="modelo" size="1" style="width: 60%"/></td>
                     </tr>
                     <tr>
                         <td>Carga máx.:</td>
@@ -57,10 +62,9 @@
                     </tr>
 
                     <tr>
-                        <td colspan="2" style="text-align: center">
+                        <td colspan="2" id="botonera">
                             <input type="submit" name="action" value="Agregar" />
                             <input type="submit" name="action" value="Eliminar" />
-                            <input type="submit" name="action" value="Modificar" />
                             <input type="submit" name="action" value="buscar" />
                             <input type="reset" value="Limpiar" />
                         </td>

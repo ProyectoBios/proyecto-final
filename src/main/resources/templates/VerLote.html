@@ -35,43 +35,40 @@
 
         <!-- Content -->
         <div class="content">
-            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
             <h3>Datos de lote</h3>
             <!-- Formulario con la Tabla -->
             <form action="#" th:action="@{/VerLote}" name="VerLote" method="post">
-                <table>
-                    <tbody>
+                <div style="overflow-x: auto">
+                    <table id="infoPartA" style="display: inline">
+                        <thead>
+                            <th># ID</th>
+                            <th>Ubicación</th>
+                            <th>Producto</th>
+                        </thead>
+                        <tbody>
                         <tr>
-                            <td style="width: 25%"><label>ID del lote: </label></td>
-                            <td>
-                                <input type="number" id="idLote" size="2" style="display: inline-block" />
-                            </td>
-                            <td style="width: 60%">
-                                <input type="submit" name="action" value="Ver lote" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table id="espLote" style="display: table"> <!-- display: none -->
-                    <thead>
-                        <th style="width: 15%">Ubicación</th>
-                        <th># ID</th>
-                        <th style="width: 40%">Producto</th>
-                        <th style="width: 10%">Cantidad</th>
-                        <th>Vence</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>A0101</td>
                             <td>ID Lote</td>
+                            <td>A0101</td>
                             <td>Chorelos</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <table id="infoPartB" style="display: inline">
+                        <thead>
+                            <th>Cantidad</th>
+                            <th>Fecha ingreso</th>
+                            <th>vence</th>
+                        </thead>
+                        <tbody>
+                        <tr>
                             <td>200</td>
                             <td>18/04/2019</td>
+                            <td>20/05/2020</td>
                         </tr>
-                    </tbody>
-                </table>
-
-                <label>Mensaje</label>
+                        </tbody>
+                    </table>
+                </div>
 
             </form>
 
