@@ -584,10 +584,22 @@ public class ControladorDeposito {
         }
     }
 
-    @RequestMapping(value="/VerLote", method = RequestMethod.GET)
-    public String getVerLote(ModelMap modelmap){
+    @RequestMapping(value="/VerLote/{idLote}", method = RequestMethod.GET)
+    public String getVerLote(@PathVariable String idLote, ModelMap modelmap){
+        int id;
+        try{
+            try{
+                id = Integer.parseInt(idLote);
+            }catch(Exception ex){
+                throw new ExcepcionFrigorifico("Id de lote no válido");
+            }
 
-        return "VerLote";
+            Lote l = FabricaLogica.getControladorDeposito().buscarLote(id);
+            modelmap.addAttribute("lote", l);
+            return "VerLote";
+        }catch (Exception ex){
+            return "error";
+        }
     }
 
     @RequestMapping(value = "/VerLote", method = RequestMethod.POST)

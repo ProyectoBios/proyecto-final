@@ -10,10 +10,10 @@ import java.util.Arrays;
 
 public class AutorizacionInterceptor extends HandlerInterceptorAdapter {
 
-    private static ArrayList<String> paginasGerente = new ArrayList<>(Arrays.asList("/", "/Bienvenida", "/ABMProducto", "/AltaRack", "/EstadoDeRack", "/AltaLote", "/MoverLote", "/BajaLoteXVencimiento", "/GenerarViaje", "/MantenimientoEmpleados", "/VerLote", "/ABVehiculo", "/ListadoDePedidos"));
-    private static ArrayList<String> paginasFuncionario = new ArrayList<>(Arrays.asList("/", "/Bienvenida", "/VerLote", "/MoverLote", "/EstadoDeRack","/RealizarPicking", "/PreparacionPedidos"));
-    private static ArrayList<String> paginasOperador = new ArrayList<>(Arrays.asList("/", "/Bienvenida", "/AltaOrdenDePedido", "/EstadoDePedido"));
-    private static ArrayList<String> paginasRepartidor = new ArrayList<>(Arrays.asList("/", "/Bienvenida", "/EntregaDePedidos"));
+    private static ArrayList<String> paginasGerente = new ArrayList<>(Arrays.asList("", "Bienvenida", "ABMProducto", "AltaRack", "EstadoDeRack", "AltaLote", "MoverLote", "BajaLoteXVencimiento", "GenerarViaje", "MantenimientoEmpleados", "VerLote", "ABVehiculo", "ListadoDePedidos"));
+    private static ArrayList<String> paginasFuncionario = new ArrayList<>(Arrays.asList("", "Bienvenida", "VerLote", "MoverLote", "EstadoDeRack","RealizarPicking", "PreparacionPedidos"));
+    private static ArrayList<String> paginasOperador = new ArrayList<>(Arrays.asList("", "Bienvenida", "AltaOrdenDePedido", "EstadoDePedido"));
+    private static ArrayList<String> paginasRepartidor = new ArrayList<>(Arrays.asList("", "Bienvenida", "EntregaDePedidos"));
 
 
     @Override
@@ -27,25 +27,25 @@ public class AutorizacionInterceptor extends HandlerInterceptorAdapter {
             }else {
                 switch (e.getRol()) {
                     case "gerente":
-                        if (!paginasGerente.contains(request.getRequestURI().split(request.getContextPath())[1])) {
+                        if (!paginasGerente.contains(request.getRequestURI().split(request.getContextPath()+"/")[1].split("/")[0])) {
                             response.sendRedirect(request.getContextPath() + "/Bienvenida");
                             autorizado = false;
                         }
                         break;
                     case "funcionario":
-                        if (!paginasFuncionario.contains(request.getRequestURI().split(request.getContextPath())[1])) {
+                        if (!paginasFuncionario.contains(request.getRequestURI().split(request.getContextPath()+"/")[1].split("/")[0])) {
                             response.sendRedirect(request.getContextPath() + "/Bienvenida");
                             autorizado = false;
                         }
                         break;
                     case "operador":
-                        if (!paginasOperador.contains(request.getRequestURI().split(request.getContextPath())[1])) {
+                        if (!paginasOperador.contains(request.getRequestURI().split(request.getContextPath()+"/")[1].split("/")[0])) {
                             response.sendRedirect(request.getContextPath() + "/Bienvenida");
                             autorizado = false;
                         }
                         break;
                     case "repartidor":
-                        if (!paginasRepartidor.contains(request.getRequestURI().split(request.getContextPath())[1])) {
+                        if (!paginasRepartidor.contains(request.getRequestURI().split(request.getContextPath()+"/")[1].split("/")[0])) {
                             response.sendRedirect(request.getContextPath() + "/Bienvenida");
                             autorizado = false;
                         }

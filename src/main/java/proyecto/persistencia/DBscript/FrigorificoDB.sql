@@ -53,34 +53,6 @@ Create Table Cliente(
     correo varchar(40) not null
 );
 
-Create Table OrdenPedido(
-	idOrden int primary key AUTO_INCREMENT,
-	fecha datetime not null,
-    estado varchar(20) not null,
-    descripcionEntrega varchar(150),
-    ultimaActEst datetime not null,
-    direccionEnvio varchar(40) not null,
-    contacto varchar(40) not null,
-    subtotal double not null,
-    impuestos double not null,
-    total double not null,
-    nombreCliente varchar(30) not null,
-    
-    foreign key(nombreCliente) references Cliente(nombre)
-);
-
-Create Table LineaPedido(
-	idOrden int not null,
-	numero int not null,
-    cantidad int not null,
-    importe double not null,
-    idProducto int not null,
-    
-    foreign key (idProducto) references EspecificacionProducto(ID),
-    foreign key (idOrden) references OrdenPedido(idOrden),
-    primary key (idOrden, numero)
-);
-
 Create Table Empleado(
 	ci varchar(8) primary key,
     nombre varchar(30) not null,
@@ -96,6 +68,42 @@ Create Table Repartidor(
     vencLibreta date not null,
     foreign key (ci) references Empleado(ci)
 );
+
+Create Table OrdenPedido(
+	idOrden int primary key AUTO_INCREMENT,
+	fecha datetime not null,
+    estado varchar(20) not null,
+    descripcionEntrega varchar(150),
+    ultimaActEst datetime not null,
+    direccionEnvio varchar(40) not null,
+    contacto varchar(40) not null,
+    subtotal double not null,
+    impuestos double not null,
+    total double not null,
+    nombreCliente varchar(30) not null,
+    
+    operador varchar(8) not null,
+    funcionario varchar(8),
+    repartidor varchar(8),
+    
+    foreign key(nombreCliente) references Cliente(nombre),
+    foreign key(operador) references Empleado(ci),
+    foreign key(funcionario) references Empleado(ci),
+    foreign key(repartidor) references Empleado(ci)
+);
+
+Create Table LineaPedido(
+	idOrden int not null,
+	numero int not null,
+    cantidad int not null,
+    importe double not null,
+    idProducto int not null,
+    
+    foreign key (idProducto) references EspecificacionProducto(ID),
+    foreign key (idOrden) references OrdenPedido(idOrden),
+    primary key (idOrden, numero)
+);
+
 
 Create Table Vehiculo(
 	matricula varchar(8) primary key,
@@ -140,32 +148,32 @@ INSERT INTO Rack VALUES('B', 10, 20);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 50, 1, 'A', 1,1, 0);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180322', 30, 1, 'A', 3, 5, 0);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180111', 10, 1, 'A', 4, 4, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180524', 1000, 1, 'A', 1, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180624', 1000, 1, 'A', 1, 2, 0);
 
 INSERT INTO Lote VALUES(NULL, NOW(), '20180422', 30, 2, 'A', 1, 3, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180530', 150, 2, 'A', 1, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 150, 2, 'A', 1, 4, 0);
 
-INSERT INTO Lote VALUES(NULL, NOW(), '20180530', 60, 3, 'A', 2, 1, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180530', 10, 3, 'A', 2, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 60, 3, 'A', 2, 1, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 10, 3, 'A', 2, 2, 0);
 
 INSERT INTO Cliente VALUES('Disco', '1234567890', 'disco@disco.com');
 INSERT INTO Cliente VALUES('Carniceria Pepe', '0987654321', 'pepe@gmail.com');
 
-INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Solomeo Paredes 2020', 'Peteco', 5075, 1116.5, 6191.5, 'Carniceria Pepe'); 
+INSERT INTO Empleado VALUES('12345678', 'Pedro Rodriguez','1234' , '19840324', '20171009', '091789456', 'repartidor');
+INSERT INTO Empleado VALUES('32165498', 'Pepe Martin','abcd' ,'19800515', '20160520', '092879654', 'operador');
+INSERT INTO Empleado VALUES('36328662', 'Alvaro Martinez','1234' ,'19840329', '20160520', '092879654', 'gerente');
+INSERT INTO Empleado VALUES('48550958', 'Diego Silva','1234' , '19971214', '20171009', '098109048', 'funcionario');
+
+INSERT INTO Repartidor VALUES('12345678', '20220814');
+
+INSERT INTO Vehiculo VALUES('SBU 3940', 'Volkswagen', 'Worker', 9000);
+INSERT INTO Vehiculo VALUES('SAF 4589', 'Hyundai', 'Hd45', 2500);
+
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Solomeo Paredes 2020', 'Peteco', 5075, 1116.5, 6191.5, 'Carniceria Pepe', '32165498', null, null); 
 
 INSERT INTO LineaPedido VALUES(1, 1, 200, 2000.0, 1);
 INSERT INTO LineaPedido VALUES(1, 2, 45, 1125.0, 2);
 INSERT INTO LineaPedido VALUES(1, 3, 65, 1950.0, 3);
-
-INSERT INTO Empleado VALUES('12345678', 'Pedro Rodriguez','1234' , '19840324', '20171009', '091789456', 'repartidor');
-INSERT INTO Empleado VALUES('32165498', 'Pepe Martin','abcd' ,'19800515', '20160520', '092879654', 'repartidor');
-INSERT INTO Empleado VALUES('36328662', 'Alvaro Martinez','1234' ,'19840329', '20160520', '092879654', 'gerente');
-
-INSERT INTO Repartidor VALUES('12345678', '20220814');
-INSERT INTO Repartidor VALUES('32165498', '20200622');
-
-INSERT INTO Vehiculo VALUES('SBU 3940', 'Volkswagen', 'Worker', 9000);
-INSERT INTO Vehiculo VALUES('SAF 4589', 'Hyundai', 'Hd45', 2500);
 
 DELIMITER //
 
@@ -254,9 +262,9 @@ BEGIN
     WHERE lower(nombre) LIKE lower(concat('%', trim(pNombre), '%'));
  END//
  
- Create Procedure AltaOrdenDePedido(pEstado varchar(20), pDireccion varchar(40), pContacto varchar(40), pSubtotal double, pImpuestos double, pTotal double, pCliente varchar(30), out id int)
+ Create Procedure AltaOrdenDePedido(pEstado varchar(20), pDireccion varchar(40), pContacto varchar(40), pSubtotal double, pImpuestos double, pTotal double, pCliente varchar(30), pOperador varchar(8), out id int)
  BEGIN
-	INSERT INTO OrdenPedido VALUES(NULL, NOW(), pEstado, '', NOW(), pDireccion, pContacto, pSubtotal, pImpuestos, pTotal, pCliente);
+	INSERT INTO OrdenPedido VALUES(NULL, NOW(), pEstado, '', NOW(), pDireccion, pContacto, pSubtotal, pImpuestos, pTotal, pCliente, pOperador, null, null);
     
     SET id = LAST_INSERT_ID();
  END//

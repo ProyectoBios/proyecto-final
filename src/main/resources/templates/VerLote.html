@@ -4,8 +4,8 @@
     <title>Ver Lote</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
-    <link rel="stylesheet" th:href="@{assets/css/main.css}" />
+    <!--[if lte IE 8]><script th:src="@{/assets/js/ie/html5shiv.js}"></script><![endif]-->
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}" />
     <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
     <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
 
@@ -47,9 +47,9 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>ID Lote</td>
-                            <td>A0101</td>
-                            <td>Chorelos</td>
+                            <td th:text="${lote.Id}"></td>
+                            <td th:text="${lote.Ubicacion.UbicacionString}"></td>
+                            <td th:text="${lote.Producto.Nombre}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -62,9 +62,9 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>200</td>
-                            <td>18/04/2019</td>
-                            <td>20/05/2020</td>
+                            <td th:text="${lote.cantUnidades}"></td>
+                            <td th:text="${#dates.format(lote.fechaIngreso, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${#dates.format(lote.fechaVencimiento, 'dd/MM/yyyy')}"></td>
                         </tr>
                         </tbody>
                     </table>
