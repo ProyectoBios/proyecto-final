@@ -25,6 +25,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
@@ -352,8 +354,8 @@ public class ControladorDeposito {
         ArrayList<EspecificacionProducto> prods = new ArrayList<>();
         ArrayList<Rack> racks = new ArrayList<Rack>();
         try {
-            prods=FabricaLogica.getControladorDeposito().listarProductos();
-            racks=FabricaLogica.getControladorDeposito().listarRacks();
+            prods = FabricaLogica.getControladorDeposito().listarProductos();
+            racks = FabricaLogica.getControladorDeposito().listarRacks();
             modelMap.addAttribute("lote", new Lote());
             modelMap.addAttribute("productos",prods);
             modelMap.addAttribute("racks", racks);
@@ -378,8 +380,8 @@ public class ControladorDeposito {
         ArrayList<EspecificacionProducto> prods = new ArrayList<>();
         ArrayList<Rack> racks = new ArrayList<>();
         try{
-            prods=FabricaLogica.getControladorDeposito().listarProductos();
-            racks=FabricaLogica.getControladorDeposito().listarRacks();
+            prods = FabricaLogica.getControladorDeposito().listarProductos();
+            racks = FabricaLogica.getControladorDeposito().listarRacks();
             int codigo = FabricaLogica.getControladorDeposito().altaLote(lote);
 
             byte[] pdfBytes = FabricaLogica.getControladorDeposito().generarCodigoQRLote(codigo);
@@ -584,8 +586,18 @@ public class ControladorDeposito {
         }
     }
 
+    @RequestMapping(value="/VerLote", method = RequestMethod.GET)
+    public String getVerLote(HttpServletRequest request, HttpServletResponse response){
+        try {
+            response.sendRedirect(request.getContextPath() + "/Bienvenida");
+        }catch (Exception ex) {
+            return "Bienvenida";
+        }
+        return "Bienvenida";
+    }
+
     @RequestMapping(value="/VerLote/{idLote}", method = RequestMethod.GET)
-    public String getVerLote(@PathVariable String idLote, ModelMap modelmap){
+    public String getVerLoteId(@PathVariable String idLote, ModelMap modelmap, HttpServletRequest request, HttpServletResponse response){
         int id;
         try{
             try{
@@ -595,16 +607,41 @@ public class ControladorDeposito {
             }
 
             Lote l = FabricaLogica.getControladorDeposito().buscarLote(id);
-            modelmap.addAttribute("lote", l);
-            return "VerLote";
+            if(l==null){
+                response.sendRedirect(request.getContextPath() + "/Bienvenida");
+                return "Bienvenida";
+            }else{
+                modelmap.addAttribute("lote", l);
+                return "VerLote";
+            }
         }catch (Exception ex){
             return "error";
         }
     }
 
-    @RequestMapping(value = "/VerLote", method = RequestMethod.POST)
-    public String verLote(ModelMap modelmap, HttpSession session){
+    @RequestMapping(value="/VerLote", method = RequestMethod.POST, params="action = Ver Lote")
+    public String verLote(@RequestParam(value = "idLote", required = false) String idLote,  ModelMap modelMap){
+        try {
+            int id = 0;
+            Lote lote;
 
+            if (!idLote.isEmpty()){
+                lote = FabricaLogica.getControladorDeposito().buscarLote(id);
+
+                if (lote != null) {
+                    modelMap.addAttribute("lote", lote);
+                    modelMap.addAttribute("tablaLote", "true");
+                } else{
+                    modelMap.addAttribute("mensaje", "No existe un lote con el id: " + idLote);
+                    return "VerLote";
+                }
+            } else{
+                modelMap.addAttribute("mensaje", "debe ingresar el id del lote");
+            }
+
+        } catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Hubo un error al cargar los datos del lote");
+        }
         return "VerLote";
     }
 

@@ -8,6 +8,7 @@ import proyecto.entidades.EspecificacionProducto;
 import proyecto.persistencia.*;
 
 import java.io.ByteArrayOutputStream;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -284,7 +285,9 @@ class LControladorDeposito implements  IDeposito {
         qrCode.add(Chunk.NEWLINE);
         qrCode.add(Chunk.NEWLINE);
 
-        BarcodeQRCode codigoQR = new BarcodeQRCode("http://192.168.1.2:8080/Centenario/VerLote/" + String.valueOf(codigo), 300, 300, null); ///reemplazar la ip de esta linea por la ip del servidor
+        // BarcodeQRCode codigoQR = new BarcodeQRCode("http://192.168.4.232:8080/Centenario/VerLote/" + String.valueOf(codigo), 300, 300, null); ///reemplazar la ip de esta linea por la ip del servidor
+        BarcodeQRCode codigoQR = new BarcodeQRCode("http://" + InetAddress.getLocalHost().getHostAddress() + ":8080/Centenario/VerLote/" + String.valueOf(codigo), 300, 300, null); ///reemplazar la ip de esta linea por la ip del servidor
+
         Image qrImagen = codigoQR.getImage();
         qrImagen.setAlignment(Element.ALIGN_CENTER);
         qrCode.add(qrImagen);
