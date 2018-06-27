@@ -276,7 +276,7 @@ public class ControladorEmpleado {
                 return "ABVehiculo";
             }
 
-            //Todo: FabricaLogica.getControladorEmpleados().altaVehiculo(vehiculo);
+            FabricaLogica.getControladorEmpleados().altaVehiculo(vehiculo);
 
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Alta de vehículo con éxito.")));
             modelMap.addAttribute("vehiculo", new Vehiculo());
@@ -293,7 +293,7 @@ public class ControladorEmpleado {
     @RequestMapping(value = "/MantenimientoVehiculos", method = RequestMethod.POST, params = "action=Eliminar")
     public String bajaVehiculo(@ModelAttribute Vehiculo vehiculo, ModelMap modelMap) {
         try {
-            //Todo: FabricaLogica.getControladorEmpleados().bajaVehiculo(vehiculo);
+            FabricaLogica.getControladorEmpleados().bajaVehiculo(vehiculo);
 
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Baja de vehículo con éxito.")));
             modelMap.addAttribute("vehiculo", new Vehiculo());
