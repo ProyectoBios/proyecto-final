@@ -10,9 +10,6 @@
     <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
 
     <style>
-        .grilla tbody tr:nth-child(2n + 1) {
-            background-color: rgba(144, 144, 144, 0.075);
-        }
         @media screen and (min-width: 1280px){
             #botonera{
                 text-align: center !important;
@@ -36,43 +33,46 @@
 
         <!-- Content -->
         <div class="content">
-            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
             <h3>Mantenimiento de Vehículos</h3>
             <!-- Formulario con la Tabla -->
-            <form action="#" th:action="@{/ABVehiculo}" name="ABVehiculo" method="post">
+            <form action="#" th:action="@{/MantenimientoVehiculos}" th:object="${vehiculo}" name="ABVehiculo" method="post">
 
                 <table width="100%">
                     <tbody>
                     <tr>
                         <td style="width: 20%">Matrícula:</td>
-                        <td style="width: 70%"><input type="text" id="matricula" size="1" style="width: 30%"/></td>
+                        <td style="width: 70%"><input type="text" id="matricula" size="1" style="width: 30%" th:field="*{Matricula}" th:readonly="${matriculaSoloLectura}"/></td>
                     </tr>
                     <tr>
                         <td>Marca:</td>
-                        <td><input type="text" id="marca" size="1" style="width: 60%"/></td>
+                        <td><input type="text" id="marca" size="1" style="width: 60%" th:field="*{Marca}"/></td>
                     </tr>
                     <tr>
                         <td>Modelo:</td>
                         <!--  -->
-                        <td><input type="text" id="modelo" size="1" style="width: 60%"/></td>
+                        <td><input type="text" id="modelo" size="1" style="width: 60%" th:field="*{Modelo}"/></td>
                     </tr>
                     <tr>
                         <td>Carga máx.:</td>
-                        <td><input type= "number" id="cargaMax" size="1" style="width: 30%"/></td>
+                        <td><input type= "number" id="cargaMax" size="1" style="width: 30%" th:field="*{CargaMax}"/></td>
                     </tr>
 
                     <tr>
                         <td colspan="2" id="botonera">
-                            <input type="submit" name="action" value="Agregar" />
-                            <input type="submit" name="action" value="Eliminar" />
-                            <input type="submit" name="action" value="buscar" />
-                            <input type="reset" value="Limpiar" />
+                            <input type="submit" name="action" value="Agregar" th:disabled="${!botonAgregar}"/>
+                            <input type="submit" name="action" value="Eliminar" th:disabled="${!botonEliminar}"/>
+                            <input type="submit" name="action" value="Buscar" th:disabled="${!botonBuscar}"/>
+                            <input type="submit" name="action" value="Limpiar" />
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
             </form>
+
+            <th:block th:each="m : ${mensajes}">
+                <label th:text="${m}"></label>
+            </th:block>
 
         </div>
 

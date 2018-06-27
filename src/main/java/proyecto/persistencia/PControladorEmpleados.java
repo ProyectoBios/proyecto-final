@@ -221,6 +221,16 @@ class PControladorEmpleados implements IPEmpleados{
     }
 
     @Override
+    public void altaVehiculo(Vehiculo v) throws Exception {
+
+    }
+
+    @Override
+    public void bajaVehiculo(Vehiculo v) throws Exception {
+
+    }
+
+    @Override
     public ArrayList<Vehiculo> listarVehiculos() throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Vehiculo")){

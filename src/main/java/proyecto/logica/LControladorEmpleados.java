@@ -53,6 +53,16 @@ public class LControladorEmpleados implements IEmpleados{
     }
 
     @Override
+    public void altaVehiculo(Vehiculo v) throws Exception {
+        FabricaPersistencia.getControladorEmpleados().altaVehiculo(v);
+    }
+
+    @Override
+    public void bajaVehiculo(Vehiculo v) throws Exception {
+        FabricaPersistencia.getControladorEmpleados().bajaVehiculo(v);
+    }
+
+    @Override
     public ArrayList<Vehiculo> listarVehiculos() throws Exception {
         return FabricaPersistencia.getControladorEmpleados().listarVehiculos();
     }

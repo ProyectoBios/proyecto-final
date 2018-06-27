@@ -19,6 +19,8 @@ public interface IPEmpleados {
 
     //region Vehiculos
     Vehiculo buscarVehiculo(String matricula) throws Exception;
+    void altaVehiculo(Vehiculo v) throws Exception;
+    void bajaVehiculo(Vehiculo v) throws Exception;
     ArrayList<Vehiculo> listarVehiculos() throws Exception;
     //endregion
 }

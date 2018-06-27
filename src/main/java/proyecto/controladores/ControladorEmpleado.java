@@ -1,70 +1,67 @@
 package proyecto.controladores;
 
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import proyecto.entidades.Empleado;
 import proyecto.entidades.ExcepcionFrigorifico;
 import proyecto.entidades.Repartidor;
+import proyecto.entidades.Vehiculo;
 import proyecto.logica.FabricaLogica;
-import javax.jws.WebParam;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 public class ControladorEmpleado {
-    @RequestMapping(value="/", method = RequestMethod.GET)
-    public String index(HttpSession session, ModelMap modelMap){
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index(HttpSession session, ModelMap modelMap) {
         try {
-            if (session.getAttribute("usuarioLogueado") != null){
+            if (session.getAttribute("usuarioLogueado") != null) {
                 session.removeAttribute("usuarioLogueado");
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             modelMap.addAttribute("mensaje", "hubo un error al cargar la página");
         }
         return "index";
     }
 
-    @RequestMapping(value="/", method = RequestMethod.POST, params = "action=Ingresar")
-    public String login(@RequestParam(value="cedula") String cedula, @RequestParam(value = "contrasenia")String contrasenia, ModelMap modelMap, HttpSession session, HttpServletRequest request, HttpServletResponse response){
-        try{
-            if(cedula.equals("") || contrasenia.equals("")){
+    @RequestMapping(value = "/", method = RequestMethod.POST, params = "action=Ingresar")
+    public String login(@RequestParam(value = "cedula") String cedula, @RequestParam(value = "contrasenia") String contrasenia, ModelMap modelMap, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            if (cedula.equals("") || contrasenia.equals("")) {
                 throw new ExcepcionFrigorifico("Credenciales inválidas, inténtelo denuevo.");
             }
 
             Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula);
-            if(e==null){
+            if (e == null) {
                 throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");
-            }else if(contrasenia.equals(e.getContrasenia())){
+            } else if (contrasenia.equals(e.getContrasenia())) {
                 session.setAttribute("usuarioLogueado", e);
                 response.sendRedirect(request.getContextPath() + "/Bienvenida");
                 return "index";
-            }else{
+            } else {
                 throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");
             }
-        }catch (ExcepcionFrigorifico ex){
+        } catch (ExcepcionFrigorifico ex) {
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "index";
-        }catch (Exception ex){
+        } catch (Exception ex) {
             modelMap.addAttribute("mensaje", "Ocurrió un error al procesar la autenticación.");
             return "index";
         }
     }
 
-    @RequestMapping(value="/Bienvenida", method = RequestMethod.GET)
-    public String bienvenida(HttpSession session, ModelMap modelMap){
-        if(session.getAttribute("mensaje")!=null){
+    @RequestMapping(value = "/Bienvenida", method = RequestMethod.GET)
+    public String bienvenida(HttpSession session, ModelMap modelMap) {
+        if (session.getAttribute("mensaje") != null) {
             modelMap.addAttribute("mensaje", session.getAttribute("mensaje"));
             session.removeAttribute("mensaje");
         }
@@ -72,24 +69,24 @@ public class ControladorEmpleado {
         return "Bienvenida";
     }
 
-    @RequestMapping(value="/MantenimientoEmpleados", method = RequestMethod.GET)
-    public String getABMEmpleados(ModelMap modelMap){
+    @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.GET)
+    public String getABMEmpleados(ModelMap modelMap) {
         try {
-            ABMEmpleadoBotonesPorDefecto(modelMap);
+            ABMBotonesPorDefecto(modelMap);
             modelMap.addAttribute("empleado", new Empleado());
             //modelMap.addAttribute("vencLibreta", new Date());
-        }catch (ExcepcionFrigorifico ex){
+        } catch (ExcepcionFrigorifico ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al cargar el formulario")));
         }
         return "ABMEmpleado";
     }
 
-    @RequestMapping(value="/MantenimientoEmpleados", method = RequestMethod.POST, params="action=Buscar")
-    public String buscarEmpleado(@ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap){
-        try{
-            if(bindingResult.hasErrors()){
+    @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.POST, params = "action=Buscar")
+    public String buscarEmpleado(@ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap) {
+        try {
+            if (bindingResult.hasErrors()) {
                 modelMap.addAttribute("empleado", new Empleado());
                 modelMap.addAttribute("vencLibreta", new Date());
                 modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
@@ -97,78 +94,54 @@ public class ControladorEmpleado {
             }
 
             Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(empleado.getCi());
-            if(e != null){
-                ABMEmpleadoBotonesEmpleadoEncontrado(modelMap);
+            if (e != null) {
+                ABMBotonesEncontrado(modelMap);
                 modelMap.addAttribute("empleado", e);
-                if(e instanceof Repartidor){
+                if (e instanceof Repartidor) {
                     modelMap.addAttribute("vencLibreta", ((Repartidor) e).getVencLibreta());
                 }
 
                 modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Empleado encontrado con éxito")));
-            }else{
-                ABMEmpleadoBotonesEmpleadoNoEncontrado(modelMap);
+            } else {
+                ABMBotonesNoEncontrado(modelMap);
                 modelMap.addAttribute("empleado", empleado);
 
                 modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Empleado no encontrado")));
             }
 
-        }catch (ExcepcionFrigorifico ex){
+        } catch (ExcepcionFrigorifico ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al dar de alta el empleado")));
         }
         return "ABMEmpleado";
     }
 
-    @RequestMapping(value="/MantenimientoEmpleados", method = RequestMethod.POST, params="action=Limpiar")
-    public String limpiarABMEmpleado(@ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap){
+    @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.POST, params = "action=Limpiar")
+    public String limpiarABMEmpleado(@ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap) {
         try {
-            ABMEmpleadoBotonesPorDefecto(modelMap);
+            ABMBotonesPorDefecto(modelMap);
             modelMap.addAttribute("empleado", new Empleado());
             modelMap.addAttribute("vencLibreta", new Date());
-        }catch (ExcepcionFrigorifico ex){
+        } catch (ExcepcionFrigorifico ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al cargar el formulario")));
         }
         return "ABMEmpleado";
     }
 
-    private void ABMEmpleadoBotonesPorDefecto(ModelMap modelMap){
-        modelMap.addAttribute("botonAgregar", "false");
-        modelMap.addAttribute("botonModificar", "false");
-        modelMap.addAttribute("botonEliminar", "false");
-        modelMap.addAttribute("botonBuscar", "true");
-        modelMap.addAttribute("ciSoloLectura", "false");
-    }
-
-    private void ABMEmpleadoBotonesEmpleadoEncontrado(ModelMap modelMap){
-        modelMap.addAttribute("botonAgregar", "false");
-        modelMap.addAttribute("botonModificar", "true");
-        modelMap.addAttribute("botonEliminar", "true");
-        modelMap.addAttribute("botonBuscar", "true");
-        modelMap.addAttribute("ciSoloLectura", "true");
-    }
-
-    private void ABMEmpleadoBotonesEmpleadoNoEncontrado(ModelMap modelMap){
-        modelMap.addAttribute("botonAgregar", "true");
-        modelMap.addAttribute("botonModificar", "false");
-        modelMap.addAttribute("botonEliminar", "false");
-        modelMap.addAttribute("botonBuscar", "false");
-        modelMap.addAttribute("ciSoloLectura", "true");
-    }
-
-    @RequestMapping(value="/MantenimientoEmpleados", method = RequestMethod.POST, params="action=Agregar")
-    public String agregarEmpleado(@RequestParam(value="vencLibreta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date vencLibreta, @ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap){
-        try{
-            if(bindingResult.hasErrors()){
+    @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.POST, params = "action=Agregar")
+    public String agregarEmpleado(@RequestParam(value = "vencLibreta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date vencLibreta, @ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap) {
+        try {
+            if (bindingResult.hasErrors()) {
                 modelMap.addAttribute(empleado);
                 modelMap.addAttribute("vencLibreta", vencLibreta);
                 modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
-                ABMEmpleadoBotonesEmpleadoNoEncontrado(modelMap);
+                ABMBotonesNoEncontrado(modelMap);
                 return "ABMEmpleado";
             }
-            if(empleado.getRol().equals("repartidor")) {
+            if (empleado.getRol().equals("repartidor")) {
                 empleado = new Repartidor(empleado.getCi(), empleado.getNombre(), empleado.getContrasenia(), empleado.getFechaDeNacimiento(), empleado.getFechaContratacion(), empleado.getTelefono(), empleado.getRol(), vencLibreta);
             }
 
@@ -176,47 +149,47 @@ public class ControladorEmpleado {
 
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Alta de empleado con éxito.")));
             modelMap.addAttribute("empleado", new Empleado());
-            ABMEmpleadoBotonesPorDefecto(modelMap);
-        }catch (ExcepcionFrigorifico ex){
+            ABMBotonesPorDefecto(modelMap);
+        } catch (ExcepcionFrigorifico ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al dar de alta el empleado")));
         }
 
         return "ABMEmpleado";
     }
 
-    @RequestMapping(value="/MantenimientoEmpleados", method = RequestMethod.POST, params="action=Eliminar")
-    public String bajaEmpleado(@ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap){
-        try{
+    @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.POST, params = "action=Eliminar")
+    public String bajaEmpleado(@ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap) {
+        try {
             FabricaLogica.getControladorEmpleados().bajaEmpleado(empleado);
 
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Baja de empleado con éxito.")));
             modelMap.addAttribute("empleado", new Empleado());
-            ABMEmpleadoBotonesPorDefecto(modelMap);
-        }catch (ExcepcionFrigorifico ex){
-            ABMEmpleadoBotonesPorDefecto(modelMap);
+            ABMBotonesPorDefecto(modelMap);
+        } catch (ExcepcionFrigorifico ex) {
+            ABMBotonesPorDefecto(modelMap);
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al dar de baja el empleado")));
-            ABMEmpleadoBotonesPorDefecto(modelMap);
+            ABMBotonesPorDefecto(modelMap);
         }
 
         return "ABMEmpleado";
     }
 
-    @RequestMapping(value="/MantenimientoEmpleados", method = RequestMethod.POST, params="action=Modificar")
-    public String modificarEmpleado(@RequestParam(value="vencLibreta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date vencLibreta, @ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap){
-        try{
-            if(bindingResult.hasErrors()){
+    @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.POST, params = "action=Modificar")
+    public String modificarEmpleado(@RequestParam(value = "vencLibreta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date vencLibreta, @ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap) {
+        try {
+            if (bindingResult.hasErrors()) {
                 modelMap.addAttribute(empleado);
                 modelMap.addAttribute("vencLibreta", vencLibreta);
                 modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
-                ABMEmpleadoBotonesEmpleadoEncontrado(modelMap);
+                ABMBotonesEncontrado(modelMap);
                 return "ABMEmpleado";
             }
 
-            if(empleado.getRol().equals("repartidor")) {
+            if (empleado.getRol().equals("repartidor")) {
                 empleado = new Repartidor(empleado.getCi(), empleado.getNombre(), empleado.getContrasenia(), empleado.getFechaDeNacimiento(), empleado.getFechaContratacion(), empleado.getTelefono(), empleado.getRol(), vencLibreta);
             }
 
@@ -224,26 +197,153 @@ public class ControladorEmpleado {
 
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Empleado modificado con éxito.")));
             modelMap.addAttribute("empleado", new Empleado());
-            ABMEmpleadoBotonesPorDefecto(modelMap);
-        }catch (ExcepcionFrigorifico ex){
-            ABMEmpleadoBotonesPorDefecto(modelMap);
+            ABMBotonesPorDefecto(modelMap);
+        } catch (ExcepcionFrigorifico ex) {
+            ABMBotonesPorDefecto(modelMap);
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al modificar el empleado")));
-            ABMEmpleadoBotonesPorDefecto(modelMap);
+            ABMBotonesPorDefecto(modelMap);
         }
 
         return "ABMEmpleado";
     }
 
+    @RequestMapping(value = "/MantenimientoVehiculos", method = RequestMethod.GET)
+    public String getABVehiculos(ModelMap modelMap) {
+        try {
+            ABMBotonesPorDefecto(modelMap);
+            modelMap.addAttribute("vehiculo", new Vehiculo());
 
-    private ArrayList<String> cargarErrores(BindingResult bindingResult){
+        } catch (ExcepcionFrigorifico ex) {
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
+        } catch (Exception ex) {
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al cargar el formulario")));
+        }
+        return "ABVehiculo";
+    }
+
+    @RequestMapping(value = "/MantenimientoVehiculos", method = RequestMethod.POST, params = "action=Buscar")
+    public String buscarVehiculo(@ModelAttribute Vehiculo vehiculo, BindingResult bindingResult, ModelMap modelMap){
+        try {
+            if (bindingResult.hasErrors()) {
+                modelMap.addAttribute("vehiculo", new Vehiculo());
+                modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
+                return "ABVehiculo";
+            }
+
+            Vehiculo v = FabricaLogica.getControladorEmpleados().buscarVehiculo(vehiculo.getMatricula());
+            if (v != null) {
+                ABMBotonesEncontrado(modelMap);
+                modelMap.addAttribute("vehiculo", v);
+
+                modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Vehículo encontrado con éxito")));
+            } else {
+                ABMBotonesNoEncontrado(modelMap);
+                modelMap.addAttribute("vehiculo", vehiculo);
+
+                modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Vehículo no encontrado")));
+            }
+
+        } catch (Exception ex){
+
+        }
+        return "ABVehiculo";
+    }
+
+    @RequestMapping(value = "/MantenimientoVehiculos", method = RequestMethod.POST, params = "action=Limpiar")
+    public String limpiarVehiculo(@ModelAttribute Vehiculo vehiculo, ModelMap modelMap){
+        try {
+            ABMBotonesPorDefecto(modelMap);
+            modelMap.addAttribute("vehiculo", new Vehiculo());
+
+        } catch (ExcepcionFrigorifico ex) {
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
+        } catch (Exception ex) {
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al cargar el formulario")));
+        }
+
+        return "ABVehiculo";
+    }
+
+    @RequestMapping(value = "/MantenimientoVehiculos", method = RequestMethod.POST, params = "action=Agregar")
+    public String agregarVehiculo(@ModelAttribute Vehiculo vehiculo, BindingResult bindingResult, ModelMap modelMap) {
+        try {
+            if (bindingResult.hasErrors()) {
+                modelMap.addAttribute(vehiculo);
+                modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
+                ABMBotonesNoEncontrado(modelMap);
+                return "ABVehiculo";
+            }
+
+            //Todo: FabricaLogica.getControladorEmpleados().altaVehiculo(vehiculo);
+
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Alta de vehículo con éxito.")));
+            modelMap.addAttribute("vehiculo", new Vehiculo());
+            ABMBotonesPorDefecto(modelMap);
+
+        } catch (ExcepcionFrigorifico ex) {
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
+        } catch (Exception ex) {
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al cargar el formulario")));
+        }
+        return "ABVehiculo";
+    }
+
+    @RequestMapping(value = "/MantenimientoVehiculos", method = RequestMethod.POST, params = "action=Eliminar")
+    public String bajaVehiculo(@ModelAttribute Vehiculo vehiculo, ModelMap modelMap) {
+        try {
+            //Todo: FabricaLogica.getControladorEmpleados().bajaVehiculo(vehiculo);
+
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Baja de vehículo con éxito.")));
+            modelMap.addAttribute("vehiculo", new Vehiculo());
+            ABMBotonesPorDefecto(modelMap);
+        } catch (ExcepcionFrigorifico ex) {
+            ABMBotonesPorDefecto(modelMap);
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
+        } catch (Exception ex) {
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al dar de baja el vehículo")));
+            ABMBotonesPorDefecto(modelMap);
+        }
+
+        return "ABVehiculo";
+    }
+
+    private void ABMBotonesPorDefecto(ModelMap modelMap) {
+        modelMap.addAttribute("botonAgregar", "false");
+        modelMap.addAttribute("botonModificar", "false");
+        modelMap.addAttribute("botonEliminar", "false");
+        modelMap.addAttribute("botonBuscar", "true");
+        modelMap.addAttribute("ciSoloLectura", "false");
+        modelMap.addAttribute("matriculaSoloLectura", "false");
+    }
+
+    private void ABMBotonesEncontrado(ModelMap modelMap) {
+        modelMap.addAttribute("botonAgregar", "false");
+        modelMap.addAttribute("botonModificar", "true");
+        modelMap.addAttribute("botonEliminar", "true");
+        modelMap.addAttribute("botonBuscar", "true");
+        modelMap.addAttribute("ciSoloLectura", "true");
+        modelMap.addAttribute("matriculaSoloLectura", "true");
+    }
+
+    private void ABMBotonesNoEncontrado(ModelMap modelMap) {
+        modelMap.addAttribute("botonAgregar", "true");
+        modelMap.addAttribute("botonModificar", "false");
+        modelMap.addAttribute("botonEliminar", "false");
+        modelMap.addAttribute("botonBuscar", "false");
+        modelMap.addAttribute("ciSoloLectura", "true");
+        modelMap.addAttribute("matriculaSoloLectura", "true");
+    }
+
+    private ArrayList<String> cargarErrores(BindingResult bindingResult) {
         ArrayList<String> mensajes = new ArrayList<>();
-        for(Object obj : bindingResult.getAllErrors()){
-            if(obj instanceof FieldError){
-                mensajes.add(((FieldError)obj).getDefaultMessage().split(": ")[1]);
+        for (Object obj : bindingResult.getAllErrors()) {
+            if (obj instanceof FieldError) {
+                mensajes.add(((FieldError) obj).getDefaultMessage().split(": ")[1]);
             }
         }
         return mensajes;
     }
+
 }
