@@ -1,6 +1,7 @@
 package proyecto.persistencia;
 
 import proyecto.entidades.Empleado;
+import proyecto.entidades.ExcepcionFrigorifico;
 import proyecto.entidades.Repartidor;
 import proyecto.entidades.Vehiculo;
 
@@ -222,12 +223,37 @@ class PControladorEmpleados implements IPEmpleados{
 
     @Override
     public void altaVehiculo(Vehiculo v) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            PreparedStatement statement = con.prepareStatement("INSERT INTO Vehiculo  VALUE (?, ?, ?, ?, 0)")) {
+
+            statement.setString(1, v.getMatricula());
+            statement.setString(2, v.getMarca());
+            statement.setString(3, v.getModelo());
+            statement.setInt(4, v.getCargaMax());
+
+            int filasAfectadas = statement.executeUpdate();
+
+            if (filasAfectadas != 1){
+                throw new ExcepcionFrigorifico("Hubo un error al agregar el vehículo.");
+            }
+
+        }catch (Exception ex){
+            throw ex;
+        }
 
     }
 
     @Override
     public void bajaVehiculo(Vehiculo v) throws Exception {
+        try (Connection con = Conexion.AbrirConexion();
+             CallableStatement statement = con.prepareCall("{CALL BajaVehiculo(?)}")){
+                statement.setString(1, v.getMatricula());
 
+                statement.executeUpdate();
+
+        }catch (Exception ex){
+            throw ex;
+        }
     }
 
     @Override

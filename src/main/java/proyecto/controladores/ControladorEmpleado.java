@@ -229,6 +229,7 @@ public class ControladorEmpleado {
             if (bindingResult.hasErrors()) {
                 modelMap.addAttribute("vehiculo", new Vehiculo());
                 modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
+                ABMBotonesPorDefecto(modelMap);
                 return "ABVehiculo";
             }
 
@@ -252,7 +253,7 @@ public class ControladorEmpleado {
     }
 
     @RequestMapping(value = "/MantenimientoVehiculos", method = RequestMethod.POST, params = "action=Limpiar")
-    public String limpiarVehiculo(@ModelAttribute Vehiculo vehiculo, ModelMap modelMap){
+    public String limpiarVehiculo(ModelMap modelMap){
         try {
             ABMBotonesPorDefecto(modelMap);
             modelMap.addAttribute("vehiculo", new Vehiculo());

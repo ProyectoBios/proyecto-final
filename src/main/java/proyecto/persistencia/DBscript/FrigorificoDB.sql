@@ -109,7 +109,8 @@ Create Table Vehiculo(
 	matricula varchar(8) primary key,
     marca varchar(20) not null,
     modelo varchar(20) not null,
-    cargaMax int not null
+    cargaMax int not null,
+    eliminado bit not null
 );
 
 Create Table Viaje(
@@ -166,8 +167,8 @@ INSERT INTO Empleado VALUES('48550958', 'Diego Silva','1234' , '19971214', '2017
 
 INSERT INTO Repartidor VALUES('12345678', '20220814');
 
-INSERT INTO Vehiculo VALUES('SBU 3940', 'Volkswagen', 'Worker', 9000);
-INSERT INTO Vehiculo VALUES('SAF 4589', 'Hyundai', 'Hd45', 2500);
+INSERT INTO Vehiculo VALUES('SBU 3940', 'Volkswagen', 'Worker', 9000, 0);
+INSERT INTO Vehiculo VALUES('SAF 4589', 'Hyundai', 'Hd45', 2500, 0);
 
 INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Solomeo Paredes 2020', 'Peteco', 5075, 1116.5, 6191.5, 'Carniceria Pepe', '32165498', null, null); 
 
@@ -348,6 +349,19 @@ BEGIN
     UPDATE Repartidor SET vencLibreta = pFechaVencLib WHERE ci = pCi;
     
     COMMIT;
+ END//
+ 
+ Create Procedure BajaVehiculo(pMatricula varchar(8))
+ BEGIN
+	IF (EXISTS ( SELECT * FROM Viaje WHERE matriculaVehiculo = pMatricula)) THEN
+    
+		UPDATE Vehiculo SET eliminado = 1 WHERE matricula = pMatricula;
+    ELSE
+		DELETE FROM Vehiculo WHERE matricula = pMatricula;
+    END IF;    
+    
  END
+ 
+ 
  
  

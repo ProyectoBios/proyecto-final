@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class AutorizacionInterceptor extends HandlerInterceptorAdapter {
 
-    private static ArrayList<String> paginasGerente = new ArrayList<>(Arrays.asList("", "Bienvenida", "ABMProducto", "AltaRack", "EstadoDeRack", "AltaLote", "MoverLote", "BajaLoteXVencimiento", "GenerarViaje", "MantenimientoEmpleados", "VerLote", "ABVehiculo", "ListadoDePedidos"));
+    private static ArrayList<String> paginasGerente = new ArrayList<>(Arrays.asList("", "Bienvenida", "ABMProducto", "MantenimientoVehiculos", "AltaRack", "EstadoDeRack", "AltaLote", "MoverLote", "BajaLoteXVencimiento", "GenerarViaje", "MantenimientoEmpleados", "VerLote", "ABVehiculo", "ListadoDePedidos"));
     private static ArrayList<String> paginasFuncionario = new ArrayList<>(Arrays.asList("", "Bienvenida", "VerLote", "MoverLote", "EstadoDeRack","RealizarPicking", "PreparacionPedidos"));
     private static ArrayList<String> paginasOperador = new ArrayList<>(Arrays.asList("", "Bienvenida", "AltaOrdenDePedido", "EstadoDePedido"));
     private static ArrayList<String> paginasRepartidor = new ArrayList<>(Arrays.asList("", "Bienvenida", "EntregaDePedidos"));
