@@ -181,7 +181,6 @@ public class ControladorPedidos {
 
             session.setAttribute("cliente", cliente);
             OrdenPedido orden = new OrdenPedido();
-            orden.setOperador((Empleado)session.getAttribute("usuarioLogueado"));
             orden.setEstado("pendiente");
             orden.setCliente(cliente);
             session.setAttribute("orden", orden);
@@ -312,6 +311,7 @@ public class ControladorPedidos {
 
             orden.setContacto(contacto);
             orden.setDireccionEnvio(direccion);
+            orden.setOperador((Empleado)session.getAttribute("usuarioLogueado"));
 
             int id = FabricaLogica.getControladorPedidos().altaOrdenDePedido(orden);
 

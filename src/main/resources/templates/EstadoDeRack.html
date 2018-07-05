@@ -73,7 +73,7 @@
                         </div>
                     </form>
 
-                    <form action="#" th:action="@{/VerLote}" name="VerLote" method="get">
+                    <form id="formVerLote" action="#" th:action="@{/VerLote/}" name="VerLote" method="post">
 
                         <table id="espLote" style="display: none">
                            <thead>
@@ -86,11 +86,10 @@
                            <tbody>
                            </tbody>
 
+                            <input type="hidden" id="idVerLote" name="idLote" value=""/>
+
                         </table>
-
-                        <input type="hidden" id="idVerLote" name="idVerLote" value=""/>
-
-                        <label th:text="${mensaje}">Mensaje</label>
+                        <label th:text="${mensaje}"></label>
                     </form>
 
                </div>
@@ -131,9 +130,10 @@
 
                 var fila2 = tabla.insertRow(2);
                 var y = fila2.insertCell(0);
-                y.insertAdjacentHTML('afterbegin', '<input type="submit" name="action" value="Ver Lote" />');
+                y.insertAdjacentHTML('afterbegin', '<input type="submit" name="action" value="Ver Lote"/>');
 
                 document.getElementById("idVerLote").value = lote.id;
+
                 /*]]>*/
             }
         </script>

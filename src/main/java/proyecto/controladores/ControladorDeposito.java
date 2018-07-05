@@ -619,13 +619,19 @@ public class ControladorDeposito {
         }
     }
 
-    @RequestMapping(value="/VerLote", method = RequestMethod.POST, params="action = Ver Lote")
+    @RequestMapping(value="/VerLote", method = RequestMethod.POST, params="action=Ver Lote")
     public String verLote(@RequestParam(value = "idLote", required = false) String idLote,  ModelMap modelMap){
         try {
             int id = 0;
             Lote lote;
 
             if (!idLote.isEmpty()){
+                try{
+                    id = Integer.parseInt(idLote);
+                }catch(Exception ex){
+                    throw new ExcepcionFrigorifico("Error al procesar el id del lote");
+                }
+
                 lote = FabricaLogica.getControladorDeposito().buscarLote(id);
 
                 if (lote != null) {
@@ -646,4 +652,39 @@ public class ControladorDeposito {
     }
 
     //endregion
+
+    @RequestMapping(value="/VerLote", method = RequestMethod.POST, params="action=Ver QR")
+    public ResponseEntity verQR(@RequestParam(value = "idLote", required = false) String idLote,  ModelMap modelMap){
+        try {
+            int id = 0;
+            Lote lote;
+
+            if (!idLote.isEmpty()){
+                try{
+                    id = Integer.parseInt(idLote);
+                }catch(Exception ex){
+                    throw new ExcepcionFrigorifico("Error al procesar el id del lote");
+                }
+
+                byte[] pdfBytes = FabricaLogica.getControladorDeposito().generarCodigoQRLote(id);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.parseMediaType("application/pdf"));
+                String nombreArchivo = "Lote" + id + ".pdf";
+                //headers.setContentDispositionFormData("inline", nombreArchivo);
+                headers.add("Content-Disposition", "inline;filename=" + nombreArchivo);
+                headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+                ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
+                return response;
+
+
+            } else{
+                modelMap.addAttribute("mensaje", "debe ingresar el id del lote");
+            }
+
+        } catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Hubo un error al cargar los datos del lote");
+        }
+        return null;
+    }
 }
