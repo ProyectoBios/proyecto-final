@@ -22,6 +22,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         AutorizacionInterceptor interceptor = new AutorizacionInterceptor();
-        //registry.addInterceptor(interceptor);
+        registry.addInterceptor(interceptor);
     }
 }

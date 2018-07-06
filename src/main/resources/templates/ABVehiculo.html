@@ -15,6 +15,14 @@
                 text-align: center !important;
             }
         }
+        @media screen and (max-width: 480px){
+            #marca, #modelo {
+                width: 100% !important;
+            }
+            body {
+                min-width: 400px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -36,37 +44,40 @@
             <h3>Mantenimiento de Vehículos</h3>
             <!-- Formulario con la Tabla -->
             <form action="#" th:action="@{/MantenimientoVehiculos}" th:object="${vehiculo}" name="ABVehiculo" method="post">
+                <div style="overflow-x: auto">
+                    <table width="100%">
+                        <tbody>
+                        <tr>
+                            <td id="col1" style="width: 15%">Matrícula:</td>
+                            <td id="col2" style="width: 50%"><input type="text" id="matricula" size="5" style="width: auto; display: inline" th:field="*{Matricula}" th:readonly="${matriculaSoloLectura}" />
+                                <input type="submit" name="action" value="Buscar" style="display: inline-block" th:disabled="${!botonBuscar}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Marca:</td>
+                            <td ><input type="text" id="marca" style="width: 60%" th:field="*{Marca}"/></td>
+                        </tr>
+                        <tr>
+                            <td>Modelo:</td>
+                            <!--  -->
+                            <td><input type="text" id="modelo" style="width: 60%" th:field="*{Modelo}" /></td>
+                        </tr>
+                        <tr>
+                            <td>Carga máx.(kgs):</td>
+                            <td><input type= "number" id="cargaMax" size="5" style="width: 30%; display: inline" th:field="*{CargaMax}" /></td>
+                        </tr>
 
-                <table width="100%">
-                    <tbody>
-                    <tr>
-                        <td style="width: 20%">Matrícula:</td>
-                        <td style="width: 70%"><input type="text" id="matricula" size="1" style="width: 30%" th:field="*{Matricula}" th:readonly="${matriculaSoloLectura}"/></td>
-                    </tr>
-                    <tr>
-                        <td>Marca:</td>
-                        <td><input type="text" id="marca" size="1" style="width: 60%" th:field="*{Marca}"/></td>
-                    </tr>
-                    <tr>
-                        <td>Modelo:</td>
-                        <!--  -->
-                        <td><input type="text" id="modelo" size="1" style="width: 60%" th:field="*{Modelo}"/></td>
-                    </tr>
-                    <tr>
-                        <td>Carga máx.:</td>
-                        <td><input type= "number" id="cargaMax" size="1" style="width: 30%" th:field="*{CargaMax}"/></td>
-                    </tr>
+                        <tr>
+                            <td colspan="2" id="botonera" >
+                                <input type="submit" name="action" value="Agregar" th:disabled="${!botonAgregar}"/>
+                                <input type="submit" name="action" value="Eliminar" th:disabled="${!botonEliminar}"/>
 
-                    <tr>
-                        <td colspan="2" id="botonera">
-                            <input type="submit" name="action" value="Agregar" th:disabled="${!botonAgregar}"/>
-                            <input type="submit" name="action" value="Eliminar" th:disabled="${!botonEliminar}"/>
-                            <input type="submit" name="action" value="Buscar" th:disabled="${!botonBuscar}"/>
-                            <input type="submit" name="action" value="Limpiar" />
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                                <input type="submit" name="action" value="Limpiar" />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
             </form>
 

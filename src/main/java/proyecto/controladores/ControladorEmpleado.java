@@ -276,6 +276,18 @@ public class ControladorEmpleado {
                 ABMBotonesNoEncontrado(modelMap);
                 return "ABVehiculo";
             }
+            /*if (vehiculo.getMatricula().isEmpty() || vehiculo.getMatricula() == null){
+                modelMap.addAttribute("mensaje","Error! la Matrícula no puede quedar vacía");
+            }
+            if (vehiculo.getCargaMax() == 0){
+                throw new ExcepcionFrigorifico("Error! la Carga debe ser mayor a cero");
+            }
+            if (vehiculo.getMarca().isEmpty()){
+                throw new ExcepcionFrigorifico("Error! la Marca no puede quedar vacía");
+            }
+            if(vehiculo.getModelo().isEmpty()){
+                throw new ExcepcionFrigorifico("Error! el Modelo no puede quedar vacío");
+            }*/
 
             FabricaLogica.getControladorEmpleados().altaVehiculo(vehiculo);
 
@@ -334,7 +346,7 @@ public class ControladorEmpleado {
         modelMap.addAttribute("botonEliminar", "false");
         modelMap.addAttribute("botonBuscar", "false");
         modelMap.addAttribute("ciSoloLectura", "true");
-        modelMap.addAttribute("matriculaSoloLectura", "true");
+        //modelMap.addAttribute("matriculaSoloLectura", "true");
     }
 
     private ArrayList<String> cargarErrores(BindingResult bindingResult) {

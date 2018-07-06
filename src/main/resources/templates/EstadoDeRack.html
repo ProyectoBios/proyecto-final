@@ -46,13 +46,10 @@
                                 <tr>
                                     <td style="width: 25%"><label>Seleccione un rack: </label></td>
                                     <td>
-                                        <select name="letraRacks">
+                                        <select style="display: inline; width: auto"  name="letraRacks">
                                             <option th:value="null">Rack</option>
                                             <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}"></option>
-                                        </select>
-                                    </td>
-                                    <td style="width: 60%">
-                                        <input type="submit" name="action" value="Seleccionar" />
+                                        </select> &nbsp; <input type="submit" name="action" value="Seleccionar" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -74,7 +71,7 @@
                     </form>
 
                     <form id="formVerLote" action="#" th:action="@{/VerLote/}" name="VerLote" method="post">
-
+                        <div style="overflow-x: auto">
                         <table id="espLote" style="display: none">
                            <thead>
                                <th style="width: 15%">Ubicación</th>
@@ -89,6 +86,7 @@
                             <input type="hidden" id="idVerLote" name="idLote" value=""/>
 
                         </table>
+                        </div>
                         <label th:text="${mensaje}"></label>
                     </form>
 
@@ -133,7 +131,6 @@
                 y.insertAdjacentHTML('afterbegin', '<input type="submit" name="action" value="Ver Lote"/>');
 
                 document.getElementById("idVerLote").value = lote.id;
-
                 /*]]>*/
             }
         </script>
