@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public interface IEmpleados {
     //region Empleados
+    boolean iniciarSesion(String ci, String pass) throws Exception;
     Empleado buscarEmpleado(String ci) throws Exception;
     void altaEmpleado(Empleado e) throws Exception;
     void bajaEmpleado(Empleado e) throws Exception;

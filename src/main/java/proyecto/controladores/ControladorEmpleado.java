@@ -40,7 +40,7 @@ public class ControladorEmpleado {
                 throw new ExcepcionFrigorifico("Credenciales inválidas, inténtelo denuevo.");
             }
 
-            Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula);
+            /*Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula);
             if (e == null) {
                 throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");
             } else if (contrasenia.equals(e.getContrasenia())) {
@@ -49,6 +49,13 @@ public class ControladorEmpleado {
                 return "index";
             } else {
                 throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");
+            }*/
+            if(FabricaLogica.getControladorEmpleados().iniciarSesion(cedula, contrasenia)){
+                session.setAttribute("usuarioLogueado", FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula));
+                response.sendRedirect(request.getContextPath() + "/Bienvenida");
+                return "index";
+            }else{
+                throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos");
             }
         } catch (ExcepcionFrigorifico ex) {
             modelMap.addAttribute("mensaje", ex.getMessage());

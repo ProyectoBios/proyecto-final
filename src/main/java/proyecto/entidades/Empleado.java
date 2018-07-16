@@ -48,8 +48,8 @@ public class Empleado {
     }
 
     public void setContrasenia(String contrasenia) throws ExcepcionFrigorifico{
-        if(contrasenia.length() > 30){
-            throw new ExcepcionFrigorifico("La contraseña no puede tener más de 30 caracteres.");
+        if(contrasenia.length() > 64){
+            throw new ExcepcionFrigorifico("La contraseña no puede tener más de 64 caracteres.");
         }
 
         this.contrasenia = contrasenia;

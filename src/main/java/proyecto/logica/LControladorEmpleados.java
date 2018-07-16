@@ -39,6 +39,18 @@ public class LControladorEmpleados implements IEmpleados{
     }
 
     @Override
+    public boolean iniciarSesion(String ci, String pass) throws Exception {
+        Empleado e = buscarEmpleado(ci);
+        if(e == null){
+            return false;
+        }
+
+        String passHasheada = getSha256(pass);
+
+        return (e.getContrasenia().equals(passHasheada));
+    }
+
+    @Override
     public Empleado buscarEmpleado(String ci) throws Exception {
         Empleado empleado = FabricaPersistencia.getControladorEmpleados().buscarEmpleado(ci);
         if(empleado != null && empleado.getRol().equals("repartidor")){
@@ -49,6 +61,7 @@ public class LControladorEmpleados implements IEmpleados{
 
     @Override
     public void altaEmpleado(Empleado e) throws Exception {
+        e.setContrasenia(getSha256(e.getContrasenia()));
         FabricaPersistencia.getControladorEmpleados().altaEmpleado(e);
     }
 
@@ -59,6 +72,11 @@ public class LControladorEmpleados implements IEmpleados{
 
     @Override
     public void modificarEmpleado(Empleado e) throws Exception {
+        String pass = buscarEmpleado(e.getCi()).getContrasenia();
+        if(!e.getContrasenia().equals(pass)){ //Si intenta modificar la password del empleado la hasheo
+            e.setContrasenia(getSha256(e.getContrasenia()));
+        }
+
         FabricaPersistencia.getControladorEmpleados().modificarEmpleado(e);
     }
 
