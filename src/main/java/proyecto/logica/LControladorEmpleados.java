@@ -1,10 +1,12 @@
 package proyecto.logica;
 
 import proyecto.entidades.Empleado;
+import proyecto.entidades.ExcepcionFrigorifico;
 import proyecto.entidades.Vehiculo;
 import proyecto.persistencia.FabricaPersistencia;
 
 import java.util.ArrayList;
+import java.security.MessageDigest;
 
 public class LControladorEmpleados implements IEmpleados{
     private static LControladorEmpleados instancia = null;
@@ -17,6 +19,24 @@ public class LControladorEmpleados implements IEmpleados{
     }
 
     private LControladorEmpleados(){}
+
+    //SHA 256
+    private static String getSha256(String value) throws ExcepcionFrigorifico{
+        try{
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(value.getBytes("UTF-8"));
+            return bytesToHex(md.digest());
+        } catch(Exception ex){
+            throw new ExcepcionFrigorifico("Error encriptando la contraseña.");
+        }
+    }
+    private static String bytesToHex(byte[] bytes) {
+        StringBuffer result = new StringBuffer();
+        for (byte b : bytes) {
+            result.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+        }
+        return result.toString();
+    }
 
     @Override
     public Empleado buscarEmpleado(String ci) throws Exception {

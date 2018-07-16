@@ -563,6 +563,7 @@ public class ControladorPedidos {
 
             if(((ArrayList<OrdenPedido>) session.getAttribute("pedidosPicking")).size() == 0){
                 session.removeAttribute("pedidosPicking");
+                session.removeAttribute("listaPicking");
                 session.setAttribute("mensaje", "Pedidos preparados con éxito.");
                 response.sendRedirect(request.getContextPath() + "/Bienvenida");
                 return "Bienvenida";
