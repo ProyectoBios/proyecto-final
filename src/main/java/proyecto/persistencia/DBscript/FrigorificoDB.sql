@@ -56,7 +56,7 @@ Create Table Cliente(
 Create Table Empleado(
 	ci varchar(8) primary key,
     nombre varchar(30) not null,
-    contrasenia varchar(30) not null,
+    contrasenia varchar(64) not null,
     fechaNac date not null,
     fechaContratacion date not null,
     telefono varchar(10) not null,
@@ -160,10 +160,10 @@ INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 10, 3, 'A', 2, 2, 0);
 INSERT INTO Cliente VALUES('Disco', '1234567890', 'disco@disco.com');
 INSERT INTO Cliente VALUES('Carniceria Pepe', '0987654321', 'pepe@gmail.com');
 
-INSERT INTO Empleado VALUES('12345678', 'Pedro Rodriguez','1234' , '19840324', '20171009', '091789456', 'repartidor');
-INSERT INTO Empleado VALUES('32165498', 'Pepe Martin','abcd' ,'19800515', '20160520', '092879654', 'operador');
-INSERT INTO Empleado VALUES('36328662', 'Alvaro Martinez','1234' ,'19840329', '20160520', '092879654', 'gerente');
-INSERT INTO Empleado VALUES('48550958', 'Diego Silva','1234' , '19971214', '20171009', '098109048', 'funcionario');
+INSERT INTO Empleado VALUES('12345678', 'Pedro Rodriguez','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' , '19840324', '20171009', '091789456', 'repartidor');
+INSERT INTO Empleado VALUES('32165498', 'Pepe Martin','88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589' ,'19800515', '20160520', '092879654', 'operador');
+INSERT INTO Empleado VALUES('36328662', 'Alvaro Martinez','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' ,'19840329', '20160520', '092879654', 'gerente');
+INSERT INTO Empleado VALUES('48550958', 'Diego Silva','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' , '19971214', '20171009', '098109048', 'funcionario');
 
 INSERT INTO Repartidor VALUES('12345678', '20220814');
 
@@ -291,7 +291,7 @@ BEGIN
  
  END//
  
- Create Procedure AltaRepartidor(pCi varchar(8), pNombre varchar(30), pContrasenia varchar(30), pFechaNac date, pFechaCont date, pFechaVencLib date, pTel varchar(10))
+ Create Procedure AltaRepartidor(pCi varchar(8), pNombre varchar(30), pContrasenia varchar(64), pFechaNac date, pFechaCont date, pFechaVencLib date, pTel varchar(10))
  BEGIN
 	DECLARE transaccionActiva BIT;
 

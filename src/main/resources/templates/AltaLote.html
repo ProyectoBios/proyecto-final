@@ -8,6 +8,19 @@
     <link rel="stylesheet" th:href="@{assets/css/main.css}" />
     <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
     <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+    <style>
+        @media only screen and (max-width: 480px){
+            input[type="text"],
+            input[type="number"],
+            input[type="date"],
+            select{
+                width: 100% !important;
+            }
+            input[type="submit"]{
+                text-align: left !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -33,7 +46,7 @@
                 <table width="100%">
                     <tbody>
                     <tr>
-                        <td>Fecha Ingreso:</td>
+                        <td style="width: 25%;">Fecha Ingreso:</td>
                         <td>
                             <input type="text" th:field="*{fechaIngreso}" readonly="readonly" style="width: 30%"/>
                         </td>
@@ -87,10 +100,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="text-align: right">
-                            <input type="submit" name="action" value="Agregar" />
+                        <td colspan="2">
+                            <input id="btnAgregar" type="submit" name="action" value="Agregar" />
 
-                            <input type="submit" name="action" value="Limpiar" />
+                            <input id="btnLimpiar" type="submit" name="action" value="Limpiar" />
                         </td>
                     </tr>
                     </tbody>
@@ -103,9 +116,6 @@
 
     </div>
 </section>
-
-
-
 
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer">

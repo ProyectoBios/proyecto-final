@@ -8,6 +8,22 @@
     <link rel="stylesheet" th:href="@{assets/css/main.css}" />
     <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
     <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+
+    <style>
+        @media only screen and (max-width: 480px){
+            input[type=text],
+            input[type=number],
+            input[type=tel],
+            input[type=date],
+            input[type=password],
+            select{
+                width: 100% !important;
+            }
+            #btnIngresar{
+                margin-right: 0% !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -31,24 +47,24 @@
             <form action="#" th:action="@{/}" method="post">
                 <table>
                     <tr>
-                        <td style="width: 20%">C.I.: (Sin puntos ni guiones)</td>
+                        <td id="fstCol" style="width: 20%">C.I.:</td>
                         <td>
-                            <input type="text" name="cedula" placeholder="Cédula" style="width: 45%"/>
+                            <input type="text" name="cedula" placeholder="(Sin puntos ni guiones)" style="width: 50%"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Contraseña: </td>
-                        <td><input type="password" name="contrasenia" placeholder="Contraseña" style="width: 45%"/></td>
+                        <td><input type="password" name="contrasenia" placeholder="Contraseña" style="width: 50%"/></td>
                     </tr>
                     <tr>
+                        <td></td>
                         <td colspan="2">
-                            <p style="text-align: right; width: 56%">
-                                <input type="submit" name="action" value="Ingresar"/>
-                            </p>
+                            <input id="btnIngresar" type="submit" name="action" value="Ingresar" style="float: right; margin-right: 50%" />
                         </td>
 
                     </tr>
                     <tr>
+                        <!--<td><span></span></td>-->
                         <td colspan="2">
                             <label th:text="${mensaje}"></label>
                         </td>

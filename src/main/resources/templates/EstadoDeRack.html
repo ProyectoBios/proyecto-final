@@ -16,6 +16,14 @@
         .bordes tbody tr td {
             border: 1px solid;
         }
+        @media only screen and (max-width: 480px){
+            select{
+                width: 100% !important;
+            }
+            #btnSeleccionar{
+                float: right !important;
+            }
+        }
     </style>
     </head>
     <body>
@@ -46,10 +54,10 @@
                                 <tr>
                                     <td style="width: 25%"><label>Seleccione un rack: </label></td>
                                     <td>
-                                        <select style="display: inline; width: auto"  name="letraRacks">
+                                        <select style="display: inline; width: 30%"  name="letraRacks">
                                             <option th:value="null">Rack</option>
                                             <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}"></option>
-                                        </select> &nbsp; <input type="submit" name="action" value="Seleccionar" />
+                                        </select> &nbsp; <input id="btnSeleccionar" type="submit" name="action" value="Seleccionar" />
                                     </td>
                                 </tr>
                             </tbody>

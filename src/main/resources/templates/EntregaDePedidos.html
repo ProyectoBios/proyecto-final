@@ -9,6 +9,16 @@
     <link rel="stylesheet" th:href="@{assets/css/main.css}" />
     <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
     <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+    <style>
+        @media only screen and (max-width: 480px){
+            #botones, select, textarea{
+                width: 100% !important;
+            }
+            #btnSelecPedido, #btnSelecViaje{
+                float: right !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -31,39 +41,36 @@
                 <table id="viajes">
                     <tbody>
                     <tr>
-                        <td style="width: 10%; font-weight: bold">Viajes:</td>
+                        <td style="width: 12%; font-weight: bold">ID Viaje:</td>
                         <td>
-                            <select name="viajes">
+                            <select style="display: inline-block; width: 30%" name="viajes">
                                 <option th:value="-1">Seleccione viaje</option>
                                 <option th:each=" v : ${session.viajes}" th:value="${v.id}" th:text="${v.id}"
                                         th:selected="${v.id == session?.viaje?.id}"></option>
                             </select>
+                            <button id="btnSelecViaje" type="submit" name="action" value="Seleccionar Viaje">Seleccionar</button>
                         </td>
-                        <td style="width: 50%">
-                            <!-- <input type="submit" name="action" value="Seleccionar Viaje" /> -->
-                            <button type="submit" name="action" value="Seleccionar Viaje">Seleccionar</button>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label th:if="${session.viaje != null}"
+                                   th:text="${'Vehiculo: ' + session.viaje.vehiculo.marca + ' ' + session.viaje.vehiculo.modelo + ' ' + session.viaje.vehiculo.matricula}"></label>
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
-                <label th:if="${session.viaje != null}"
-                       th:text="${'Vehiculo: ' + session.viaje.vehiculo.marca + ' ' + session.viaje.vehiculo.modelo + ' ' + session.viaje.vehiculo.matricula}"></label>
-
                 <table th:if="${mostrarDdlPedidos}" id="pedidos">
                     <tbody>
                     <tr>
-                        <td style="width: 10%; font-weight: bold">Pedidos:</td>
+                        <td style="width: 12%; font-weight: bold">ID Pedido:</td>
                         <td>
-                            <select name="pedidos">
+                            <select style="display: inline-block; width: 30%" name="pedidos">
                                 <option th:value="-1">Seleccione Pedido</option>
                                 <option th:each="p : ${session.viaje.pedidos}" th:value="${p.id}" th:text="${p.id}"
                                         th:selected="${p.id == session?.pedido?.id}"></option>
                             </select>
-                        </td>
-                        <td style="width: 50%">
-                            <!--<input type="submit" name="action" value="Seleccionar Pedido" /> -->
-                            <button type="submit" name="action" value="Seleccionar Pedido">Seleccionar</button>
+                            <button id="btnSelecPedido" style="display: inline;" type="submit" name="action" value="Seleccionar Pedido">Seleccionar</button>
                         </td>
                     </tr>
                     </tbody>
@@ -72,7 +79,7 @@
                 <table id="VerPedido" th:if="${tablaPedido}" style="display: table"> <!-- display: none -->
                     <tbody>
                         <tr>
-                            <td style="width: 10%; font-weight: bold"># ID</td>
+                            <td style="width: 15%; font-weight: bold"># ID</td>
                             <td style="font-weight: bold">Dirección de Envío</td>
                         </tr>
                         <tr>
@@ -88,16 +95,16 @@
                             <td th:text="${'$' + session.pedido.total}"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><textarea rows="2" maxlength="250" style="width: 80%"
+                            <td colspan="2"><textarea rows="2" maxlength="250" style="width: 60%"
                                                       name="Descripcion Entrega"></textarea> <br/>
-                                <p style="text-align: center; width: 80%">
+                                <p id="botones" style="text-align: center; width: 60%">
                                     <button class="btnEntrga" type="submit" name="action" value="Entregado">
-                                        <img th:src="@{assets/css/images/entregado.svg}" heigh="50px" width="50px"
+                                        <img th:src="@{assets/css/images/entregado.png}" th:srcset="@{assets/css/images/entregado.svg}" heigh="50px" width="50px"
                                              alt="Entregado"/>
                                     </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                                     <button class="btnEntrga" type="submit" name="action" value="Cancelado">
-                                        <img th:src="@{assets/css/images/cancelado.svg}" heigh="50px" width="50px"
+                                        <img th:src="@{assets/css/images/cancelado.png}" th:srcset="@{assets/css/images/cancelado.svg}" heigh="50px" width="50px"
                                              alt="Cancelado"/>
                                     </button>
 
