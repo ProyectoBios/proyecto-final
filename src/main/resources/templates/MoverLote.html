@@ -192,7 +192,9 @@
 
                 var celda = sessionStorage.getItem('ubicacionDestino');
                 if(celda != null){
-                    document.getElementById(celda).style.backgroundColor = 'white';
+                    if(document.getElementById(celda) != null){
+                        document.getElementById(celda).style.backgroundColor = 'white';
+                    }
                 }
 
                 var id = i + '-' + j;
