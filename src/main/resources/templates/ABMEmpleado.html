@@ -100,11 +100,27 @@
                             <input type="submit" name="action" value="Agregar" th:disabled="${!botonAgregar}"/>
                             <input type="submit" name="action" value="Eliminar" th:disabled="${!botonEliminar}"/>
                             <input type="submit" name="action" value="Modificar" th:disabled="${!botonModificar}"/>
+                            <input type="submit" name="action" value="Listar" />
                             <input type="submit" name="action" value="Limpiar" />
                         </td>
                     </tr>
                     </tbody>
                 </table>
+
+                <div style="overflow-x: auto">
+                    <table th:if="${tablaListado}">
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Rol</th>
+                        <th></th>
+                        <tr th:each="empleado : ${empelados}">
+                            <td th:text="${empleado.Ci}">48550958</td>
+                            <td th:text="${empleado.Nombre}">Diego Silva</td>
+                            <td th:text="${empleado.Rol}">Funcionario</td>
+                            <td><input type="submit" value="Ver" /></td>
+                        </tr>
+                    </table>
+                </div>
 
             </form>
 
