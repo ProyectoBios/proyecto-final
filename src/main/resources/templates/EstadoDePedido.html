@@ -48,10 +48,7 @@
 
         <!-- Content -->
         <div class="content">
-            <!--<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>-->
             <h3>Estado de Pedido</h3>
-
-            <!-- Formulario con la Tabla -->
             <form action="#" th:action="@{/EstadoDePedido}" method="post">
                 <table id="buscarCliente">
                     <tr>
@@ -67,6 +64,7 @@
             </form>
 
                 <!-- Tabla oculta con nombres de los Clientes que coincidan con la búsqueda -->
+                <div style="overflow-x: auto">
                 <table class="grilla" th:if="${tablaClientes}" style="display : table" id="hiddenClienteTable">
                     <thead>
                     <tr>
@@ -91,11 +89,13 @@
                     </tbody>
 
                 </table>
+                </div>
 
+                <div style="overflow-x: auto">
                 <table class="grilla" th:if="${tablaPedidos}" style="display: table" id="hiddenPedidos">
                     <thead>
                     <tr>
-                        <th>Nombre Cliente: </th>
+                        <th style="width: 40%;">Nombre Cliente: </th>
                         <th>ID Pedido: </th>
                         <th>Estado: </th>
                         <th>Fecha y hora de Actualización: </th>
@@ -118,6 +118,7 @@
                     </tbody>
 
                 </table>
+                </div>
 
                 <!-- Tabla con Contacto, Dirección de envío, Fecha ingreso -->
                 <table class="linea" th:if="${detallePedido}" id="detallePedido">
