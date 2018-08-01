@@ -367,6 +367,9 @@ public class ControladorPedidos {
     @RequestMapping(value="/RealizarPicking", method = RequestMethod.POST, params = "action=Seleccionar")
     public String seleccionarPedidosPicking(@RequestParam(value="pedidos", required = false)int[] pedidos, ModelMap modelMap, HttpSession session){
         try {
+            if(pedidos.length == 0 || pedidos.length > 5){
+                throw new ExcepcionFrigorifico("Debe seleccionar al menos 1 pedido y no más de 5.");
+            }
             ArrayList<OrdenPedido> ordenesPedido = new ArrayList<>();
             for(int i=0; i<pedidos.length; i++){
                 OrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);

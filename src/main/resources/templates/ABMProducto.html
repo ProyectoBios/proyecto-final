@@ -106,6 +106,18 @@
 							  </tbody>
 							</table>
 
+							<table th:if="${tablaListaProductos}">
+								<th>ID</th>
+								<th>Nombre</th>
+								<tbody>
+									<tr th:each="prod : ${productos}">
+										<td th:text="${prod.Id}">id</td>
+										<td th:text="${prod.Nombre}">nombre</td>
+										<td><a th:href="@{'/ABMProducto/' + ${prod.Id}}">Ver</a></td>
+									</tr>
+								</tbody>
+							</table>
+
 						</form>
 					<label th:text="${mensaje}"></label>
 					</div>
