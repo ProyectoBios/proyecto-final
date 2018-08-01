@@ -21,6 +21,14 @@
                 float: right !important;
             }
         }
+        @media only screen and (max-width: 1200px){
+            #cantUnidades{
+                width: 100% !important;
+            }
+            #btnAgregarProd{
+                float: right !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -84,27 +92,25 @@
                 </tbody>
             </table>
             </div>
-
+            <!-- TODO: Hacer la tabla responsive -->
+            <div style="overflow-x: auto">
             <table th:if="${tablaAltaCliente}" id="altaCliente">
                 <form action="#" th:action="@{/AltaOrdenDePedido}" method="post" th:object="${cliente}">
                         <thead>
-                        <th>Alta Cliente</th>
+                        <th colspan="2" style="width: 50%;">Alta Cliente</th>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>Nombre: </td>
-                            <td><input type="text" th:field="*{Nombre}"/></td>
-                            <td>Teléfono: </td>
-                            <td><input type="number" th:field="*{Telefono}"/></td>
+                            <td style="width: 50%;">Nombre: <input type="text" th:field="*{Nombre}" style="display: inline-block;"/></td>
+                            <td style="width: 50%;">Teléfono: <input type="number" th:field="*{Telefono}" style="display: inline-block;"/></td>
                         </tr>
                         <tr>
-                            <td>E-mail: </td>
-                            <td><input type="text" th:field="*{Correo}"/></td>
-                            <td colspan="2" align="right"><input type="submit" name="action" value="Agregar Cliente" /></td>
+                            <td colspan="2">E-mail: <input type="text" th:field="*{Correo}" style="display: inline-block; width: auto;"/> <input type="submit" name="action" value="Agregar" style="display: inline-block;"/></td>
                         </tr>
                         </tbody>
                 </form>
             </table>
+            </div>
 
             <table th:if="${tablaProducto}" id="seleccionarCliente">
                 <tbody>
@@ -119,9 +125,9 @@
                     <form action="#" th:action="@{/AltaOrdenDePedido}" method="post">
                         <tbody>
                             <tr>
-                                <td style="width: 10%">Producto: </td>
+                                <td style="width: 5%">Producto: </td>
 
-                                <td>
+                                <td style="width: 10%">
                                     <div class="dropdown">
                                         <button type="button" onclick="desplegarDDL()" class="dropbtn flechaAbajo" id="btnSeleccionar">Seleccionar</button>
                                         <div id="desplegable" class="dropdown-content">
@@ -132,15 +138,14 @@
                                     <input type="hidden" id="idDropdown" name="producto"/>
                                 </td>
 
-                                <td style="width: 15%">Cantidad Unidades: </td>
-                                <td style="width: 15%"> <input type="number" size="1" name="cantUnidades"/> </td>
-                                <td style="width: 10%"> <input type="submit" name="action" value="Agregar" /> </td>
+                                <td style="width: 10%">Cantidad: </td>
+                                <td style="width: auto"> <input type="number" size="2" id="cantUnidades" name="cantUnidades" style="display: inline-block; width: 30%;"/> <input type="submit" id="btnAgregarProd" name="action" value="Agregar" /></td>
                             </tr>
                         </tbody>
                     </form>
                 </table>
             </div>
-
+            <div style="overflow-x: auto">
             <table th:if="${tablaProducto}" class="grilla" id="desplegarLineas">
                 <tbody>
                     <tr>
@@ -161,13 +166,14 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
 
             <label th:text="${mensajeStock}"></label>
 
             <table th:if="${tablaProducto}" id="confirmacionPedido">
                 <form action="#" th:action="@{/AltaOrdenDePedido}" method="post">
                     <tbody>
-                        <tr><td> </td> <td><label th:text="${'Subtotal: $' + session.orden.Subtotal + ', Impuestos: $' + session.orden.Impuestos + ', Total: $' + session.orden.Total}"></label></td></tr>
+                        <tr><td colspan="2"><label th:text="${'Subtotal: $' + session.orden.Subtotal + ', Impuestos: $' + session.orden.Impuestos + ', Total: $' + session.orden.Total}"></label> </td></tr>
                         <tr><td style="width: 25%">Dirección de envío:</td> <td><input type="text" name="direccionEnvio"/></td></tr>
                         <tr><td>Contacto: </td><td><input type="text" name="contacto"/></td></tr>
                         <tr style="text-align: right"><td colspan="2"><input type="submit" name="action" value="Finalizar" align="right" /> &nbsp;<input type="submit" name="action" value="Limpiar" align="right" /></td>
