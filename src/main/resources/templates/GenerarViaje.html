@@ -9,6 +9,13 @@
     <link rel="stylesheet" th:href="@{assets/css/main.css}" />
     <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
     <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
+    <style>
+        @media only screen and (max-width: 480px){
+            select {
+                width: 100% !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -54,7 +61,7 @@
                 </table>
 
                 <div style="overflow-x : auto;">
-                <table>
+                <table th:if="${tablaPedidos}">
                     <thead>
                         <th>ID</th>
                         <th>Fecha</th>

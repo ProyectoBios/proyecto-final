@@ -20,7 +20,16 @@ public class ControladorEntregas {
         try{
             modelMap.addAttribute("repartidores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("repartidor"));
             modelMap.addAttribute("vehiculos", FabricaLogica.getControladorEmpleados().listarVehiculos());
-            modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("preparado"));
+            ArrayList<OrdenPedido> pedidos = FabricaLogica.getControladorPedidos().listarPedidosXEstado("preparado");
+
+            if (pedidos.size() > 0){
+                modelMap.addAttribute("pedidos", pedidos);
+                modelMap.addAttribute("tablaPedidos", true);
+            } else {
+                modelMap.addAttribute("mensaje", "No hay pedidos pendientes para su distribución");
+            }
+
+
             return "GenerarViaje";
         }catch (Exception ex){
             modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al cargar la pagina");

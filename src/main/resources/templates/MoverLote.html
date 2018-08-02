@@ -16,6 +16,14 @@
             .bordes tbody tr td {
                 border: 1px solid;
             }
+            @media only screen and (max-width: 480px){
+                #seleccionar, #seleccionar2{
+                    float: right !important;
+                }
+                select{
+                    width: 100% !important;
+                }
+            }
         </style>
     </head>
     <body>
@@ -46,13 +54,10 @@
                                 <tr>
                                     <td style="width: 25%"><label>Seleccione rack Origen: </label></td>
                                     <td>
-                                        <select name="letraRacks">
+                                        <select name="letraRacks" style="display: inline-block; width: 20%;">
                                             <option th:value="null">Rack</option>
                                             <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}"></option>
-                                        </select>
-                                    </td>
-                                    <td style="width: 60%">
-                                        <input id="seleccionar" type="submit" name="action" value="Seleccionar" />
+                                        </select> <input id="seleccionar" type="submit" name="action" value="Seleccionar" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -98,13 +103,10 @@
                                 <tr>
                                     <td style="width: 25%"><label>Seleccione rack Destino: </label></td>
                                     <td>
-                                        <select name="letraRacks2">
+                                        <select name="letraRacks2" style="display: inline-block; width: 20%;">
                                             <option th:value="null">Rack</option>
                                             <option th:each="r : ${session.racks}" th:value="${r.letra}" th:text="${r.letra}"></option>
-                                        </select>
-                                    </td>
-                                    <td style="width: 60%">
-                                        <input id="seleccionar2" type="submit" name="action" value="Seleccionar Destino" />
+                                        </select> <input id="seleccionar2" type="submit" name="action" value="Seleccionar" />
                                     </td>
                                 </tr>
                             </tbody>
