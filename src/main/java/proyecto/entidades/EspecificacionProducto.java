@@ -88,6 +88,6 @@ public class EspecificacionProducto {
     }
 
     public EspecificacionProducto() {
-        this(0, "N/D", 0, 0, 0, new ArrayList<Precio>());
+        this(-1, "N/D", 0, 0, 0, new ArrayList<Precio>());
     }
 }

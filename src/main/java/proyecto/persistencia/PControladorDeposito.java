@@ -189,6 +189,25 @@ class PControladorDeposito implements IPDeposito{
         }
     }
 
+    @Override
+    public ArrayList<EspecificacionProducto> buscarProductosXNombre(String nombre) throws Exception {
+        try(Connection con = Conexion.AbrirConexion();
+            CallableStatement consulta = con.prepareCall("{CALL BuscarProductosXNombre(?)}")){
+
+            consulta.setString(1, nombre);
+            ResultSet resultadoConsulta = consulta.executeQuery();
+            ArrayList<EspecificacionProducto> productos = new ArrayList<EspecificacionProducto>();
+            EspecificacionProducto prod = null;
+            while(resultadoConsulta.next()){
+                prod = new EspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), buscarHistorico(resultadoConsulta.getInt("ID")));
+                productos.add(prod);
+            }
+            return productos;
+        }catch(Exception ex){
+            throw ex;
+        }
+    }
+
     //endregion
 
     //region Rack

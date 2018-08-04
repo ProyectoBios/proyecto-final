@@ -5,7 +5,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
-	<link rel="stylesheet" th:href="@{assets/css/main.css}" />
+	<link rel="stylesheet" th:href="@{/assets/css/main.css}" />
 	<!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
 	<!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
 	<style>
@@ -46,10 +46,10 @@
 								<tr>
 								  <td style="width: 20%">ID:</td>
 								  <td>
-									  <input th:if="${producto.Codigo != 0 and codigoBloqueado}"  type="number" th:field ="*{Codigo}" readonly="readonly" id="id" size="1" style="width: 30%; cursor: not-allowed; display: inline-block;"/>
-									  <input th:if="${producto.Codigo != 0 and !codigoBloqueado}" type="number" th:field ="*{Codigo}" size="1" style="width: 30%; display: inline-block;"/>
-									  <input th:if="${producto.Codigo == 0 and codigoBloqueado}"  type="number" name="Codigo" placeholder="" readonly="readonly" size="1" style="width: 30%; cursor: not-allowed; display: inline-block;"/>
-									  <input th:if="${producto.Codigo == 0 and !codigoBloqueado}" type="number" name="Codigo" placeholder="" size="1" style="width: 30%; display: inline-block;" />
+									  <input th:if="${producto.Codigo != -1 and codigoBloqueado}"  type="number" th:field ="*{Codigo}" readonly="readonly" id="id" size="1" style="width: 30%; cursor: not-allowed; display: inline-block;"/>
+									  <input th:if="${producto.Codigo != -1 and !codigoBloqueado}" type="number" th:field ="*{Codigo}" size="1" style="width: 30%; display: inline-block;"/>
+									  <input th:if="${producto.Codigo == -1 and codigoBloqueado}"  type="number" name="Codigo" placeholder="" readonly="readonly" size="1" style="width: 30%; cursor: not-allowed; display: inline-block;"/>
+									  <input th:if="${producto.Codigo == -1 and !codigoBloqueado}" type="number" name="Codigo" placeholder="" size="1" style="width: 30%; display: inline-block;" />
 									  <input th:if="${buscarHabilitado}" id="btnBuscar" type="submit" name="action" value="Buscar" />
 									  <input th:if="${!buscarHabilitado}" id="btnBuscar" type="submit" name="action" value="Buscar" disabled="disabled" />
 								  </td>
@@ -107,15 +107,15 @@
 							</table>
 
 							<table th:if="${tablaListaProductos}">
-								<th>ID</th>
-								<th>Nombre</th>
-								<tbody>
-									<tr th:each="prod : ${productos}">
-										<td th:text="${prod.Id}">id</td>
-										<td th:text="${prod.Nombre}">nombre</td>
-										<td><a th:href="@{'/ABMProducto/' + ${prod.Id}}">Ver</a></td>
-									</tr>
-								</tbody>
+							<th>ID</th>
+							<th>Nombre</th>
+							<tbody>
+							<tr th:each="prod : ${productos}">
+								<td th:text="${prod.Codigo}">id</td>
+								<td th:text="${prod.Nombre}">nombre</td>
+								<td><a th:href="@{'/ABMProducto/' + ${prod.Codigo}}">Ver</a></td>
+							</tr>
+							</tbody>
 							</table>
 
 						</form>

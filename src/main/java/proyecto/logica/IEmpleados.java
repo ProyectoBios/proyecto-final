@@ -14,6 +14,7 @@ public interface IEmpleados {
     void bajaEmpleado(Empleado e) throws Exception;
     void modificarEmpleado(Empleado e) throws Exception;
     ArrayList<Empleado> listarEmpleadosXRol(String rol) throws Exception;
+    ArrayList<Empleado> listarEmpleados() throws Exception;
     //endregion
 
     //region Vehiculos

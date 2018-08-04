@@ -86,6 +86,16 @@ public class LControladorEmpleados implements IEmpleados{
     }
 
     @Override
+    public ArrayList<Empleado> listarEmpleados() throws Exception {
+        ArrayList<Empleado> resultado = listarEmpleadosXRol("operador");
+        resultado.addAll(listarEmpleadosXRol("funcionario"));
+        resultado.addAll(listarEmpleadosXRol("repartidor"));
+        resultado.addAll(listarEmpleadosXRol("gerente"));
+
+        return resultado;
+    }
+
+    @Override
     public Vehiculo buscarVehiculo(String matricula) throws Exception {
         return FabricaPersistencia.getControladorEmpleados().buscarVehiculo(matricula);
     }

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
-    <link rel="stylesheet" th:href="@{assets/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}" />
     <!--[if lte IE 8]><link rel="stylesheet" th:href="@{assets/css/ie8.css}" /><![endif]-->
     <!--[if lte IE 9]><link rel="stylesheet" th:href="@{assets/css/ie9.css}" /><![endif]-->
 
@@ -113,11 +113,11 @@
                         <th>Nombre</th>
                         <th>Rol</th>
                         <th></th>
-                        <tr th:each="empleado : ${empelados}">
-                            <td th:text="${empleado.Ci}">48550958</td>
-                            <td th:text="${empleado.Nombre}">Diego Silva</td>
-                            <td th:text="${empleado.Rol}">Funcionario</td>
-                            <td><input type="submit" value="Ver" /></td>
+                        <tr th:each="empleado : ${empleados}">
+                            <td th:text="${empleado.Ci}"></td>
+                            <td th:text="${empleado.Nombre}"></td>
+                            <td th:text="${empleado.Rol}"></td>
+                            <td><a th:href="@{'/MantenimientoEmpleados/' + ${empleado.Ci}}">Ver</a></td>
                         </tr>
                     </table>
                 </div>

@@ -12,6 +12,7 @@ public interface IPDeposito {
     public EspecificacionProducto buscarProducto(int codigo)throws Exception;
     public ArrayList<Lote> buscarStock(EspecificacionProducto ep) throws Exception;
     public ArrayList<EspecificacionProducto> listarProductos() throws Exception;
+    public ArrayList<EspecificacionProducto> buscarProductosXNombre(String nombre) throws Exception;
     //endregion
     //region Rack
     public Rack buscarRack(String letra) throws Exception;

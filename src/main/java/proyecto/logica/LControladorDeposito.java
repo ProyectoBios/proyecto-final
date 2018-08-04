@@ -32,7 +32,7 @@ class LControladorDeposito implements  IDeposito {
             throw new ExcepcionFrigorifico("¡ERROR! Producto nulo");
         }
 
-        if(ep.getCodigo() < 0){
+        if(ep.getCodigo() < -1){
             throw new ExcepcionFrigorifico("¡ERROR! El codigo no puede ser menor que 0");
         }
 
@@ -46,6 +46,18 @@ class LControladorDeposito implements  IDeposito {
 
         if(ep.getStockCritico() < 0){
             throw new ExcepcionFrigorifico("¡ERROR! El stock critico no puede ser menor que 0");
+        }
+
+        if(ep.getMinStock() > ep.getMaxStock()){
+            throw new ExcepcionFrigorifico("¡ERROR! El stock mínimo debe ser menor que el stock máximo.");
+        }
+
+        if(ep.getStockCritico() > ep.getMinStock()){
+            throw new ExcepcionFrigorifico("¡ERROR! El stock crítico debe ser menor que el stock mínimo.");
+        }
+
+        if(ep.getStockCritico() > ep.getMaxStock()){
+            throw new ExcepcionFrigorifico("¡ERROR! El stock máximo debe ser menor que el stock mínimo.");
         }
 
         if(ep.getNombre().length() > 40){
@@ -98,6 +110,14 @@ class LControladorDeposito implements  IDeposito {
     @Override
     public ArrayList<EspecificacionProducto> listarProductos() throws Exception {
         return FabricaPersistencia.getControladorDeposito().listarProductos();
+    }
+
+    @Override
+    public ArrayList<EspecificacionProducto> buscarProductosXNombre(String nombre) throws Exception {
+        if(nombre.length() > 40){
+            throw new ExcepcionFrigorifico("El nombre no puede tener más de 40 caracteres.");
+        }
+        return FabricaPersistencia.getControladorDeposito().buscarProductosXNombre(nombre);
     }
 
     //endregion

@@ -331,7 +331,7 @@ BEGIN
     COMMIT;
  END//
  
- Create Procedure ModificarRepartidor(pCi varchar(8), pNombre varchar(30), pContrasenia varchar(30), pFechaNac date, pFechaContratacion date, pFechaVencLib date, pTel varchar(10))
+ Create Procedure ModificarRepartidor(pCi varchar(8), pNombre varchar(30), pContrasenia varchar(64), pFechaNac date, pFechaContratacion date, pFechaVencLib date, pTel varchar(10))
  BEGIN
 	DECLARE transaccionActiva BIT;
 
@@ -360,6 +360,13 @@ BEGIN
 		DELETE FROM Vehiculo WHERE matricula = pMatricula;
     END IF;    
     
+ END//
+ 
+ Create Procedure BuscarProductosXNombre(pNombre varchar(40))
+ BEGIN
+	SELECT * 
+    FROM EspecificacionProductop
+    WHERE lower(nombre) LIKE lower(concat('%', trim(pNombre), '%'));
  END
  
  

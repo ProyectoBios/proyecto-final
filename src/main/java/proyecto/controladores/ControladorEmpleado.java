@@ -1,5 +1,6 @@
 package proyecto.controladores;
 
+import org.jboss.logging.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -174,6 +175,44 @@ public class ControladorEmpleado {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Baja de empleado con éxito.")));
             modelMap.addAttribute("empleado", new Empleado());
             ABMBotonesPorDefecto(modelMap);
+        } catch (ExcepcionFrigorifico ex) {
+            ABMBotonesPorDefecto(modelMap);
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
+        } catch (Exception ex) {
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al dar de baja el empleado")));
+            ABMBotonesPorDefecto(modelMap);
+        }
+
+        return "ABMEmpleado";
+    }
+
+    @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.POST, params = "action=Listar")
+    public String listarEmpleados(ModelMap modelMap) {
+        try {
+            modelMap.addAttribute("empleados", FabricaLogica.getControladorEmpleados().listarEmpleados());
+            modelMap.addAttribute("tablaListado", "true");
+            modelMap.addAttribute("empleado", new Empleado());
+            ABMBotonesPorDefecto(modelMap);
+        } catch (ExcepcionFrigorifico ex) {
+            ABMBotonesPorDefecto(modelMap);
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
+        } catch (Exception ex) {
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al listar los empleados.")));
+            ABMBotonesPorDefecto(modelMap);
+        }
+
+        return "ABMEmpleado";
+    }
+
+    @RequestMapping(value = "/MantenimientoEmpleados/{cedula}", method = RequestMethod.GET)
+    public String buscarEmpleadoXCedula(@PathVariable String cedula, ModelMap modelMap) {
+        try {
+            Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula);
+            modelMap.addAttribute("empleado", e);
+            if(e instanceof Repartidor){
+                modelMap.addAttribute("vencLibreta", ((Repartidor) e).getVencLibreta());
+            }
+            ABMBotonesEncontrado(modelMap);
         } catch (ExcepcionFrigorifico ex) {
             ABMBotonesPorDefecto(modelMap);
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));

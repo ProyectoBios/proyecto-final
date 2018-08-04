@@ -21,6 +21,7 @@ import proyecto.entidades.Rack;
 import proyecto.entidades.ExcepcionFrigorifico;
 import proyecto.logica.FabricaLogica;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -49,16 +50,42 @@ public class ControladorDeposito {
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Buscar")
     public String buscarProducto(@ModelAttribute EspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
         try {
-            producto = FabricaLogica.getControladorDeposito().buscarProducto(producto.getCodigo());
-
-            if(producto==null){
+            if(producto.getCodigo() == 0){ //si el codigo es 0, el gerente quiere dar de alta
                 producto = new EspecificacionProducto();
                 modelMap.addAttribute("producto", producto);
                 botonesAltaProducto(modelMap);
-
-            }else{
-                modelMap.addAttribute("producto", producto);
-                botonesBMProducto(modelMap);
+            }else if (producto.getCodigo() < 0){ //si es menor que 0, cometió un error o quiere buscar por nombre
+                if(!producto.getNombre().isEmpty()){
+                    ArrayList<EspecificacionProducto> productos = FabricaLogica.getControladorDeposito().buscarProductosXNombre(producto.getNombre());
+                    if(productos.size() == 0){
+                        throw new ExcepcionFrigorifico("No existen productos que satisfazcan los parámetros de búsqueda.");
+                    }else{
+                        modelMap.addAttribute("producto", producto);
+                        modelMap.addAttribute("productos", productos);
+                        modelMap.addAttribute("tablaListaProductos", "true");
+                        botonesPorDefectoProducto(modelMap);
+                    }
+                }else{
+                    throw new ExcepcionFrigorifico("Debe introducir un código positivo o un nombre para efectuar la búsqueda (0 para agregar un nuevo producto)");
+                }
+            }else{ //si es mayor que 0, busco por ID y si no existe, busco por nombre (si hay)
+                EspecificacionProducto prod = FabricaLogica.getControladorDeposito().buscarProducto(producto.getCodigo());
+                if(prod != null){
+                    modelMap.addAttribute("producto", prod);
+                    botonesBMProducto(modelMap);
+                }else if(prod == null && !producto.getNombre().isEmpty()){
+                    ArrayList<EspecificacionProducto> productos = FabricaLogica.getControladorDeposito().buscarProductosXNombre(producto.getNombre());
+                    if(productos.size() == 0){
+                        throw new ExcepcionFrigorifico("No existen productos que satisfazcan los parámetros de búsqueda.");
+                    }else{
+                        modelMap.addAttribute("producto", producto);
+                        modelMap.addAttribute("productos", productos);
+                        modelMap.addAttribute("tablaListaProductos", "true");
+                        botonesPorDefectoProducto(modelMap);
+                    }
+                }else{
+                    throw new ExcepcionFrigorifico("No existen productos que satisfazcan los parámetros de búsqueda.");
+                }
             }
 
             return "ABMProducto";
@@ -72,7 +99,38 @@ public class ControladorDeposito {
         catch(Exception ex){
             modelMap.addAttribute("producto", producto);
             botonesPorDefectoProducto(modelMap);
-            modelMap.addAttribute("mensaje", "¡ERROR!");
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrió un error al procesar la página");
+            return "ABMProducto";
+        }
+    }
+
+    @RequestMapping(value="/ABMProducto/{codigo}", method = RequestMethod.GET)
+    public String buscarProductoXid(@PathVariable String codigo, ModelMap modelMap){
+        try {
+            int cod;
+            try{
+                cod = Integer.parseInt(codigo);
+            }catch (Exception ex){
+                throw new ExcepcionFrigorifico("Código de producto inválido.");
+            }
+
+            EspecificacionProducto producto = FabricaLogica.getControladorDeposito().buscarProducto(cod);
+
+            modelMap.addAttribute("producto", producto);
+            botonesBMProducto(modelMap);
+            return "ABMProducto";
+
+        }catch(ExcepcionFrigorifico ex){
+            EspecificacionProducto producto = new EspecificacionProducto();
+            modelMap.addAttribute("producto", producto);
+            botonesPorDefectoProducto(modelMap);
+            modelMap.addAttribute("mensaje", ex.getMessage());
+            return "ABMProducto";
+        }
+        catch(Exception ex){
+            modelMap.addAttribute("producto", new EspecificacionProducto());
+            botonesPorDefectoProducto(modelMap);
+            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrió un error al procesar la página");
             return "ABMProducto";
         }
     }
