@@ -49,7 +49,7 @@ public class EspecificacionProducto {
         return maxStock;
     }
 
-    public void setMaxStock(int maxStock) {
+    public void setMaxStock(int maxStock){
         this.maxStock = maxStock;
     }
 
@@ -69,7 +69,7 @@ public class EspecificacionProducto {
         }
     }
 
-    public void setPrecioActual(double precio){
+    public void setPrecioActual(double precio) {
         Precio p = new Precio(precio, new Date());
         if (historicoPrecios.size() > 0){
             historicoPrecios.get(0).setFechaFin(new Date());

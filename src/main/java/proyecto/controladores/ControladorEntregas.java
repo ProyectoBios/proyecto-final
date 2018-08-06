@@ -72,6 +72,7 @@ public class ControladorEntregas {
 
             modelMap.addAttribute("mensaje", "Viaje generado con éxito.");
             modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("preparado"));
+            modelMap.addAttribute("tablaPedidos", true);
             return "GenerarViaje";
         }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());

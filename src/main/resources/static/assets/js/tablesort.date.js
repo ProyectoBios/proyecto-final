@@ -3,7 +3,7 @@
 (function(){
   var parseDate = function(date) {
     date = date.replace(/\-/g, '/');
-    date = date.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2})/, '$1/$2/$3'); // format before getTime
+    date = date.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2})/, '$2/$1/$3'); // format before getTime
 
     return new Date(date).getTime() || -1;
   };

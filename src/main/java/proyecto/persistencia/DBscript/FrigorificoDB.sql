@@ -365,7 +365,7 @@ BEGIN
  Create Procedure BuscarProductosXNombre(pNombre varchar(40))
  BEGIN
 	SELECT * 
-    FROM EspecificacionProductop
+    FROM EspecificacionProducto
     WHERE lower(nombre) LIKE lower(concat('%', trim(pNombre), '%'));
  END
  

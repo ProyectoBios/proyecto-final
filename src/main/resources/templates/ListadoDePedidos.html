@@ -108,7 +108,7 @@
                 <tr>
                     <th>Id</th>
                     <th>Cliente</th>
-                    <th>Fecha</th>
+                    <th data-sort-method='date'>Fecha</th>
                     <th>Estado</th>
                     <th>Total</th>
                     <th>Op. Telefonico</th>
@@ -148,6 +148,9 @@
 </section>
 
 <script th:src="@{assets/js/tablesort.js}"> </script>
+<script th:src="@{assets/js/tablesort.date.js}"> </script>
+<script th:src="@{assets/js/tablesort.number.js}"> </script>
+
 
 <script>
   new Tablesort(document.getElementById('tablaPedidos'));

@@ -14,10 +14,12 @@
 			background-color: rgba(144, 144, 144, 0.075);
 		}
         @media only screen and (max-width: 480px){
-            #nombreCliente{
+            #nombreCliente,
+            input[type="text"],
+            input[type="number"]{
                 width: 100% !important;
             }
-            #btnBuscar{
+            #btnBuscar, #btnAgregarCliente{
                 float: right !important;
             }
         }
@@ -26,6 +28,11 @@
                 width: 100% !important;
             }
             #btnAgregarProd{
+                float: right !important;
+            }
+        }
+        @media only screen and (min-width: 1235px){
+            #btnAgregarCliente{
                 float: right !important;
             }
         }
@@ -101,11 +108,12 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td style="width: 50%;">Nombre: <input type="text" th:field="*{Nombre}" style="display: inline-block;"/></td>
-                            <td style="width: 50%;">Teléfono: <input type="number" th:field="*{Telefono}" style="display: inline-block;"/></td>
+                            <td>Nombre: <input type="text" id="txtNombre" th:field="*{Nombre}" style="display: inline-block; width: 80%"/> </td>
+                            <td>Teléfono: <input type="number" id="txtTelefono" th:field="*{Telefono}" style="display: inline-block; width: 80%" /></td>
                         </tr>
                         <tr>
-                            <td colspan="2">E-mail: <input type="text" th:field="*{Correo}" style="display: inline-block; width: auto;"/> <input type="submit" name="action" value="Agregar" style="display: inline-block;"/></td>
+                            <td colspan="2">E-mail: <input type="text" th:field="*{Correo}" style="display: inline-block; width: 40%;"/>
+                            <input type="submit" id="btnAgregarCliente" name="action" value="Agregar" style="display: inline-block;"/></td>
                         </tr>
                         </tbody>
                 </form>
