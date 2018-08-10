@@ -3,6 +3,8 @@
 <head>
     <title>ABM Empleado</title>
     <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--[if lte IE 8]><script th:src="@{assets/js/ie/html5shiv.js}"></script><![endif]-->
     <link rel="stylesheet" th:href="@{/assets/css/main.css}" />
@@ -108,17 +110,21 @@
                 </table>
 
                 <div style="overflow-x: auto">
-                    <table th:if="${tablaListado}">
-                        <th>Cédula</th>
-                        <th>Nombre</th>
-                        <th>Rol</th>
-                        <th></th>
-                        <tr th:each="empleado : ${empleados}">
-                            <td th:text="${empleado.Ci}"></td>
-                            <td th:text="${empleado.Nombre}"></td>
-                            <td th:text="${empleado.Rol}"></td>
-                            <td><a th:href="@{'/MantenimientoEmpleados/' + ${empleado.Ci}}">Ver</a></td>
-                        </tr>
+                    <table id="tablaEmpleados" th:if="${tablaListado}">
+                        <thead>
+                            <th id="thCedula">Cédula</th>
+                            <th id="thNombre">Nombre</th>
+                            <th id="thRol">Rol</th>
+                            <th class="smp-not-sortable"></th>
+                        </thead>
+                        <tbody>
+                            <tr th:each="empleado : ${empleados}">
+                                <td th:text="${empleado.Ci}"></td>
+                                <td th:text="${empleado.Nombre}"></td>
+                                <td th:text="${empleado.Rol}"></td>
+                                <td><a th:href="@{'/MantenimientoEmpleados/' + ${empleado.Ci}}">Ver</a></td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
 
@@ -134,6 +140,13 @@
     </section>
 
     <!-- Footer -->
+    <script th:src="@{/assets/js/smpSortableTable.js}"> </script>
+
+
+    <script>
+        $('#tablaEmpleados').smpSortableTable(false, 15, "es");
+    </script>
+
 <script th:inline="javascript">
     function inicializarDoc() {
         /*<![CDATA[*/
@@ -152,6 +165,7 @@
         }
     }
 </script>
+
 
 <div th:replace="fragments/footer :: footer">
 
