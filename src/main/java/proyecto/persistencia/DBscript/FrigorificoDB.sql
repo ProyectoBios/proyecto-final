@@ -146,7 +146,14 @@ INSERT INTO Rack VALUES('D', 12, 18);
 INSERT INTO Rack VALUES('C', 10, 20);
 INSERT INTO Rack VALUES('B', 10, 20);
 
-INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 50, 1, 'A', 1,1, 0);
+CALL AltaRack('E', 6, 20);
+CALL AltaRack('F', 6, 20);
+CALL AltaRack('G', 6, 20);
+CALL AltaRack('H', 6, 20);
+CALL AltaRack('I', 6, 20);
+
+
+/*INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 50, 1, 'A', 1,1, 0);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180322', 30, 1, 'A', 3, 5, 0);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180111', 10, 1, 'A', 4, 4, 0);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180624', 1000, 1, 'A', 1, 2, 0);
@@ -155,7 +162,7 @@ INSERT INTO Lote VALUES(NULL, NOW(), '20180422', 30, 2, 'A', 1, 3, 0);
 INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 150, 2, 'A', 1, 4, 0);
 
 INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 60, 3, 'A', 2, 1, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 10, 3, 'A', 2, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 10, 3, 'A', 2, 2, 0);*/
 
 INSERT INTO Cliente VALUES('Disco', '1234567890', 'disco@disco.com');
 INSERT INTO Cliente VALUES('Carniceria Pepe', '0987654321', 'pepe@gmail.com');

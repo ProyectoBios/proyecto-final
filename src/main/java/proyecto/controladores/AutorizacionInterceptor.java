@@ -25,27 +25,28 @@ public class AutorizacionInterceptor extends HandlerInterceptorAdapter {
                 response.sendRedirect(request.getContextPath() + "/");
                 autorizado = false;
             }else {
+                String pagina = request.getRequestURI().split(request.getContextPath()+"/")[1].split("/")[0];
                 switch (e.getRol()) {
                     case "gerente":
-                        if (!paginasGerente.contains(request.getRequestURI().split(request.getContextPath()+"/")[1].split("/")[0])) {
+                        if (!paginasGerente.contains(pagina)) {
                             response.sendRedirect(request.getContextPath() + "/Bienvenida");
                             autorizado = false;
                         }
                         break;
                     case "funcionario":
-                        if (!paginasFuncionario.contains(request.getRequestURI().split(request.getContextPath()+"/")[1].split("/")[0])) {
+                        if (!paginasFuncionario.contains(pagina)) {
                             response.sendRedirect(request.getContextPath() + "/Bienvenida");
                             autorizado = false;
                         }
                         break;
                     case "operador":
-                        if (!paginasOperador.contains(request.getRequestURI().split(request.getContextPath()+"/")[1].split("/")[0])) {
+                        if (!paginasOperador.contains(pagina)) {
                             response.sendRedirect(request.getContextPath() + "/Bienvenida");
                             autorizado = false;
                         }
                         break;
                     case "repartidor":
-                        if (!paginasRepartidor.contains(request.getRequestURI().split(request.getContextPath()+"/")[1].split("/")[0])) {
+                        if (!paginasRepartidor.contains(pagina)) {
                             response.sendRedirect(request.getContextPath() + "/Bienvenida");
                             autorizado = false;
                         }

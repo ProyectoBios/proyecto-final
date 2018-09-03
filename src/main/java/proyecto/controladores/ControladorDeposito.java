@@ -37,8 +37,8 @@ import java.util.ArrayList;
 @Controller
 public class ControladorDeposito {
 
-
     //region ABMProducto
+
     @RequestMapping(value="/ABMProducto", method = RequestMethod.GET)
     public String GetAbmProducto(ModelMap modelMap){
         modelMap.addAttribute("producto", new EspecificacionProducto());
@@ -453,12 +453,6 @@ public class ControladorDeposito {
             ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
             return (T)response;
 
-
-            /*modelMap.addAttribute("lote", new Lote());
-            modelMap.addAttribute("productos", prods);
-            modelMap.addAttribute("racks", racks);
-            modelMap.addAttribute("mensaje", "Alta exitosa. ID: " + codigo);
-            return "AltaLote";*/
         }catch(ExcepcionFrigorifico ex){
             modelMap.addAttribute("lote", lote);
             modelMap.addAttribute("productos", prods);

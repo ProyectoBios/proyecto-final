@@ -27,7 +27,7 @@ public class LControladorEmpleados implements IEmpleados{
             md.update(value.getBytes("UTF-8"));
             return bytesToHex(md.digest());
         } catch(Exception ex){
-            throw new ExcepcionFrigorifico("Error encriptando la contraseña.");
+            throw new ExcepcionFrigorifico("Error cifrando la contraseña.");
         }
     }
     private static String bytesToHex(byte[] bytes) {
