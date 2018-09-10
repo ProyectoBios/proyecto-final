@@ -350,6 +350,9 @@ public class ControladorPedidos {
             if(session.getAttribute("listaPicking") == null){
                 modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
                 modelMap.addAttribute("tablaPedidos", true);
+                String[] pedidos = new String[1];
+                pedidos[0] = "12";
+                modelMap.addAttribute("pedidosSeleccionados", pedidos);
             }else{
                 modelMap.addAttribute("tablaPicking", true);
             }
