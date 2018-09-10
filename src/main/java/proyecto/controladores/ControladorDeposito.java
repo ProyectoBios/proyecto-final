@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,16 +42,26 @@ public class ControladorDeposito {
     //region ABMProducto
     @RequestMapping(value="/ABMProducto", method = RequestMethod.GET)
     public String GetAbmProducto(ModelMap modelMap){
-        modelMap.addAttribute("producto", new EspecificacionProducto());
-        botonesPorDefectoProducto(modelMap);
-
+        try {
+            modelMap.addAttribute("producto", new EspecificacionProducto());
+            botonesPorDefectoProducto(modelMap);
+        } catch (Exception ex){
+            modelMap.addAttribute("mensaje", "Hubo un error al cargar la página");
+            return "ABMProducto";
+        }
         return "ABMProducto";
     }
 
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Buscar")
     public String buscarProducto(@ModelAttribute EspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
         try {
-            if(producto.getCodigo() == 0){ //si el codigo es 0, el gerente quiere dar de alta
+            if (bindingResult.hasErrors()){
+                modelMap.addAttribute("producto", new EspecificacionProducto());
+                modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
+                return "ABMProducto";
+            }
+
+            if(producto.getCodigo() == 0){ //si el código es 0, el gerente quiere dar de alta
                 producto = new EspecificacionProducto();
                 modelMap.addAttribute("producto", producto);
                 botonesAltaProducto(modelMap);
@@ -87,19 +98,19 @@ public class ControladorDeposito {
                     throw new ExcepcionFrigorifico("No existen productos que satisfazcan los parámetros de búsqueda.");
                 }
             }
-
             return "ABMProducto";
+
         }catch(ExcepcionFrigorifico ex){
             producto = new EspecificacionProducto();
             modelMap.addAttribute("producto", producto);
             botonesPorDefectoProducto(modelMap);
-            modelMap.addAttribute("mensaje", ex.getMessage());
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
             return "ABMProducto";
         }
         catch(Exception ex){
             modelMap.addAttribute("producto", producto);
             botonesPorDefectoProducto(modelMap);
-            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrió un error al procesar la página");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("¡ERROR! Ocurrió un error al procesar la página")));
             return "ABMProducto";
         }
     }
@@ -213,7 +224,7 @@ public class ControladorDeposito {
         modelMap.addAttribute("agregarHabilitado", "false");
         modelMap.addAttribute("eliminarHabilitado", "false");
         modelMap.addAttribute("modificarHabilitado", "false");
-        modelMap.addAttribute("buscarHabilitado", "true");
+        modelMap.addAttribute("buscarHabilitado", "false");
         modelMap.addAttribute("codigoBloqueado", "false");
     }
 
@@ -744,5 +755,15 @@ public class ControladorDeposito {
             modelMap.addAttribute("mensaje", "Hubo un error al cargar los datos del lote");
         }
         return null;
+    }
+
+    private ArrayList<String> cargarErrores(BindingResult bindingResult) {
+        ArrayList<String> mensajes = new ArrayList<>();
+        for (Object obj : bindingResult.getAllErrors()) {
+            if (obj instanceof FieldError) {
+                mensajes.add(((FieldError) obj).getDefaultMessage().split(": ")[1]);
+            }
+        }
+        return mensajes;
     }
 }

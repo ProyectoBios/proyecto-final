@@ -365,14 +365,18 @@ public class ControladorPedidos {
     }
 
     @RequestMapping(value="/RealizarPicking", method = RequestMethod.POST, params = "action=Seleccionar")
-    public String seleccionarPedidosPicking(@RequestParam(value="pedidos", required = false)int[] pedidos, ModelMap modelMap, HttpSession session){
+    public synchronized String seleccionarPedidosPicking(@RequestParam(value="pedidos", required = false)int[] pedidos, ModelMap modelMap, HttpSession session, HttpServletResponse response, HttpServletRequest request){
+        ArrayList<OrdenPedido> ordenesPedido = new ArrayList<>();
         try {
             if(pedidos.length == 0 || pedidos.length > 5){
                 throw new ExcepcionFrigorifico("Debe seleccionar al menos 1 pedido y no más de 5.");
             }
-            ArrayList<OrdenPedido> ordenesPedido = new ArrayList<>();
+
             for(int i=0; i<pedidos.length; i++){
                 OrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
+                if(orden.getEstado().equals("en preparacion")){
+                    throw new ExcepcionFrigorifico("El pedido con ID: " + orden.getId() + " ya está siendo preparado por otro empleado.");
+                }
                 FabricaLogica.getControladorPedidos().modificarEstadoDePedido(orden, "en preparacion");
                 ordenesPedido.add(orden);
             }
@@ -384,21 +388,20 @@ public class ControladorPedidos {
             return "realizarPicking";
         }catch (ExcepcionFrigorifico ex){
             try{
-                for(int i=0; i<pedidos.length; i++){
-                    OrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
-                    FabricaLogica.getControladorPedidos().modificarEstadoDePedido(orden, "pendiente");
+                for(OrdenPedido o : ordenesPedido){
+                    FabricaLogica.getControladorPedidos().modificarEstadoDePedido(o, "pendiente");
                 }
                 modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
             }catch (Exception e){}
 
             modelMap.addAttribute("tablaPedidos", true);
             modelMap.addAttribute("mensaje", ex.getMessage());
+
             return "realizarPicking";
         }catch (Exception ex){
             try{
-                for(int i=0; i<pedidos.length; i++){
-                    OrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
-                    FabricaLogica.getControladorPedidos().modificarEstadoDePedido(orden, "pendiente");
+                for(OrdenPedido o : ordenesPedido){
+                    FabricaLogica.getControladorPedidos().modificarEstadoDePedido(o, "pendiente");
                 }
                 modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
             }catch (Exception e){}

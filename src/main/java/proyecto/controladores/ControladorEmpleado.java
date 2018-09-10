@@ -41,16 +41,6 @@ public class ControladorEmpleado {
                 throw new ExcepcionFrigorifico("Credenciales inválidas, inténtelo denuevo.");
             }
 
-            /*Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula);
-            if (e == null) {
-                throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");
-            } else if (contrasenia.equals(e.getContrasenia())) {
-                session.setAttribute("usuarioLogueado", e);
-                response.sendRedirect(request.getContextPath() + "/Bienvenida");
-                return "index";
-            } else {
-                throw new ExcepcionFrigorifico("Usuario y/o contraseña inválidos.");
-            }*/
             if(FabricaLogica.getControladorEmpleados().iniciarSesion(cedula, contrasenia)){
                 session.setAttribute("usuarioLogueado", FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula));
                 response.sendRedirect(request.getContextPath() + "/Bienvenida");
@@ -322,18 +312,6 @@ public class ControladorEmpleado {
                 ABMBotonesNoEncontrado(modelMap);
                 return "ABVehiculo";
             }
-            /*if (vehiculo.getMatricula().isEmpty() || vehiculo.getMatricula() == null){
-                modelMap.addAttribute("mensaje","Error! la Matrícula no puede quedar vacía");
-            }
-            if (vehiculo.getCargaMax() == 0){
-                throw new ExcepcionFrigorifico("Error! la Carga debe ser mayor a cero");
-            }
-            if (vehiculo.getMarca().isEmpty()){
-                throw new ExcepcionFrigorifico("Error! la Marca no puede quedar vacía");
-            }
-            if(vehiculo.getModelo().isEmpty()){
-                throw new ExcepcionFrigorifico("Error! el Modelo no puede quedar vacío");
-            }*/
 
             FabricaLogica.getControladorEmpleados().altaVehiculo(vehiculo);
 

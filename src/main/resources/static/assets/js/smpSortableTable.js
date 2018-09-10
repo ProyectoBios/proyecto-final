@@ -125,10 +125,10 @@
             + local("previous")
             +'</a>'
             +'<span class="smpSortableTable--counter" id="' + tableName + '--counter"></span>'
-            +'<a class="smpSortableTable--nav-links smpSortableTable--last" id="' + tableName + '--last">'
-            + local("last")+'</a>'
             + '<a class="smpSortableTable--nav-links smpSortableTable--next" id="' + tableName + '--next">'
             + local("next")+'</a>'
+            +'<a class="smpSortableTable--nav-links smpSortableTable--last" id="' + tableName + '--last">'
+            + local("last")+'</a>'
             +'</div>'
         );
         $.each($table.find('th'), function (i, v) {

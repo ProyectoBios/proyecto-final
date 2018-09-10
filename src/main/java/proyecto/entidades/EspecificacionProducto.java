@@ -25,7 +25,10 @@ public class EspecificacionProducto {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre) throws ExcepcionFrigorifico{
+        if (nombre.length() > 40){
+            throw new ExcepcionFrigorifico("Debe especificar un nombre menor a 40 caractéres");
+        }
         this.nombre = nombre;
     }
 
@@ -33,7 +36,10 @@ public class EspecificacionProducto {
         return minStock;
     }
 
-    public void setMinStock(int minStock) {
+    public void setMinStock(int minStock) throws ExcepcionFrigorifico{
+        if (minStock < 0){
+            throw new ExcepcionFrigorifico("el Stock Mínimo debe ser mayor a 0");
+        }
         this.minStock = minStock;
     }
 
@@ -41,7 +47,10 @@ public class EspecificacionProducto {
         return stockCritico;
     }
 
-    public void setStockCritico(int stockCritico) {
+    public void setStockCritico(int stockCritico) throws ExcepcionFrigorifico{
+        if (stockCritico < 0){
+            throw new ExcepcionFrigorifico("El Stock Crítico debe ser mayor a 0");
+        }
         this.stockCritico = stockCritico;
     }
 
@@ -49,7 +58,10 @@ public class EspecificacionProducto {
         return maxStock;
     }
 
-    public void setMaxStock(int maxStock){
+    public void setMaxStock(int maxStock) throws ExcepcionFrigorifico{
+        if (maxStock < 0){
+            throw new ExcepcionFrigorifico("El Stock Máximo debe ser mayor a 0");
+        }
         this.maxStock = maxStock;
     }
 
@@ -78,16 +90,21 @@ public class EspecificacionProducto {
         historicoPrecios.add(p);
     }
 
-    public EspecificacionProducto(int codigo, String nombre, int minStock, int stockCritico, int maxStock, ArrayList<Precio> historico) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.minStock = minStock;
-        this.stockCritico = stockCritico;
-        this.maxStock = maxStock;
-        this.historicoPrecios = historico;
+    public EspecificacionProducto(int codigo, String nombre, int minStock, int stockCritico, int maxStock, ArrayList<Precio> historico) throws ExcepcionFrigorifico{
+        this.setCodigo(codigo);
+        this.setNombre(nombre);
+        this.setMinStock(minStock);
+        this.setStockCritico(stockCritico);
+        this.setMaxStock(maxStock);
+        this.setHistoricoPrecios(historico);
     }
 
-    public EspecificacionProducto() {
-        this(-1, "N/D", 0, 0, 0, new ArrayList<Precio>());
+    public EspecificacionProducto(){
+        this.codigo = -1;
+        this.nombre = "";
+        this.minStock = 0;
+        this.stockCritico = 0;
+        this.maxStock = 0;
+        this.historicoPrecios = new ArrayList<Precio>();
     }
 }
