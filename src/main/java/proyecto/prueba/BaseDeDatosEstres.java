@@ -11,6 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class BaseDeDatosEstres {
     public static void main(String[] args){
         try {
+
             //codigo para cargar la base de datos de forma masiva.
 
             ArrayList<EspecificacionProducto> prods = FabricaLogica.getControladorDeposito().listarProductos();
@@ -18,10 +19,10 @@ public class BaseDeDatosEstres {
             //Cargar Pedidos
 
             OrdenPedido p;
-            for (int i = 0; i < 1000; i++) {
-                p = new OrdenPedido(i, new Date(), "pendiente", "", new Date(), "Av Inexistente 1234", "Peteco", 3000, FabricaLogica.getControladorPedidos().buscarCliente("Carniceria Pepe"), FabricaLogica.getControladorEmpleados().buscarEmpleado("32165498"), null, null, new ArrayList<>());
+            p = new OrdenPedido(0, new Date(), "pendiente", "", new Date(), "Av Inexistente 1234", "Peteco", 3000, FabricaLogica.getControladorPedidos().buscarCliente("Carniceria Pepe"), FabricaLogica.getControladorEmpleados().buscarEmpleado("32165498"), null, null, new ArrayList<>());
+            for (int i = 0; i < 15000; i++) {
                 ArrayList<LineaPedido> lineas = new ArrayList<>();
-                for(int j = 0; j<3; j++){
+                for(int j = 0; j<5; j++){
                     LineaPedido l = new LineaPedido(j, j*10, j*10*prods.get(j).getPrecioActual(), prods.get(j));
                     lineas.add(l);
                 }
@@ -31,12 +32,11 @@ public class BaseDeDatosEstres {
             }
 
 
-
             //Cargar Empleados
 
             Empleado e;
             long ci = 10000000;
-            for(int i = 0; i < 150; i++){
+            for(int i = 0; i < 200; i++){
                 e = new Empleado(String.valueOf(ci), "Empleado prueba", "dmsss4398", new Date(), new Date(), "23596285", "funcionario");
                 ci++;
                 FabricaLogica.getControladorEmpleados().altaEmpleado(e);
@@ -56,9 +56,11 @@ public class BaseDeDatosEstres {
                     }
                 }
             }
+
         }catch (Exception ex){
             System.out.println(ex.getMessage());
         }
+
 
     }
 

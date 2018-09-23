@@ -575,7 +575,7 @@ public class ControladorDeposito {
                                    @RequestParam(value = "idLoteHidden", required = false) String idLoteOculto,
                                    ModelMap modelMap, HttpSession session) throws Exception {
         try {
-
+            int a = 3;
             if(letraRack.isEmpty()) {
                 modelMap.addAttribute("mensaje2", "Debe seleccionar un rack de la lista");
             } else if (idLoteOculto.isEmpty()){
