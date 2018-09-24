@@ -46,7 +46,7 @@ public class ControladorDeposito {
             modelMap.addAttribute("producto", new EspecificacionProducto());
             botonesPorDefectoProducto(modelMap);
         } catch (Exception ex){
-            modelMap.addAttribute("mensaje", "Hubo un error al cargar la página");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Hubo un error al cargar la página")));
             return "ABMProducto";
         }
         return "ABMProducto";
@@ -55,11 +55,10 @@ public class ControladorDeposito {
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Buscar")
     public String buscarProducto(@ModelAttribute EspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
         try {
-            if (bindingResult.hasErrors()){
-                modelMap.addAttribute("producto", new EspecificacionProducto());
+/*                modelMap.addAttribute("producto", new EspecificacionProducto());
                 modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
                 return "ABMProducto";
-            }
+            }*/
 
             if(producto.getCodigo() == 0){ //si el código es 0, el gerente quiere dar de alta
                 producto = new EspecificacionProducto();
@@ -135,13 +134,13 @@ public class ControladorDeposito {
             EspecificacionProducto producto = new EspecificacionProducto();
             modelMap.addAttribute("producto", producto);
             botonesPorDefectoProducto(modelMap);
-            modelMap.addAttribute("mensaje", ex.getMessage());
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
             return "ABMProducto";
         }
         catch(Exception ex){
             modelMap.addAttribute("producto", new EspecificacionProducto());
             botonesPorDefectoProducto(modelMap);
-            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrió un error al procesar la página");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al cargar el producto")));
             return "ABMProducto";
         }
     }
@@ -149,21 +148,29 @@ public class ControladorDeposito {
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Agregar")
     public String agregarABMProducto(@ModelAttribute EspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
         try {
+            if (bindingResult.hasErrors()) {
+                modelMap.addAttribute("producto", producto);
+                modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
+                botonesAltaProducto(modelMap);
+                return "ABMProducto";
+            }
+
             int codigo = FabricaLogica.getControladorDeposito().altaDeProducto(producto);
 
             modelMap.addAttribute("producto", new EspecificacionProducto());
             botonesPorDefectoProducto(modelMap);
-            modelMap.addAttribute("mensaje", "Alta exitosa. ID:  " + codigo + ".");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Alta exitosa. ID:  " + codigo + ".")));
             return "ABMProducto";
         }catch(ExcepcionFrigorifico ex){
             modelMap.addAttribute("producto", producto);
             botonesAltaProducto(modelMap);
-            modelMap.addAttribute("mensaje", ex.getMessage());
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
             return "ABMProducto";
         }catch(Exception ex){
             modelMap.addAttribute("producto", producto);
             botonesAltaProducto(modelMap);
-            modelMap.addAttribute("mensaje", "¡ERROR!");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Ocurrió un error al dar de alta el producto.")));
+
             return "ABMProducto";
         }
     }
@@ -175,17 +182,19 @@ public class ControladorDeposito {
 
             modelMap.addAttribute("producto", new EspecificacionProducto());
             botonesPorDefectoProducto(modelMap);
-            modelMap.addAttribute("mensaje", "Baja exitosa!");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("¡Baja exitosa!")));
+
             return "ABMProducto";
         }catch(ExcepcionFrigorifico ex){
             modelMap.addAttribute("producto", producto);
             botonesBMProducto(modelMap);
-            modelMap.addAttribute("mensaje", ex.getMessage());
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
             return "ABMProducto";
         }catch(Exception ex){
             modelMap.addAttribute("producto", producto);
             botonesBMProducto(modelMap);
-            modelMap.addAttribute("mensaje", "¡ERROR!");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Ocurrió un error al dar de baja el producto.")));
+
             return "ABMProducto";
         }
     }
@@ -193,21 +202,30 @@ public class ControladorDeposito {
     @RequestMapping(value="/ABMProducto", method = RequestMethod.POST, params="action=Modificar")
     public String modificarABMProducto(@ModelAttribute EspecificacionProducto producto, BindingResult bindingResult, ModelMap modelMap){
         try {
+            if (bindingResult.hasErrors()) {
+                modelMap.addAttribute("producto", producto);
+                modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
+                botonesBMProducto(modelMap);
+                return "ABMProducto";
+            }
+
             FabricaLogica.getControladorDeposito().modificarProducto(producto);
 
             modelMap.addAttribute("producto", new EspecificacionProducto());
             botonesPorDefectoProducto(modelMap);
-            modelMap.addAttribute("mensaje", "Modificacion exitosa!");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("¡Modificacion exitosa!")));
+
             return "ABMProducto";
         }catch(ExcepcionFrigorifico ex){
             modelMap.addAttribute("producto", producto);
             botonesBMProducto(modelMap);
-            modelMap.addAttribute("mensaje", ex.getMessage());
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
             return "ABMProducto";
         }catch(Exception ex){
             modelMap.addAttribute("producto", producto);
             botonesBMProducto(modelMap);
-            modelMap.addAttribute("mensaje", "¡ERROR!");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Ocurrio un error al modificar el producto.")));
+
             return "ABMProducto";
         }
     }
@@ -221,28 +239,30 @@ public class ControladorDeposito {
     }
 
     public void botonesPorDefectoProducto(ModelMap modelMap){
-        modelMap.addAttribute("agregarHabilitado", "false");
-        modelMap.addAttribute("eliminarHabilitado", "false");
-        modelMap.addAttribute("modificarHabilitado", "false");
-        modelMap.addAttribute("buscarHabilitado", "false");
+        modelMap.addAttribute("botonAgregar", "false");
+        modelMap.addAttribute("botonEliminar", "false");
+        modelMap.addAttribute("botonModificar", "false");
+        modelMap.addAttribute("botonBuscar", "true");
         modelMap.addAttribute("codigoBloqueado", "false");
     }
 
     public void botonesAltaProducto(ModelMap modelMap){
-        modelMap.addAttribute("agregarHabilitado", "true");
-        modelMap.addAttribute("eliminarHabilitado", "false");
-        modelMap.addAttribute("modificarHabilitado", "false");
-        modelMap.addAttribute("buscarHabilitado", "false");
+        modelMap.addAttribute("botonAgregar", "true");
+        modelMap.addAttribute("botonEliminar", "false");
+        modelMap.addAttribute("botonModificar", "false");
+        modelMap.addAttribute("botonBuscar", "false");
         modelMap.addAttribute("codigoBloqueado", "true");
     }
 
     public void botonesBMProducto(ModelMap modelMap){
-        modelMap.addAttribute("agregarHabilitado", "false");
-        modelMap.addAttribute("eliminarHabilitado", "true");
-        modelMap.addAttribute("modificarHabilitado", "true");
-        modelMap.addAttribute("buscarHabilitado", "false");
+        modelMap.addAttribute("botonAgregar", "false");
+        modelMap.addAttribute("botonEliminar", "true");
+        modelMap.addAttribute("botonModificar", "true");
+        modelMap.addAttribute("botonBuscar", "false");
         modelMap.addAttribute("codigoBloqueado", "true");
     }
+
+
     //endregion
 
     //region AltaRack

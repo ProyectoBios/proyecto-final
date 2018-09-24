@@ -46,8 +46,8 @@
 								<tr>
 								  <td style="width: 20%">ID:</td>
 								  <td>
-									  <input type="number" th:field ="*{Codigo}" th:readonly="${codigoSoloLectura}" id="id" size="1" style="width: 30%; cursor: not-allowed; display: inline-block;"/>
-									  <input id="btnBuscar" type="submit" name="action" value="Buscar" th:disabled="${buscarHabilitado}" />
+									  <input type="number" th:field ="*{Codigo}" th:readonly="${codigoSoloLectura}" id="id" size="1" style="width: 30%; display: inline-block;"/> <!-- cursor: not-allowed; -->
+									  <input id="btnBuscar" type="submit" name="action" value="Buscar" th:disabled="${!botonBuscar}" />
 								  </td>
 								</tr>
 								<tr>
@@ -82,15 +82,9 @@
 								</tr>
 								<tr>
 								  <td colspan="2" style="text-align: center">
-									  <input th:if="${agregarHabilitado}" type="submit" name="action" value="Agregar" />
-									  <input th:if="${!agregarHabilitado}" type="submit" name="action" value="Agregar" disabled="disabled" />
-
-									  <input th:if="${eliminarHabilitado}" type="submit" name="action" value="Eliminar" />
-									  <input th:if="${!eliminarHabilitado}" type="submit" name="action" value="Eliminar" disabled="disabled" />
-
-									  <input th:if="${modificarHabilitado}" type="submit" name="action" value="Modificar" />
-									  <input th:if="${!modificarHabilitado}" type="submit" name="action" value="Modificar" disabled="disabled" />
-
+									  <input type="submit" name="action" value="Agregar" th:disabled="${!botonAgregar}"/>
+									  <input type="submit" name="action" value="Eliminar" th:disabled="${!botonEliminar}"/>
+									  <input type="submit" name="action" value="Modificar" th:disabled="${!botonModificar}"/>
 									  <input type="submit" name="action" value="Limpiar" />
 									</td>
 								</tr>
@@ -110,7 +104,9 @@
 							</table>
 
 						</form>
-					<label th:text="${mensaje}"></label>
+						<th:block th:each="m : ${mensajes}">
+							<label th:text="${m}"></label>
+						</th:block>
 					</div>
 
 			</div>

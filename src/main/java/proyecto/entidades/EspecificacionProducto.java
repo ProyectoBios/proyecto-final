@@ -26,6 +26,9 @@ public class EspecificacionProducto {
     }
 
     public void setNombre(String nombre) throws ExcepcionFrigorifico{
+        if(nombre.equals("")){
+            throw new ExcepcionFrigorifico("El nombre no puede quedar vacio.");
+        }
         if (nombre.length() > 40){
             throw new ExcepcionFrigorifico("Debe especificar un nombre menor a 40 caractéres");
         }
@@ -38,7 +41,7 @@ public class EspecificacionProducto {
 
     public void setMinStock(int minStock) throws ExcepcionFrigorifico{
         if (minStock < 0){
-            throw new ExcepcionFrigorifico("el Stock Mínimo debe ser mayor a 0");
+            throw new ExcepcionFrigorifico("El Stock Mínimo debe ser mayor a 0");
         }
         this.minStock = minStock;
     }
@@ -81,7 +84,11 @@ public class EspecificacionProducto {
         }
     }
 
-    public void setPrecioActual(double precio) {
+    public void setPrecioActual(double precio) throws ExcepcionFrigorifico {
+        if(precio <= 0){
+            throw new ExcepcionFrigorifico("El precio no puede ser menor o igual que 0.");
+        }
+
         Precio p = new Precio(precio, new Date());
         if (historicoPrecios.size() > 0){
             historicoPrecios.get(0).setFechaFin(new Date());
