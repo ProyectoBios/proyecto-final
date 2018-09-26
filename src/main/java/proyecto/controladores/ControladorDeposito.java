@@ -68,7 +68,7 @@ public class ControladorDeposito {
                 if(!producto.getNombre().isEmpty()){
                     ArrayList<EspecificacionProducto> productos = FabricaLogica.getControladorDeposito().buscarProductosXNombre(producto.getNombre());
                     if(productos.size() == 0){
-                        throw new ExcepcionFrigorifico("No existen productos que satisfazcan los parámetros de búsqueda.");
+                        throw new ExcepcionFrigorifico("No existen productos que satisfagan los parámetros de búsqueda.");
                     }else{
                         modelMap.addAttribute("producto", producto);
                         modelMap.addAttribute("productos", productos);
@@ -260,6 +260,7 @@ public class ControladorDeposito {
         modelMap.addAttribute("botonModificar", "true");
         modelMap.addAttribute("botonBuscar", "false");
         modelMap.addAttribute("codigoBloqueado", "true");
+        modelMap.addAttribute("btnNoAllowed", "not-allowed");
     }
 
 

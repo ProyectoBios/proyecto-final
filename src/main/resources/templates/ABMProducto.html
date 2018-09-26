@@ -46,7 +46,7 @@
 								<tr>
 								  <td style="width: 20%">ID:</td>
 								  <td>
-									  <input type="number" th:field ="*{Codigo}" th:readonly="${codigoSoloLectura}" id="id" size="1" style="width: 30%; display: inline-block;"/> <!-- cursor: not-allowed; -->
+									  <input type="number" id="id" size="1" th:field ="*{Codigo}" th:readonly="${codigoBloqueado}" th:style="'width: 30%; display: inline-block; cursor: ' + ${btnNoAllowed} + ';'" /> <!--  -->
 									  <input id="btnBuscar" type="submit" name="action" value="Buscar" th:disabled="${!botonBuscar}" />
 								  </td>
 								</tr>

@@ -362,6 +362,8 @@ public class ControladorEmpleado {
         modelMap.addAttribute("botonBuscar", "true");
         modelMap.addAttribute("ciSoloLectura", "true");
         modelMap.addAttribute("matriculaSoloLectura", "true");
+        modelMap.addAttribute("btnNoAllowed", "not-allowed");
+
     }
 
     private void ABMBotonesNoEncontrado(ModelMap modelMap) {
@@ -370,7 +372,8 @@ public class ControladorEmpleado {
         modelMap.addAttribute("botonEliminar", "false");
         modelMap.addAttribute("botonBuscar", "false");
         modelMap.addAttribute("ciSoloLectura", "true");
-        //modelMap.addAttribute("matriculaSoloLectura", "true");
+        modelMap.addAttribute("matriculaSoloLectura", "true");
+        modelMap.addAttribute("btnNoAllowed", "not-allowed");
     }
 
     private ArrayList<String> cargarErrores(BindingResult bindingResult) {

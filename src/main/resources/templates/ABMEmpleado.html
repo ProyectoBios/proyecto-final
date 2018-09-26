@@ -58,7 +58,7 @@
                     <tbody>
                     <tr>
                         <td style="width: 20%">C.I.:</td>
-                        <td style="width: auto"><input type="number" id="id" size="" style="width: 41%; display: inline-block;" th:field="*{Ci}" th:readonly="${ciSoloLectura}"/> <input id="btnBuscar" type="submit" name="action" value="Buscar" th:disabled="${!botonBuscar}"/></td>
+                        <td style="width: auto"><input type="number" id="id" size="" th:style="'width: 41%; display: inline-block; cursor: ' + ${btnNoAllowed} + ';'" th:field="*{Ci}" th:readonly="${ciSoloLectura}"/> <input id="btnBuscar" type="submit" name="action" value="Buscar" th:disabled="${!botonBuscar}"/></td>
                     </tr>
                     <tr>
                         <td>Nombre:</td>
