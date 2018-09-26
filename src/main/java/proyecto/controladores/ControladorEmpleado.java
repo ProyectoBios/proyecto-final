@@ -363,7 +363,6 @@ public class ControladorEmpleado {
         modelMap.addAttribute("ciSoloLectura", "true");
         modelMap.addAttribute("matriculaSoloLectura", "true");
         modelMap.addAttribute("btnNoAllowed", "not-allowed");
-
     }
 
     private void ABMBotonesNoEncontrado(ModelMap modelMap) {
