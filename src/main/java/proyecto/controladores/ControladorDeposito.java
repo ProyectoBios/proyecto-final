@@ -252,6 +252,7 @@ public class ControladorDeposito {
         modelMap.addAttribute("botonModificar", "false");
         modelMap.addAttribute("botonBuscar", "false");
         modelMap.addAttribute("codigoBloqueado", "true");
+        modelMap.addAttribute("btnNoAllowed", "not-allowed");
     }
 
     public void botonesBMProducto(ModelMap modelMap){
@@ -262,7 +263,6 @@ public class ControladorDeposito {
         modelMap.addAttribute("codigoBloqueado", "true");
         modelMap.addAttribute("btnNoAllowed", "not-allowed");
     }
-
 
     //endregion
 
