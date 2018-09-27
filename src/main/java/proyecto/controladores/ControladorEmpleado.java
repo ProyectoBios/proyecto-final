@@ -73,9 +73,9 @@ public class ControladorEmpleado {
             ABMBotonesPorDefecto(modelMap);
             modelMap.addAttribute("empleado", new Empleado());
             //modelMap.addAttribute("vencLibreta", new Date());
-        } catch (ExcepcionFrigorifico ex) {
+        } /*catch (ExcepcionFrigorifico ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
-        } catch (Exception ex) {
+        } */catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al cargar el formulario")));
         }
         return "ABMEmpleado";
@@ -121,9 +121,9 @@ public class ControladorEmpleado {
             ABMBotonesPorDefecto(modelMap);
             modelMap.addAttribute("empleado", new Empleado());
             modelMap.addAttribute("vencLibreta", new Date());
-        } catch (ExcepcionFrigorifico ex) {
+        } /*catch (ExcepcionFrigorifico ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
-        } catch (Exception ex) {
+        }*/ catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al cargar el formulario")));
         }
         return "ABMEmpleado";

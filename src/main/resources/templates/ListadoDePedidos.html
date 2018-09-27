@@ -103,6 +103,7 @@
                 </table>
             </form>
             <!-- Formulario con la Tabla -->
+            <div style="overflow-x: auto">
             <table id="tablaPedidos" width="100%">
                 <thead>
                 <tr>
@@ -136,6 +137,7 @@
 
                 </tbody>
             </table>
+            </div>
 
             <form action="#" th:action="@{/ListadoDePedidos}" method="get">
                 <input type="submit" value="Reestablecer" />

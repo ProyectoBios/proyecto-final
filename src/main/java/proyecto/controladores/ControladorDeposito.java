@@ -278,21 +278,28 @@ public class ControladorDeposito {
     @RequestMapping(value="/AltaRack", method = RequestMethod.POST, params="action=Agregar")
     public String agregarAltaRack(@ModelAttribute Rack rack, BindingResult bindingResult, ModelMap modelMap){
         try {
+            if (bindingResult.hasErrors()) {
+                modelMap.addAttribute("rack", rack);
+                modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
+                botonesAltaRack(modelMap);
+                return "AltaRack";
+            }
+
             FabricaLogica.getControladorDeposito().altaRack(rack);
 
             modelMap.addAttribute("rack", new Rack());
             botonesPorDefectoRack(modelMap);
-            modelMap.addAttribute("mensaje", "¡Alta exitosa!");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("¡Alta exitosa!")));
             return "AltaRack";
         }catch(ExcepcionFrigorifico ex){
             modelMap.addAttribute("rack", rack);
             botonesAltaRack(modelMap);
-            modelMap.addAttribute("mensaje", ex.getMessage());
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
             return "AltaRack";
         }catch(Exception ex){
             modelMap.addAttribute("rack", rack);
             botonesAltaRack(modelMap);
-            modelMap.addAttribute("mensaje", "¡ERROR! No se pudo dar de alta el rack.");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("¡Error! No se pudo dar de alta el rack.")));
             return "AltaRack";
         }
     }
@@ -317,12 +324,12 @@ public class ControladorDeposito {
         }catch(ExcepcionFrigorifico ex){
             modelMap.addAttribute("rack", new Rack());
             botonesPorDefectoRack(modelMap);
-            modelMap.addAttribute("mensaje", ex.getMessage());
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
             return "AltaRack";
         }catch(Exception ex){
             modelMap.addAttribute("rack", new Rack());
             botonesPorDefectoRack(modelMap);
-            modelMap.addAttribute("mensaje", "¡ERROR! No se pudo buscar el rack");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("¡Error! No se pudo encontrar el rack")));
             return "AltaRack";
         }
     }
@@ -333,17 +340,17 @@ public class ControladorDeposito {
             FabricaLogica.getControladorDeposito().bajaRack(rack);
 
             modelMap.addAttribute("rack", new Rack());
-            modelMap.addAttribute("mensaje", "Baja exitosa.");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Baja exitosa")));
             botonesPorDefectoRack(modelMap);
             return "AltaRack";
         }catch(ExcepcionFrigorifico ex){
             modelMap.addAttribute("rack", rack);
-            modelMap.addAttribute("mensaje", ex.getMessage());
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
             botonesBajaRack(modelMap);
             return "AltaRack";
         }catch(Exception ex){
             modelMap.addAttribute("rack", rack);
-            modelMap.addAttribute("mensaje", "¡ERROR! Ocurrio un error al dar de baja el rack");
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("¡Error! No se pudo dar de baja el rack")));
             botonesBajaRack(modelMap);
             return "AltaRack";
         }
@@ -374,24 +381,26 @@ public class ControladorDeposito {
     }
 
     public void botonesPorDefectoRack(ModelMap modelMap){
-        modelMap.addAttribute("agregarHabilitado", "false");
-        modelMap.addAttribute("buscarHabilitado", "true");
-        modelMap.addAttribute("eliminarHabilitado", "false");
+        modelMap.addAttribute("botonAgregar", "false");
+        modelMap.addAttribute("botonBuscar", "true");
+        modelMap.addAttribute("botonEliminar", "false");
         modelMap.addAttribute("letraBloqueado", "false");
     }
 
     public void botonesAltaRack(ModelMap modelMap){
-        modelMap.addAttribute("agregarHabilitado", "true");
-        modelMap.addAttribute("buscarHabilitado", "false");
-        modelMap.addAttribute("eliminarHabilitado", "false");
+        modelMap.addAttribute("botonAgregar", "true");
+        modelMap.addAttribute("botonBuscar", "false");
+        modelMap.addAttribute("botonEliminar", "false");
         modelMap.addAttribute("letraBloqueado", "true");
+        modelMap.addAttribute("btnNoAllowed", "not-allowed");
     }
 
     public void botonesBajaRack(ModelMap modelMap){
-        modelMap.addAttribute("agregarHabilitado", "false");
-        modelMap.addAttribute("buscarHabilitado", "false");
-        modelMap.addAttribute("eliminarHabilitado", "true");
+        modelMap.addAttribute("botonAgregar", "false");
+        modelMap.addAttribute("botonBuscar", "false");
+        modelMap.addAttribute("botonEliminar", "true");
         modelMap.addAttribute("letraBloqueado", "true");
+        modelMap.addAttribute("btnNoAllowed", "not-allowed");
     }
 
     @RequestMapping(value="/AltaRack", method = RequestMethod.POST, params="action=Limpiar")

@@ -47,36 +47,26 @@
                     <tr>
                         <td width="25%">Letra:</td>
                         <td width="75%">
-                            <input th:if="${rack.Letra != '-' and letraBloqueado}"  type="text" th:field ="*{Letra}" readonly="readonly" style="width: 100px; display: inline" size="7"/>
-                            <input th:if="${rack.Letra != '-' and !letraBloqueado}"  type="text" th:field ="*{Letra}" style="width: 100px; display: inline" size="7"/>
-                            <input th:if="${rack.Letra == '-' and letraBloqueado}"  type="text" name="Letra" placeholder="" readonly="readonly" style="width: 100px; display: inline" size="7"/>
-                            <input th:if="${rack.Letra == '-' and !letraBloqueado}"  type="text" name="Letra" placeholder="" style="width: 100px; display: inline" size="7"/>
-                            <input th:if="${buscarHabilitado}" type="submit" id="btnBuscar" name="action" value="Buscar" style="display: inline-block" />
-                            <input th:if="${!buscarHabilitado}" type="submit" id="btnBuscar2" name="action" value="Buscar" disabled="disabled" style="display: inline-block" />
+                            <input type="text" th:field ="*{Letra}" th:readonly="${letraBloqueado}" th:style="'width: 100px; display: inline; cursor: ' + ${btnNoAllowed} + ';'" size="7"/>
+                            <input type="submit" id="btnBuscar" name="action" value="Buscar" style="display: inline-block" th:disabled="${!botonBuscar}"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Dimension Alto:</td>
                         <td>
-                            <input th:if="*{DimAlto != 0}" type="number" th:field ="*{DimAlto}" style="width: 100px"/>
-                            <input th:if="*{DimAlto == 0}" type="number" name="dimAlto" placeholder="" style="width: 100px"/>
+                            <input type="number" th:field ="*{DimAlto}" style="width: 100px"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Dimension Ancho:</td>
                         <td>
-                            <input th:if="*{dimAncho != 0}" type="number" th:field="*{DimAncho}" style="width: 100px"/>
-                            <input th:if="*{dimAncho == 0}" type = "number" name="DimAncho" placeholder="" style="width: 100px"/>
+                            <input type="number" th:field="*{DimAncho}" style="width: 100px"/>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input th:if="${agregarHabilitado}" type="submit" name="action" value="Agregar" />
-                            <input th:if="${!agregarHabilitado}" type="submit" name="action" value="Agregar" disabled="disabled"/>
-
-                            <input th:if="${eliminarHabilitado}" type="submit" name="action" value="Eliminar" />
-                            <input th:if="${!eliminarHabilitado}" type="submit" name="action" value="Eliminar" disabled="disabled"/>
-
+                            <input type="submit" name="action" value="Agregar" th:disabled="${!botonAgregar}"/>
+                            <input type="submit" name="action" value="Eliminar" th:disabled="${!botonEliminar}"/>
 
                             <input type="submit" name="action" value="Limpiar" />
                         </td>
@@ -85,7 +75,9 @@
                 </table>
 
             </form>
-            <label th:text="${mensaje}"></label>
+            <th:block th:each="m : ${mensajes}">
+                <label th:text="${m}"></label>
+            </th:block>
         </div>
 
     </div>

@@ -109,8 +109,14 @@ public class Empleado {
         this.setRol(rol);
     }
 
-    public Empleado() throws ExcepcionFrigorifico{
-        this("", "", "", new Date(), new Date(), "", "");
+    public Empleado(){
+        this.ci = "";
+        this.nombre = "";
+        this.contrasenia = "";
+        this.fechaDeNacimiento = new Date();
+        this.fechaContratacion = new Date();
+        this.telefono = "";
+        this.rol = "";
     }
 }
 
