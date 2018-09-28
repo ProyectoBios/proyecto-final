@@ -297,17 +297,22 @@ public class ControladorPedidos {
     @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params = "action=Finalizar")
     public String confirmarOrdenPedido(@RequestParam(value="contacto") String contacto, @RequestParam(value="direccionEnvio") String direccion, ModelMap modelMap, HttpSession session){
         try{
-            if(contacto.equals("")){
-                modelMap.addAttribute("tablaProducto", true);
-                throw new ExcepcionFrigorifico("¡ERROR! Especifique un nombre de contacto.");
-            }
-
             if(direccion.equals("")){
                 modelMap.addAttribute("tablaProducto", true);
                 throw new ExcepcionFrigorifico("¡ERROR! Especifique una direccion de envio.");
             }
 
+            if(contacto.equals("")){
+                modelMap.addAttribute("tablaProducto", true);
+                throw new ExcepcionFrigorifico("¡ERROR! Especifique un nombre de contacto.");
+            }
+
             OrdenPedido orden = (OrdenPedido)session.getAttribute("orden");
+
+            if (orden.getLineas().size() == 0){
+                modelMap.addAttribute("tablaProducto", true);
+                throw new ExcepcionFrigorifico("¡ERROR! debe agregar productos al pedido.");
+            }
 
             orden.setContacto(contacto);
             orden.setDireccionEnvio(direccion);
