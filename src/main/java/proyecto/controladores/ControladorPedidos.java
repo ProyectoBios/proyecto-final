@@ -297,25 +297,10 @@ public class ControladorPedidos {
     @RequestMapping(value="/AltaOrdenDePedido", method = RequestMethod.POST, params = "action=Finalizar")
     public String confirmarOrdenPedido(@RequestParam(value="contacto") String contacto, @RequestParam(value="direccionEnvio") String direccion, ModelMap modelMap, HttpSession session){
         try{
-            if(direccion.equals("")){
-                modelMap.addAttribute("tablaProducto", true);
-                throw new ExcepcionFrigorifico("¡ERROR! Especifique una direccion de envio.");
-            }
-
-            if(contacto.equals("")){
-                modelMap.addAttribute("tablaProducto", true);
-                throw new ExcepcionFrigorifico("¡ERROR! Especifique un nombre de contacto.");
-            }
-
             OrdenPedido orden = (OrdenPedido)session.getAttribute("orden");
 
-            if (orden.getLineas().size() == 0){
-                modelMap.addAttribute("tablaProducto", true);
-                throw new ExcepcionFrigorifico("¡ERROR! debe agregar productos al pedido.");
-            }
-
-            orden.setContacto(contacto);
             orden.setDireccionEnvio(direccion);
+            orden.setContacto(contacto);
             orden.setOperador((Empleado)session.getAttribute("usuarioLogueado"));
 
             int id = FabricaLogica.getControladorPedidos().altaOrdenDePedido(orden);
@@ -328,10 +313,12 @@ public class ControladorPedidos {
             modelMap.addAttribute("mensaje", "Alta de pedido exitosa. ID: " + String.valueOf(id));
             return "AltaOrdenDePedido";
         }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("tablaProducto", true);
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "AltaOrdenDePedido";
         }catch (Exception ex){
-            modelMap.addAttribute("mensaje", "Ocurrió un error al dar de alta el pedido.");
+            modelMap.addAttribute("tablaProducto", true);
+            modelMap.addAttribute("mensaje", ex.getMessage()); //"Ocurrió un error al dar de alta el pedido."
             return "AltaOrdenDePedido";
         }
     }

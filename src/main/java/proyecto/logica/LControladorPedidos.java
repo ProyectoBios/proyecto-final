@@ -116,19 +116,24 @@ class LControladorPedidos implements IPedidos {
             throw new ExcepcionFrigorifico("¡ERROR! La direccion de envio no puede tener mas de 40 caracteres.");
         }
 
-        if(orden.getContacto() == null ||orden.getEstado().isEmpty()){
-            throw new ExcepcionFrigorifico("¡ERROR! El estado no puede quedar vacio");
+        if(orden.getContacto() == null ||orden.getContacto().isEmpty()){
+            throw new ExcepcionFrigorifico("¡ERROR! El nombre de contacto no puede quedar vacio");
         }
 
         if(orden.getContacto().length() > 40){
-            throw new ExcepcionFrigorifico("¡ERROR! El estado no puede tener mas de 40 caracteres");
+            throw new ExcepcionFrigorifico("¡ERROR! El nombre de contacto no puede tener mas de 40 caracteres");
+        }
+
+        validarCliente(orden.getCliente());
+
+        if (orden.getLineas().size() == 0){
+            throw new ExcepcionFrigorifico("¡ERROR! Debe agregar productos al pedido.");
         }
 
         if(orden.getSubtotal() <= 0){
             throw new ExcepcionFrigorifico("¡ERROR! El subtotal no puede ser menor o igual que 0");
         }
 
-        validarCliente(orden.getCliente());
         for(LineaPedido linea : orden.getLineas()){
             validarLineaDePedido(linea);
         }
@@ -147,6 +152,7 @@ class LControladorPedidos implements IPedidos {
 
     @Override
     public int altaOrdenDePedido(OrdenPedido ordenPedido) throws Exception{
+        validarOrdenDePedido(ordenPedido);
         return FabricaPersistencia.getControladorPedidos().altaOrdenDePedidio(ordenPedido);
     }
 

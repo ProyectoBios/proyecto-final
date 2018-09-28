@@ -156,6 +156,6 @@ public class OrdenPedido {
     }
 
     public OrdenPedido() {
-        this(0, new Date(), "N/D", "", new Date(), "N/D", "N/D", 0, null, null, null, null, new ArrayList<LineaPedido>());
+        this(0, new Date(), "N/D", "", new Date(), "", "", 0, null, null, null, null, new ArrayList<LineaPedido>());
     }
 }

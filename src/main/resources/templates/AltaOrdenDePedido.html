@@ -182,8 +182,8 @@
                 <form action="#" th:action="@{/AltaOrdenDePedido}" method="post">
                     <tbody>
                         <tr><td colspan="2"><label th:text="${'Subtotal: $' + session.orden.Subtotal + ', Impuestos: $' + session.orden.Impuestos + ', Total: $' + session.orden.Total}"></label> </td></tr>
-                        <tr><td style="width: 25%">Dirección de envío:</td> <td><input type="text" name="direccionEnvio"/></td></tr>
-                        <tr><td>Contacto: </td><td><input type="text" name="contacto"/></td></tr>
+                        <tr><td style="width: 25%">Dirección de envío:</td> <td><input type="text" name="direccionEnvio" th:value="${session.orden.direccionEnvio}"/></td></tr>
+                        <tr><td>Contacto: </td><td><input type="text" name="contacto" th:value="${session.orden.contacto}"/></td></tr>
                         <tr style="text-align: right"><td colspan="2"><input type="submit" name="action" value="Finalizar" align="right" /> &nbsp;<input type="submit" name="action" value="Limpiar" align="right" /></td>
                         </tr>
                     </tbody>

@@ -14,6 +14,10 @@ public class Vehiculo {
         if (matricula.length() > 8){
             throw new ExcepcionFrigorifico("La matrícula no debe tener más de 8 carecteres");
         }
+
+        if (!matricula.matches("[A-Z]{3} [0-9]{4}")){
+            throw new ExcepcionFrigorifico("La matrícula debe tener el formato AAA 1234");
+        }
         this.matricula = matricula;
     }
 
