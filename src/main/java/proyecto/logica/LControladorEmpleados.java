@@ -72,10 +72,16 @@ public class LControladorEmpleados implements IEmpleados{
 
     @Override
     public void modificarEmpleado(Empleado e) throws Exception {
-        String pass = buscarEmpleado(e.getCi()).getContrasenia();
-        if(!e.getContrasenia().equals(pass)){ //Si intenta modificar la password del empleado la hasheo
-            e.setContrasenia(getSha256(e.getContrasenia()));
+        String passActual = buscarEmpleado(e.getCi()).getContrasenia();
+        String hashedPass = getSha256(e.getContrasenia());
+
+        if(e.getContrasenia().isEmpty()){
+            e.setContrasenia(passActual);
+        }else{ //Si intenta modificar la password del empleado la hasheo
+            e.setContrasenia(hashedPass);
         }
+
+
 
         FabricaPersistencia.getControladorEmpleados().modificarEmpleado(e);
     }

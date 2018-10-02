@@ -167,7 +167,7 @@ class PControladorEmpleados implements IPEmpleados{
     @Override
     public void modificarEmpleado(Empleado e) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
-            PreparedStatement statement = con.prepareStatement("UPDATE Empleado SET nombre = ?, contrasenia=?, fechaNac = ?, telefono = ? WHERE ci = ?")){
+            PreparedStatement statement = con.prepareStatement("UPDATE Empleado SET nombre = ?, contrasenia=?, fechaNac = ?, fechaContratacion=?, telefono = ? WHERE ci = ?")){
             if(e instanceof Repartidor){
                 modificarRepartidor((Repartidor)e, con);
             }else{

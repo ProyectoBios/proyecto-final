@@ -44,7 +44,7 @@
                             <td th:text="${#dates.format(pedido.Fecha, 'dd/MM/yyyy')}"></td>
                             <td th:text="${pedido.Cliente.Nombre}"></td>
                             <td th:text="${'$' + pedido.Total}"></td>
-                            <td><input class="pedido" type="checkbox" name="pedidos" th:value="${pedido.Id}" th:checked="${#arrays.contains(pedidosSeleccionados, pedido.Id)} ? 'checked'"/></td>
+                            <td><input class="pedido" type="checkbox" name="pedidos" th:value="${pedido.Id}" th:checked="${#arrays.contains(pedidosSeleccionados, '' + pedido.Id)} ? 'checked'"/></td>
                         </tr>
                         <tr>
                             <td colspan="4" align="right"><input type="submit" name="action" value="Seleccionar"/></td>

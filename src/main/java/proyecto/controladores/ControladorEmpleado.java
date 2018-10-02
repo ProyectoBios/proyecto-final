@@ -130,7 +130,7 @@ public class ControladorEmpleado {
     }
 
     @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.POST, params = "action=Agregar")
-    public String agregarEmpleado(@RequestParam(value = "vencLibreta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date vencLibreta, @ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap) {
+    public String agregarEmpleado(@RequestParam(value="confirmarPass") String confirmarPass, @RequestParam(value = "vencLibreta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date vencLibreta, @ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap) {
         try {
             if (bindingResult.hasErrors()) {
                 modelMap.addAttribute(empleado);
@@ -139,6 +139,13 @@ public class ControladorEmpleado {
                 ABMBotonesNoEncontrado(modelMap);
                 return "ABMEmpleado";
             }
+
+            if(!confirmarPass.equals(empleado.getContrasenia())){
+                modelMap.addAttribute(empleado);
+                modelMap.addAttribute("vencLibreta", vencLibreta);
+                throw new ExcepcionFrigorifico("Las contraseñas no coinciden.");
+            }
+
             if (empleado.getRol().equals("repartidor")) {
                 empleado = new Repartidor(empleado.getCi(), empleado.getNombre(), empleado.getContrasenia(), empleado.getFechaDeNacimiento(), empleado.getFechaContratacion(), empleado.getTelefono(), empleado.getRol(), vencLibreta);
             }
@@ -150,8 +157,10 @@ public class ControladorEmpleado {
             ABMBotonesPorDefecto(modelMap);
         } catch (ExcepcionFrigorifico ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
+            ABMBotonesNoEncontrado(modelMap);
         } catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al dar de alta el empleado")));
+            ABMBotonesNoEncontrado(modelMap);
         }
 
         return "ABMEmpleado";
@@ -166,11 +175,11 @@ public class ControladorEmpleado {
             modelMap.addAttribute("empleado", new Empleado());
             ABMBotonesPorDefecto(modelMap);
         } catch (ExcepcionFrigorifico ex) {
-            ABMBotonesPorDefecto(modelMap);
+            ABMBotonesEncontrado(modelMap);
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
         } catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al dar de baja el empleado")));
-            ABMBotonesPorDefecto(modelMap);
+            ABMBotonesEncontrado(modelMap);
         }
 
         return "ABMEmpleado";
@@ -215,7 +224,7 @@ public class ControladorEmpleado {
     }
 
     @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.POST, params = "action=Modificar")
-    public String modificarEmpleado(@RequestParam(value = "vencLibreta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date vencLibreta, @ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap) {
+    public String modificarEmpleado(@RequestParam(value="confirmarPass") String confirmarPass, @RequestParam(value = "vencLibreta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date vencLibreta, @ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap) {
         try {
             if (bindingResult.hasErrors()) {
                 modelMap.addAttribute(empleado);
@@ -223,6 +232,12 @@ public class ControladorEmpleado {
                 modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
                 ABMBotonesEncontrado(modelMap);
                 return "ABMEmpleado";
+            }
+
+            if(!confirmarPass.equals(empleado.getContrasenia())){
+                modelMap.addAttribute(empleado);
+                modelMap.addAttribute("vencLibreta", vencLibreta);
+                throw new ExcepcionFrigorifico("Las contraseñas no coinciden.");
             }
 
             if (empleado.getRol().equals("repartidor")) {
@@ -235,11 +250,11 @@ public class ControladorEmpleado {
             modelMap.addAttribute("empleado", new Empleado());
             ABMBotonesPorDefecto(modelMap);
         } catch (ExcepcionFrigorifico ex) {
-            ABMBotonesPorDefecto(modelMap);
+            ABMBotonesEncontrado(modelMap);
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
         } catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al modificar el empleado")));
-            ABMBotonesPorDefecto(modelMap);
+            ABMBotonesEncontrado(modelMap);
         }
 
         return "ABMEmpleado";

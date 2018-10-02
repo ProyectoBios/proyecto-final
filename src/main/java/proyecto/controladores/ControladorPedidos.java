@@ -342,9 +342,7 @@ public class ControladorPedidos {
             if(session.getAttribute("listaPicking") == null){
                 modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("pendiente"));
                 modelMap.addAttribute("tablaPedidos", true);
-                String[] pedidos = new String[1];
-                pedidos[0] = "12";
-                modelMap.addAttribute("pedidosSeleccionados", pedidos);
+                modelMap.addAttribute("pedidosSeleccionados", new String[0]);
             }else{
                 modelMap.addAttribute("tablaPicking", true);
             }
@@ -378,6 +376,7 @@ public class ControladorPedidos {
             session.setAttribute("pedidosPicking", ordenesPedido);
 
             session.setAttribute("listaPicking", FabricaLogica.getControladorPedidos().obtenerPicking(ordenesPedido));
+            modelMap.addAttribute("pedidosSeleccionados", new String[0]);
 
             modelMap.addAttribute("tablaPicking", true);
             return "realizarPicking";
@@ -391,7 +390,7 @@ public class ControladorPedidos {
 
             modelMap.addAttribute("tablaPedidos", true);
             modelMap.addAttribute("mensaje", ex.getMessage());
-
+            modelMap.addAttribute("pedidosSeleccionados", pedidos);
             return "realizarPicking";
         }catch (Exception ex){
             try{
@@ -403,6 +402,8 @@ public class ControladorPedidos {
 
             modelMap.addAttribute("tablaPedidos", true);
             modelMap.addAttribute("mensaje", "Ocurrió un error al seleccionar los pedidos para el picking.");
+            modelMap.addAttribute("pedidosSeleccionados", pedidos);
+
             return "realizarPicking";
         }
     }
