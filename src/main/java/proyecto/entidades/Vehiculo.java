@@ -40,8 +40,8 @@ public class Vehiculo {
     }
 
     public void setModelo(String modelo) throws ExcepcionFrigorifico{
-        if (marca.isEmpty()) {
-            throw new ExcepcionFrigorifico("El modelo no puede quedar vacía");
+        if (modelo.isEmpty()) {
+            throw new ExcepcionFrigorifico("El modelo no puede quedar vacíó");
         }
         if (modelo.length() > 20){
             throw new ExcepcionFrigorifico("El modelo no debe tener más de 20 caracteres");

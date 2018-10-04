@@ -280,7 +280,7 @@ public class ControladorEmpleado {
     @RequestMapping(value = "/MantenimientoVehiculos", method = RequestMethod.POST, params = "action=Buscar")
     public String buscarVehiculo(@ModelAttribute Vehiculo vehiculo, BindingResult bindingResult, ModelMap modelMap){
         try {
-            if (bindingResult.getFieldError("Matricula")!=null){
+            if (bindingResult.getFieldError("Matricula")!= null){
                 throw new ExcepcionFrigorifico(bindingResult.getFieldError("Matricula").getDefaultMessage().split(":")[1]);
             }
 
@@ -296,6 +296,7 @@ public class ControladorEmpleado {
             }
 
         } catch (ExcepcionFrigorifico ex){
+            ABMBotonesNoEncontrado(modelMap);
             modelMap.addAttribute("vehiculo", vehiculo);
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
         } catch (Exception ex){
@@ -364,7 +365,6 @@ public class ControladorEmpleado {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al dar de baja el vehículo")));
             ABMBotonesPorDefecto(modelMap);
         }
-
         return "ABVehiculo";
     }
 
