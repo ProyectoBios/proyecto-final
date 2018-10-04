@@ -84,13 +84,9 @@ public class ControladorEmpleado {
     @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.POST, params = "action=Buscar")
     public String buscarEmpleado(@ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap) {
         try {
-            if (bindingResult.hasErrors()) {
-                modelMap.addAttribute("empleado", new Empleado());
-                modelMap.addAttribute("vencLibreta", new Date());
-                modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
-                return "ABMEmpleado";
+            if (bindingResult.getFieldError("Ci")!=null){
+                throw new ExcepcionFrigorifico(bindingResult.getFieldError("Ci").getDefaultMessage().split(":")[1]);
             }
-
             Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(empleado.getCi());
             if (e != null) {
                 ABMBotonesEncontrado(modelMap);
@@ -109,8 +105,10 @@ public class ControladorEmpleado {
 
         } catch (ExcepcionFrigorifico ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
+            ABMBotonesPorDefecto(modelMap);
         } catch (Exception ex) {
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al dar de alta el empleado")));
+            ABMBotonesPorDefecto(modelMap);
         }
         return "ABMEmpleado";
     }
@@ -145,6 +143,11 @@ public class ControladorEmpleado {
                 modelMap.addAttribute("vencLibreta", vencLibreta);
                 throw new ExcepcionFrigorifico("Las contraseñas no coinciden.");
             }
+
+            /*if (empleado.getCi().isEmpty()){ //Debería ir solo en la entidad en sí.
+                modelMap.addAttribute(empleado);
+                throw new ExcepcionFrigorifico("La cédula no puede quedar vacía");
+            }*/
 
             if (empleado.getRol().equals("repartidor")) {
                 empleado = new Repartidor(empleado.getCi(), empleado.getNombre(), empleado.getContrasenia(), empleado.getFechaDeNacimiento(), empleado.getFechaContratacion(), empleado.getTelefono(), empleado.getRol(), vencLibreta);
@@ -277,28 +280,27 @@ public class ControladorEmpleado {
     @RequestMapping(value = "/MantenimientoVehiculos", method = RequestMethod.POST, params = "action=Buscar")
     public String buscarVehiculo(@ModelAttribute Vehiculo vehiculo, BindingResult bindingResult, ModelMap modelMap){
         try {
-            if (bindingResult.hasErrors()) {
-                modelMap.addAttribute("vehiculo", new Vehiculo());
-                modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
-                ABMBotonesPorDefecto(modelMap);
-                return "ABVehiculo";
+            if (bindingResult.getFieldError("Matricula")!=null){
+                throw new ExcepcionFrigorifico(bindingResult.getFieldError("Matricula").getDefaultMessage().split(":")[1]);
             }
 
             Vehiculo v = FabricaLogica.getControladorEmpleados().buscarVehiculo(vehiculo.getMatricula());
             if (v != null) {
                 ABMBotonesEncontrado(modelMap);
                 modelMap.addAttribute("vehiculo", v);
-
                 modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Vehículo encontrado con éxito")));
             } else {
                 ABMBotonesNoEncontrado(modelMap);
                 modelMap.addAttribute("vehiculo", vehiculo);
-
                 modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Vehículo no encontrado")));
             }
 
+        } catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("vehiculo", vehiculo);
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
         } catch (Exception ex){
-
+            modelMap.addAttribute("vehiculo", vehiculo);
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("¡ERROR! Ocurrió un error al buscar el vehículo")));
         }
         return "ABVehiculo";
     }
@@ -322,12 +324,11 @@ public class ControladorEmpleado {
     public String agregarVehiculo(@ModelAttribute Vehiculo vehiculo, BindingResult bindingResult, ModelMap modelMap) {
         try {
             if (bindingResult.hasErrors()) {
-                modelMap.addAttribute(vehiculo);
+                modelMap.addAttribute("vehiculo", vehiculo);
                 modelMap.addAttribute("mensajes", cargarErrores(bindingResult));
                 ABMBotonesNoEncontrado(modelMap);
                 return "ABVehiculo";
             }
-
             FabricaLogica.getControladorEmpleados().altaVehiculo(vehiculo);
 
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("Alta de vehículo con éxito.")));
@@ -335,9 +336,13 @@ public class ControladorEmpleado {
             ABMBotonesPorDefecto(modelMap);
 
         } catch (ExcepcionFrigorifico ex) {
+            modelMap.addAttribute("vehiculo", vehiculo);
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
+            ABMBotonesNoEncontrado(modelMap);
         } catch (Exception ex) {
-            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al cargar el formulario")));
+            modelMap.addAttribute("vehiculo", vehiculo);
+            modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al agregar el vehículo")));
+            ABMBotonesNoEncontrado(modelMap);
         }
         return "ABVehiculo";
     }
@@ -351,9 +356,11 @@ public class ControladorEmpleado {
             modelMap.addAttribute("vehiculo", new Vehiculo());
             ABMBotonesPorDefecto(modelMap);
         } catch (ExcepcionFrigorifico ex) {
-            ABMBotonesPorDefecto(modelMap);
+            modelMap.addAttribute("vehiculo", vehiculo);
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList(ex.getMessage())));
+            ABMBotonesPorDefecto(modelMap);
         } catch (Exception ex) {
+            modelMap.addAttribute("vehiculo", vehiculo);
             modelMap.addAttribute("mensajes", new ArrayList<String>(Arrays.asList("ERROR! Ocurrió un error al dar de baja el vehículo")));
             ABMBotonesPorDefecto(modelMap);
         }

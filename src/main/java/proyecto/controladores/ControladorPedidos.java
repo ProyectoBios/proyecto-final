@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 @Controller
@@ -390,7 +391,7 @@ public class ControladorPedidos {
 
             modelMap.addAttribute("tablaPedidos", true);
             modelMap.addAttribute("mensaje", ex.getMessage());
-            modelMap.addAttribute("pedidosSeleccionados", pedidos);
+            modelMap.addAttribute("pedidosSeleccionados", Arrays.toString(pedidos).split("[\\[\\]]")[1].split(", "));
             return "realizarPicking";
         }catch (Exception ex){
             try{
@@ -402,8 +403,7 @@ public class ControladorPedidos {
 
             modelMap.addAttribute("tablaPedidos", true);
             modelMap.addAttribute("mensaje", "Ocurrió un error al seleccionar los pedidos para el picking.");
-            modelMap.addAttribute("pedidosSeleccionados", pedidos);
-
+            modelMap.addAttribute("pedidosSeleccionados", Arrays.toString(pedidos).split("[\\[\\]]")[1].split(", "));
             return "realizarPicking";
         }
     }
@@ -439,12 +439,20 @@ public class ControladorPedidos {
             }
             modelMap.addAttribute("tablaPedidos", true);
             modelMap.addAttribute("mensaje", "Picking cancelado con exito.");
+            modelMap.addAttribute("pedidosSeleccionados", new String[0]);
+
             return "realizarPicking";
         }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
+            modelMap.addAttribute("tablaPicking", true);
+            modelMap.addAttribute("pedidosSeleccionados", new String[0]);
+
             return "realizarPicking";
         }catch (Exception ex){
             modelMap.addAttribute("mensaje", "Ocurrió un error al cancelar el picking.");
+            modelMap.addAttribute("tablaPicking", true);
+            modelMap.addAttribute("pedidosSeleccionados", new String[0]);
+
             return "realizarPicking";
         }
     }
@@ -460,9 +468,13 @@ public class ControladorPedidos {
             }
         }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
+            modelMap.addAttribute("tablaPicking", true);
+            modelMap.addAttribute("pedidosSeleccionados", new String[0]);
             return "realizarPicking";
         }catch (Exception ex){
             modelMap.addAttribute("mensaje", "Ocurrió un error al finalizar el picking.");
+            modelMap.addAttribute("tablaPicking", true);
+            modelMap.addAttribute("pedidosSeleccionados", new String[0]);
             return "realizarPicking";
         }
     }
@@ -484,7 +496,7 @@ public class ControladorPedidos {
             return "realizarPicking";
         }*/catch (Exception ex){
             modelMap.addAttribute("mensaje", "Ocurrió un error al seleccionar el pedido a preparar.");
-            return "realizarPicking";
+            return "PreparacionPedidos";
         }
     }
 
@@ -516,13 +528,13 @@ public class ControladorPedidos {
                 session.removeAttribute("listaPicking");
             }
             modelMap.addAttribute("mensaje", "Preparación de pedidos interrumpida con éxito.");
-            return "index";
+            return "Bienvenida";
         }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
-            return "realizarPicking";
+            return "PreparacionPedidos";
         }catch (Exception ex){
             modelMap.addAttribute("mensaje", "Ocurrió un error al cancelar la preparacion de los pedidos.");
-            return "realizarPicking";
+            return "PreparacionPedidos";
         }
     }
 

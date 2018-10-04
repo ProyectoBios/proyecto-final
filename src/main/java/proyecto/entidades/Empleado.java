@@ -25,8 +25,11 @@ public class Empleado {
 
     public void setCi(String ci) throws ExcepcionFrigorifico{
         if(ci.length() > 8){
-            throw new ExcepcionFrigorifico("La cédula no puede tener más de 8 caracteres.");
+            throw new ExcepcionFrigorifico("La cédula no puede tener más 8 caracteres.");
         }
+        if (ci.isEmpty()){
+            throw new ExcepcionFrigorifico("la cédula no puede quedar vacía");
+        } //Da quilombo.
         this.ci = ci;
     }
 
@@ -37,7 +40,7 @@ public class Empleado {
 
     public void setNombre(String nombre) throws ExcepcionFrigorifico{
         if(nombre.length() > 30){
-            throw new ExcepcionFrigorifico("El nombre no puede tener más de 30 caracteres.");
+            throw new ExcepcionFrigorifico("El nombre no puede quedar vacío o tener más de 30 caracteres.");
         }
 
         this.nombre = nombre;
@@ -81,7 +84,7 @@ public class Empleado {
 
     public void setTelefono(String telefono) throws ExcepcionFrigorifico{
         if(telefono.length()>10){
-            throw new ExcepcionFrigorifico("El telefono no puede tener más de 10 caracteres.");
+            throw new ExcepcionFrigorifico("El telefono no puede quedar vacío ni tener más de 10 caracteres.");
         }
 
         this.telefono = telefono;

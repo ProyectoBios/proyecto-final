@@ -77,11 +77,9 @@ public class LControladorEmpleados implements IEmpleados{
 
         if(e.getContrasenia().isEmpty()){
             e.setContrasenia(passActual);
-        }else{ //Si intenta modificar la password del empleado la hasheo
+        }else{ //Si intenta modificar el password del empleado la hasheo
             e.setContrasenia(hashedPass);
         }
-
-
 
         FabricaPersistencia.getControladorEmpleados().modificarEmpleado(e);
     }

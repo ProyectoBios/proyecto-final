@@ -26,6 +26,9 @@ public class Vehiculo {
     }
 
     public void setMarca(String marca) throws ExcepcionFrigorifico{
+        if (marca.isEmpty()){
+            throw new ExcepcionFrigorifico("La marca no puede quedar vacía");
+        }
         if (marca.length() > 20) {
             throw new ExcepcionFrigorifico("La marca no debe tener más de 20 caracteres");
         }
@@ -37,6 +40,9 @@ public class Vehiculo {
     }
 
     public void setModelo(String modelo) throws ExcepcionFrigorifico{
+        if (marca.isEmpty()) {
+            throw new ExcepcionFrigorifico("El modelo no puede quedar vacía");
+        }
         if (modelo.length() > 20){
             throw new ExcepcionFrigorifico("El modelo no debe tener más de 20 caracteres");
         }
@@ -48,8 +54,8 @@ public class Vehiculo {
     }
 
     public void setCargaMax(int cargaMax) throws ExcepcionFrigorifico{
-        if (cargaMax < 0){
-            throw new ExcepcionFrigorifico("La carga máxima debe ser mayor o igual a cero");
+        if (cargaMax <= 0){
+            throw new ExcepcionFrigorifico("La carga máxima debe ser mayor a cero");
         }
         this.cargaMax = cargaMax;
     }
