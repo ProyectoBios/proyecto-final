@@ -138,16 +138,17 @@ public class ControladorEmpleado {
                 return "ABMEmpleado";
             }
 
+            if (empleado.getContrasenia().isEmpty()){
+                modelMap.addAttribute(empleado);
+                modelMap.addAttribute("vencLibreta", vencLibreta);
+                throw new ExcepcionFrigorifico("La contraseña no puede quedar vacía.");
+            }
+
             if(!confirmarPass.equals(empleado.getContrasenia())){
                 modelMap.addAttribute(empleado);
                 modelMap.addAttribute("vencLibreta", vencLibreta);
                 throw new ExcepcionFrigorifico("Las contraseñas no coinciden.");
             }
-
-            /*if (empleado.getCi().isEmpty()){ //Debería ir solo en la entidad en sí.
-                modelMap.addAttribute(empleado);
-                throw new ExcepcionFrigorifico("La cédula no puede quedar vacía");
-            }*/
 
             if (empleado.getRol().equals("repartidor")) {
                 empleado = new Repartidor(empleado.getCi(), empleado.getNombre(), empleado.getContrasenia(), empleado.getFechaDeNacimiento(), empleado.getFechaContratacion(), empleado.getTelefono(), empleado.getRol(), vencLibreta);

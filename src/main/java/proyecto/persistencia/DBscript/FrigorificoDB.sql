@@ -60,7 +60,8 @@ Create Table Empleado(
     fechaNac date not null,
     fechaContratacion date not null,
     telefono varchar(10) not null,
-    rol varchar(15) not null
+    rol varchar(15) not null,
+     eliminado bit not null
 );
 
 Create Table Repartidor(
@@ -135,22 +136,17 @@ Create Table PedidosViaje(
 INSERT INTO EspecificacionProducto VALUES(NULL, 'Mortadela', 20, 10, 100, 0);
 INSERT INTO EspecificacionProducto VALUES(NULL, 'Chorizo', 100, 50, 500, 0);
 INSERT INTO EspecificacionProducto VALUES(NULL, 'Longaniza', 140, 60, 650, 0);
-INSERT INTO EspecificacionProducto VALUES(NULL, 'Salame', 140, 60, 650, 0);
-INSERT INTO EspecificacionProducto VALUES(NULL, 'Bondiola', 140, 60, 650, 0);
 
 INSERT INTO PrecioProducto VALUES(1, 30.0, '20170527', '20171105');
 INSERT INTO PrecioProducto VALUES(1, 10.0, '20171105', NULL);
 INSERT INTO PrecioProducto VALUES(2, 25.0, '20171105', NULL);
 INSERT INTO PrecioProducto VALUES(3, 30.0, '20171105', NULL);
-INSERT INTO PrecioProducto VALUES(4, 30.0, '20171105', NULL);
-INSERT INTO PrecioProducto VALUES(5, 30.0, '20171105', NULL);
 
+INSERT INTO Rack VALUES('A', 10, 20);
+INSERT INTO Rack VALUES('D', 12, 18);
+INSERT INTO Rack VALUES('C', 10, 20);
+INSERT INTO Rack VALUES('B', 10, 20);
 
-INSERT INTO Rack VALUES('A', 6, 15);
-INSERT INTO Rack VALUES('D', 6, 15);
-INSERT INTO Rack VALUES('C', 6, 15);
-INSERT INTO Rack VALUES('B', 6, 15);
-INSERT INTO Rack VALUES('E', 6, 15);
 
 
 INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 50, 1, 'A', 1,1, 0);
@@ -167,10 +163,10 @@ INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 10, 3, 'A', 2, 2, 0);
 INSERT INTO Cliente VALUES('Disco', '1234567890', 'disco@disco.com');
 INSERT INTO Cliente VALUES('Carniceria Pepe', '0987654321', 'pepe@gmail.com');
 
-INSERT INTO Empleado VALUES('12345678', 'Pedro Rodriguez','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' , '19840324', '20171009', '091789456', 'repartidor');
-INSERT INTO Empleado VALUES('32165498', 'Pepe Martin','88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589' ,'19800515', '20160520', '092879654', 'operador');
-INSERT INTO Empleado VALUES('36328662', 'Alvaro Martinez','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' ,'19840329', '20160520', '092879654', 'gerente');
-INSERT INTO Empleado VALUES('48550958', 'Diego Silva','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' , '19971214', '20171009', '098109048', 'funcionario');
+INSERT INTO Empleado VALUES('12345678', 'Pedro Rodriguez','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' , '19840324', '20171009', '091789456', 'repartidor',0);
+INSERT INTO Empleado VALUES('32165498', 'Pepe Martin','88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589' ,'19800515', '20160520', '092879654', 'operador',0);
+INSERT INTO Empleado VALUES('36328662', 'Alvaro Martinez','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' ,'19840329', '20160520', '092879654', 'gerente',0);
+INSERT INTO Empleado VALUES('48550958', 'Diego Silva','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' , '19971214', '20171009', '098109048', 'funcionario',0);
 
 INSERT INTO Repartidor VALUES('12345678', '20220814');
 
@@ -197,13 +193,21 @@ BEGIN
  
  Create procedure BajaEspProducto(pID int) -- Cambiar por baja logica en futuras iteraciones
  BEGIN
-	DELETE 
-    FROM PrecioProducto
-    WHERE IDProducto = pID;	
+ IF exists (SELECT * FROM LineaPedido WHERE idProducto = pID) THEN 
  
-	DELETE 
-    FROM EspecificacionProducto
-    WHERE ID = pID;
+	UPDATE EspecificacionProducto SET eliminado = 1 WHERE ID = pID;
+ 
+ ELSE 
+	 BEGIN
+		DELETE 
+		FROM PrecioProducto
+		WHERE IDProducto = pID;	
+	 
+		DELETE 
+		FROM EspecificacionProducto
+		WHERE ID = pID;
+        END;
+	END IF;
  END//
  
  Create Procedure ModificarProducto(pID int, pNombre varchar(40), pMinStock int, pStockCritico int, pMaxStock int, pPrecio double)
@@ -331,9 +335,19 @@ BEGIN
     
     SET transaccionActiva = 1;
     START transaction;    
+    IF exists (SELECT * FROM OrdenPedido WHERE operador = pCi) OR exists
+			  (SELECT * FROM OrdenPedido WHERE funcionario = pCi) OR exists
+              (SELECT * FROM OrdenPedido WHERE repartidor = pCi)
+    THEN 
+ 
+	UPDATE Empleado SET eliminado = 1 WHERE ci = pCi;
     
-    DELETE FROM Repartidor WHERE ci = pCi;
-    DELETE FROM Empleado WHERE ci = pCi;
+    ELSE
+		BEGIN 
+			DELETE FROM Repartidor WHERE ci = pCi;
+			DELETE FROM Empleado WHERE ci = pCi;
+        END;
+    END IF;
     
     COMMIT;
  END//
