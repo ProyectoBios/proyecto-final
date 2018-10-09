@@ -14,7 +14,7 @@ public class BaseDeDatosEstres {
 
             //codigo para cargar la base de datos de forma masiva.
 
-            ArrayList<EspecificacionProducto> prods = FabricaLogica.getControladorDeposito().listarProductos();
+            ArrayList<EspecificacionProducto> prods = FabricaLogica.getControladorDeposito().listarProductos(false);
 
             //Cargar Pedidos
 

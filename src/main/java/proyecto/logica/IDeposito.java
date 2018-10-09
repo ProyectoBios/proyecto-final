@@ -9,9 +9,9 @@ public interface IDeposito {
     public int altaDeProducto(EspecificacionProducto ep) throws Exception;
     public void bajaProducto(EspecificacionProducto ep) throws Exception;
     public void modificarProducto(EspecificacionProducto ep) throws Exception;
-    public EspecificacionProducto buscarProducto(int codigo) throws Exception;
+    public EspecificacionProducto buscarProducto(int codigo, boolean soloActivos) throws Exception;
     public ArrayList<Lote> buscarStock(EspecificacionProducto ep) throws Exception;
-    public ArrayList<EspecificacionProducto> listarProductos() throws Exception;
+    public ArrayList<EspecificacionProducto> listarProductos(boolean soloActivos) throws Exception;
     public ArrayList<EspecificacionProducto> buscarProductosXNombre(String nombre) throws Exception;
     //endregion
     //region Rack

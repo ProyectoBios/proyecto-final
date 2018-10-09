@@ -97,8 +97,8 @@ class LControladorDeposito implements  IDeposito {
     }
 
     @Override
-    public EspecificacionProducto buscarProducto(int codigo) throws Exception{
-        return FabricaPersistencia.getControladorDeposito().buscarProducto(codigo);
+    public EspecificacionProducto buscarProducto(int codigo, boolean soloActivos) throws Exception{
+        return FabricaPersistencia.getControladorDeposito().buscarProducto(codigo, soloActivos);
     }
 
     @Override
@@ -108,8 +108,8 @@ class LControladorDeposito implements  IDeposito {
     }
 
     @Override
-    public ArrayList<EspecificacionProducto> listarProductos() throws Exception {
-        return FabricaPersistencia.getControladorDeposito().listarProductos();
+    public ArrayList<EspecificacionProducto> listarProductos(boolean soloActivos) throws Exception {
+        return FabricaPersistencia.getControladorDeposito().listarProductos(soloActivos);
     }
 
     @Override

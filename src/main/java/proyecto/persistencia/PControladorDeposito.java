@@ -98,7 +98,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public EspecificacionProducto buscarProducto(int codigo) throws Exception{
+    public EspecificacionProducto buscarProducto(int codigo, boolean soloActivos) throws Exception{
         EspecificacionProducto productoEncontrado = null;
 
         try (Connection con = Conexion.AbrirConexion();
@@ -109,7 +109,9 @@ class PControladorDeposito implements IPDeposito{
             ResultSet resultadoConsulta = consulta.executeQuery();
 
             if (resultadoConsulta.next()) {
-                productoEncontrado = new EspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), buscarHistorico(codigo));
+                if(!(resultadoConsulta.getBoolean("eliminado") && soloActivos)) {
+                    productoEncontrado = new EspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), buscarHistorico(codigo));
+                }
             }
 
         } catch (SQLException ex) {
@@ -172,7 +174,7 @@ class PControladorDeposito implements IPDeposito{
     }
 
     @Override
-    public ArrayList<EspecificacionProducto> listarProductos() throws Exception {
+    public ArrayList<EspecificacionProducto> listarProductos(boolean soloActivos) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM EspecificacionProducto")){
 
@@ -180,8 +182,10 @@ class PControladorDeposito implements IPDeposito{
             ArrayList<EspecificacionProducto> productos = new ArrayList<EspecificacionProducto>();
             EspecificacionProducto prod = null;
             while(resultadoConsulta.next()){
-                prod = new EspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), buscarHistorico(resultadoConsulta.getInt("ID")));
-                productos.add(prod);
+                if(!(resultadoConsulta.getBoolean("eliminado") && soloActivos)) {
+                    prod = new EspecificacionProducto(resultadoConsulta.getInt("ID"), resultadoConsulta.getString("nombre"), resultadoConsulta.getInt("minStock"), resultadoConsulta.getInt("stockCritico"), resultadoConsulta.getInt("maxStock"), buscarHistorico(resultadoConsulta.getInt("ID")));
+                    productos.add(prod);
+                }
             }
             return productos;
         }catch(Exception ex){
@@ -328,7 +332,7 @@ class PControladorDeposito implements IPDeposito{
             ResultSet resultadoConsulta = consulta.executeQuery();
             Lote lote = null;
             while(resultadoConsulta.next()){
-                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto"), false), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
                 lotes.add(lote);
             }
 
@@ -364,7 +368,7 @@ class PControladorDeposito implements IPDeposito{
             ResultSet resultadoConsulta = consulta.executeQuery();
             Lote lote = null;
             if(resultadoConsulta.next()){
-                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto"), false), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
             }
             return lote;
         }catch(Exception ex){
@@ -405,7 +409,7 @@ class PControladorDeposito implements IPDeposito{
 
             ResultSet resultadoConsulta = consulta.executeQuery();
             while(resultadoConsulta.next()) {
-                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto"), false), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
                 lotes.add(lote);
             }
             return lotes;
@@ -427,7 +431,7 @@ class PControladorDeposito implements IPDeposito{
             ResultSet resultadoConsulta = consulta.executeQuery();
             Lote lote = null;
             if(resultadoConsulta.next()){
-                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto")), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
+                lote = new Lote(resultadoConsulta.getInt("idLote"), resultadoConsulta.getTimestamp("fechaIngreso"), resultadoConsulta.getTimestamp("fechaVencimiento"), resultadoConsulta.getInt("cantUnidades"), buscarProducto(resultadoConsulta.getInt("IDProducto"), false), new Ubicacion(resultadoConsulta.getInt("fila"), resultadoConsulta.getInt("columna"), buscarRack(resultadoConsulta.getString("letraRack"))));
             }
 
             return lote;

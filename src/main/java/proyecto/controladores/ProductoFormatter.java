@@ -12,7 +12,7 @@ public class ProductoFormatter implements Formatter<EspecificacionProducto>{
     @Override
     public EspecificacionProducto parse(String codigo, Locale locale) throws ParseException {
         try {
-            return FabricaLogica.getControladorDeposito().buscarProducto(Integer.valueOf(codigo));
+            return FabricaLogica.getControladorDeposito().buscarProducto(Integer.valueOf(codigo), false);
         }catch (Exception ex){
             throw new ParseException("Error al convertir codigo en producto", 0);
         }

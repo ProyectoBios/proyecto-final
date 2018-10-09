@@ -215,7 +215,7 @@ class PControladorPedidos implements IPPedidos{
             LineaPedido linea = null;
 
             while(resultado.next()){
-                linea = new LineaPedido(resultado.getInt("numero"), resultado.getInt("cantidad"), resultado.getDouble("importe"), PControladorDeposito.getInstancia().buscarProducto(resultado.getInt("idProducto")));
+                linea = new LineaPedido(resultado.getInt("numero"), resultado.getInt("cantidad"), resultado.getDouble("importe"), PControladorDeposito.getInstancia().buscarProducto(resultado.getInt("idProducto"), false));
                 lineas.add(linea);
             }
 

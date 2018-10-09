@@ -186,7 +186,7 @@ public class ControladorPedidos {
             orden.setCliente(cliente);
             session.setAttribute("orden", orden);
             modelMap.addAttribute("tablaProducto", true);
-            session.setAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
+            session.setAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos(true));
             return "AltaOrdenDePedido";
         }catch (ExcepcionFrigorifico ex){
             modelMap.addAttribute("mensaje", ex.getMessage());
@@ -222,7 +222,7 @@ public class ControladorPedidos {
             session.setAttribute("orden", orden);
 
             modelMap.addAttribute("tablaProducto", true);
-            session.setAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
+            session.setAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos(true));
             modelMap.addAttribute("mensaje", "Cliente agregado con éxito.");
             return "AltaOrdenDePedido";
         }catch (ExcepcionFrigorifico ex){
@@ -251,7 +251,7 @@ public class ControladorPedidos {
                 modelMap.addAttribute("mensajeStock", "ERROR! Debe seleccionar un producto");
                 return "AltaOrdenDePedido";
             }
-            EspecificacionProducto producto = FabricaLogica.getControladorDeposito().buscarProducto(id);
+            EspecificacionProducto producto = FabricaLogica.getControladorDeposito().buscarProducto(id, false);
 
             int cantidadUnidades;
             try{

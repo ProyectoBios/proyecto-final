@@ -79,7 +79,7 @@ public class ControladorDeposito {
                     throw new ExcepcionFrigorifico("Debe introducir un código positivo o un nombre para efectuar la búsqueda (0 para agregar un nuevo producto)");
                 }
             }else{ //si es mayor que 0, busco por ID y si no existe, busco por nombre (si hay)
-                EspecificacionProducto prod = FabricaLogica.getControladorDeposito().buscarProducto(producto.getCodigo());
+                EspecificacionProducto prod = FabricaLogica.getControladorDeposito().buscarProducto(producto.getCodigo(), true);
                 if(prod != null){
                     modelMap.addAttribute("producto", prod);
                     botonesBMProducto(modelMap);
@@ -124,11 +124,18 @@ public class ControladorDeposito {
                 throw new ExcepcionFrigorifico("Código de producto inválido.");
             }
 
-            EspecificacionProducto producto = FabricaLogica.getControladorDeposito().buscarProducto(cod);
+            EspecificacionProducto producto = FabricaLogica.getControladorDeposito().buscarProducto(cod, true);
 
-            modelMap.addAttribute("producto", producto);
-            botonesBMProducto(modelMap);
+
+            if(producto!=null) {
+                modelMap.addAttribute("producto", producto);
+                botonesBMProducto(modelMap);
+            }else{
+                //TODO Response send redirect abmproducto
+            }
+
             return "ABMProducto";
+
 
         }catch(ExcepcionFrigorifico ex){
             EspecificacionProducto producto = new EspecificacionProducto();
@@ -453,7 +460,7 @@ public class ControladorDeposito {
         ArrayList<EspecificacionProducto> prods = new ArrayList<>();
         ArrayList<Rack> racks = new ArrayList<Rack>();
         try {
-            prods = FabricaLogica.getControladorDeposito().listarProductos();
+            prods = FabricaLogica.getControladorDeposito().listarProductos(true);
             racks = FabricaLogica.getControladorDeposito().listarRacks();
             modelMap.addAttribute("lote", new Lote());
             modelMap.addAttribute("productos",prods);
@@ -479,7 +486,7 @@ public class ControladorDeposito {
         ArrayList<EspecificacionProducto> prods = new ArrayList<>();
         ArrayList<Rack> racks = new ArrayList<>();
         try{
-            prods = FabricaLogica.getControladorDeposito().listarProductos();
+            prods = FabricaLogica.getControladorDeposito().listarProductos(true);
             racks = FabricaLogica.getControladorDeposito().listarRacks();
             int codigo = FabricaLogica.getControladorDeposito().altaLote(lote);
 
@@ -645,7 +652,7 @@ public class ControladorDeposito {
     public String limpiarAltaLote(ModelMap modelMap){
         try {
             modelMap.addAttribute("lote", new Lote());
-            modelMap.addAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos());
+            modelMap.addAttribute("productos", FabricaLogica.getControladorDeposito().listarProductos(true));
             modelMap.addAttribute("racks", FabricaLogica.getControladorDeposito().listarRacks());
             return "AltaLote";
         }catch (ExcepcionFrigorifico ex){

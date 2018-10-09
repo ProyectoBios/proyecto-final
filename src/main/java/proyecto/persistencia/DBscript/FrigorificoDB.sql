@@ -61,7 +61,7 @@ Create Table Empleado(
     fechaContratacion date not null,
     telefono varchar(10) not null,
     rol varchar(15) not null,
-     eliminado bit not null
+	eliminado bit not null
 );
 
 Create Table Repartidor(
@@ -179,6 +179,9 @@ INSERT INTO LineaPedido VALUES(1, 1, 200, 2000.0, 1);
 INSERT INTO LineaPedido VALUES(1, 2, 45, 1125.0, 2);
 INSERT INTO LineaPedido VALUES(1, 3, 65, 1950.0, 3);
 
+
+
+
 DELIMITER //
 
 Create Procedure AltaEspProducto(pNombre varchar(40), pMinStock int, pStockCritico int, pMaxStock int, precio double, out id int) 
@@ -193,10 +196,8 @@ BEGIN
  
  Create procedure BajaEspProducto(pID int) -- Cambiar por baja logica en futuras iteraciones
  BEGIN
- IF exists (SELECT * FROM LineaPedido WHERE idProducto = pID) THEN 
- 
-	UPDATE EspecificacionProducto SET eliminado = 1 WHERE ID = pID;
- 
+ IF exists (SELECT * FROM LineaPedido WHERE idProducto = pID) THEN  
+	UPDATE EspecificacionProducto SET eliminado = 1 WHERE ID = pID; 
  ELSE 
 	 BEGIN
 		DELETE 
@@ -387,7 +388,7 @@ BEGIN
  BEGIN
 	SELECT * 
     FROM EspecificacionProducto
-    WHERE lower(nombre) LIKE lower(concat('%', trim(pNombre), '%'));
+    WHERE lower(nombre) LIKE lower(concat('%', trim(pNombre), '%')) AND eliminado = 0;
  END
  
  
