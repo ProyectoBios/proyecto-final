@@ -24,7 +24,7 @@ public class Empleado {
     }
 
     public void setCi(String ci) throws ExcepcionFrigorifico{
-        if(ci.length() > 8){
+        if(ci.length() != 8){
             throw new ExcepcionFrigorifico("La cédula no puede tener más 8 caracteres.");
         }
         if (ci.isEmpty()){
@@ -95,7 +95,7 @@ public class Empleado {
     }
 
     public void setRol(String rol) throws ExcepcionFrigorifico{
-        if(!rol.equals("gerente") && !rol.equals("funcionario") && !rol.equals("operador") && !rol.equals("repartidor") && !rol.equals("")){
+        if(!rol.equals("gerente") && !rol.equals("funcionario") && !rol.equals("operador") && !rol.equals("repartidor")){
             throw new ExcepcionFrigorifico("El rol no es válido.");
         }
 
