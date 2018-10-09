@@ -19,7 +19,7 @@ public class BaseDeDatosEstres {
             //Cargar Pedidos
 
             OrdenPedido p;
-            p = new OrdenPedido(0, new Date(), "pendiente", "", new Date(), "Av Inexistente 1234", "Peteco", 3000, FabricaLogica.getControladorPedidos().buscarCliente("Carniceria Pepe"), FabricaLogica.getControladorEmpleados().buscarEmpleado("32165498"), null, null, new ArrayList<>());
+            p = new OrdenPedido(0, new Date(), "pendiente", "", new Date(), "Av Inexistente 1234", "Peteco", 3000, FabricaLogica.getControladorPedidos().buscarCliente("Carniceria Pepe"), FabricaLogica.getControladorEmpleados().buscarEmpleado("32165498", false), null, null, new ArrayList<>());
             for (int i = 0; i < 15000; i++) {
                 ArrayList<LineaPedido> lineas = new ArrayList<>();
                 for(int j = 0; j<5; j++){

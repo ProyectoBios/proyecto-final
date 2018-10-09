@@ -317,9 +317,40 @@ BEGIN
     SET transaccionActiva = 1;
     START transaction;
     
-    INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaContratacion, pTel, 'repartidor');
-    INSERT INTO Repartidor VALUES(pCi, pFechaVencLib);
+    if exists(SELECT * FROM Repartidor WHERE ci = pCi AND eliminado = 1) THEN
+		UPDATE Empleado SET nombre = pNombre, contrasenia=pContrasenia, fechaNac = pFechaNac, fechaContratacion=pFechaContratacion, telefono = pTel, eliminado = 0 WHERE ci = pCi;
+        UPDATE Repartidor SET vencLibreta = pFechaVencLib WHERE ci = pcI;
+    ELSE
+		BEGIN
+			INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaContratacion, pTel, 'repartidor');
+			INSERT INTO Repartidor VALUES(pCi, pFechaVencLib);
+		END;
+    END IF;
     
+    COMMIT;
+ END//
+ 
+ Create Procedure AltaEmpleado(pCi varchar(8), pNombre varchar(30), pContrasenia varchar(64), pFechaNac date, pFechaCont date, pTel varchar(10), pRol varchar(15))
+ BEGIN
+	DECLARE transaccionActiva BIT;
+
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+	BEGIN
+		IF transaccionActiva THEN
+			ROLLBACK;
+        END IF;
+	END;
+    
+    SET transaccionActiva = 1;
+    START transaction;
+    
+    if exists (SELECT * FROM Empleado WHERE ci = pCi AND eliminado = 1) THEN
+		UPDATE Empleado SET nombre = pNombre, contrasenia=pContrasenia, fechaNac = pFechaNac, fechaContratacion=pFechaCont, telefono = pTel, eliminado = 0 WHERE ci = pCi;
+    ELSE
+		BEGIN
+			INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaContratacion, pTel, pRol);			
+		END;
+	END IF;
     COMMIT;
  END//
  
@@ -339,10 +370,8 @@ BEGIN
     IF exists (SELECT * FROM OrdenPedido WHERE operador = pCi) OR exists
 			  (SELECT * FROM OrdenPedido WHERE funcionario = pCi) OR exists
               (SELECT * FROM OrdenPedido WHERE repartidor = pCi)
-    THEN 
- 
-	UPDATE Empleado SET eliminado = 1 WHERE ci = pCi;
-    
+    THEN  
+		UPDATE Empleado SET eliminado = 1 WHERE ci = pCi;    
     ELSE
 		BEGIN 
 			DELETE FROM Repartidor WHERE ci = pCi;
@@ -371,6 +400,15 @@ BEGIN
     UPDATE Repartidor SET vencLibreta = pFechaVencLib WHERE ci = pCi;
     
     COMMIT;
+ END//
+ 
+ Create Procedure AltaVehiculo(pMatricula varchar(8), pMarca varchar(20), pModelo varchar(20), pCargaMax int)
+ BEGIN
+	IF (EXISTS ( SELECT * FROM Vehiculo WHERE matricula = pMatricula AND eliminado = 1)) THEN    
+		UPDATE Vehiculo SET marca = pMarca, modelo = pModelo, cargaMax=pCargaMax, eliminado = 0 WHERE matricula = pMatricula;
+    ELSE
+		INSERT INTO Vehiculo VALUES(pMatricula, pMarca, pModelo, pCargaMax, 0);
+    END IF;        
  END//
  
  Create Procedure BajaVehiculo(pMatricula varchar(8))

@@ -42,7 +42,7 @@ public class ControladorEmpleado {
             }
 
             if(FabricaLogica.getControladorEmpleados().iniciarSesion(cedula, contrasenia)){
-                session.setAttribute("usuarioLogueado", FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula));
+                session.setAttribute("usuarioLogueado", FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula, true));
                 response.sendRedirect(request.getContextPath() + "/Bienvenida");
                 return "index";
             }else{
@@ -87,7 +87,7 @@ public class ControladorEmpleado {
             if (bindingResult.getFieldError("Ci")!= null){
                 throw new ExcepcionFrigorifico(bindingResult.getFieldError("Ci").getDefaultMessage().split(":")[1]);
             }
-            Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(empleado.getCi());
+            Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(empleado.getCi(), true);
             if (e != null) {
                 ABMBotonesEncontrado(modelMap);
                 modelMap.addAttribute("empleado", e);
@@ -192,7 +192,7 @@ public class ControladorEmpleado {
     @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.POST, params = "action=Listar")
     public String listarEmpleados(ModelMap modelMap) {
         try {
-            modelMap.addAttribute("empleados", FabricaLogica.getControladorEmpleados().listarEmpleados());
+            modelMap.addAttribute("empleados", FabricaLogica.getControladorEmpleados().listarEmpleados(true));
             modelMap.addAttribute("tablaListado", "true");
             modelMap.addAttribute("empleado", new Empleado());
             ABMBotonesPorDefecto(modelMap);
@@ -210,7 +210,7 @@ public class ControladorEmpleado {
     @RequestMapping(value = "/MantenimientoEmpleados/{cedula}", method = RequestMethod.GET)
     public String buscarEmpleadoXCedula(@PathVariable String cedula, ModelMap modelMap) {
         try {
-            Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula);
+            Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(cedula, true);
             modelMap.addAttribute("empleado", e);
             if(e instanceof Repartidor){
                 modelMap.addAttribute("vencLibreta", ((Repartidor) e).getVencLibreta());
@@ -285,7 +285,7 @@ public class ControladorEmpleado {
                 throw new ExcepcionFrigorifico(bindingResult.getFieldError("Matricula").getDefaultMessage().split(":")[1]);
             }
 
-            Vehiculo v = FabricaLogica.getControladorEmpleados().buscarVehiculo(vehiculo.getMatricula());
+            Vehiculo v = FabricaLogica.getControladorEmpleados().buscarVehiculo(vehiculo.getMatricula(), true);
             if (v != null) {
                 ABMBotonesEncontrado(modelMap);
                 modelMap.addAttribute("vehiculo", v);

@@ -86,8 +86,7 @@ public class PControladorEntregas implements IPEntregas{
             ResultSet resultadoConsulta = consulta.executeQuery();
 
             while (resultadoConsulta.next()){
-
-                vehiculo = FabricaPersistencia.getControladorEmpleados().buscarVehiculo(resultadoConsulta.getString("matriculaVehiculo"));
+                vehiculo = FabricaPersistencia.getControladorEmpleados().buscarVehiculo(resultadoConsulta.getString("matriculaVehiculo"), false);
                 ordenes = obtenerPedidosXViaje(resultadoConsulta.getInt("id"));
                 viaje = new Viaje(resultadoConsulta.getInt("id"), repartidor, vehiculo, ordenes, resultadoConsulta.getTimestamp("fechaHora"));
                 listaViajes.add(viaje);

@@ -24,7 +24,7 @@ class PControladorEmpleados implements IPEmpleados{
     private PControladorEmpleados(){}
 
     @Override
-    public Empleado buscarEmpleado(String ci) throws Exception {
+    public Empleado buscarEmpleado(String ci, boolean soloActivos) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Empleado WHERE ci = ?")){
 
@@ -34,7 +34,9 @@ class PControladorEmpleados implements IPEmpleados{
 
             Empleado empleado = null;
             if(resultado.next()) {
-                empleado = new Empleado(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"));
+                if(!(resultado.getBoolean("eliminado") && soloActivos)) {
+                    empleado = new Empleado(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"));
+                }
             }
 
             return empleado;
@@ -44,7 +46,7 @@ class PControladorEmpleados implements IPEmpleados{
     }
 
     @Override
-    public Repartidor buscarRepartidor(String ci) throws Exception {
+    public Repartidor buscarRepartidor(String ci, boolean soloActivos) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT Empleado.*, Repartidor.vencLibreta FROM Empleado INNER JOIN Repartidor ON Empleado.ci = Repartidor.ci WHERE Empleado.ci = ?")){
 
@@ -54,7 +56,9 @@ class PControladorEmpleados implements IPEmpleados{
 
             Repartidor repartidor = null;
             if(resultado.next()) {
-                repartidor = new Repartidor(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"), resultado.getDate("vencLibreta"));
+                if(!(resultado.getBoolean("eliminado") && soloActivos)) {
+                    repartidor = new Repartidor(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"), resultado.getDate("vencLibreta"));
+                }
             }
 
             return repartidor;
@@ -64,7 +68,7 @@ class PControladorEmpleados implements IPEmpleados{
     }
 
     @Override
-    public ArrayList<Empleado> listarEmpleadosXRol(String rol) throws Exception {
+    public ArrayList<Empleado> listarEmpleadosXRol(String rol, boolean soloActivos) throws Exception {
         if(rol.equals("repartidor")){
             return listarRepartidores();
         }else {
@@ -78,12 +82,14 @@ class PControladorEmpleados implements IPEmpleados{
                 ArrayList<Empleado> empleados = new ArrayList<>();
                 Empleado empleado = null;
                 while (resultado.next()) {
-                    if (resultado.getString("rol").equals("repartidor")) {
-                        empleado = new Repartidor(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"), resultado.getDate("vencLibreta"));
-                    } else {
-                        empleado = new Empleado(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"));
+                    if(!(resultado.getBoolean("eliminado") && soloActivos)) {
+                        if (resultado.getString("rol").equals("repartidor")) {
+                            empleado = new Repartidor(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"), resultado.getDate("vencLibreta"));
+                        } else {
+                            empleado = new Empleado(resultado.getString("ci"), resultado.getString("nombre"), resultado.getString("contrasenia"), resultado.getDate("fechaNac"), resultado.getDate("fechaContratacion"), resultado.getString("telefono"), resultado.getString("rol"));
+                        }
+                        empleados.add(empleado);
                     }
-                    empleados.add(empleado);
                 }
 
                 return empleados;
@@ -115,7 +121,7 @@ class PControladorEmpleados implements IPEmpleados{
 
     public void altaEmpleado(Empleado e) throws Exception{
         try(Connection con = Conexion.AbrirConexion();
-            PreparedStatement statement = con.prepareStatement("INSERT INTO Empleado VALUES (?, ?, ?, ?, ?, ?, ?, 0)")){
+            CallableStatement statement = con.prepareCall("{CALL AltaEmpleado(?, ?, ?, ?, ?, ?, ?)}")){
 
             if(e instanceof Repartidor){
                 altaRepartidor((Repartidor)e, con);
@@ -202,7 +208,7 @@ class PControladorEmpleados implements IPEmpleados{
     }
 
     @Override
-    public Vehiculo buscarVehiculo(String matricula) throws Exception {
+    public Vehiculo buscarVehiculo(String matricula, boolean soloActivos) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
         PreparedStatement consulta = con.prepareStatement("SELECT * FROM Vehiculo WHERE matricula = ?")){
 
@@ -212,7 +218,9 @@ class PControladorEmpleados implements IPEmpleados{
 
             Vehiculo v = null;
             if(resultado.next()) {
-                v = new Vehiculo(matricula, resultado.getString("marca"), resultado.getString("modelo"), resultado.getInt("cargaMax"));
+                if(!(resultado.getBoolean("eliminado") && soloActivos)) {
+                    v = new Vehiculo(matricula, resultado.getString("marca"), resultado.getString("modelo"), resultado.getInt("cargaMax"));
+                }
             }
 
             return v;
@@ -224,7 +232,7 @@ class PControladorEmpleados implements IPEmpleados{
     @Override
     public void altaVehiculo(Vehiculo v) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
-            PreparedStatement statement = con.prepareStatement("INSERT INTO Vehiculo  VALUE (?, ?, ?, ?, 0)")) {
+            PreparedStatement statement = con.prepareStatement("INSERT INTO Vehiculo VALUES (?, ?, ?, ?, 0)")) {
 
             statement.setString(1, v.getMatricula());
             statement.setString(2, v.getMarca());
@@ -257,7 +265,7 @@ class PControladorEmpleados implements IPEmpleados{
     }
 
     @Override
-    public ArrayList<Vehiculo> listarVehiculos() throws Exception {
+    public ArrayList<Vehiculo> listarVehiculos(boolean soloActivos) throws Exception {
         try(Connection con = Conexion.AbrirConexion();
             PreparedStatement consulta = con.prepareStatement("SELECT * FROM Vehiculo")){
 
@@ -266,8 +274,10 @@ class PControladorEmpleados implements IPEmpleados{
             Vehiculo v = null;
             ArrayList<Vehiculo> vehiculos = new ArrayList<>();
             while(resultado.next()) {
-                v = new Vehiculo(resultado.getString("matricula"), resultado.getString("marca"), resultado.getString("modelo"), resultado.getInt("cargaMax"));
-                vehiculos.add(v);
+                if(!(resultado.getBoolean("eliminado") && soloActivos)) {
+                    v = new Vehiculo(resultado.getString("matricula"), resultado.getString("marca"), resultado.getString("modelo"), resultado.getInt("cargaMax"));
+                    vehiculos.add(v);
+                }
             }
 
             return vehiculos;

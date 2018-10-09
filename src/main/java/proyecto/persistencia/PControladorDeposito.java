@@ -102,7 +102,7 @@ class PControladorDeposito implements IPDeposito{
         EspecificacionProducto productoEncontrado = null;
 
         try (Connection con = Conexion.AbrirConexion();
-             PreparedStatement consulta = con.prepareStatement("SELECT * FROM EspecificacionProducto WHERE ID = ? AND Eliminado = 0;");){
+             PreparedStatement consulta = con.prepareStatement("SELECT * FROM EspecificacionProducto WHERE ID = ?;");){
 
             consulta.setInt(1, codigo);
 

@@ -18,8 +18,8 @@ public class ControladorEntregas {
     @RequestMapping(value="/GenerarViaje", method = RequestMethod.GET)
     public String getGenerarViaje(ModelMap modelMap){
         try{
-            modelMap.addAttribute("repartidores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("repartidor"));
-            modelMap.addAttribute("vehiculos", FabricaLogica.getControladorEmpleados().listarVehiculos());
+            modelMap.addAttribute("repartidores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("repartidor", true));
+            modelMap.addAttribute("vehiculos", FabricaLogica.getControladorEmpleados().listarVehiculos(true));
             ArrayList<OrdenPedido> pedidos = FabricaLogica.getControladorPedidos().listarPedidosXEstado("preparado");
 
             if (pedidos.size() > 0){
@@ -40,22 +40,22 @@ public class ControladorEntregas {
     @RequestMapping(value="/GenerarViaje", method = RequestMethod.POST, params = "action=Generar viaje")
     public String generarViaje(@RequestParam(value = "pedidos", required = false) int[] pedidos, @RequestParam String vehiculo, @RequestParam String repartidor, ModelMap modelMap){
         try{
-            modelMap.addAttribute("repartidores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("repartidor"));
-            modelMap.addAttribute("vehiculos", FabricaLogica.getControladorEmpleados().listarVehiculos());
+            modelMap.addAttribute("repartidores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("repartidor", true));
+            modelMap.addAttribute("vehiculos", FabricaLogica.getControladorEmpleados().listarVehiculos(true));
 
             if(repartidor.equals("")){
                 modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("preparado"));
                 modelMap.addAttribute("tablaPedidos", true);
                 throw new ExcepcionFrigorifico("Debe seleccionar un repartidor");
             }
-            Empleado rep = FabricaLogica.getControladorEmpleados().buscarEmpleado(repartidor);
+            Empleado rep = FabricaLogica.getControladorEmpleados().buscarEmpleado(repartidor, true);
 
             if(vehiculo.equals("")){
                 modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("preparado"));
                 modelMap.addAttribute("tablaPedidos", true);
                 throw new ExcepcionFrigorifico("Debe seleccionar un vehículo");
             }
-            Vehiculo v = FabricaLogica.getControladorEmpleados().buscarVehiculo(vehiculo);
+            Vehiculo v = FabricaLogica.getControladorEmpleados().buscarVehiculo(vehiculo, true);
 
             if(pedidos == null){
                 modelMap.addAttribute("pedidos", FabricaLogica.getControladorPedidos().listarPedidosXEstado("preparado"));

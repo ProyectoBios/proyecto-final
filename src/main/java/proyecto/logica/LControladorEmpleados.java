@@ -40,7 +40,7 @@ public class LControladorEmpleados implements IEmpleados{
 
     @Override
     public boolean iniciarSesion(String ci, String pass) throws Exception {
-        Empleado e = buscarEmpleado(ci);
+        Empleado e = buscarEmpleado(ci, true);
         if(e == null){
             return false;
         }
@@ -51,10 +51,10 @@ public class LControladorEmpleados implements IEmpleados{
     }
 
     @Override
-    public Empleado buscarEmpleado(String ci) throws Exception {
-        Empleado empleado = FabricaPersistencia.getControladorEmpleados().buscarEmpleado(ci);
+    public Empleado buscarEmpleado(String ci, boolean soloActivos) throws Exception {
+        Empleado empleado = FabricaPersistencia.getControladorEmpleados().buscarEmpleado(ci, soloActivos);
         if(empleado != null && empleado.getRol().equals("repartidor")){
-            empleado = FabricaPersistencia.getControladorEmpleados().buscarRepartidor(ci);
+            empleado = FabricaPersistencia.getControladorEmpleados().buscarRepartidor(ci, soloActivos);
         }
         return empleado;
     }
@@ -72,7 +72,7 @@ public class LControladorEmpleados implements IEmpleados{
 
     @Override
     public void modificarEmpleado(Empleado e) throws Exception {
-        String passActual = buscarEmpleado(e.getCi()).getContrasenia();
+        String passActual = buscarEmpleado(e.getCi(), false).getContrasenia();
         String hashedPass = getSha256(e.getContrasenia());
 
         if(e.getContrasenia().isEmpty()){
@@ -85,23 +85,23 @@ public class LControladorEmpleados implements IEmpleados{
     }
 
     @Override
-    public ArrayList<Empleado> listarEmpleadosXRol(String rol) throws Exception {
-        return FabricaPersistencia.getControladorEmpleados().listarEmpleadosXRol(rol);
+    public ArrayList<Empleado> listarEmpleadosXRol(String rol, boolean soloActivos) throws Exception {
+        return FabricaPersistencia.getControladorEmpleados().listarEmpleadosXRol(rol, soloActivos);
     }
 
     @Override
-    public ArrayList<Empleado> listarEmpleados() throws Exception {
-        ArrayList<Empleado> resultado = listarEmpleadosXRol("operador");
-        resultado.addAll(listarEmpleadosXRol("funcionario"));
-        resultado.addAll(listarEmpleadosXRol("repartidor"));
-        resultado.addAll(listarEmpleadosXRol("gerente"));
+    public ArrayList<Empleado> listarEmpleados(boolean soloActivos) throws Exception {
+        ArrayList<Empleado> resultado = listarEmpleadosXRol("operador", soloActivos);
+        resultado.addAll(listarEmpleadosXRol("funcionario", soloActivos));
+        resultado.addAll(listarEmpleadosXRol("repartidor", soloActivos));
+        resultado.addAll(listarEmpleadosXRol("gerente", soloActivos));
 
         return resultado;
     }
 
     @Override
-    public Vehiculo buscarVehiculo(String matricula) throws Exception {
-        return FabricaPersistencia.getControladorEmpleados().buscarVehiculo(matricula);
+    public Vehiculo buscarVehiculo(String matricula, boolean soloActivos) throws Exception {
+        return FabricaPersistencia.getControladorEmpleados().buscarVehiculo(matricula, soloActivos);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class LControladorEmpleados implements IEmpleados{
     }
 
     @Override
-    public ArrayList<Vehiculo> listarVehiculos() throws Exception {
-        return FabricaPersistencia.getControladorEmpleados().listarVehiculos();
+    public ArrayList<Vehiculo> listarVehiculos(boolean soloActivos) throws Exception {
+        return FabricaPersistencia.getControladorEmpleados().listarVehiculos(soloActivos);
     }
 }

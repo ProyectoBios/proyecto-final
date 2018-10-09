@@ -366,7 +366,7 @@ public class ControladorPedidos {
                 throw new ExcepcionFrigorifico("Debe seleccionar al menos 1 pedido y no más de 5.");
             }
 
-            for(int i=0; i<pedidos.length; i++){
+               for(int i=0; i<pedidos.length; i++){
                 OrdenPedido orden = FabricaLogica.getControladorPedidos().buscarOrdenPedido(pedidos[i]);
                 if(orden.getEstado().equals("en preparacion")){
                     throw new ExcepcionFrigorifico("El pedido con ID: " + orden.getId() + " ya está siendo preparado por otro empleado.");
@@ -601,9 +601,9 @@ public class ControladorPedidos {
             ArrayList<OrdenPedido> pedidos = FabricaLogica.getControladorPedidos().listarPedidos();
             session.setAttribute("ListadoDePedidos", pedidos);
             session.setAttribute("clientes", FabricaLogica.getControladorPedidos().buscarClientes(""));
-            session.setAttribute("operadores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("operador"));
-            session.setAttribute("funcionarios", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("funcionario"));
-            session.setAttribute("repartidores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("repartidor"));
+            session.setAttribute("operadores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("operador", true));
+            session.setAttribute("funcionarios", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("funcionario", true));
+            session.setAttribute("repartidores", FabricaLogica.getControladorEmpleados().listarEmpleadosXRol("repartidor", true));
             modelMap.addAttribute("listadoPedidos", pedidos);
             return "ListadoDePedidos";
         }catch (ExcepcionFrigorifico ex){
