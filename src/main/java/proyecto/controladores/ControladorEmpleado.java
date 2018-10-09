@@ -84,7 +84,7 @@ public class ControladorEmpleado {
     @RequestMapping(value = "/MantenimientoEmpleados", method = RequestMethod.POST, params = "action=Buscar")
     public String buscarEmpleado(@ModelAttribute Empleado empleado, BindingResult bindingResult, ModelMap modelMap) {
         try {
-            if (bindingResult.getFieldError("Ci")!=null){
+            if (bindingResult.getFieldError("Ci")!= null){
                 throw new ExcepcionFrigorifico(bindingResult.getFieldError("Ci").getDefaultMessage().split(":")[1]);
             }
             Empleado e = FabricaLogica.getControladorEmpleados().buscarEmpleado(empleado.getCi());
@@ -349,7 +349,7 @@ public class ControladorEmpleado {
     }
 
     @RequestMapping(value = "/MantenimientoVehiculos", method = RequestMethod.POST, params = "action=Eliminar")
-    public String bajaVehiculo(@ModelAttribute Vehiculo vehiculo, ModelMap modelMap) {
+    public String bajaVehiculo(@ModelAttribute Vehiculo vehiculo, BindingResult bindingResult, ModelMap modelMap) {
         try {
             FabricaLogica.getControladorEmpleados().bajaVehiculo(vehiculo);
 
@@ -401,7 +401,11 @@ public class ControladorEmpleado {
         ArrayList<String> mensajes = new ArrayList<>();
         for (Object obj : bindingResult.getAllErrors()) {
             if (obj instanceof FieldError) {
-                mensajes.add(((FieldError) obj).getDefaultMessage().split(": ")[1]);
+                if(((FieldError) obj).getCode().equals("methodInvocation")) {
+                    mensajes.add(((FieldError) obj).getDefaultMessage().split(": ")[1]);
+                }else{
+                    mensajes.add("El campo " + ((FieldError) obj).getField() + " no puede quedar vacio");
+                }
             }
         }
         return mensajes;

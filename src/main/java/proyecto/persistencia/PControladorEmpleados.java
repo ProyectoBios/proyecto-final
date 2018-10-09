@@ -115,7 +115,7 @@ class PControladorEmpleados implements IPEmpleados{
 
     public void altaEmpleado(Empleado e) throws Exception{
         try(Connection con = Conexion.AbrirConexion();
-            PreparedStatement statement = con.prepareStatement("INSERT INTO Empleado VALUES (?, ?, ?, ?, ?, ?, ?)")){
+            PreparedStatement statement = con.prepareStatement("INSERT INTO Empleado VALUES (?, ?, ?, ?, ?, ?, ?, 0)")){
 
             if(e instanceof Repartidor){
                 altaRepartidor((Repartidor)e, con);

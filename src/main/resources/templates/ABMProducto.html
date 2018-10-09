@@ -59,33 +59,33 @@
 								<tr>
 									<td>Precio:</td>
 									<td>
-									  <input step="any" th:field="*{PrecioActual}" size="1" style="width: 30%" type="number"/>
+									  <input step="any" th:field="*{PrecioActual}" size="1" style="width: 30%" type="number" th:required="required" />
 									</td>
 								</tr>
 								<tr>
 								  <td>Stock mínimo</td>
 								  <td>
-									  <input  type="number" th:field ="*{MinStock}" size="1" style="width: 30%"/>
+									  <input  type="number" th:field ="*{MinStock}" size="1" style="width: 30%" th:required="required" />
 								  </td>
 								</tr>
 								<tr>
 								  <td>Stock Crítico</td>
 								  <td>
-									  <input type="number" th:field ="*{StockCritico}" size="1" style="width: 30%"/>
+									  <input type="number" th:field ="*{StockCritico}" size="1" style="width: 30%" th:required="required" />
 								  </td>
 								</tr>
 								<tr>
 								  <td>Stock Máximo</td>
 								  <td>
-									  <input type="number" th:field ="*{MaxStock}" size="1" style="width: 30%"/>
+									  <input type="number" th:field ="*{MaxStock}" size="1" style="width: 30%" th:required="required" />
 								  </td>
 								</tr>
 								<tr>
 								  <td colspan="2" style="text-align: center">
 									  <input type="submit" name="action" value="Agregar" th:disabled="${!botonAgregar}"/>
-									  <input type="submit" name="action" value="Eliminar" th:disabled="${!botonEliminar}"/>
+									  <input type="submit" name="action" value="Eliminar" th:disabled="${!botonEliminar}" th:formnovalidate="formnovalidate" />
 									  <input type="submit" name="action" value="Modificar" th:disabled="${!botonModificar}"/>
-									  <input type="submit" name="action" value="Limpiar" />
+									  <input type="submit" name="action" value="Limpiar" th:formnovalidate="formnovalidate"/>
 									</td>
 								</tr>
 							  </tbody>

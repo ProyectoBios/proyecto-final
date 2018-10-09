@@ -58,32 +58,32 @@
                     <tbody>
                     <tr>
                         <td style="width: 20%">C.I.:</td>
-                        <td style="width: auto"><input type="number" id="id" size="" th:style="'width: 41%; display: inline-block; cursor: ' + ${btnNoAllowed} + ';'" th:field="*{Ci}" th:readonly="${ciSoloLectura}"/> <input id="btnBuscar" type="submit" name="action" value="Buscar" th:disabled="${!botonBuscar}"/></td>
+                        <td style="width: auto"><input type="number" id="id" size="" th:style="'width: 41%; display: inline-block; cursor: ' + ${btnNoAllowed} + ';'" th:field="*{Ci}" th:readonly="${ciSoloLectura}"/> <input id="btnBuscar" type="submit" name="action" value="Buscar" th:disabled="${!botonBuscar}" th:formnovalidate="formnovalidate"/></td>
                     </tr>
                     <tr>
                         <td>Nombre:</td>
-                        <td><input type="text" id="nombre" size="1" style="width: 60%" th:field="*{Nombre}"/></td>
+                        <td><input type="text" id="nombre" size="1" style="width: 60%" th:field="*{Nombre}" th:required="required" /></td>
                     </tr>
                     <tr>
                         <td>Contraseña:</td>
-                        <td><input type="password" id="contrasenia" size="1" style="width: 60%" th:field="*{Contrasenia}"/></td>
+                        <td><input type="password" id="contrasenia" size="1" style="width: 60%" th:field="*{Contrasenia}" /></td>
                     </tr>
                     <tr>
                         <td>Confirmar contraseña:</td>
-                        <td><input type="password" name="confirmarPass" id="contrasenia2" size="1" style="width: 60%"/></td>
+                        <td><input type="password" name="confirmarPass" id="contrasenia2" size="1" style="width: 60%" /></td>
                     </tr>
                     <tr>
                         <td>Fecha de nacimiento</td>
                         <!--  -->
-                        <td><input type="date" id="fechaNac" size="1" style="width: 30%" th:field="*{{FechaDeNacimiento}}"/></td>
+                        <td><input type="date" id="fechaNac" size="1" style="width: 30%" th:field="*{{FechaDeNacimiento}}" th:required="required" /></td>
                     </tr>
                     <tr>
                         <td>Fecha de contratación:</td>
-                        <td><input type= "date" id="fechaContr" size="1" style="width: 30%" th:field="*{{FechaContratacion}}"/></td>
+                        <td><input type= "date" id="fechaContr" size="1" style="width: 30%" th:field="*{{FechaContratacion}}" th:required="required" /></td>
                     </tr>
                     <tr>
                         <td>Teléfono:</td>
-                        <td><input type="tel" id="telefono" size="1" style="width: 30%" th:field="*{{Telefono}}"/></td>
+                        <td><input type="tel" id="telefono" size="1" style="width: 30%" th:field="*{{Telefono}}" th:required="required" /></td>
                     </tr>
                     <tr>
                         <td>Rol:</td> <!-- Va un select -->
@@ -104,10 +104,10 @@
                     <tr>
                         <td colspan="2" style="text-align: center">
                             <input type="submit" name="action" value="Agregar" th:disabled="${!botonAgregar}"/>
-                            <input type="submit" name="action" value="Eliminar" th:disabled="${!botonEliminar}"/>
+                            <input type="submit" name="action" value="Eliminar" th:disabled="${!botonEliminar}" th:formnovalidate="formnovalidate"/>
                             <input type="submit" name="action" value="Modificar" th:disabled="${!botonModificar}"/>
-                            <input type="submit" name="action" value="Listar" />
-                            <input type="submit" name="action" value="Limpiar" />
+                            <input type="submit" name="action" value="Listar" th:formnovalidate="formnovalidate" />
+                            <input type="submit" name="action" value="Limpiar" th:formnovalidate="formnovalidate" />
                         </td>
                     </tr>
                     </tbody>

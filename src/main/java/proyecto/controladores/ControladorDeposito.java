@@ -785,7 +785,11 @@ public class ControladorDeposito {
         ArrayList<String> mensajes = new ArrayList<>();
         for (Object obj : bindingResult.getAllErrors()) {
             if (obj instanceof FieldError) {
-                mensajes.add(((FieldError) obj).getDefaultMessage().split(": ")[1]);
+                if(((FieldError) obj).getCode().equals("methodInvocation")) {
+                    mensajes.add(((FieldError) obj).getDefaultMessage().split(": ")[1]);
+                }else{
+                    mensajes.add("El campo " + ((FieldError) obj).getField() + " no puede quedar vacio");
+                }
             }
         }
         return mensajes;
