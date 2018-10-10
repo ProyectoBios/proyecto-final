@@ -25,7 +25,7 @@ public class Empleado {
 
     public void setCi(String ci) throws ExcepcionFrigorifico{
         if(ci.length() != 8){
-            throw new ExcepcionFrigorifico("La cédula no puede tener más 8 caracteres.");
+            throw new ExcepcionFrigorifico("La cédula debe tener 8 caracteres.");
         }
         if (ci.isEmpty()){
             throw new ExcepcionFrigorifico("la cédula no puede quedar vacía");

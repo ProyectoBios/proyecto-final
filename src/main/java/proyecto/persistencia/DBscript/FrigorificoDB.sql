@@ -348,7 +348,7 @@ BEGIN
 		UPDATE Empleado SET nombre = pNombre, contrasenia=pContrasenia, fechaNac = pFechaNac, fechaContratacion=pFechaCont, telefono = pTel, eliminado = 0 WHERE ci = pCi;
     ELSE
 		BEGIN
-			INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaContratacion, pTel, pRol);			
+			INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaContratacion, pTel, pRol, 0);
 		END;
 	END IF;
     COMMIT;
