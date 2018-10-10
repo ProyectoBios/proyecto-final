@@ -1,3 +1,11 @@
+USE mysql;
+
+/*SELECT user, host FROM user;
+
+GRANT ALL PRIVILEGES ON FrigorificoDB.* to 'root'@'192.168.10.222'; 
+
+GRANT SELECT ON mysql.proc TO 'root'@'192.168.10.222'; */
+
 Drop Database if exists FrigorificoDB;
 
 Create Database FrigorificoDB;
@@ -318,11 +326,11 @@ BEGIN
     START transaction;
     
     if exists(SELECT * FROM Repartidor WHERE ci = pCi AND eliminado = 1) THEN
-		UPDATE Empleado SET nombre = pNombre, contrasenia=pContrasenia, fechaNac = pFechaNac, fechaContratacion=pFechaContratacion, telefono = pTel, eliminado = 0 WHERE ci = pCi;
+		UPDATE Empleado SET nombre = pNombre, contrasenia=pContrasenia, fechaNac = pFechaNac, fechaContratacion=pFechaCont, telefono = pTel, eliminado = 0 WHERE ci = pCi;
         UPDATE Repartidor SET vencLibreta = pFechaVencLib WHERE ci = pcI;
     ELSE
 		BEGIN
-			INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaContratacion, pTel, 'repartidor');
+			INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaCont, pTel, 'repartidor');
 			INSERT INTO Repartidor VALUES(pCi, pFechaVencLib);
 		END;
     END IF;
@@ -348,7 +356,7 @@ BEGIN
 		UPDATE Empleado SET nombre = pNombre, contrasenia=pContrasenia, fechaNac = pFechaNac, fechaContratacion=pFechaCont, telefono = pTel, eliminado = 0 WHERE ci = pCi;
     ELSE
 		BEGIN
-			INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaContratacion, pTel, pRol, 0);
+			INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaCont, pTel, pRol, 0);
 		END;
 	END IF;
     COMMIT;
