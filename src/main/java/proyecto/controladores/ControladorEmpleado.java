@@ -151,6 +151,16 @@ public class ControladorEmpleado {
             }
 
             if (empleado.getRol().equals("repartidor")) {
+                if(vencLibreta==null){
+                    modelMap.addAttribute(empleado);
+                    modelMap.addAttribute("vencLibreta", vencLibreta);
+                    throw new ExcepcionFrigorifico("La fecha de vencimiento de la libreta no puede quedar vacía.");
+                }
+                if(vencLibreta.before(new Date())){
+                    modelMap.addAttribute(empleado);
+                    modelMap.addAttribute("vencLibreta", vencLibreta);
+                    throw new ExcepcionFrigorifico("La fecha de vencimiento de la libreta debe ser posterior a la actual.");
+                }
                 empleado = new Repartidor(empleado.getCi(), empleado.getNombre(), empleado.getContrasenia(), empleado.getFechaDeNacimiento(), empleado.getFechaContratacion(), empleado.getTelefono(), empleado.getRol(), vencLibreta);
             }
 
@@ -245,6 +255,16 @@ public class ControladorEmpleado {
             }
 
             if (empleado.getRol().equals("repartidor")) {
+                if(vencLibreta==null){
+                    modelMap.addAttribute(empleado);
+                    modelMap.addAttribute("vencLibreta", vencLibreta);
+                    throw new ExcepcionFrigorifico("La fecha de vencimiento de la libreta no puede quedar vacía.");
+                }
+                if(vencLibreta.before(new Date())){
+                    modelMap.addAttribute(empleado);
+                    modelMap.addAttribute("vencLibreta", vencLibreta);
+                    throw new ExcepcionFrigorifico("La fecha de vencimiento de la libreta debe ser posterior a la actual.");
+                }
                 empleado = new Repartidor(empleado.getCi(), empleado.getNombre(), empleado.getContrasenia(), empleado.getFechaDeNacimiento(), empleado.getFechaContratacion(), empleado.getTelefono(), empleado.getRol(), vencLibreta);
             }
 

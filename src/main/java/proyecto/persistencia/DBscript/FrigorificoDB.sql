@@ -1,6 +1,6 @@
-USE mysql;
+/*USE mysql;
 
-/*SELECT user, host FROM user;
+SELECT user, host FROM user;
 
 GRANT ALL PRIVILEGES ON FrigorificoDB.* to 'root'@'192.168.10.222'; 
 
@@ -325,12 +325,12 @@ BEGIN
     SET transaccionActiva = 1;
     START transaction;
     
-    if exists(SELECT * FROM Repartidor WHERE ci = pCi AND eliminado = 1) THEN
+    if exists(SELECT * FROM Empleado WHERE ci = pCi AND eliminado = 1) THEN
 		UPDATE Empleado SET nombre = pNombre, contrasenia=pContrasenia, fechaNac = pFechaNac, fechaContratacion=pFechaCont, telefono = pTel, eliminado = 0 WHERE ci = pCi;
         UPDATE Repartidor SET vencLibreta = pFechaVencLib WHERE ci = pcI;
     ELSE
 		BEGIN
-			INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaCont, pTel, 'repartidor');
+			INSERT INTO Empleado VALUES(pCi, pNombre, pContrasenia, pFechaNac, pFechaCont, pTel, 'repartidor', 0);
 			INSERT INTO Repartidor VALUES(pCi, pFechaVencLib);
 		END;
     END IF;
