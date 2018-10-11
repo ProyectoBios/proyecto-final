@@ -237,7 +237,7 @@ class LControladorDeposito implements  IDeposito {
             int fila = Integer.parseInt(ubicacion.substring(1,3));
             int columna = Integer.parseInt(ubicacion.substring(3,5));
 
-            Ubicacion nuevaUbicacion = new Ubicacion(fila, columna, new Rack(letraRack, 0, 0));
+            Ubicacion nuevaUbicacion = new Ubicacion(fila, columna, buscarRack(letraRack));
             Lote lote = new Lote(idLote, new Date(), new Date(), 0, new EspecificacionProducto(), nuevaUbicacion);
 
             FabricaPersistencia.getControladorDeposito().moverLote(lote);

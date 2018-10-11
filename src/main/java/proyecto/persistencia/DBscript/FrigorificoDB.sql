@@ -141,35 +141,163 @@ Create Table PedidosViaje(
     primary key (idViaje, idPedido)
 );
 
-INSERT INTO EspecificacionProducto VALUES(NULL, 'Mortadela', 20, 10, 100, 0);
-INSERT INTO EspecificacionProducto VALUES(NULL, 'Chorizo', 100, 50, 500, 0);
-INSERT INTO EspecificacionProducto VALUES(NULL, 'Longaniza', 140, 60, 650, 0);
-
-INSERT INTO PrecioProducto VALUES(1, 30.0, '20170527', '20171105');
-INSERT INTO PrecioProducto VALUES(1, 10.0, '20171105', NULL);
-INSERT INTO PrecioProducto VALUES(2, 25.0, '20171105', NULL);
-INSERT INTO PrecioProducto VALUES(3, 30.0, '20171105', NULL);
-
-INSERT INTO Rack VALUES('A', 10, 20);
-INSERT INTO Rack VALUES('D', 12, 18);
-INSERT INTO Rack VALUES('C', 10, 20);
-INSERT INTO Rack VALUES('B', 10, 20);
-
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Mortadela Centenario 500g', 20, 10, 100, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Mortadela Centenario 1kg', 20, 10, 100, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Chorizo Extra Centenario', 100, 50, 500, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Longaniza Centenario', 140, 60, 650, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Jamon Etiq. Negra Centenario', 100, 60, 550, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Jamon Cocido Extra Etiq. Azul', 140, 60, 700, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Frakfruter Centenario x4', 200, 110, 660, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Frakfruter Centenario x8', 200, 110, 660, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Frakfruter Livianitos Centenario x4', 200, 110, 660, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Frakfruter Livianitos Centenario x8', 200, 110, 660, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Salame Centenario 500g', 200, 110, 660, 0);
+INSERT INTO EspecificacionProducto VALUES(NULL, 'Bondiola Centenario 1kg', 200, 110, 660, 0);
 
 
+INSERT INTO PrecioProducto VALUES(1, 88.0, '20170527', '20171105');
+INSERT INTO PrecioProducto VALUES(1, 90.0, '20171105', NULL);
+INSERT INTO PrecioProducto VALUES(2, 155.0, '20171105', NULL);
+INSERT INTO PrecioProducto VALUES(3, 55.0, '20171105', NULL);
+INSERT INTO PrecioProducto VALUES(4, 75.0, '20180525', NULL);
+INSERT INTO PrecioProducto VALUES(5, 130.0, '20180525', NULL);
+INSERT INTO PrecioProducto VALUES(6, 160.0, '20180525', NULL);
+INSERT INTO PrecioProducto VALUES(7, 69.0, '20180525', NULL);
+INSERT INTO PrecioProducto VALUES(8, 124.0, '20180525', NULL);
+INSERT INTO PrecioProducto VALUES(9, 80.0, '20180525', NULL);
+INSERT INTO PrecioProducto VALUES(10, 153.0, '20180525', NULL);
+INSERT INTO PrecioProducto VALUES(11, 93.0, '20180525', NULL);
+INSERT INTO PrecioProducto VALUES(12, 141.0, '20180525', NULL);
+
+INSERT INTO Rack VALUES('A', 5, 11);
+INSERT INTO Rack VALUES('B', 5, 13);
+INSERT INTO Rack VALUES('C', 5, 10);
+INSERT INTO Rack VALUES('D', 6, 14);
+INSERT INTO Rack VALUES('E', 5, 9);
+INSERT INTO Rack VALUES('F', 4, 12);
+INSERT INTO Rack VALUES('G', 5, 10);
+INSERT INTO Rack VALUES('H', 5, 10);
+
+
+-- Lotes de Mortadela Centenario 500g
 INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 50, 1, 'A', 1,1, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180322', 30, 1, 'A', 3, 5, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180111', 10, 1, 'A', 4, 4, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180624', 1000, 1, 'A', 1, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 30, 1, 'A', 1, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 10, 1, 'A', 1, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 70, 1, 'A', 1, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 100, 1, 'A', 1, 5, 0);
 
-INSERT INTO Lote VALUES(NULL, NOW(), '20180422', 30, 2, 'A', 1, 3, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 150, 2, 'A', 1, 4, 0);
 
-INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 60, 3, 'A', 2, 1, 0);
-INSERT INTO Lote VALUES(NULL, NOW(), '20180630', 10, 3, 'A', 2, 2, 0);
+-- Lotes de Mort. Centenario 1kg
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 35, 2, 'A', 3, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 35, 2, 'A', 3, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 35, 2, 'A', 3, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 2, 'A', 3, 6, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 30, 2, 'A', 3, 7, 0);
 
-INSERT INTO Cliente VALUES('Disco', '1234567890', 'disco@disco.com');
-INSERT INTO Cliente VALUES('Carniceria Pepe', '0987654321', 'pepe@gmail.com');
+
+-- Lotes de Chorizo
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 60, 3, 'A', 5, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 90, 3, 'A', 5, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 50, 3, 'A', 5, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 55, 3, 'A', 5, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 30, 3, 'A', 5, 6, 0);
+
+
+-- Lotes de Longaniza
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 30, 4, 'B', 2, 1, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 50, 4, 'B', 2, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 50, 4, 'B', 2, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 50, 4, 'B', 2, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 50, 4, 'B', 2, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 50, 4, 'B', 2, 7, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 50, 4, 'B', 2, 9, 0);
+
+-- Lotes de Jamon Negra
+
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 25, 5, 'B', 3, 1, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 5, 'B', 3, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 5, 'B', 3, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 5, 'B', 3, 6, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 5, 'B', 3, 7, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 5, 'B', 3, 9, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 5, 'B', 3, 11, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 5, 'B', 4, 1, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 5, 'B', 4, 2, 0);
+
+-- Lotes Jamon Azul
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 25, 6, 'B', 5, 1, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 6, 'B', 5, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 6, 'B', 5, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 6, 'B', 5, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 6, 'B', 5, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 6, 'B', 5, 6, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 6, 'B', 5, 7, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 6, 'B', 5, 8, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 6, 'B', 5, 9, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 20, 6, 'B', 5, 10, 0);
+
+-- Lotes Frank Cent x4
+
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 40, 7, 'C', 1, 1, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 1, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 1, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 1, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 1, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 1, 6, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 1, 7, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 1, 8, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 1, 9, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 1, 10, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 2, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 2, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 7, 'C', 2, 4, 0);
+
+-- Lotes Frank Cent x8
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 40, 8, 'C', 3, 1, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 8, 'C', 3, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 8, 'C', 3, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 8, 'C', 3, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 8, 'C', 3, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 8, 'C', 3, 6, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 8, 'C', 3, 7, 0);
+
+-- Lotes Frank Liv Cent x4
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 40, 9, 'C', 4, 1, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 9, 'C', 4, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 9, 'C', 4, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 9, 'C', 4, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 9, 'C', 4, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 9, 'C', 4, 6, 0);
+
+-- Lotes Frank Liv Cent x8
+
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 40, 10, 'C', 5, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 10, 'C', 5, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 10, 'C', 5, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 10, 'C', 5, 6, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 10, 'C', 5, 7, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 60, 10, 'C', 5, 8, 0);
+
+-- Lotes Salame
+
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 25, 11, 'D', 1, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 35, 11, 'D', 1, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 35, 11, 'D', 1, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 35, 11, 'D', 1, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 35, 11, 'D', 1, 6, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 35, 11, 'D', 1, 7, 0);
+
+-- Lotes Bondiola
+
+INSERT INTO Lote VALUES(NULL, NOW(), '20180507', 25, 12, 'D', 3, 3, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 35, 12, 'D', 3, 4, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 35, 12, 'D', 3, 5, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 35, 12, 'D', 4, 2, 0);
+INSERT INTO Lote VALUES(NULL, NOW(), '20181015', 35, 12, 'D', 4, 4, 0);
+
+
+INSERT INTO Cliente VALUES('Disco Sucursal Nro 1', '1234567890', 'disco@disco.com');
+INSERT INTO Cliente VALUES('Carniceria \'lo de Pepe\'', '0987654321', 'pepe@gmail.com');
 
 INSERT INTO Empleado VALUES('12345678', 'Pedro Rodriguez','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' , '19840324', '20171009', '091789456', 'repartidor',0);
 INSERT INTO Empleado VALUES('32165498', 'Pepe Martin','88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589' ,'19800515', '20160520', '092879654', 'operador',0);
@@ -181,7 +309,7 @@ INSERT INTO Repartidor VALUES('12345678', '20220814');
 INSERT INTO Vehiculo VALUES('SBU 3940', 'Volkswagen', 'Worker', 9000, 0);
 INSERT INTO Vehiculo VALUES('SAF 4589', 'Hyundai', 'Hd45', 2500, 0);
 
-INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Solomeo Paredes 2020', 'Peteco', 5075, 1116.5, 6191.5, 'Carniceria Pepe', '32165498', null, null); 
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Solomeo Paredes 2020', 'Peteco', 5075, 1116.5, 6191.5, 'Carniceria \'lo de Pepe\'', '32165498', null, null); 
 
 INSERT INTO LineaPedido VALUES(1, 1, 200, 2000.0, 1);
 INSERT INTO LineaPedido VALUES(1, 2, 45, 1125.0, 2);
