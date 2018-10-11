@@ -309,13 +309,50 @@ INSERT INTO Repartidor VALUES('12345678', '20220814');
 INSERT INTO Vehiculo VALUES('SBU 3940', 'Volkswagen', 'Worker', 9000, 0);
 INSERT INTO Vehiculo VALUES('SAF 4589', 'Hyundai', 'Hd45', 2500, 0);
 
-INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Solomeo Paredes 2020', 'Peteco', 5075, 1116.5, 6191.5, 'Carniceria \'lo de Pepe\'', '32165498', null, null); 
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Av Inexistente 2020', 'Pepe', 5075, 1116.5, 6191.5, 'Carniceria \'lo de Pepe\'', '32165498', null, null); 
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Av Inexistente 2020', 'Pepe', 4000, 880, 4880, 'Carniceria \'lo de Pepe\'', '32165498', null, null); 
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Direccion Disco', 'Alberto', 7500, 1650, 9150, 'Disco Sucursal Nro 1', '32165498', null, null); 
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Direccion Disco', 'Alberto', 3000, 660, 3660, 'Disco Sucursal Nro 1', '32165498', null, null); 
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Direccion Disco', 'Alberto', 1200, 264, 1464, 'Disco Sucursal Nro 1', '32165498', null, null); 
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'pendiente', '', NOW(), 'Direccion Disco', 'Alberto', 2250, 495, 2745, 'Disco Sucursal Nro 1', '32165498', null, null); 
 
-INSERT INTO LineaPedido VALUES(1, 1, 200, 2000.0, 1);
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'preparado', '', NOW(), 'Av Inexistente 2020', 'Peteco', 1900, 418.0, 2318, 'Carniceria \'lo de Pepe\'', '32165498', '48550958', null); 
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'preparado', '', NOW(), 'Direccion Disco', 'Alberto', 3500, 770, 4270, 'Disco Sucursal Nro 1', '32165498', '48550958', null); 
+INSERT INTO OrdenPedido VALUES(NULL, NOW(), 'preparado', '', NOW(), 'Direccion Disco', 'Martin', 2750, 605, 3355, 'Disco Sucursal Nro 1', '32165498', '48550958', null); 
+
+
+INSERT INTO LineaPedido VALUES(1, 1, 110, 1100.0, 1);
 INSERT INTO LineaPedido VALUES(1, 2, 45, 1125.0, 2);
 INSERT INTO LineaPedido VALUES(1, 3, 65, 1950.0, 3);
 
+INSERT INTO LineaPedido VALUES(2, 1, 50, 550.0, 5);
+INSERT INTO LineaPedido VALUES(2, 2, 30, 570.5, 6);
+INSERT INTO LineaPedido VALUES(2, 3, 20, 660, 7);
 
+INSERT INTO LineaPedido VALUES(3, 1, 29, 490.0, 3);
+INSERT INTO LineaPedido VALUES(3, 2, 25, 880.0, 6);
+INSERT INTO LineaPedido VALUES(3, 3, 36, 670.0, 10);
+
+INSERT INTO LineaPedido VALUES(4, 1, 68, 1156.0, 8);
+
+INSERT INTO LineaPedido VALUES(5, 1, 40, 1000, 11);
+INSERT INTO LineaPedido VALUES(5, 2, 30, 980.0, 4);
+INSERT INTO LineaPedido VALUES(5, 3, 30, 790.0, 9);
+
+INSERT INTO LineaPedido VALUES(6, 1, 45, 1100.0, 3);
+INSERT INTO LineaPedido VALUES(6, 2, 30, 840.0, 5);
+INSERT INTO LineaPedido VALUES(6, 3, 22, 440.0, 6);
+
+INSERT INTO LineaPedido VALUES(7, 1, 45, 1320.0, 8);
+INSERT INTO LineaPedido VALUES(7, 2, 30, 840.0, 6);
+INSERT INTO LineaPedido VALUES(7, 3, 22, 620.0, 12);
+
+INSERT INTO LineaPedido VALUES(8, 1, 50, 1410.0, 6);
+INSERT INTO LineaPedido VALUES(8, 2, 40, 920.0, 9);
+INSERT INTO LineaPedido VALUES(8, 3, 55, 640.0, 10);
+
+INSERT INTO LineaPedido VALUES(9, 1, 70, 1600.0, 3);
+INSERT INTO LineaPedido VALUES(9, 2, 60, 1550.0, 11);
 
 
 DELIMITER //
