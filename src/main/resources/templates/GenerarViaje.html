@@ -66,6 +66,7 @@
                         <th>ID</th>
                         <th>Fecha</th>
                         <th>Cliente</th>
+                        <th>Estado</th>
                         <th>Total</th>
                         <th></th>
                     </thead>
@@ -74,6 +75,7 @@
                             <td th:text="${pedido.Id}"></td>
                             <td th:text="${#dates.format(pedido.Fecha, 'dd/MM/yyyy')}"></td>
                             <td th:text="${pedido.Cliente.Nombre}"></td>
+                            <td th:text="${pedido.Estado}"></td>
                             <td th:text="${'$' + pedido.Total}"></td>
                             <td><input class="pedido" type="checkbox" name="pedidos" th:value="${pedido.Id}"/></td>
                         </tr>
