@@ -488,6 +488,13 @@ public class ControladorDeposito {
         try{
             prods = FabricaLogica.getControladorDeposito().listarProductos(true);
             racks = FabricaLogica.getControladorDeposito().listarRacks();
+            if(lote.getProducto().getCodigo() == -1){
+                throw new ExcepcionFrigorifico("Debe seleccionar un producto.");
+            }
+            if(lote.getUbicacion().getRack() == null){
+                throw new ExcepcionFrigorifico("Debe seleccionar un rack.");
+            }
+
             int codigo = FabricaLogica.getControladorDeposito().altaLote(lote);
 
             byte[] pdfBytes = FabricaLogica.getControladorDeposito().generarCodigoQRLote(codigo);
