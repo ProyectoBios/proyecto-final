@@ -247,6 +247,18 @@ public class ControladorPedidos {
                 return "AltaOrdenDePedido";
             }
 
+            int cantidad;
+            try {
+                cantidad = Integer.parseInt(cantUnidades);
+                if (cantidad <= 0){
+                    throw new ExcepcionFrigorifico("¡ERROR! La cantidad debe ser mayor que cero");
+                }
+            }catch (ExcepcionFrigorifico ex){
+                modelMap.addAttribute("tablaProducto", true);
+                modelMap.addAttribute("mensajeStock", "¡ERROR! La cantidad debe ser mayor que cero");
+                return "AltaOrdenDePedido";
+            }
+
             int id;
             try{
                 id = Integer.parseInt(idProducto);

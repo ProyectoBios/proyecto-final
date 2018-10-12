@@ -36,6 +36,6 @@ public class Cliente {
     }
 
     public Cliente() {
-        this("N/D", "-", "N/D");
+        this("", "-", "");
     }
 }
