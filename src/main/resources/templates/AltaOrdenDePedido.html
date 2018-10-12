@@ -108,11 +108,11 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>Nombre: <input type="text" id="txtNombre" th:field="*{Nombre}" style="display: inline-block; width: 80%"/> </td>
-                            <td>Teléfono: <input type="number" id="txtTelefono" th:field="*{Telefono}" style="display: inline-block; width: 80%" /></td>
+                            <td>Nombre: <input type="text" id="txtNombre" th:field="*{Nombre}" style="display: inline-block; width: 80%" th:required="required"/> </td>
+                            <td>Teléfono: <input type="number" id="txtTelefono" th:field="*{Telefono}" style="display: inline-block; width: 80%" th:required="required"/></td>
                         </tr>
                         <tr>
-                            <td colspan="2">E-mail: <input type="text" th:field="*{Correo}" style="display: inline-block; width: 40%;"/>
+                            <td colspan="2">E-mail: <input type="text" th:field="*{Correo}" style="display: inline-block; width: 40%;" th:required="required"/>
                             <input type="submit" id="btnAgregarCliente" name="action" value="Agregar Cliente" style="display: inline-block;"/></td>
                         </tr>
                         </tbody>
