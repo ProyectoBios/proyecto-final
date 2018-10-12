@@ -226,9 +226,13 @@ public class ControladorPedidos {
             modelMap.addAttribute("mensaje", "Cliente agregado con éxito.");
             return "AltaOrdenDePedido";
         }catch (ExcepcionFrigorifico ex){
+            modelMap.addAttribute("cliente", cliente);
+            modelMap.addAttribute("tablaAltaCliente", true);
             modelMap.addAttribute("mensaje", ex.getMessage());
             return "AltaOrdenDePedido";
         }catch (Exception ex){
+            modelMap.addAttribute("cliente", cliente);
+            modelMap.addAttribute("tablaAltaCliente", true);
             modelMap.addAttribute("mensaje", "Ocurrió un error al dar de alta el cliente.");
             return "AltaOrdenDePedido";
         }
