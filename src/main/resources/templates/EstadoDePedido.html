@@ -142,6 +142,10 @@
                         <td>Ultima actualizacion: </td>
                         <td th:text="${#dates.format(ordenPedido.UltimaActEst, 'dd/MM/yyyy HH:mm')}"></td>
                     </tr>
+                    <tr th:if="${ordenPedido.DescripcionEntrega != ''}">
+                        <td>Descripcion entrega:</td>
+                        <td th:text="${ordenPedido.DescripcionEntrega}"></td>
+                    </tr>
                     <tr>
                         <td>Dirección: </td>
                         <td th:text="${ordenPedido.DireccionEnvio}"></td>
